@@ -41,7 +41,7 @@ then, you can safely remove the 'template' remote by typing `git remote rm templ
         - right-click on the project
         - select `Maven->Reload Project`
         - wait for the build to complete and make sure you have a build success
-        - right-click on class `Main` and select `Main App.main()`
+        - right-click on class `Main` and select `Run App.main()`
         - right-click on class `CalculatorTest` and select `Run CalculatorTest`
 
 ### Commit and push your changes:
