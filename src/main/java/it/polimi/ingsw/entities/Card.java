@@ -7,6 +7,7 @@
 
 package it.polimi.ingsw.entities;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class Card {
@@ -30,6 +31,10 @@ public class Card {
 
     public int getColor() {
         return color;
+    }
+
+    public boolean equals(Card c){
+        return (color == c.color);
     }
     //ENDREGION
 }

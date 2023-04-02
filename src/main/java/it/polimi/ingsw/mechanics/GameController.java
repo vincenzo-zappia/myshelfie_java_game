@@ -1,5 +1,4 @@
 package it.polimi.ingsw.mechanics;
-
 import it.polimi.ingsw.ServerSideController;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.exceptions.AddCardException;
@@ -65,5 +64,4 @@ public class GameController {
 
         //TODO: creation of the scoreboard based on the calculated scores for each one of the players
     }
-
 }

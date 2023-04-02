@@ -16,7 +16,7 @@ public class Server {
     private final int port;
 
     public static void main(String[] args) {
-        Server server = new Server(2024);
+        Server server = new Server(2023);
         server.startConnection();
     }
 
