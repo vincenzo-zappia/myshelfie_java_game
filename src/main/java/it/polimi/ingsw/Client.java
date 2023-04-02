@@ -24,7 +24,7 @@ public class Client {
     //endregion
 
     public static void main(String[] args) throws IOException {
-        Client client = new Client("localhost", 2023);
+        Client client = new Client("localhost", 2024);
         BufferedReader breader = new BufferedReader(new FileReader("XML/player.xml"));
         Scanner stdin = new Scanner(System.in);
 //        FileReader freader = new FileReader("player.xml");
