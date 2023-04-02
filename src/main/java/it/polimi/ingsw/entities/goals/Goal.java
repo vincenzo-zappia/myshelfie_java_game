@@ -1,6 +1,6 @@
-package proj.polimi.testrj45.entities.goals;
+package it.polimi.ingsw.entities.goals;
 
-import proj.polimi.testrj45.entities.Bookshelf;
+import it.polimi.ingsw.entities.Bookshelf;
 
 public interface Goal {
     public int checkGoal(Bookshelf bookshelf);

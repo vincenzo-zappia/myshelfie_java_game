@@ -1,4 +1,4 @@
-package proj.polimi.testrj45.exceptions;
+package it.polimi.ingsw.exceptions;
 
 public class CardAloneCheckException extends Exception{
 }

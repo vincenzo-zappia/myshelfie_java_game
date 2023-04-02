@@ -5,9 +5,9 @@
  * Comments: users draw card from bag, this class need to be improved.
  */
 
-package proj.polimi.testrj45.entities;
+package it.polimi.ingsw.entities;
 
-import proj.polimi.testrj45.exceptions.NoMoreCardsException;
+import it.polimi.ingsw.exceptions.NoMoreCardsException;
 import java.util.ArrayList;
 import java.util.Collections;
 

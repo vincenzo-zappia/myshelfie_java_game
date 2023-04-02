@@ -1,4 +1,4 @@
-package proj.polimi.testrj45.state;
+package it.polimi.ingsw.state;
 
 public interface GameState {
     public void removeCardPlayer();

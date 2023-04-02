@@ -5,11 +5,11 @@
  * Comments: using tree-like data structure, managed as matrix instead of array of lists.
  */
 
-package proj.polimi.testrj45.entities;
+package it.polimi.ingsw.entities;
 
-import proj.polimi.testrj45.exceptions.CardAloneCheckException;
-import proj.polimi.testrj45.exceptions.CellGetCardException;
-import proj.polimi.testrj45.exceptions.NoMoreCardsException;
+import it.polimi.ingsw.exceptions.CardAloneCheckException;
+import it.polimi.ingsw.exceptions.CellGetCardException;
+import it.polimi.ingsw.exceptions.NoMoreCardsException;
 
 public class Board {
 

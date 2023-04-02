@@ -5,9 +5,9 @@
  * Comments: none
  */
 
-package proj.polimi.testrj45.entities;
+package it.polimi.ingsw.entities;
 
-import proj.polimi.testrj45.exceptions.CellGetCardException;
+import it.polimi.ingsw.exceptions.CellGetCardException;
 
 public class Cell {
 

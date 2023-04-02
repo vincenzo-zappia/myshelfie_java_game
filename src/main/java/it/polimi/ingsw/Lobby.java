@@ -1,7 +1,7 @@
-package proj.polimi.testrj45;
+package it.polimi.ingsw;
 
-import proj.polimi.testrj45.entities.Player;
-import proj.polimi.testrj45.state.Game;
+import it.polimi.ingsw.entities.Player;
+import it.polimi.ingsw.state.Game;
 
 import java.util.ArrayList;
 //IMPORTANTE: forse si può eliminare questa classe!

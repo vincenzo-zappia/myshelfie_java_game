@@ -1,4 +1,4 @@
-package proj.polimi.testrj45.mechanics;
+package it.polimi.ingsw.mechanics;
 
 public class TurnController {
 

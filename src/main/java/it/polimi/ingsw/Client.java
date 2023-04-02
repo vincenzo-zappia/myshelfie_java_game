@@ -1,4 +1,4 @@
-package proj.polimi.testrj45;
+package it.polimi.ingsw;
 
 import java.io.*;
 import java.net.Socket;

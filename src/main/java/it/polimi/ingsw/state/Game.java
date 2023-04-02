@@ -5,12 +5,12 @@
  * Comments: none
  */
 
-package proj.polimi.testrj45.state;
+package it.polimi.ingsw.state;
 
-import proj.polimi.testrj45.entities.Board;
-import proj.polimi.testrj45.entities.Card;
-import proj.polimi.testrj45.entities.Player;
-import proj.polimi.testrj45.entities.goals.Goal;
+import it.polimi.ingsw.entities.Board;
+import it.polimi.ingsw.entities.Card;
+import it.polimi.ingsw.entities.Player;
+import it.polimi.ingsw.entities.goals.Goal;
 
 public class Game{
 

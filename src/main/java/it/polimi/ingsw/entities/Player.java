@@ -5,7 +5,7 @@
  * Comments: none
  */
 
-package proj.polimi.testrj45.entities;
+package it.polimi.ingsw.entities;
 
 public class Player {
 

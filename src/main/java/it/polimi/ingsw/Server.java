@@ -1,4 +1,4 @@
-package proj.polimi.testrj45;
+package it.polimi.ingsw;
 /* Author/s: Tirabassi M., Vianello G., Zappia V.
  * Date: 20/03/2023
  * IDE: IntelliJ IDEA

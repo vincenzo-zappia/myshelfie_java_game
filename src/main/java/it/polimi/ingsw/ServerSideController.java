@@ -5,10 +5,10 @@
  * Comments: none
  */
 
-package proj.polimi.testrj45;
+package it.polimi.ingsw;
 
-import proj.polimi.testrj45.entities.Player;
-import proj.polimi.testrj45.state.Game;
+import it.polimi.ingsw.entities.Player;
+import it.polimi.ingsw.state.Game;
 
 import java.io.IOException;
 import java.io.PrintWriter;

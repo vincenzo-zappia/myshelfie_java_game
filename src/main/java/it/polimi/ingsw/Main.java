@@ -1,4 +1,4 @@
-package proj.polimi.testrj45;
+package it.polimi.ingsw;
 
 public class Main {
     public static void main(String[] args) {
