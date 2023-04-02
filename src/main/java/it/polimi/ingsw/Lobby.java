@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.entities.Player;
-import it.polimi.ingsw.state.Game;
+import it.polimi.ingsw.server.model.entities.Player;
+import it.polimi.ingsw.server.model.state.Game;
 
 import java.util.ArrayList;
 //IMPORTANTE: forse si può eliminare questa classe!
