@@ -25,5 +25,10 @@ public class Bookshelf {
         while(!bookshelf[i][column].isCellEmpty()) i++;
         bookshelf[i][column].setCard(card);
     }
+
+    public Cell getCell(int row, int column){
+        return bookshelf[row][column];
+    }
+
     //END REGION
 }
