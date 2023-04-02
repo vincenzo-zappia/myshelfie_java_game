@@ -7,6 +7,8 @@
 
 package it.polimi.ingsw.entities;
 
+import it.polimi.ingsw.entities.goals.PrivateGoal;
+
 public class Player {
 
     //REGION ATTRIBUTES
@@ -14,7 +16,7 @@ public class Player {
     private final int gameID; //per contesto multipartita
     private int score;
     private boolean isMyTurn;
-    private String privateGoal;
+    private PrivateGoal privateGoal;
     private Bookshelf bookshelf;
     //END REGION
 
@@ -48,10 +50,10 @@ public class Player {
     public boolean getTurn(){
         return isMyTurn;
     }
-    public void setPrivateGoal(String privateGoal) {
+    public void setPrivateGoal(PrivateGoal privateGoal) {
         this.privateGoal = privateGoal;
     }
-    public String getPrivateGoal() {
+    public PrivateGoal getPrivateGoal() {
         return privateGoal;
     }
     //END REGION

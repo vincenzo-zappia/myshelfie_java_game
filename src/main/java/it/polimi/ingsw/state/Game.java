@@ -8,16 +8,20 @@
 package it.polimi.ingsw.state;
 
 import it.polimi.ingsw.entities.Board;
+import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.entities.goals.Goal;
+import it.polimi.ingsw.exceptions.AddCardException;
+
+import java.util.ArrayList;
 
 public class Game{
 
     //REGION ATTRIBUTES
     private Board board;
-    //private Bookshelf[] bookshelves;
-    private Player[] players;
+    //private ArrayList<Bookshelf> bookshelves; //Game is the class that puts together multiple entities and has specific value
+    private ArrayList<Player> players;
     private int playerNum;
     private GameState state;
     private int currentPlayer; //current turn player's index in "players"
@@ -52,20 +56,18 @@ public class Game{
     //  {x2, y2},
     //  {x3, y3}
     //}
-    public void removeCardPlayer(int[][] coordinates){
-        //TODO: exception when illegal move (it will actually be implemented in GameController)
+    public void removeCardFromBoard(int[][] coordinates){
         for(int i = 0; i < coordinates.length; i++) board.removeCard(coordinates[i][0], coordinates[i][1]);
-        System.out.println("Cards removed. Ready for the bookshelf!");
+        System.out.println("Cards removed!");
     }
 
-    public String addCardToBookshelf(Player sender, int column, Card[] cards){
-        if (!players[currentPlayer].equals(sender)){
-            //TODO: exit code with error
-            return "Player not allowed!";
-        }
-        //TODO: iterator that cycles from 0 to (playerNum - 1) indefinitely
+    public void addCardToBookshelf(String playerUsername, int column, Card[] cards) throws AddCardException {
+        int playerIndex = players.indexOf(playerUsername); //TODO: exception in case username not found
 
-        return "tutto ok";
+        //inserts each selected card into the player's bookshelf
+        for(Card c : cards){
+            players.get(playerIndex).getBookshelf().addCard(column, c);
+        }
     }
 
     public void scoreCommonGoal(){
@@ -74,7 +76,12 @@ public class Game{
             p.addScore(commonGoal2.checkGoal(p.getBookshelf()));
         }
     }
-//    public String toString(){
-//        return board.toString();
-//    }
+
+    //method that checks each player's private goal (can be called during and at the end of the game
+    //TODO: deciding when the method will be called (end game or repeatedly mid game)
+    public void scorePrivateGoal(){
+        for(Player p : players){
+            p.addScore(p.getPrivateGoal().checkGoal(p.getBookshelf()));
+        }
+    }
 }
