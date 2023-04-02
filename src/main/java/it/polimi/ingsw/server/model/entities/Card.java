@@ -5,9 +5,7 @@
  * Comments: none
  */
 
-package it.polimi.ingsw.entities;
-
-import java.util.Random;
+package it.polimi.ingsw.server.model.entities;
 
 public class Card {
 

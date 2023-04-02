@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.server;
 
 //import java.io.File;
 import java.io.*;
@@ -9,9 +9,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import it.polimi.ingsw.entities.BoardCell;
-import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.entities.Player;
+import it.polimi.ingsw.server.model.entities.BoardCell;
+import it.polimi.ingsw.server.model.entities.Card;
+import it.polimi.ingsw.server.model.entities.Player;
 
 public class ToolXML {
 

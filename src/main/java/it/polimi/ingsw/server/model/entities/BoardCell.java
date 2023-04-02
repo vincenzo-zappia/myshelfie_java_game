@@ -5,7 +5,7 @@
  * Comments: none
  */
 
-package it.polimi.ingsw.entities;
+package it.polimi.ingsw.server.model.entities;
 
 public class BoardCell extends Cell {
 

@@ -5,10 +5,10 @@
  * Comments: none
  */
 
-package it.polimi.ingsw;
+package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.entities.Player;
-import it.polimi.ingsw.state.Game;
+import it.polimi.ingsw.server.model.entities.Player;
+import it.polimi.ingsw.server.model.state.Game;
 
 import java.io.IOException;
 import java.io.PrintWriter;

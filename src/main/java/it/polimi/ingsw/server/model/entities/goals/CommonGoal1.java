@@ -1,10 +1,7 @@
-package it.polimi.ingsw.entities.goals;
+package it.polimi.ingsw.server.model.entities.goals;
 
-import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.entities.Cell;
+import it.polimi.ingsw.server.model.entities.Bookshelf;
 import it.polimi.ingsw.exceptions.CellGetCardException;
-
-import java.util.Objects;
 
 public class CommonGoal1 implements Goal{
     @Override

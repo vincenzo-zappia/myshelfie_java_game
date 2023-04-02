@@ -1,9 +1,9 @@
-package it.polimi.ingsw.mechanics;
+package it.polimi.ingsw.server.model.mechanics;
 
-import it.polimi.ingsw.ServerSideController;
-import it.polimi.ingsw.entities.Card;
+import it.polimi.ingsw.server.ServerSideController;
+import it.polimi.ingsw.server.model.entities.Card;
 import it.polimi.ingsw.exceptions.AddCardException;
-import it.polimi.ingsw.state.Game;
+import it.polimi.ingsw.server.model.state.Game;
 
 import java.util.ArrayList;
 

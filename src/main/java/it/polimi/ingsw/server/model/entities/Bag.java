@@ -5,7 +5,7 @@
  * Comments: users draw card from bag, this class need to be improved.
  */
 
-package it.polimi.ingsw.entities;
+package it.polimi.ingsw.server.model.entities;
 
 import it.polimi.ingsw.exceptions.NoMoreCardsException;
 import java.util.ArrayList;

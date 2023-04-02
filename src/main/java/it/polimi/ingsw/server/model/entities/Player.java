@@ -5,9 +5,9 @@
  * Comments: none
  */
 
-package it.polimi.ingsw.entities;
+package it.polimi.ingsw.server.model.entities;
 
-import it.polimi.ingsw.entities.goals.PrivateGoal;
+import it.polimi.ingsw.server.model.entities.goals.PrivateGoal;
 
 public class Player {
 

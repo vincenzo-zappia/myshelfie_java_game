@@ -5,13 +5,12 @@
  * Comments: none
  */
 
-package it.polimi.ingsw.state;
+package it.polimi.ingsw.server.model.state;
 
-import it.polimi.ingsw.entities.Board;
-import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.entities.Player;
-import it.polimi.ingsw.entities.goals.Goal;
+import it.polimi.ingsw.server.model.entities.Board;
+import it.polimi.ingsw.server.model.entities.Card;
+import it.polimi.ingsw.server.model.entities.Player;
+import it.polimi.ingsw.server.model.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.AddCardException;
 
 import java.util.ArrayList;

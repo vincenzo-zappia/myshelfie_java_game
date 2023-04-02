@@ -5,7 +5,7 @@
  * Comments: using tree-like data structure, managed as matrix instead of array of lists.
  */
 
-package it.polimi.ingsw.entities;
+package it.polimi.ingsw.server.model.entities;
 
 import it.polimi.ingsw.exceptions.CardAloneCheckException;
 import it.polimi.ingsw.exceptions.CellGetCardException;
