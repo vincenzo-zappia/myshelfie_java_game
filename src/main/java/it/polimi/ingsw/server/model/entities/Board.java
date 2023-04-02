@@ -14,8 +14,8 @@ import it.polimi.ingsw.exceptions.NoMoreCardsException;
 public class Board {
 
     //REGION ATTRIBUTES
-    private BoardCell[][] matrix;
-    private Bag bag;
+    private final BoardCell[][] matrix;
+    private final Bag bag;
     //END REGION
 
 
@@ -50,7 +50,7 @@ public class Board {
 
     //method that activates the additional board cells that depend on the number of players
     public void initBoard(int x){
-        if(x==3){
+        if(x >= 3){
             matrix[0][3].setCellActive();
             matrix[2][2].setCellActive();
             matrix[2][6].setCellActive();
@@ -60,7 +60,7 @@ public class Board {
             matrix[6][6].setCellActive();
             matrix[8][5].setCellActive();
         }
-        else if (x==4) {
+        if (x == 4) {
             matrix[0][4].setCellActive();
             matrix[1][5].setCellActive();
             matrix[3][1].setCellActive();
@@ -159,4 +159,8 @@ public class Board {
 
     }
     //END REGION
+
+    public BoardCell[][] getMatrix(){
+        return matrix;
+    }
 }
