@@ -7,11 +7,11 @@ import it.polimi.ingsw.exceptions.CellGetCardException;
 import java.util.Objects;
 
 public class CommonGoal1 implements Goal{
+    private static final int SCORE = 0; //TODO: inserire valore del goal
     @Override
     public int checkGoal(Bookshelf bs) {
         //equal square card
         int tmp=0;
-        int points=0; //TODO gestione dei punti
         try {
             for(int i = 0; i < 5 ; i++){  //search from row 0 to row-1
                 for(int j = 0; j < 4; j++){ //search from column 0 to column-1
@@ -28,7 +28,7 @@ public class CommonGoal1 implements Goal{
             throw new RuntimeException(e);
         }
 
-        if(tmp>=2)return points; //only if there are 2 square matrix the method return the points
-        return 0;
+        if(tmp>=2) return SCORE;
+        else return 0;
     }
 }
