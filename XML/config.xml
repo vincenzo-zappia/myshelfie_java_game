@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<Config>
+    <Player>
+        <p2>
+            <table>0,2,3,6,7,6,3,2,0</table>
+        </p2>
+        <p3>
+            <table>1,2,5,7,7,7,5,2,1</table>
+        </p3>
+        <p4>
+            <table>2,3,5,8,9,8,5,3,2</table>
+        </p4>
+    </Player>
+</Config>
