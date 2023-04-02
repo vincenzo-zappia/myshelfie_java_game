@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
-
     Board board;
 
     //testing that the board is correctly set up for every kind of game in terms of the number of players
+    //TODO: isolating the cells that always have to be inactive and asserting false on their activation
     @Test
     void twoPlayersSetup(){
         board = new Board(2);
@@ -43,7 +43,6 @@ class BoardTest {
         assertFalse(board.getMatrix()[7][3].isCellActive());
         assertFalse(board.getMatrix()[8][4].isCellActive());
     }
-
     @Test
     void threePlayersSetup(){
         board = new Board(3);
@@ -77,7 +76,6 @@ class BoardTest {
         assertFalse(board.getMatrix()[7][3].isCellActive());
         assertFalse(board.getMatrix()[8][4].isCellActive());
     }
-
     @Test
     void fourPlayersSetup(){
         board = new Board(4);
@@ -110,6 +108,40 @@ class BoardTest {
         assertTrue(board.getMatrix()[5][7].isCellActive());
         assertTrue(board.getMatrix()[7][3].isCellActive());
         assertTrue(board.getMatrix()[8][4].isCellActive());
+    }
+
+    //testing that when I empty the board it actually removes the card associated with each tile for every type of board in terms of the number of players
+    @Test
+    void twoPlayersBoardIsEmpty(){
+        board = new Board(2);
+        //TODO: when I remove all the cards the board is empty
+    }
+    @Test
+    void threePlayersBoardIsEmpty(){
+        board = new Board(3);
+        //TODO: when I remove all the cards the board is empty
+    }
+    @Test
+    void fourPlayersBoardIsEmpty(){
+        board = new Board(4);
+        //TODO: when I remove all the cards the board is empty
+    }
+
+    //testing that when I call the method to fill the board it actually gets filled for each type of board in terms of the number of players
+    @Test
+    void twoPlayersBoardIsFull(){
+        board = new Board(2);
+        //TODO: when I fill the board it actually gets filled
+    }
+    @Test
+    void threePlayersBoardIsFull(){
+        board = new Board(3);
+        //TODO: when I fill the board it actually gets filled
+    }
+    @Test
+    void fourPlayersBoardIsFull(){
+        board = new Board(4);
+        //TODO: when I fill the board it actually gets filled
     }
 
 }

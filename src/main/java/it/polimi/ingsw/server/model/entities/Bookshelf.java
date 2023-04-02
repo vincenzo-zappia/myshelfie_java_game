@@ -12,11 +12,14 @@ import it.polimi.ingsw.exceptions.AddCardException;
 public class Bookshelf {
 
     //REGION ATTRIBUTES
-    private Cell[][] bookshelf;
+    private final Cell[][] bookshelf;
     //END REGION
 
     //REGION CONSTRUCTOR
-    public Bookshelf(){ bookshelf = new BoardCell[6][5]; }
+    public Bookshelf(){
+        //TODO: initialization of every Cell otherwise it has to be done in the respective test
+        bookshelf = new Cell[6][5];
+    }
     //END REGION
 
     //REGION METHODS

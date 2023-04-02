@@ -30,9 +30,6 @@ public class Board {
         //initialization of the bag with all the cards in the game
         bag = new Bag();
 
-        //TODO: Rimuovere, solo per debug
-//        matrix[0][0].setActive();
-//        matrix[0][0].setCard(new Card());
     }
 
     //method that activates the board cells that do NOT depend on the number of players (basic board)
@@ -90,8 +87,9 @@ public class Board {
 
     //REGION METHODS
 
-    //what do i need this method for?
+    //TODO: method that checks if the card is selectable
 
+    //what do i need this method for?
     public boolean isCardAlone(int row, int column) throws CardAloneCheckException {
 
         /* this code doesn't have controls
@@ -160,7 +158,9 @@ public class Board {
     }
     //END REGION
 
+    //REGION GETTER AND SETTER
     public BoardCell[][] getMatrix(){
         return matrix;
     }
+    //END REGION
 }
