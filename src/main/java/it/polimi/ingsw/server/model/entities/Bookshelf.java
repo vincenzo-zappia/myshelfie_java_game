@@ -48,7 +48,7 @@ public class Bookshelf {
         return bookshelf[row];
     }
 
-    public int[][] matrixExtractor(){
+    public int[][] getColorMatrix(){
         int[][] x = new int[6][5];
 
         for(int i = 0; i < 6; i++){

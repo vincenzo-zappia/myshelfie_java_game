@@ -1,9 +1,6 @@
 package it.polimi.ingsw.server.model.entities.goals;
 
 import it.polimi.ingsw.server.model.entities.Bookshelf;
-import it.polimi.ingsw.exceptions.CellGetCardException;
-import it.polimi.ingsw.server.model.entities.Card;
-import it.polimi.ingsw.server.model.entities.Cell;
 
 public class CommonGoal1 implements Goal{
     private static final int SCORE = 1; //TODO: inserire valore del goal
@@ -12,7 +9,7 @@ public class CommonGoal1 implements Goal{
     public int checkGoal(Bookshelf bs) {
         //equal square card
         int tmp=0;
-        int[][] x = bs.matrixExtractor();
+        int[][] x = bs.getColorMatrix();
 
         for(int i = 0; i < 5 ; i++){  //search from row 0 to row-1
             //TODO verificare che funzioni senza controllo in questa sezione
