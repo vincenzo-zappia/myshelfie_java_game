@@ -19,7 +19,6 @@ public class Bookshelf {
 
     //REGION CONSTRUCTOR
     public Bookshelf(){
-        //TODO: initialization of every Cell otherwise it has to be done in the respective test
         bookshelf = new Cell[6][5];
         for(int i=0; i<6; i++) for(int j=0; j<5; j++) bookshelf[i][j] = new Cell();
     }
@@ -36,13 +35,17 @@ public class Bookshelf {
         return bookshelf[row][column];
     }
 
+    public Cell[] getRow(int row) {
+        return bookshelf[row];
+    }
+
     public int[][] matrixExtractor(){
         int[][] x = new int[6][5];
 
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 5; j++) {
                 try {
-                    if(getCell(i,j).isCellEmpty())x[i][j] = getCell(i,j).getCard().getColor();
+                    if(!getCell(i,j).isCellEmpty())x[i][j] = getCell(i,j).getCard().getColor();
                     else x[i][j] = Goal.UNAVAILABLE;
 
                 } catch (CellGetCardException e) {                   // and save the value in matrix x[][]

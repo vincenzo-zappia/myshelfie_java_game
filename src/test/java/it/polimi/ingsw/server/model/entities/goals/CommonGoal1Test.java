@@ -25,7 +25,9 @@ class CommonGoal1Test {
         bookshelf = new Bookshelf();
     }
 
+    //TODO: tradurre in inglese:
     /*
+     * SCOPO DEI TEST:
      * Il primo test verifica un caso in cui ci sono 2 gruppi separati 2x2 dello stesso colore
      * Il secondo test verifica un caso in cui ci sono 2 gruppi separati 2x2 con una Card di colore diverso
      * I test 3 e 4 (matrix2x3 & matrix2x4) servono per verificare che i gruppi di tessere 4x4 siano sparati (row)
