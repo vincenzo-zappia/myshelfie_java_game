@@ -25,13 +25,14 @@ public class Card {
     public String getImg() {
         return img;
     }
-
     public int getColor() {
         return color;
     }
-
     public boolean sameColor(Card c){
         return (color == c.color);
+    }
+    public boolean sameCard(Card card) {
+        return card.getColor() == this.color && card.getImg().equals(this.img);
     }
     //ENDREGION
 }
