@@ -31,6 +31,15 @@ public class Bookshelf {
         bookshelf[i][column].setCard(card);
     }
 
+    public int numOfCards(int column){
+        int i=5, count=0;
+        while (!bookshelf[i][column].isCellEmpty() && i>=0){
+            i--;
+            count++;
+        }
+        return count;
+    }
+
     public Cell getCell(int row, int column){
         return bookshelf[row][column];
     }
