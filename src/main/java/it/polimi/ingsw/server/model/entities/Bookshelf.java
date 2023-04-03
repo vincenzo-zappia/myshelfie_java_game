@@ -8,6 +8,8 @@
 package it.polimi.ingsw.server.model.entities;
 
 import it.polimi.ingsw.exceptions.AddCardException;
+import it.polimi.ingsw.exceptions.CellGetCardException;
+import it.polimi.ingsw.server.model.entities.goals.Goal;
 
 public class Bookshelf {
 
@@ -34,7 +36,22 @@ public class Bookshelf {
         return bookshelf[row][column];
     }
 
+    public int[][] matrixExtractor(){
+        int[][] x = new int[6][5];
 
+        for(int i = 0; i < 6; i++){
+            for(int j = 0; j < 5; j++) {
+                try {
+                    if(getCell(i,j).isCellEmpty())x[i][j] = getCell(i,j).getCard().getColor();
+                    else x[i][j] = Goal.UNAVAILABLE;
+
+                } catch (CellGetCardException e) {                   // and save the value in matrix x[][]
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return x;
+    }
 
     //END REGION
 }

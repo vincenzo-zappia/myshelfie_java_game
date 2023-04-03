@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.entities.Bookshelf;
 public class CommonGoal3 implements Goal{
 
     private static final int SCORE = 1; //TODO:inserire valore del goal
+    private static final int UNAVAILABLE= 104; //DEBUG use
     private int[][] x = new int[6][5];
 
     //TODO same of commonGoal1
