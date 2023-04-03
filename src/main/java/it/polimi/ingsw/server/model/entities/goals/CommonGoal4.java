@@ -2,15 +2,12 @@ package it.polimi.ingsw.server.model.entities.goals;
 
 import it.polimi.ingsw.exceptions.CellGetCardException;
 import it.polimi.ingsw.server.model.entities.Bookshelf;
-import it.polimi.ingsw.server.model.entities.Card;
 
-public class CommonGoal3 implements Goal{
-
+public class CommonGoal4 implements Goal{
     private static final int SCORE = 1; //TODO:inserire valore del goal
     private int[][] x = new int[6][5];
 
-    //TODO same of commonGoal1
-    public void matrixExtractor(Bookshelf bs){
+    public void matrixExtractor(Bookshelf bs){  //using this method to extract colors from
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 5; j++) {
                 try {
@@ -22,24 +19,23 @@ public class CommonGoal3 implements Goal{
         }
     }
 
-
     @Override
     public int checkGoal(Bookshelf bs) {
         int tmp=0;
         int points=0;
         matrixExtractor(bs);
 
-        for(int j = 0; j < 5; j++){
-            for(int i = 0; i < 3; i++){
-                if (!bs.getCell(i, j).isCellEmpty()) {
-                    if(x[i][j] == x[i+1][j] && x[i+1][j] == x[i+2][j] && x[i+2][j] == x[i+3][j]){
-                        tmp++;
+        for(int i = 0; i < 5; i++){
+            for(int j = 0; j < 5; j++){
+                if(!bs.getCell(i,j).isCellEmpty()){
+                    if(x[i][j] == x[i+1][j]){   //check if the actual cell card color is
+                        tmp++;                  //the same of the cell below
                     }
                 }
             }
         }
 
-        if(tmp>=4) return SCORE;
+        if(tmp>=6) return SCORE;
         return 0;
     }
 }
