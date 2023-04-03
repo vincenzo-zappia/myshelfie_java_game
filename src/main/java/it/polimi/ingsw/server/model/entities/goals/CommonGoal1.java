@@ -14,7 +14,7 @@ public class CommonGoal1 implements Goal{
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 5; j++) {
                 try {
-                    x[i][j] = bs.getCell(i,j).getCard().getColor();  //extract color from bookshelf
+                    if(!bs.getCell(i,j).isCellEmpty())x[i][j] = bs.getCell(i,j).getCard().getColor();  //extract color from bookshelf
                 } catch (CellGetCardException e) {                   // and save the value in matrix x[][]
                     throw new RuntimeException(e);
                 }
