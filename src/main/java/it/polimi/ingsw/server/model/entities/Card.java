@@ -30,7 +30,7 @@ public class Card {
         return color;
     }
 
-    public boolean equals(Card c){
+    public boolean sameColor(Card c){
         return (color == c.color);
     }
     //ENDREGION
