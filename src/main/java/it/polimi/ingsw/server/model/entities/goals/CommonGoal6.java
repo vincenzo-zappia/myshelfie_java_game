@@ -4,7 +4,7 @@ import it.polimi.ingsw.server.model.entities.Bookshelf;
 import it.polimi.ingsw.exceptions.CellGetCardException;
 
 public class CommonGoal6 implements Goal{
-    private static final int SCORE = 0; //TODO: inserire valore del goal
+    private static final int SCORE = 1; //TODO: inserire valore del goal
     private boolean allColorsDifferent(int[] colors){
         for (int i=0; i<4; i++) for (int j=i+1; j<5; j++) if (colors[i] == colors[j]) return false;
         return true;

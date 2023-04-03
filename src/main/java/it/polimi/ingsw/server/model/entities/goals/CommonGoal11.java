@@ -4,7 +4,7 @@ import it.polimi.ingsw.server.model.entities.Bookshelf;
 import it.polimi.ingsw.exceptions.CellGetCardException;
 
 public class CommonGoal11 implements Goal{
-    private static final int SCORE = 0; //TODO:inserire valore del goal
+    private static final int SCORE = 1; //TODO:inserire valore del goal
     private static final int[][] corners = {{0,0}, {0,4}, {5,0}, {5,4}};
     private boolean findDiagonalWithSameColor(int row, int column, Bookshelf b){
         int mRow = 0, mColumn = 0, compareColor;

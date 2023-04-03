@@ -4,7 +4,7 @@ import it.polimi.ingsw.server.model.entities.Bookshelf;
 
 public class CommonGoal3 implements Goal{
 
-    private static final int SCORE = 0; //TODO:inserire valore del goal
+    private static final int SCORE = 1; //TODO:inserire valore del goal
     @Override
     public int checkGoal(Bookshelf bookshelf) {
         int tmp=0;

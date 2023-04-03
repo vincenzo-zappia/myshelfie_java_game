@@ -6,7 +6,7 @@ import it.polimi.ingsw.exceptions.CellGetCardException;
 
 public class CommonGoal8 implements Goal {
 
-    private static final int SCORE = 0; //TODO:inserire valore del goal
+    private static final int SCORE = 1; //TODO:inserire valore del goal
     @Override
     public int checkGoal(Bookshelf bookshelf) {
         Card c1, c2, c3, c4;

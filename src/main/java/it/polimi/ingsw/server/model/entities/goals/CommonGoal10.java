@@ -5,7 +5,7 @@ import it.polimi.ingsw.server.model.entities.Card;
 import it.polimi.ingsw.exceptions.CellGetCardException;
 
 public class CommonGoal10 implements Goal{
-    private static final int SCORE = 0; //TODO:inserire valore del goal
+    private static final int SCORE = 1; //TODO:inserire valore del goal
     private boolean isX(int row, int column, Bookshelf b){
         Card c1, c2, c3, c4, c5;
 
