@@ -19,6 +19,7 @@ public class Bookshelf {
     public Bookshelf(){
         //TODO: initialization of every Cell otherwise it has to be done in the respective test
         bookshelf = new Cell[6][5];
+        for(int i=0; i<6; i++) for(int j=0; j<5; j++) bookshelf[i][j] = new Cell();
     }
     //END REGION
 
