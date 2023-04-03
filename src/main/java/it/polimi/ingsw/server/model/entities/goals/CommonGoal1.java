@@ -26,12 +26,19 @@ public class CommonGoal1 implements Goal{
     public int checkGoal(Bookshelf bs) {
         //equal square card
         int tmp=0;
+        int tipo=0;
         matrixExtractor(bs);
 
         for(int i = 0; i < 5 ; i++){  //search from row 0 to row-1
             for(int j = 0; j < 4; j++){ //search from column 0 to column-1
                 if(!bs.getCell(i,j).isCellEmpty()){  //check the cell if it is empty or not
-                    if(x[i][j] == x[i][j+1] && x[i][j] == x[i+1][j] && x[i][j] == x[i+1][j+1]){
+                    if(tipo==0){
+                        if(x[i][j] == x[i][j+1] && x[i][j] == x[i+1][j] && x[i][j] == x[i+1][j+1]){
+                            tmp++;  //when one found increment tmp
+                            tipo=x[i][j]; //used in second if to check that they are of the same type/color
+                        }
+                    }
+                    if(tipo == x[i][j] && x[i][j] == x[i][j+1] && x[i][j] == x[i+1][j] && x[i][j] == x[i+1][j+1]){
                         tmp++;  //when one found increment tmp
                     }
                 }
