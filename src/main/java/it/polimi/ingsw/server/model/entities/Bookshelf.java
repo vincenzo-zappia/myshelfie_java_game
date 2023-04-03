@@ -26,8 +26,8 @@ public class Bookshelf {
 
     //REGION METHODS
     public void addCard(int column, Card card) throws AddCardException { //TODO add code try/catch where it will be used
-        int i = 0;
-        while(!bookshelf[i][column].isCellEmpty()) i++;
+        int i = 5;
+        while(!bookshelf[i][column].isCellEmpty() && i>=0) i--;
         bookshelf[i][column].setCard(card);
     }
 
