@@ -19,7 +19,7 @@ public class CommonGoal10 implements Goal{
             throw new RuntimeException(e);
         }
 
-        return (c1.equals(c2) && c1.equals(c3) && c1.equals(c4) && c4.equals(c5));
+        return (c1.sameColor(c2) && c1.sameColor(c3) && c1.sameColor(c4) && c4.sameColor(c5));
 
     }
 

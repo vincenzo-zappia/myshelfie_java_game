@@ -20,7 +20,7 @@ public class CommonGoal8 implements Goal {
             throw new RuntimeException(e);
         }
 
-        if(c1.equals(c2) && c3.equals(c4) && c2.equals(c4)) return SCORE;
+        if(c1.sameColor(c2) && c3.sameColor(c4) && c2.sameColor(c4)) return SCORE;
         else return 0;
     }
 }
