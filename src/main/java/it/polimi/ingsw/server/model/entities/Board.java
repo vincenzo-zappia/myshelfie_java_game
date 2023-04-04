@@ -89,7 +89,7 @@ public class Board {
 
     //TODO: method that checks if the card is selectable
 
-    //what do i need this method for?
+    //what do I need this method for?
     public boolean isCardAlone(int row, int column) throws CardAloneCheckException {
 
         /* this code doesn't have controls
