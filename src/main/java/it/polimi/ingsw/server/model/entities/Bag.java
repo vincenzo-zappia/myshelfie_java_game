@@ -15,7 +15,7 @@ public class Bag {
     //METHOD 2: ARRAY OF ALL POSSIBLE CARDS
 
     //REGION ATTRIBUTES
-    private ArrayList<Card> bag;
+    private final ArrayList<Card> bag;
 
     //TODO: how to manage colors and images. Now thought about as String and integer arrays
     private final String[][] cardImgName = {
@@ -26,7 +26,7 @@ public class Bag {
             {"pink1.png", "pink2.png", "pink3.png"},
             {"lBlue1.png", "lBlue2.png", "lBlue3.png"}
     };
-    private final int cardColor[] = {1, 2, 3, 4, 5, 6}; //TODO: might be implemented with an enumeration
+    private final int[] cardColor = {1, 2, 3, 4, 5, 6}; //TODO: might be implemented with an enumeration
     //END REGION
 
     //REGION CONSTRUCTOR
@@ -52,8 +52,7 @@ public class Bag {
 
     //REGION METHODS
     public boolean isBagEmpty(){
-        if(bag.size() == 0) return true;
-        else return false;
+        return bag.size() == 0;
     }
 
     public Card drawCard() throws NoMoreCardsException{

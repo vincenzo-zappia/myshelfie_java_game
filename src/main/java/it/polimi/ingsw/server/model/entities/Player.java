@@ -17,7 +17,7 @@ public class Player {
     private int score;
     private boolean isMyTurn;
     private PrivateGoal privateGoal;
-    private Bookshelf bookshelf;
+    private final Bookshelf bookshelf;
     //END REGION
 
     /*

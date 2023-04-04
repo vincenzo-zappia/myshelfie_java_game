@@ -34,7 +34,7 @@ public class ServerSideController implements Runnable{
                         case "connect()" -> {
                             Player giocatore;
                             giocatore = ToolXML.xmlToPlayer(in.nextLine());
-                            System.out.println("INFO: Player connesso:" + giocatore.toString());
+                            System.out.println("INFO: Player connesso:" + giocatore);
                         }
 
                         case "start()" -> {

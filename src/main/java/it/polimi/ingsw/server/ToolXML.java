@@ -102,7 +102,7 @@ public class ToolXML {
             Element e = (Element) nodeList.item(i);
             int row = Integer.parseInt(e.getAttribute("row"));
             int column = Integer.parseInt(e.getAttribute("column"));
-            String data[] = e.getTextContent().split(";");
+            String[] data = e.getTextContent().split(";");
 
             matrix[row][column].setCellActive();
             matrix[row][column].setCard(new Card(data[0], Integer.parseInt(data[1])));
@@ -132,7 +132,7 @@ public class ToolXML {
 
         NodeList nodeList = root.getElementsByTagName(P);
         int row = nodeList.getLength();
-        int pos[][] = new int[row][2];
+        int[][] pos = new int[row][2];
 
         for(int i=0; i<row; i++){
             Element e = (Element) nodeList.item(i);

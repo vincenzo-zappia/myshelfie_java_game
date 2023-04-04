@@ -10,8 +10,8 @@ package it.polimi.ingsw.server.model.entities;
 public class Card {
 
     //REGION ATTRIBUTES
-    private String img;
-    private int color; //also we can use Enumeration<...>
+    private final String img;
+    private final int color; //also we can use Enumeration<...>
     //END REGION
 
     //REGION CONSTRUCTOR

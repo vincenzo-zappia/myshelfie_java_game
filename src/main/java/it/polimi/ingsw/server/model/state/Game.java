@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class Game{
 
     //REGION ATTRIBUTES
-    private Board board;
+    private final Board board;
     //private ArrayList<Bookshelf> bookshelves; //Game is the class that puts together multiple entities and has specific value
     private ArrayList<Player> players;
     private int playerNum;

@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 public class GameController {
     private final ArrayList<String> playerUsernames;
-    private boolean endGame;
+    private final boolean endGame;
     private final Game game;
     private final ServerSideController serverSideController;
-    private String currentPlayer;
+    private final String currentPlayer;
 
     public GameController(ArrayList<String> playerUsernames, Game game, ServerSideController serverSideController){
         this.playerUsernames = playerUsernames;
