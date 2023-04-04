@@ -20,6 +20,7 @@ class BookshelfTest {
         //TODO: review when implemented enumerations
         Card card = new Card("white1.png", 4);
 
+        //Because the bookshelf is empty the row to check is the last one
         assertTrue(bookshelf.getCell(5, 4).isCellEmpty());
         bookshelf.addCard(4, card);
         assertTrue(bookshelf.getCell(5, 4).getCard().sameCard(card)); //Error: cannot invoke sameCard
