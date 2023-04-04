@@ -15,8 +15,7 @@ import it.polimi.ingsw.server.model.entities.Player;
 
 public class ToolXML {
 
-    //region PrivateMethod
-
+    //REGION PRIVATE METHODS
     private static Element getRootDocElement(File file){
         Document doc;
         try {
@@ -52,10 +51,9 @@ public class ToolXML {
         // Crea un oggetto Document vuoto
         return builder.newDocument();
     }
+    //END REGION
 
-    //endregion
-
-    //region Player
+    //REGION PLAYER
     public static Player xmlToPlayer(String xml) {
 
         Element root = getRootDocElement(xml);
@@ -65,7 +63,6 @@ public class ToolXML {
         int gameId = Integer.parseInt(root.getElementsByTagName("GameId").item(0).getTextContent());
         return new Player(username, gameId);
     }
-
     public static String playerToXml(Player p) {
         String xml="";
 
@@ -85,14 +82,12 @@ public class ToolXML {
 
         return xml;
     }
+    //END REGION
 
-    //endregion
+    //REGION REMOVE BOARD CARDS
+    //END REGION
 
-    //region RemoveBoardCards
-    //endregion
-
-    //region Board
-
+    //REGION BOARD
     public static BoardCell[][] xmlToBoard(String xml){
         Element root = getRootDocElement(xml);
         NodeList nodeList = root.getElementsByTagName("Card");
@@ -109,15 +104,14 @@ public class ToolXML {
         }
         return matrix;
     }
-
     public static String boardToXml(BoardCell[][] matrix){
         String xml = "";
         return xml;
     }
+    //END REGION
 
-    //endregion
-
-    //region Test
+    //REGION TEST
+    //TODO: rename to "xmlToPosition()" (?)
     public static int[][] posizioniByXml(String P){
 
         String xml;
@@ -142,7 +136,7 @@ public class ToolXML {
 
         return pos;
     }
-    //endregion
+    //END REGION
 
     public static Card xmlToCard(String xml){
         int color, id;

@@ -39,8 +39,9 @@ public class Player {
 
     //REGION METHODS
     public void addScore(int points){score+=points;}
+    //END REGION
 
-
+    //REGION GETTER AND SETTER
     public Bookshelf getBookshelf(){
         return bookshelf;
     }

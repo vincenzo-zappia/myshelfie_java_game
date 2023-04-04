@@ -46,7 +46,7 @@ public class Board {
     }
 
     //method that activates the additional board cells that depend on the number of players
-    public void initBoard(int x){
+    private void initBoard(int x){
         if(x >= 3){
             matrix[0][3].setCellActive();
             matrix[2][2].setCellActive();

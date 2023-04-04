@@ -15,6 +15,8 @@ public class Bookshelf {
 
     //REGION ATTRIBUTES
     private final Cell[][] bookshelf;
+    //TODO: how to manage attribution of a bookshelf to a player? (Not in constructor, otherwise tests get fu***d
+    //private final Player player;
     //END REGION
 
     //REGION CONSTRUCTOR
@@ -31,6 +33,7 @@ public class Bookshelf {
         bookshelf[i][column].setCard(card);
     }
 
+    //TODO: rename to "cardsInColumn()" and using the method to implement "isBookshelfFull()"
     public int numOfCards(int column){
         int i=5, count=0;
         while (!bookshelf[i][column].isCellEmpty() && i>=0){
@@ -40,14 +43,9 @@ public class Bookshelf {
         return count;
     }
 
-    public Cell getCell(int row, int column){
-        return bookshelf[row][column];
-    }
+    //TODO: create the method "isBookshelfFull()"
 
-    public Cell[] getRow(int row) {
-        return bookshelf[row];
-    }
-
+    //TODO: rename to "getMatrixColors"
     public int[][] getColorMatrix(){
         int[][] x = new int[6][5];
 
@@ -64,6 +62,15 @@ public class Bookshelf {
         }
         return x;
     }
-
     //END REGION
+
+    //REGION GETTER AND SETTER
+    public Cell getCell(int row, int column){
+        return bookshelf[row][column];
+    }
+    public Cell[] getRow(int row) {
+        return bookshelf[row];
+    }
+    //END REGION
+
 }

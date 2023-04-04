@@ -11,35 +11,32 @@ import it.polimi.ingsw.exceptions.CellGetCardException;
 
 public class Cell {
 
-    //region Attributes
+    //REGION ATTRIBUTES
     private Card card;
     private boolean empty;
-    //endregion
+    //END REGION
 
-    //region Costruttore
+    //REGION CONSTRUCT
     public Cell(){
         empty=true;
     }
-    //endregion
+    //END REGION
 
-    //region Methods
+    //REGION METHODS
     public Card getCard() throws CellGetCardException {
         if(!isCellEmpty()) return card;
         else return null;
     }
-
     public void setCard(Card card) {
         this.card = card;
         empty = false;
     }
-
     public void setCellEmpty(){
         empty=true;
     }
     public boolean isCellEmpty(){
         return empty;
     }
-
-    //endregion
+    //END REGION
 
 }

@@ -7,21 +7,20 @@ import java.util.Scanner;
 
 public class Client {
 
-    //region Attributi
+    //REGION ATTRIBUTES
     private final String ip;
     private final int port;
-
     private Socket socket;
     private Scanner socketIn;
     private PrintWriter socketOut;
-    //endregion
+    //END REGION
 
-    //region Costruttore
+    //REGION CONSTRUCTOR
     public Client(String ip, int port){
         this.ip = ip;
         this.port = port;
     }
-    //endregion
+    //END REGION
 
     public static void main(String[] args) throws IOException {
         Client client = new Client("localhost", 2024);
@@ -38,7 +37,7 @@ public class Client {
         catch (IOException e) {System.err.println("Error: " + e.getMessage());}
     }
 
-    //region Metodi
+    //REGION METHODS
     public void requestConnection(String req) throws IOException{
         socket = new Socket(ip, port);
         System.out.println("INFO: Connessione stabilita");
@@ -60,18 +59,16 @@ public class Client {
             socket.close();
         }
     }
-
-    public void quit(){
-        socketOut.println("quit()");
-        socketOut.flush();
-        System.out.println("INFO: Chiusura partita");
-    }
-
     public void startGame(){
         socketOut.println("start()");
         socketOut.flush();
         System.out.println("INFO: Avvio partita");
     }
-    //endregion
+    public void quit(){
+        socketOut.println("quit()");
+        socketOut.flush();
+        System.out.println("INFO: Chiusura partita");
+    }
+    //END REGION
 
 }
