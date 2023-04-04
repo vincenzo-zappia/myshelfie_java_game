@@ -4,17 +4,13 @@
  * Version 0.3
  * Comments: da finire implementando algoritmo per ricercare sequenza di carte
  */
+
 package it.polimi.ingsw.server.model.entities.goals;
 
-import it.polimi.ingsw.exceptions.CellGetCardException;
 import it.polimi.ingsw.server.model.entities.Bookshelf;
 
 public class CommonGoal3 implements Goal{
-
     private static final int SCORE = 1; //TODO:inserire valore del goal
-    private static final int UNAVAILABLE= 104; //DEBUG use
-
-
 
     @Override
     public int checkGoal(Bookshelf bs) {
