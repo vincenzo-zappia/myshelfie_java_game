@@ -2,9 +2,13 @@ package it.polimi.ingsw.server.model.mechanics;
 
 import it.polimi.ingsw.server.model.entities.goals.*;
 
+import java.util.Random;
+
+//TODO test for methods
+
 public class CommonGoalFactory {
 
-    public Goal makeCommonGoal(int goal_id){  //goal_id: intero che corrisponde alla cifra finale sul nome dei CommonGoalX
+    private Goal goalFactory(int goal_id){
         if(goal_id==1)return new CommonGoal1();
         if(goal_id==2)return new CommonGoal2();
         if(goal_id==3)return new CommonGoal3();
@@ -18,5 +22,18 @@ public class CommonGoalFactory {
         if(goal_id==11)return new CommonGoal11();
         if(goal_id==12)return new CommonGoal12();
         return null;
+    }
+    public Goal[] makeCommonGoal(){  //goal_id: intero che corrisponde alla cifra finale sul nome dei CommonGoalX
+        Random x = new Random();
+        int tmp;
+        int sentinel = 0;
+        Goal[] result = new Goal[2];
+
+        for(int i =0; i < 2; i++){
+            tmp = x.nextInt(12);
+            if (sentinel != tmp)result[i]=goalFactory(tmp);
+            sentinel=tmp;
+        }
+        return result;
     }
 }
