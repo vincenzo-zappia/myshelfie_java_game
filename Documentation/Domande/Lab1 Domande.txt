@@ -1,0 +1,25 @@
+1. In un costruttore è corretto chiamare metodi di classe?
+più pulito da altri oggetti
+
+2. Logica di gioco o basta metodi che modificano l'xml della tavola con logica di gioco (lato client)?
+
+3. Dobbiamo avere la possibilità di vedere i bookshelf degli altri player? Se no, server deve avere il bookshelf di ogni player? si
+
+4. Serve avere lo score aggiornato in tempo reale? no, solo alla classifica
+
+5. Ci conviene fare il checking dei common goal con pattern strategy/state (quindi una classe/metodo per ogni common goal) oppure attraverso un file xml?
+
+6. Server deve controllare a priori la validità dei dati o basta lato client? 
+
+7. Un private goal a testa o possono esserci doppioni?
+
+8. Template senza progetto JFX???
+
+active: estenfdere per bookshelf
+private xml
+common metpodi
+factory anzichè costruzione randomica in costruttore di carta (Bag con metodo shuffle/draw)
+
+deve sembrare leggibile
+
+sempre validità lato server

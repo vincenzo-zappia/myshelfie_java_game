@@ -1,0 +1,17 @@
+1. Test possono essere tra classi o solo specifici a classe?
+
+2. Se ho bisogno di metodi specifici all'interno dei test questi possono/devono essere dichiarati all'interno della classe test (metodi non @Test)?
+
+3. "gruppi di blocchi separati" nei common goal?
+
+4. getter e setter (anche particolari) vanno sull'UML?
+
+
+Ci mancano:
+1. Controllo dei turni (da parte di GameController) e conseguente gestione fine gioco
+2. Formattazione comandi XML (poi verificati da GameController)
+3. Formattazione private goal XML
+4. Implementazione conteggio punteggi
+5. Test vari
+
+
