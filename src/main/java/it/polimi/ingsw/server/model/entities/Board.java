@@ -162,5 +162,15 @@ public class Board {
     public BoardCell[][] getMatrix(){
         return matrix;
     }
+    public BoardCell getBoardCell (int row, int column){
+        return getMatrix()[row][column];
+    }
+    public Card getCard(int row, int column){
+        try {
+            return getBoardCell(row, column).getCard();
+        } catch (CellGetCardException e) {
+            throw new RuntimeException(e);
+        }
+    }
     //END REGION
 }

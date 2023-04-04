@@ -110,13 +110,24 @@ class BoardTest {
         assertTrue(board.getMatrix()[8][4].isCellActive());
     }
 
-    /*
+
     //testing that when I empty the board it actually removes the card associated with each tile for every type of board in terms of the number of players
     @Test
     void twoPlayersBoardIsEmpty(){
         board = new Board(2);
+
+        //filling the board
         board.fillBoard();
-        //TODO: board iteration algorithm
+
+        //TODO: is the following one the best algorithm for board iteration?
+        //emptying the board
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(board.getBoardCell(i, j).isCellActive()) if(!board.getBoardCell(i, j).isCellEmpty()) board.removeCard(i, j);
+            }
+        }
+
+        //checking if the board was actually emptied
         for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[1][i].isCellEmpty());
         for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[2][i].isCellEmpty());
         for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[i][1].isCellEmpty());
@@ -131,7 +142,14 @@ class BoardTest {
         //TODO: is it possible to recycle the methods with lesser number of players?
         board.fillBoard();
 
-        //TODO: board iteration algorithm
+        //TODO: is the following one the best algorithm for board iteration?
+        //emptying the board
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(board.getBoardCell(i, j).isCellActive()) if(!board.getBoardCell(i, j).isCellEmpty()) board.removeCard(i, j);
+            }
+        }
+
         for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[1][i].isCellEmpty());
         for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[2][i].isCellEmpty());
         for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[i][1].isCellEmpty());
@@ -148,14 +166,49 @@ class BoardTest {
         assertTrue(board.getMatrix()[6][2].isCellEmpty());
         assertTrue(board.getMatrix()[6][6].isCellEmpty());
         assertTrue(board.getMatrix()[8][5].isCellEmpty());
-        //TODO: when I remove all the cards the board is empty
+
     }
-    
-     */
+
     @Test
     void fourPlayersBoardIsEmpty(){
         board = new Board(4);
-        //TODO: when I remove all the cards the board is empty
+        //TODO: is it possible to recycle the methods with lesser number of players?
+        board.fillBoard();
+
+        //TODO: is the following one the best algorithm for board iteration?
+        //emptying the board
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(board.getBoardCell(i, j).isCellActive()) if(!board.getBoardCell(i, j).isCellEmpty()) board.removeCard(i, j);
+            }
+        }
+
+        for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[1][i].isCellEmpty());
+        for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[2][i].isCellEmpty());
+        for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[i][1].isCellEmpty());
+        for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[i][7].isCellEmpty());
+        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertTrue(board.getMatrix()[row][col].isCellEmpty());
+        for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[6][i].isCellEmpty());
+        for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[7][i].isCellEmpty());
+
+        assertTrue(board.getMatrix()[0][3].isCellEmpty());
+        assertTrue(board.getMatrix()[2][2].isCellEmpty());
+        assertTrue(board.getMatrix()[2][6].isCellEmpty());
+        assertTrue(board.getMatrix()[3][8].isCellEmpty());
+        assertTrue(board.getMatrix()[5][0].isCellEmpty());
+        assertTrue(board.getMatrix()[6][2].isCellEmpty());
+        assertTrue(board.getMatrix()[6][6].isCellEmpty());
+        assertTrue(board.getMatrix()[8][5].isCellEmpty());
+
+        assertTrue(board.getMatrix()[0][4].isCellEmpty());
+        assertTrue(board.getMatrix()[1][5].isCellEmpty());
+        assertTrue(board.getMatrix()[3][1].isCellEmpty());
+        assertTrue(board.getMatrix()[4][0].isCellEmpty());
+        assertTrue(board.getMatrix()[4][8].isCellEmpty());
+        assertTrue(board.getMatrix()[5][7].isCellEmpty());
+        assertTrue(board.getMatrix()[7][3].isCellEmpty());
+        assertTrue(board.getMatrix()[8][4].isCellEmpty());
+
     }
 
     //testing that when I call the method to fill the board it actually gets filled for each type of board in terms of the number of players
