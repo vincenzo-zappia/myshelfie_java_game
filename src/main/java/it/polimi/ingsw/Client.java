@@ -33,7 +33,7 @@ public class Client {
         try {
             client.requestConnection(contenuto);
             client.startGame();
-            //client.quit();
+            client.quit();
         }
         catch (IOException e) {System.err.println("Error: " + e.getMessage());}
     }
