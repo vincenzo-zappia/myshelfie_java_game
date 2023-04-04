@@ -1,40 +1,147 @@
 package it.polimi.ingsw.server.model.entities.goals;
 
-import it.polimi.ingsw.exceptions.CellGetCardException;
 import it.polimi.ingsw.server.model.entities.Bookshelf;
 
 public class CommonGoal4 implements Goal{
     private static final int SCORE = 1; //TODO:inserire valore del goal
-    private int[][] x = new int[6][5];
-
-    public void matrixExtractor(Bookshelf bs){  //using this method to extract colors from
-        for(int i = 0; i < 6; i++){
-            for(int j = 0; j < 5; j++) {
-                try {
-                    if(!bs.getCell(i,j).isCellEmpty())x[i][j] = bs.getCell(i,j).getCard().getColor();
-                } catch (CellGetCardException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-    }
 
     @Override
     public int checkGoal(Bookshelf bs) {
         int tmp=0;
-        int points=0;
-        matrixExtractor(bs);
+        int[][] x = bs.getColorMatrix();
 
-        for(int i = 0; i < 5; i++){
-            for(int j = 0; j < 5; j++){
-                if(!bs.getCell(i,j).isCellEmpty()){
-                    if(x[i][j] == x[i+1][j]){   //check if the actual cell card color is
-                        tmp++;                  //the same of the cell below
+        for(int i = 0; i < 6; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (x[i][j] != UNAVAILABLE) {
+                    if (i == 0 && j == 0) {               //CASE 1: [0][0]
+                        if (x[i][j] == x[i][j + 1]) {     //check at dx
+                            x[i][j] = UNAVAILABLE;
+                            x[i][j + 1] = UNAVAILABLE;
+                            tmp++;
+                        }
+                        if (x[i][j] == x[i + 1][j]) {     //check below
+                            x[i][j] = UNAVAILABLE;
+                            x[i + 1][j] = UNAVAILABLE;
+                            tmp++;
+                        }
+                    }
+                    if (i == 0 && j == 4) {               //CASE 2: [0][4]
+                        if (x[i][j] == x[i][j - 1]) {     //check at sx
+                            x[i][j] = UNAVAILABLE;
+                            x[i][j - 1] = UNAVAILABLE;
+                            tmp++;
+                        }
+                        if (x[i][j] == x[i + 1][j]) {     //check below
+                            x[i][j] = UNAVAILABLE;
+                            x[i + 1][j] = UNAVAILABLE;
+                            tmp++;
+                        }
+                    }
+                    if (i == 5 && j == 0) {              //CASE 3: [5][0]
+                        if (x[i][j] == x[i][j + 1]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i][j + 1] = UNAVAILABLE;
+                            tmp++;
+                        }
+                        if (x[i][j] == x[i - 1][j]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i - 1][j] = UNAVAILABLE;
+                            tmp++;
+                        }
+                    }
+                    if (i > 0 && i < 5 && j > 0 && j < 4) { //CASE 4: check colors in the matrix (not borders)
+                        if (x[i][j] == x[i][j + 1]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i][j + 1] = UNAVAILABLE;
+                            tmp++;
+                        }
+                        if (x[i][j] == x[i + 1][j]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i + 1][j] = UNAVAILABLE;
+                            tmp++;
+                        }
+                        if (x[i][j] == x[i][j - 1]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i][j - 1] = UNAVAILABLE;
+                            tmp++;
+                        }
+                        if (x[i][j] == x[i - 1][j]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i - 1][j] = UNAVAILABLE;
+                            tmp++;
+                        }
+                    }
+                    if(i > 0 && i < 5 && j == 0){         //CASE 5: [x][0/1] check rows in the first or second column
+                        if (x[i][j] == x[i][j + 1]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i][j + 1] = UNAVAILABLE;
+                            tmp++;
+                        }
+                        if (x[i][j] == x[i + 1][j]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i + 1][j] = UNAVAILABLE;
+                            tmp++;
+                        }
+                        if (x[i][j] == x[i - 1][j]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i - 1][j] = UNAVAILABLE;
+                            tmp++;
+                        }
+                    }
+                    if(i > 0 && i < 5 && j == 4){         //CASE 6: [x][4] check rows in the last column
+                        if (x[i][j] == x[i][j - 1]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i][j + 1] = UNAVAILABLE;
+                            tmp++;
+                        }
+                        if (x[i][j] == x[i + 1][j]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i + 1][j] = UNAVAILABLE;
+                            tmp++;
+                        }
+                        if (x[i][j] == x[i - 1][j]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i - 1][j] = UNAVAILABLE;
+                            tmp++;
+                        }
+                    }
+                    if (i == 0 && j > 0 && j < 4) {       //CASE 7
+                        if (x[i][j] == x[i][j + 1]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i][j + 1] = UNAVAILABLE;
+                            tmp++;
+                        }
+                        if (x[i][j] == x[i + 1][j]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i + 1][j] = UNAVAILABLE;
+                            tmp++;
+                        }
+                        if (x[i][j] == x[i][j - 1]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i][j - 1] = UNAVAILABLE;
+                            tmp++;
+                        }
+                    }
+                    if (i == 5 && j > 0 && j < 4) {       //CASE 8
+                        if (x[i][j] == x[i][j + 1]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i][j + 1] = UNAVAILABLE;
+                            tmp++;
+                        }
+                        if (x[i][j] == x[i - 1][j]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i + 1][j] = UNAVAILABLE;
+                            tmp++;
+                        }
+                        if (x[i][j] == x[i][j - 1]) {
+                            x[i][j] = UNAVAILABLE;
+                            x[i][j - 1] = UNAVAILABLE;
+                            tmp++;
+                        }
                     }
                 }
             }
         }
-
         if(tmp>=6) return SCORE;
         return 0;
     }
