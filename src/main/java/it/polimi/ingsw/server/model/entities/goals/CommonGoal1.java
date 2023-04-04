@@ -1,3 +1,10 @@
+/* Author/s: Tirabassi M., Vianello G., Zappia V.
+ * Date: 30/03/2023
+ * IDE: IntelliJ IDEA
+ * Version 0.4
+ * Comments: none
+ */
+
 package it.polimi.ingsw.server.model.entities.goals;
 
 import it.polimi.ingsw.server.model.entities.Bookshelf;
