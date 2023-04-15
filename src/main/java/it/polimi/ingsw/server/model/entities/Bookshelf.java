@@ -33,7 +33,7 @@ public class Bookshelf {
         bookshelf[i][column].setCard(card);
     }
 
-    //TODO: rename to "cardsInColumn()" and using the method to implement "isBookshelfFull()"
+    //TODO: rename to "cardsInColumn()"
     public int numOfCards(int column){
         int i=5, count=0;
         while (!bookshelf[i][column].isCellEmpty() && i>=0){
@@ -43,7 +43,7 @@ public class Bookshelf {
         return count;
     }
 
-    //TODO: rename to "getMatrixColors"
+    //TODO: rename to "getMatrixColors()"
     public int[][] getColorMatrix(){
         int[][] x = new int[6][5];
 
