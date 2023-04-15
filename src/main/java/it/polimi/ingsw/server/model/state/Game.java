@@ -48,6 +48,10 @@ public class Game{
 
     //REGION METHODS
 
+    //TODO: metodo che attesta validità selezione
+    //TODO: in questo modo il giocatore deve inviare la selezione e aspettare che venga valutata, bisognerebbe implementare con feedback in tempo reale
+    //public boolean isSelectable(int[][] coordinates){}
+
     //method that calls "Board.removeCard()" checking if it's the player's turn
     //"coordinates" is a matrix with the coordinates of the max 3 cards that the player selected:
     //pos = {
@@ -56,6 +60,8 @@ public class Game{
     //  {x3, y3}
     //}
     public void removeCardFromBoard(int[][] coordinates){
+
+        //TODO: implementazione del check della legalità della mossa (if(isCellSelectable) ...)
         for(int i = 0; i < coordinates.length; i++) board.removeCard(coordinates[i][0], coordinates[i][1]);
         System.out.println("Cards removed!");
     }
@@ -83,4 +89,6 @@ public class Game{
             p.addScore(p.getPrivateGoal().checkGoal(p.getBookshelf()));
         }
     }
+
+    //TODO: method that creates an ArrayList of ordered players by their score
 }

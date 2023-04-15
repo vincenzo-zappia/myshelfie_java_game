@@ -38,14 +38,8 @@ public class GameController {
     public void turnAction() throws AddCardException {
         //int playerIndex = playerUsernames.indexOf(currentPlayer);
 
-        //TODO: verification of move legality
 
-        //first xml delivers the coordinate of the cards to be removed
-        //TODO: XML extraction
-        int[][] coordinates = new int[][]{{2, 3}};
 
-        //Removal of the selected cards form the game board
-        game.removeCardFromBoard(coordinates);
 
         //second xml delivers the array of cards to insert into the player's bookshelf in order and the respective column
         //TODO: XML extraction
@@ -59,11 +53,32 @@ public class GameController {
         if(endGame) findWinner();
     }
 
+    public void cardSelection(String xmlSelection){
+        //TODO: XML extraction
+
+        //TODO: verification of move legality: estrazione da XML selezione multipla (meglio singola)
+        //boolean legal = false;
+        //while(!legal){
+        //
+        // }
+
+        //first xml delivers the coordinate of the cards to be removed
+
+        int[][] coordinates = new int[][]{{2, 3}};
+
+        //Removal of the selected cards form the game board
+        game.removeCardFromBoard(coordinates);
+    }
+    
+
+
+
     //method that creates the final scoreboard
     public void findWinner(){
         game.scoreCommonGoal();
         game.scorePrivateGoal();
 
         //TODO: creation of the scoreboard based on the calculated scores for each one of the players
+        //TODO: calling of Game method that creates ordered ArrayList of Players
     }
 }

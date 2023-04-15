@@ -87,9 +87,7 @@ public class Board {
 
     //REGION METHODS
 
-    //TODO: method that checks if the card is selectable
-
-    //what do I need this method for?
+    //TODO: metodo inutile, cancellare
     public boolean isCardAlone(int row, int column) throws CardAloneCheckException {
 
         /* this code doesn't have controls
