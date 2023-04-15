@@ -60,8 +60,6 @@ public class Game{
     //  {x3, y3}
     //}
     public void removeCardFromBoard(int[][] coordinates){
-
-        //TODO: implementazione del check della legalità della mossa (if(isCellSelectable) ...)
         for(int i = 0; i < coordinates.length; i++) board.removeCard(coordinates[i][0], coordinates[i][1]);
         System.out.println("Cards removed!");
     }
