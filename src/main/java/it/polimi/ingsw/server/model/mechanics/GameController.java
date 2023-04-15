@@ -9,11 +9,13 @@ import it.polimi.ingsw.server.model.entities.Card;
 import java.util.ArrayList;
 
 public class GameController {
-    private final ArrayList<String> playerUsernames;
-    private final boolean endGame;
-    private final Game game;
     private final ServerSideController serverSideController;
-    private final String currentPlayer;
+    private final Game game;
+    private final ArrayList<String> playerUsernames;
+    private String currentPlayer;
+    private boolean endGame;
+    private int remainingTurn;
+
 
     public GameController(ArrayList<String> playerUsernames, Game game, ServerSideController serverSideController){
         this.playerUsernames = playerUsernames;
@@ -24,54 +26,70 @@ public class GameController {
 
     }
 
-    //method that sets the current player
+    //method that sets the current player and starts the endgame
     public void nextTurn(){
         int currentPlayerIndex = playerUsernames.indexOf(currentPlayer);
 
         //circular iteration of turns
         if(currentPlayerIndex + 1 < playerUsernames.size()) currentPlayerIndex += 1;
-        else currentPlayerIndex = 0;
+        else if(!endGame) currentPlayerIndex = 0;
+        //the player to the right of the sofa is the last player (the player who goes after the first one is the one to his left because the game turns go clockwise)
+        else {
+            findWinner();
+            return;
+        }
+        currentPlayer = playerUsernames.get(currentPlayerIndex);
     }
 
     //method that checks the validity of the player's move and calls the game methods
     //TODO: review required
-    public void turnAction() throws AddCardException {
+    //TODO: dividere ancor di più le fasi quando sarà da implementarsi la GUI (routine di inizio e fine turno)
+    public void turnAction(){
         //int playerIndex = playerUsernames.indexOf(currentPlayer);
 
+        //TODO: da dove viene il file XML?
+        //temporary example
+        String fileXML = "Carte";
+        cardInsertion(fileXML, cardSelection(fileXML));
 
+        //if the bookshelf is full then the endgame begins
+        if(game.isPlayerBookshelfFull(currentPlayer)) endGame = true;
 
-
-        //second xml delivers the array of cards to insert into the player's bookshelf in order and the respective column
-        //TODO: XML extraction
-        Card[] selectedCards = new Card[3];
-        int selectedColumn = 0;
-
-        //Insertion of the cards removed from the board into the player's bookshelf
-        game.addCardToBookshelf(currentPlayer, selectedColumn, selectedCards);
-
-        //TODO: logic for the triggers for the ending of the game
-        if(endGame) findWinner();
+        //If the game isn't ended then the current player changes and the action of the turn is called again recursively
+        nextTurn();
+        turnAction();
     }
 
-    public void cardSelection(String xmlSelection){
-        //TODO: XML extraction
-
-        //TODO: verification of move legality: estrazione da XML selezione multipla (meglio singola)
-        //boolean legal = false;
-        //while(!legal){
-        //
-        // }
-
-        //first xml delivers the coordinate of the cards to be removed
-
+    //method that extracts the coordinates from the XML command, checks the validity of the selection and turns the
+    //coordinates into their corresponding Cards
+    public Card[] cardSelection(String xmlSelection){
+        //TODO: estrazione coordinate da XML
+        //temporary example
         int[][] coordinates = new int[][]{{2, 3}};
+
+        //TODO: verificare legalità della selezione (singola preferibilmente) (chiamata metodo di Game)
 
         //Removal of the selected cards form the game board
         game.removeCardFromBoard(coordinates);
+
+        //TODO: traduzione coordinate nelle carte corrispondenti
+        //temporary example
+        return new Card[3];
     }
-    
 
+    //method that extracts the chosen column from the XML and inserts the cards previously selected into the player's bookshelf
+    public void cardInsertion(String xmlInsertion, Card[] selectedCards){
+        //TODO: estrazione colonna XML
+        //temporary example
+        int selectedColumn = 0;
 
+        //Insertion of the cards removed from the board into the player's bookshelf
+        try {
+            game.addCardToBookshelf(currentPlayer, selectedColumn, selectedCards);
+        } catch (AddCardException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     //method that creates the final scoreboard
     public void findWinner(){

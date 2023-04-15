@@ -39,24 +39,39 @@ public class Player {
 
     //REGION METHODS
     public void addScore(int points){score+=points;}
+
+    //TODO: review
+    public boolean isBookshelfFull(){
+        boolean full = false;
+        for(int i=0; i<6; i++) {
+            for(int j=0; j<5; j++){
+                full = !bookshelf.getCell(i, j).isCellEmpty();
+            }
+        }
+        return full;
+    }
     //END REGION
 
     //REGION GETTER AND SETTER
     public Bookshelf getBookshelf(){
         return bookshelf;
     }
-    public void setTurn(boolean turn){
-        isMyTurn = turn;
-    }
     public boolean getTurn(){
         return isMyTurn;
     }
-    public void setPrivateGoal(PrivateGoal privateGoal) {
-        this.privateGoal = privateGoal;
+    public void setTurn(boolean turn){
+        isMyTurn = turn;
     }
     public PrivateGoal getPrivateGoal() {
         return privateGoal;
     }
+    public void setPrivateGoal(PrivateGoal privateGoal) {
+        this.privateGoal = privateGoal;
+    }
+    public String getUsername(){
+        return username;
+    }
+
     //END REGION
 
 }

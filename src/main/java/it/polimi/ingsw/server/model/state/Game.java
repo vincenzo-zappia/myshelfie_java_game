@@ -22,8 +22,6 @@ public class Game{
     //private ArrayList<Bookshelf> bookshelves; //Game is the class that puts together multiple entities and has specific value
     private ArrayList<Player> players;
     private int playerNum;
-    private GameState state;
-    private int currentPlayer; //current turn player's index in "players"
     private Goal commonGoal1;
     private Goal commonGoal2;
     private boolean endGame;
@@ -89,4 +87,20 @@ public class Game{
     }
 
     //TODO: method that creates an ArrayList of ordered players by their score
+
+    public boolean isPlayerBookshelfFull(String username){
+        boolean full = false;
+        for(Player p : players){
+            if(p.getUsername().equals(username)) full = p.isBookshelfFull();
+        }
+        return full;
+    }
+
+    //END REGION
+
+    //REGION GETTER AND SETTER
+    public ArrayList<Player> getPlayers(){
+        return players;
+    }
+    //END REGION
 }

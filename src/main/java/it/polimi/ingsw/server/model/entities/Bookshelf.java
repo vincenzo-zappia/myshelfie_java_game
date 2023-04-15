@@ -43,8 +43,6 @@ public class Bookshelf {
         return count;
     }
 
-    //TODO: create the method "isBookshelfFull()"
-
     //TODO: rename to "getMatrixColors"
     public int[][] getColorMatrix(){
         int[][] x = new int[6][5];
