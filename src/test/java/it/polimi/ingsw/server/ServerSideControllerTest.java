@@ -14,7 +14,7 @@ class ServerSideControllerTest {
 
     @Test
     public void test1(){
-        
+
     }
   
 }

@@ -14,7 +14,7 @@ import java.util.Collections;
 public class Bag {
     //METHOD 2: ARRAY OF ALL POSSIBLE CARDS
 
-    //REGION ATTRIBUTES
+    //region ATTRIBUTES
     private final ArrayList<Card> bag;
 
     //TODO: how to manage colors and images. Now thought about as String and integer arrays
@@ -27,9 +27,9 @@ public class Bag {
             {"lBlue1.png", "lBlue2.png", "lBlue3.png"}
     };
     private final int[] cardColor = {1, 2, 3, 4, 5, 6}; //TODO: might be implemented with an enumeration
-    //END REGION
+    //endregion
 
-    //REGION CONSTRUCTOR
+    //region CONSTRUCTOR
     public Bag() {
         bag = new ArrayList<>();
 
@@ -48,9 +48,9 @@ public class Bag {
             Collections.shuffle(bag);
         }
     }
-    //END REGION
+    //endregion
 
-    //REGION METHODS
+    //region METHODS
     public boolean isBagEmpty(){
         return bag.size() == 0;
     }
@@ -58,9 +58,9 @@ public class Bag {
     public Card drawCard() throws NoMoreCardsException{
             return bag.remove(bag.size() - 1);
     }
-    //END REGION
+    //endregion
 
-
+//region OLD CODE
 
     //METHOD 1: KEEPING TRACK ONLY OF COLORS
     //problem: how to keep track of the images already used
@@ -107,4 +107,7 @@ public class Bag {
         return card;
     }
     */
+
+    //endregion
+
 }

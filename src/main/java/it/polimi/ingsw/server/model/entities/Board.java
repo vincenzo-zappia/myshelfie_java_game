@@ -13,13 +13,12 @@ import it.polimi.ingsw.exceptions.NoMoreCardsException;
 
 public class Board {
 
-    //REGION ATTRIBUTES
+    //region ATTRIBUTES
     private final BoardCell[][] matrix;
     private final Bag bag;
-    //END REGION
+    //endregion
 
-
-    //REGION CONSTRUCTOR
+    //region CONSTRUCTOR
     public Board(int playerNum){
     
         //initialization of data structure that represents table
@@ -82,10 +81,9 @@ public class Board {
             }
         }
     }
-    //END REGION
+    //endregion
 
-
-    //REGION METHODS
+    //region METHODS
 
     //TODO deve solo svuotare tabella o deve anche resituire carta?
     public void removeCard(int row, int column){
@@ -133,9 +131,9 @@ public class Board {
         return false;
     }
 
-    //END REGION
+    //endregion
 
-    //REGION GETTER AND SETTER
+    //region GETTER AND SETTER
     public BoardCell[][] getMatrix(){
         return matrix;
     }
@@ -149,5 +147,6 @@ public class Board {
             throw new RuntimeException(e);
         }
     }
-    //END REGION
+    //endregion
+
 }

@@ -13,20 +13,20 @@ import it.polimi.ingsw.server.model.entities.goals.Goal;
 
 public class Bookshelf {
 
-    //REGION ATTRIBUTES
+    //region ATTRIBUTES
     private final Cell[][] bookshelf;
     //TODO: how to manage attribution of a bookshelf to a player? (Not in constructor, otherwise tests get fu***d
     //private final Player player;
-    //END REGION
+    //endregion
 
-    //REGION CONSTRUCTOR
+    //region CONSTRUCTOR
     public Bookshelf(){
         bookshelf = new Cell[6][5];
         for(int i=0; i<6; i++) for(int j=0; j<5; j++) bookshelf[i][j] = new Cell();
     }
-    //END REGION
+    //endregion
 
-    //REGION METHODS
+    //region METHODS
     public void addCard(int column, Card card) throws AddCardException { //TODO add code try/catch where it will be used
         int i = 5;
         while(!bookshelf[i][column].isCellEmpty() && i>=0) i--;
@@ -60,15 +60,15 @@ public class Bookshelf {
         }
         return x;
     }
-    //END REGION
+    //endregion
 
-    //REGION GETTER AND SETTER
+    //region GETTER AND SETTER
     public Cell getCell(int row, int column){
         return bookshelf[row][column];
     }
     public Cell[] getRow(int row) {
         return bookshelf[row];
     }
-    //END REGION
+    //endregion
 
 }

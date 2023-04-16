@@ -10,15 +10,15 @@ import java.util.ArrayList;
 
 public class GameController {
 
-    //REGION ATTRIBUTES
+    //region ATTRIBUTES
     private final ServerSideController serverSideController;
     private final Game game;
     private final ArrayList<String> playerUsernames;
     private String currentPlayer;
     private boolean endGame;
-    //END REGION
+    //endregion
 
-    //REGION METHODS
+    //region CONSTRUCTOR
     public GameController(ArrayList<String> playerUsernames, Game game, ServerSideController serverSideController){
         this.playerUsernames = playerUsernames;
         currentPlayer = playerUsernames.get(0); //TODO: the couch
@@ -27,7 +27,9 @@ public class GameController {
         endGame = false;
 
     }
+    //endregion
 
+    //region METHODS
     //method that sets the current player and starts the endgame
     public void nextTurn(){
         int currentPlayerIndex = playerUsernames.indexOf(currentPlayer);
@@ -101,5 +103,5 @@ public class GameController {
         //TODO: creation of the scoreboard based on the calculated scores for each one of the players
         //TODO: calling of Game method that creates ordered ArrayList of Players
     }
-    //END REGION
+    //endregion
 }

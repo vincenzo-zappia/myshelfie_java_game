@@ -7,21 +7,22 @@ import java.util.Scanner;
 
 public class Client {
 
-    //REGION ATTRIBUTES
+    //region ATTRIBUTES
     private final String ip;
     private final int port;
     private Socket socket;
     private Scanner socketIn;
     private PrintWriter socketOut;
-    //END REGION
+    //endregion
 
-    //REGION CONSTRUCTOR
+    //region CONSTRUCTOR
     public Client(String ip, int port){
         this.ip = ip;
         this.port = port;
     }
-    //END REGION
+    //endregion
 
+    //region MAIN
     public static void main(String[] args) throws IOException {
         Client client = new Client("localhost", 2024);
         BufferedReader breader = new BufferedReader(new FileReader("XML/player.xml"));
@@ -36,8 +37,9 @@ public class Client {
         }
         catch (IOException e) {System.err.println("Error: " + e.getMessage());}
     }
+    //endregion
 
-    //REGION METHODS
+    //region METHODS
     public void requestConnection(String req) throws IOException{
         socket = new Socket(ip, port);
         System.out.println("INFO: Connessione stabilita");
@@ -69,6 +71,6 @@ public class Client {
         socketOut.flush();
         System.out.println("INFO: Chiusura partita");
     }
-    //END REGION
+    //endregion
 
 }

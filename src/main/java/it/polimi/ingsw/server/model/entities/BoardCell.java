@@ -9,24 +9,24 @@ package it.polimi.ingsw.server.model.entities;
 
 public class BoardCell extends Cell {
 
-    //REGION ATTRIBUTES
+    //region ATTRIBUTES
     private Boolean active; //see board doc/code
-    //END REGION
+    //endregion
 
-    //REGION CONSTRUCTOR
+    //region CONSTRUCTOR
     public BoardCell(){
         super();
         active = false;
     }
-    //END REGION
+    //endregion
 
-    //REGION METHODS
+    //region METHODS
     public void setCellActive(){
         active = true;
     }
     public boolean isCellActive(){
         return active;
     }
-    //END REGION
+    //endregion
 
 }

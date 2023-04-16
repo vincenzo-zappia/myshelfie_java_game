@@ -11,33 +11,35 @@ import it.polimi.ingsw.server.model.entities.goals.PrivateGoal;
 
 public class Player implements Comparable<Player>{
 
-    //REGION ATTRIBUTES
+    //region ATTRIBUTES
     private final String username;
     private final int gameID; //per contesto multipartita
     private int score;
     private boolean isMyTurn;
     private PrivateGoal privateGoal;
     private final Bookshelf bookshelf;
-    //END REGION
+    //endregion
 
     /*
     if needed, the empty constructor method:
     public Player(){}
      */
 
+    //region CONSTRUCTOR
     public Player(String username, int gameID){
         this.username=username;
         this.gameID=gameID;
         score = 0;
         bookshelf = new Bookshelf();
     }
+    //endregion
 
     @Override
     public String toString(){
         return "\n\tUsername: " + username + "\n\tGameId: " + gameID + "\n\tScore: " + score;
     }
 
-    //REGION METHODS
+    //region METHODS
     public void addScore(int points){score+=points;}
 
     //TODO: review
@@ -57,9 +59,9 @@ public class Player implements Comparable<Player>{
         return Integer.compare(score, o.getScore());
     }
 
-    //END REGION
+    //endregion
 
-    //REGION GETTER AND SETTER
+    //region GETTER AND SETTER
     public Bookshelf getBookshelf(){
         return bookshelf;
     }
@@ -80,6 +82,6 @@ public class Player implements Comparable<Player>{
     }
     public int getScore(){return score;}
     public void setScore(int newScore){score = newScore;}  //TODO remove after test
-    //END REGION
+    //endregion
 
 }

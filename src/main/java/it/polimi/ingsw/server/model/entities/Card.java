@@ -9,19 +9,19 @@ package it.polimi.ingsw.server.model.entities;
 
 public class Card {
 
-    //REGION ATTRIBUTES
+    //region ATTRIBUTES
     private final String img;
     private final int color; //also we can use Enumeration<...>
-    //END REGION
+    //endregion
 
-    //REGION CONSTRUCTOR
+    //region CONSTRUCTOR
     public Card(String imgName, int color){
         this.color = color;
         this.img = imgName;
     }
-    //END REGION
+    //endregion
 
-    //REGION METHODS
+    //region METHODS
     public String getImg() {
         return img;
     }
@@ -34,5 +34,6 @@ public class Card {
     public boolean sameCard(Card card) {
         return card.getColor() == this.color && card.getImg().equals(this.img);
     }
-    //ENDREGION
+    //endregion
+
 }

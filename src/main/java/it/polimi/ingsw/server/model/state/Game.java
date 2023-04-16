@@ -18,7 +18,7 @@ import java.util.Collections;
 
 public class Game{
 
-    //REGION ATTRIBUTES
+    //region ATTRIBUTES
     private final Board board;
     //private ArrayList<Bookshelf> bookshelves; //Game is the class that puts together multiple entities and has specific value
     private ArrayList<Player> players;
@@ -26,10 +26,9 @@ public class Game{
     private Goal commonGoal1;
     private Goal commonGoal2;
     private boolean endGame;
+    //endregion
 
-    //END REGION
-
-    //REGION CONSTRUCTOR
+    //region CONSTRUCTOR
     public Game(int playerNum){
         board = new Board(playerNum);
         board.fillBoard(); //filling of the board with cards
@@ -43,10 +42,9 @@ public class Game{
         */
         System.out.println(board);
     }
-    //END REGION
+    //endregion
 
-    //REGION METHODS
-
+    //region METHODS
 
     //TODO: in questo modo il giocatore deve inviare la selezione e aspettare che venga valutata, bisognerebbe implementare con feedback in tempo reale
     public boolean isSelectable(int[][] coord){
@@ -141,12 +139,13 @@ public class Game{
         players.add(x);
     }
 
-    //END REGION
+    //endregion
 
-    //REGION GETTER AND SETTER
+    //region GETTER AND SETTER
     public ArrayList<Player> getPlayers(){
         return players;
     }
 
-    //END REGION
+    //endregion
+
 }
