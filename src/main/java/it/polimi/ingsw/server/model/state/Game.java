@@ -14,6 +14,7 @@ import it.polimi.ingsw.server.model.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.AddCardException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Game{
 
@@ -32,7 +33,7 @@ public class Game{
     public Game(int playerNum){
         board = new Board(playerNum);
         board.fillBoard(); //filling of the board with cards
-
+        players=new ArrayList<>();
         /*
         //initialization of playerNum bookshelves
         bookshelves = new Bookshelf[playerNum];
@@ -86,7 +87,12 @@ public class Game{
         }
     }
 
-    //TODO: method that creates an ArrayList of ordered players by their score
+
+    public ArrayList<Player> orderByScore(){
+        ArrayList<Player> ordered = players;
+        Collections.sort(ordered);
+        return ordered;
+    }
 
     public boolean isPlayerBookshelfFull(String username){
         boolean full = false;
@@ -96,11 +102,16 @@ public class Game{
         return full;
     }
 
+    public void addPlayers (Player x){    //used for test purpose
+        players.add(x);
+    }
+
     //END REGION
 
     //REGION GETTER AND SETTER
     public ArrayList<Player> getPlayers(){
         return players;
     }
+
     //END REGION
 }

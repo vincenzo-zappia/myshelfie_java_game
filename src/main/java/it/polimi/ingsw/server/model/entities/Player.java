@@ -9,7 +9,7 @@ package it.polimi.ingsw.server.model.entities;
 
 import it.polimi.ingsw.server.model.entities.goals.PrivateGoal;
 
-public class Player {
+public class Player implements Comparable<Player>{
 
     //REGION ATTRIBUTES
     private final String username;
@@ -50,6 +50,13 @@ public class Player {
         }
         return full;
     }
+
+    //method to order players by score (see class Game.java)
+    @Override
+    public int compareTo(Player o) {
+        return Integer.compare(score, o.getScore());
+    }
+
     //END REGION
 
     //REGION GETTER AND SETTER
@@ -71,7 +78,8 @@ public class Player {
     public String getUsername(){
         return username;
     }
-
+    public int getScore(){return score;}
+    public void setScore(int newScore){score = newScore;}  //TODO remove after test
     //END REGION
 
 }

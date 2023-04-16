@@ -87,40 +87,6 @@ public class Board {
 
     //REGION METHODS
 
-    //TODO: metodo inutile, cancellare
-    public boolean isCardAlone(int row, int column) throws CardAloneCheckException {
-
-        /* this code doesn't have controls
-         * commented if the new code not work properly
-         *
-         * if(matrix[row + 1][column].isCellEmpty()
-         * && matrix[row - 1][column].isCellEmpty()
-         * && matrix[row][column + 1].isCellEmpty()
-         * && matrix[row][column - 1].isCellEmpty()) return true;
-         * else return false;
-         *
-         */
-
-        //divido in casi
-
-        //CASO 1: la cella non si trova sul bordo
-        if(row>0 && row<8 && column>0&&column<8)return matrix[row + 1][column].isCellEmpty() && matrix[row - 1][column].isCellEmpty() && matrix[row][column + 1].isCellEmpty() && matrix[row][column - 1].isCellEmpty();
-
-        //CASO 2: la cella si trova alla prima riga
-        if(row == 0)return matrix[row + 1][column].isCellEmpty() && matrix[row][column + 1].isCellEmpty() && matrix[row][column - 1].isCellEmpty();
-
-        //CASO 3: la cella si trova all'ultima riga
-        if(row == 8)return matrix[row - 1][column].isCellEmpty() && matrix[row][column + 1].isCellEmpty() && matrix[row][column - 1].isCellEmpty();
-
-        //CASO 4: la cella si trova alla prima colonna
-        if(column==0)return matrix[row + 1][column].isCellEmpty() && matrix[row - 1][column].isCellEmpty() && matrix[row][column + 1].isCellEmpty();
-
-        //CASO 5: la cella si trova all'ultima colonna
-        if(column==8)return matrix[row + 1][column].isCellEmpty() && matrix[row - 1][column].isCellEmpty() && matrix[row][column - 1].isCellEmpty();
-
-        return false;
-    }
-
     //TODO deve solo svuotare tabella o deve anche resituire carta?
     public void removeCard(int row, int column){
         matrix[row][column].setCellEmpty();
