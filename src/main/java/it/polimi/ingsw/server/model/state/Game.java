@@ -47,9 +47,44 @@ public class Game{
 
     //REGION METHODS
 
-    //TODO: metodo che attesta validità selezione
+
     //TODO: in questo modo il giocatore deve inviare la selezione e aspettare che venga valutata, bisognerebbe implementare con feedback in tempo reale
-    //public boolean isSelectable(int[][] coordinates){}
+    public boolean isSelectable(int[][] coord){
+
+        //"coord" is a matrix with the coordinates of the max 3 cards that the player selected:
+        //pos = {
+        //  {x1, y1},
+        //  {x2, y2},
+        //  {x3, y3}
+        //}
+
+        if(coord.length==3 && (coord[0][0] == coord[1][0]+1 && coord[1][0] == coord[2][0]+1 || coord[0][1] == coord[1][1]+1 && coord[1][1] == coord[2][1]+1) )
+        {
+            int cntr = 0;
+            for(int i = 0; i < 3; i++)if(board.selectableCard(coord[i][0], coord[i][1]))cntr++;
+            if(cntr==3)return true;
+        }
+        if(coord.length==2 && (coord[0][0] == coord[1][0]+1 || coord[0][1] == coord[1][1]+1) )
+        {
+            int cntr = 0;
+            for(int i = 0; i < 2; i++)if(board.selectableCard(coord[i][0], coord[i][1]))cntr++;
+            if(cntr==2)return true;
+        }
+        if(coord.length==3 && (coord[0][0] == coord[1][0]-1 && coord[1][0] == coord[2][0]-1 || coord[0][1] == coord[1][1]-1 && coord[1][1] == coord[2][1]-1) )
+        {
+            int cntr = 0;
+            for(int i = 0; i < 3; i++)if(board.selectableCard(coord[i][0], coord[i][1]))cntr++;
+            if(cntr==3)return true;
+        }
+        if(coord.length==2 && (coord[0][0] == coord[1][0]-1 || coord[0][1] == coord[1][1]-1) )
+        {
+            int cntr = 0;
+            for(int i = 0; i < 2; i++)if(board.selectableCard(coord[i][0], coord[i][1]))cntr++;
+            if(cntr==2)return true;
+        }
+        if(coord.length==1)return board.selectableCard(coord[0][0], coord[0][1]);
+        return false;
+    }
 
     //method that calls "Board.removeCard()" checking if it's the player's turn
     //"coordinates" is a matrix with the coordinates of the max 3 cards that the player selected:

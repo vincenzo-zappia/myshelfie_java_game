@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.entities.state;
 
+import it.polimi.ingsw.server.model.entities.Board;
 import it.polimi.ingsw.server.model.entities.Player;
 import it.polimi.ingsw.server.model.state.Game;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,6 +38,25 @@ public class GameTest {
         assertEquals(3000,list.get(3).getScore());
 
         for(int i = 0; i < 4; i++)System.out.println(list.get(i).getScore());
+
+    }
+
+    @Test
+    void testIsSelectable(){
+        game = new Game(4);
+        int[][] crd1 = {{0, 3}, {0, 4}};         //true
+        int[][] crd2 = {{0, 0}, {1, 0}, {8, 6}}; //False
+        int[][] crd3 = {{2, 1}, {2, 3}, {2, 7}}; //False
+        int[][] crd4 = {{0, 3}, {1, 3}};         //true
+
+        assertFalse(game.isSelectable(crd2));
+        assertFalse(game.isSelectable(crd3));
+        assertTrue(game.isSelectable(crd1));
+
+        game = new Game(3);
+        assertTrue(game.isSelectable(crd4));  //verifica per colonna
+
+
 
     }
 
