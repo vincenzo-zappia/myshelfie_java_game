@@ -71,8 +71,12 @@ public class GameController {
 
         //TODO: verificare legalità della selezione (singola preferibilmente) (chiamata metodo di Game)
 
-        //Removal of the selected cards form the game board
-        game.removeCardFromBoard(coordinates);
+        if(game.isSelectable(coordinates)){
+            game.removeCardFromBoard(coordinates); //Removal of the selected cards form the game board
+            //TODO: potremmo restituire le carte già dal remove
+        }
+
+        //game.removeCardFromBoard(coordinates); //Removal of the selected cards form the game board
 
         //TODO: traduzione coordinate nelle carte corrispondenti
         //temporary example
