@@ -120,7 +120,6 @@ public class Game{
         }
     }
 
-
     public ArrayList<Player> orderByScore(){
         ArrayList<Player> ordered = players;
         Collections.sort(ordered);

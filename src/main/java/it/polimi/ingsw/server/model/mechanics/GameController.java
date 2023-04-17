@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class GameController {
 
     //region ATTRIBUTES
-    private final ServerSideController serverSideController;
     private final Game game;
     private final ArrayList<String> playerUsernames;
     private String currentPlayer;
@@ -23,7 +22,6 @@ public class GameController {
         this.playerUsernames = playerUsernames;
         currentPlayer = playerUsernames.get(0); //TODO: the couch
         this.game = game;
-        this.serverSideController = serverSideController;
         endGame = false;
 
     }
