@@ -86,8 +86,15 @@ public class Board {
     //region METHODS
 
     //TODO deve solo svuotare tabella o deve anche resituire carta?
-    public void removeCard(int row, int column){
+    public Card removeCard(int row, int column){
+        Card card;
+        try {
+            card = matrix[row][column].getCard();
+        } catch (CellGetCardException e) {
+            throw new RuntimeException(e);
+        }
         matrix[row][column].setCellEmpty();
+        return card;
     }
 
     //TODO: needs comment

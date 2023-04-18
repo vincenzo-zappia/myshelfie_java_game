@@ -91,12 +91,14 @@ public class Game{
     //  {x2, y2},
     //  {x3, y3}
     //}
-    public void removeCardFromBoard(int[][] coordinates){
-        for(int i = 0; i < coordinates.length; i++) board.removeCard(coordinates[i][0], coordinates[i][1]);
+    public ArrayList<Card> removeCardFromBoard(int[][] coordinates){
+        ArrayList<Card> removedCards = new ArrayList<>();
+        for(int i = 0; i < coordinates.length; i++) removedCards.add(board.removeCard(coordinates[i][0], coordinates[i][1]));
         System.out.println("Cards removed!");
+        return removedCards;
     }
 
-    public void addCardToBookshelf(String playerUsername, int column, Card[] cards) throws AddCardException {
+    public void addCardToBookshelf(String playerUsername, int column, ArrayList<Card> cards) throws AddCardException {
         int playerIndex = players.indexOf(playerUsername); //TODO: exception in case username not found
 
         //inserts each selected card into the player's bookshelf

@@ -3,3 +3,5 @@
 2. Chi deve estendere la classe Subject? Ogni entità di gioco oppure solo Game? Ovvero chi sono le classi responsabili di generare messaggi Server -> Client?
 
 3. Necessaria ulteriore classe tra GameController e Lobby?
+
+4. Rendere invio e ricevimento comandi asincrono rispetto all'effettiva esecuzione dei comandi già validati. (Cosa succede se un Client di cui non è il turno prova ad inviare un comando al Server che sta cambiando modello in base a comando lecito?)

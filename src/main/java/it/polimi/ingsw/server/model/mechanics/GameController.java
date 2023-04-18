@@ -50,6 +50,7 @@ public class GameController {
         //int playerIndex = playerUsernames.indexOf(currentPlayer);
 
         //TODO: da dove viene il file XML?
+        //TODO: chiamata metodo in attesa del comando (forse metodo di Lobby)
         //temporary example
         String fileXML = "Carte";
         cardInsertion(fileXML, cardSelection(fileXML));
@@ -64,27 +65,21 @@ public class GameController {
 
     //method that extracts the coordinates from the XML command, checks the validity of the selection and turns the
     //coordinates into their corresponding Cards
-    public Card[] cardSelection(String xmlSelection){
+    public ArrayList<Card> cardSelection(String xmlSelection){
         //TODO: estrazione coordinate da XML
         //temporary example
         int[][] coordinates = new int[][]{{2, 3}};
 
-        //TODO: verificare legalità della selezione (singola preferibilmente) (chiamata metodo di Game)
-
-        if(game.isSelectable(coordinates)){
-            game.removeCardFromBoard(coordinates); //Removal of the selected cards form the game board
-            //TODO: potremmo restituire le carte già dal remove
+        if(game.isSelectable(coordinates)) {
+            return game.removeCardFromBoard(coordinates); //Removal of the selected cards form the game board
         }
 
-        //game.removeCardFromBoard(coordinates); //Removal of the selected cards form the game board
-
-        //TODO: traduzione coordinate nelle carte corrispondenti
-        //temporary example
-        return new Card[3];
+        //TODO: brutto
+        else return null;
     }
 
     //method that extracts the chosen column from the XML and inserts the cards previously selected into the player's bookshelf
-    public void cardInsertion(String xmlInsertion, Card[] selectedCards){
+    public void cardInsertion(String xmlInsertion, ArrayList<Card> selectedCards){
         //TODO: estrazione colonna XML
         //temporary example
         int selectedColumn = 0;
