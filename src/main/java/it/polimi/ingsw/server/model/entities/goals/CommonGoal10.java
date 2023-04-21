@@ -4,6 +4,10 @@ import it.polimi.ingsw.server.model.entities.Bookshelf;
 import it.polimi.ingsw.server.model.entities.Card;
 import it.polimi.ingsw.exceptions.CellGetCardException;
 
+/*
+ * Five tiles of the same type forming an X.
+ */
+
 public class CommonGoal10 implements Goal{
     private static final int SCORE = 1; //TODO:inserire valore del goal
     private boolean isX(int row, int column, Bookshelf b){

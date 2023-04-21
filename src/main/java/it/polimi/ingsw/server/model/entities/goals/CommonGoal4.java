@@ -8,6 +8,11 @@ package it.polimi.ingsw.server.model.entities.goals;
 
 import it.polimi.ingsw.server.model.entities.Bookshelf;
 
+/*
+ * Six groups each containing at least 2 tiles of the same type (not necessarily in the depicted shape).
+ * The tiles of one group can be different from those of another groups.
+ */
+
 public class CommonGoal4 implements Goal{
     private static final int SCORE = 1; //TODO:inserire valore del goal
 

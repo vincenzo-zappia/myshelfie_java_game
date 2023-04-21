@@ -3,6 +3,13 @@ package it.polimi.ingsw.server.model.entities.goals;
 import it.polimi.ingsw.server.model.entities.Bookshelf;
 import it.polimi.ingsw.server.model.entities.Cell;
 
+/*
+ * Five columns of increasing or decreasing height.
+ * Starting from the first column on the left or on the right,
+ * each next column must be made of exactly one more tile.
+ * Tiles can be of any type.
+ */
+
 public class CommonGoal12 implements Goal{
     private static final int SCORE = 1; //TODO: inserire valore del goal
 

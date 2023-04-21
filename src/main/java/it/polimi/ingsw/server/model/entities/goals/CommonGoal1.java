@@ -9,6 +9,11 @@ package it.polimi.ingsw.server.model.entities.goals;
 
 import it.polimi.ingsw.server.model.entities.Bookshelf;
 
+/*
+ * Two groups each containing 4 tiles of the same type in a 2x2 square.
+ * The tiles of one square can be different from those of the other square.
+ */
+
 public class CommonGoal1 implements Goal{
     private static final int SCORE = 1; //TODO: inserire valore del goal
 

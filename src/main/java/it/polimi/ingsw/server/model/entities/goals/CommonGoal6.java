@@ -3,6 +3,11 @@ package it.polimi.ingsw.server.model.entities.goals;
 import it.polimi.ingsw.server.model.entities.Bookshelf;
 import it.polimi.ingsw.exceptions.CellGetCardException;
 
+/*
+ * Two lines each formed by 5 different types of tiles.
+ * One line can show the same or a different combination of the other line.
+ */
+
 public class CommonGoal6 implements Goal{
     private static final int SCORE = 1; //TODO: inserire valore del goal
     private boolean allColorsDifferent(int[] colors){

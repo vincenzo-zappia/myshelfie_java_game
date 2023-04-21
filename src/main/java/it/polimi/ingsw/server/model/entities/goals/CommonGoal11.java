@@ -3,6 +3,10 @@ package it.polimi.ingsw.server.model.entities.goals;
 import it.polimi.ingsw.server.model.entities.Bookshelf;
 import it.polimi.ingsw.exceptions.CellGetCardException;
 
+/*
+ * Five tiles of the same type forming a diagonal.
+ */
+
 public class CommonGoal11 implements Goal{
     private static final int SCORE = 1; //TODO:inserire valore del goal
     private static final int[][] corners = {{0,0}, {0,4}, {5,0}, {5,4}};

@@ -9,6 +9,11 @@ package it.polimi.ingsw.server.model.entities.goals;
 
 import it.polimi.ingsw.server.model.entities.Bookshelf;
 
+/*
+ * Eight tiles of the same type.
+ * There's no restriction about the position of these tiles.
+ */
+
 public class CommonGoal9 implements Goal{
     private static final int SCORE = 1; //TODO:inserire valore del goal
 

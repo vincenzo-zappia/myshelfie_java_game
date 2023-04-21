@@ -3,6 +3,11 @@ package it.polimi.ingsw.server.model.entities.goals;
 import it.polimi.ingsw.exceptions.CellGetCardException;
 import it.polimi.ingsw.server.model.entities.Bookshelf;
 
+/*
+ * Three columns each cformed by 6 tiles of maximum three different types.
+ * One column can show the same or a different combination of another column.
+ */
+
 public class CommonGoal5 implements Goal{
     private static final int SCORE = 1; //TODO:inserire valore del goal
 

@@ -4,6 +4,10 @@ import it.polimi.ingsw.server.model.entities.Bookshelf;
 import it.polimi.ingsw.exceptions.CellGetCardException;
 
 
+/*
+ * Two columns each formed by 6 different type of tiles.
+ */
+
 public class CommonGoal2 implements Goal{
     private static final int SCORE = 1; //TODO: inserire valore del goal
     private boolean allColorsDifferent(int[] colors){

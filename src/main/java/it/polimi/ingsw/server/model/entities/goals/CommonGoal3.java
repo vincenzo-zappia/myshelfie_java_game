@@ -9,6 +9,11 @@ package it.polimi.ingsw.server.model.entities.goals;
 
 import it.polimi.ingsw.server.model.entities.Bookshelf;
 
+/*
+ * Four groups each containing at least 4 tiles of the same types (not necessarily in the depicted shape).
+ * The tiles of one group can be different from those of another group.
+ */
+
 public class CommonGoal3 implements Goal{
     private static final int SCORE = 1; //TODO:inserire valore del goal
 
