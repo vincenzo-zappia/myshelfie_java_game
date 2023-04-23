@@ -7,8 +7,7 @@ import it.polimi.ingsw.exceptions.CellGetCardException;
  * Five tiles of the same type forming a diagonal.
  */
 
-public class CommonGoal11 implements Goal{
-    private static final int SCORE = 1; //TODO:inserire valore del goal
+public class CommonGoal11 extends CommonGoal implements Goal{
     private static final int[][] corners = {{0,0}, {0,4}, {5,0}, {5,4}};
     private boolean findDiagonalWithSameColor(int row, int column, Bookshelf b){
         int mRow = 0, mColumn = 0, compareColor;
@@ -32,7 +31,7 @@ public class CommonGoal11 implements Goal{
     }
     @Override
     public int checkGoal(Bookshelf bookshelf) {
-        for(int i=0; i<4; i++) if (findDiagonalWithSameColor(corners[i][0], corners[i][1], bookshelf)) return SCORE;
+        for(int i=0; i<4; i++) if (findDiagonalWithSameColor(corners[i][0], corners[i][1], bookshelf)) return getScore();
         return 0;
     }
 }

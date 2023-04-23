@@ -8,8 +8,7 @@ import it.polimi.ingsw.server.model.entities.Bookshelf;
  * One column can show the same or a different combination of another column.
  */
 
-public class CommonGoal5 implements Goal{
-    private static final int SCORE = 1; //TODO:inserire valore del goal
+public class CommonGoal5 extends CommonGoal implements Goal{
 
     @Override
     public int checkGoal(Bookshelf bs) {
@@ -30,7 +29,7 @@ public class CommonGoal5 implements Goal{
             throw new RuntimeException(e);
         }
 
-        if(cntr>=3) return SCORE;
+        if(cntr>=3) return getScore();
         return 0;
     }
 }

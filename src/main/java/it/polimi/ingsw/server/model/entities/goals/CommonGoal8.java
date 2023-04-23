@@ -8,9 +8,8 @@ import it.polimi.ingsw.exceptions.CellGetCardException;
  * Four tiles of the same type in the four corners of the bookshelf.
  */
 
-public class CommonGoal8 implements Goal {
+public class CommonGoal8 extends CommonGoal implements Goal {
 
-    private static final int SCORE = 1; //TODO:inserire valore del goal
     @Override
     public int checkGoal(Bookshelf bookshelf) {
         Card c1, c2, c3, c4;
@@ -24,7 +23,7 @@ public class CommonGoal8 implements Goal {
             throw new RuntimeException(e);
         }
 
-        if(c1.sameColor(c2) && c3.sameColor(c4) && c2.sameColor(c4)) return SCORE;
+        if(c1.sameColor(c2) && c3.sameColor(c4) && c2.sameColor(c4)) return getScore();
         else return 0;
     }
 }

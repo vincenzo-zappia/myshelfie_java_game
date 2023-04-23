@@ -14,8 +14,7 @@ import it.polimi.ingsw.server.model.entities.Bookshelf;
  * The tiles of one square can be different from those of the other square.
  */
 
-public class CommonGoal1 implements Goal{
-    private static final int SCORE = 1; //TODO: inserire valore del goal
+public class CommonGoal1 extends CommonGoal implements Goal{
 
     @Override
     public int checkGoal(Bookshelf bs) {
@@ -38,7 +37,7 @@ public class CommonGoal1 implements Goal{
             }
         }
 
-        if(tmp>=2) return SCORE;
+        if(tmp>=2) return getScore();
         else return 0;
     }
 }

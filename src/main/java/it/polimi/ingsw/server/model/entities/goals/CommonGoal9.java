@@ -14,8 +14,7 @@ import it.polimi.ingsw.server.model.entities.Bookshelf;
  * There's no restriction about the position of these tiles.
  */
 
-public class CommonGoal9 implements Goal{
-    private static final int SCORE = 1; //TODO:inserire valore del goal
+public class CommonGoal9 extends CommonGoal implements Goal{
 
     @Override
     public int checkGoal(Bookshelf bs) {
@@ -28,7 +27,7 @@ public class CommonGoal9 implements Goal{
                     for(int k = 0; k < 6; k++){
                         for(int l = 0; l < 5; l++)if(x[k][l] != UNAVAILABLE && k!=i && l!=j && x[i][j] == x[k][l])tmp++;
                     }
-                    if(tmp >= 8) return SCORE; //if the algorithm find 8 identical tiles return the score
+                    if(tmp >= 8) return getScore(); //if the algorithm find 8 identical tiles return the score
                     tmp=0;
                 }
             }

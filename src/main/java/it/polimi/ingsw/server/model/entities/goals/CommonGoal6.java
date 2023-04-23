@@ -8,8 +8,7 @@ import it.polimi.ingsw.exceptions.CellGetCardException;
  * One line can show the same or a different combination of the other line.
  */
 
-public class CommonGoal6 implements Goal{
-    private static final int SCORE = 1; //TODO: inserire valore del goal
+public class CommonGoal6 extends CommonGoal implements Goal{
     private boolean allColorsDifferent(int[] colors){
         for (int i=0; i<4; i++) for (int j=i+1; j<5; j++) if (colors[i] == colors[j]) return false;
         return true;
@@ -33,7 +32,7 @@ public class CommonGoal6 implements Goal{
             if (allColorsDifferent(getRowColors(i, bookshelf))) count++;
         }
         //TODO: Vedere se deve essere strettamente uguale o almeno 2
-        if(count>=2) return SCORE;
+        if(count>=2) return getScore();
         else return 0;
     }
 }

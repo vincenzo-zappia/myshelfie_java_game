@@ -10,8 +10,7 @@ import it.polimi.ingsw.server.model.entities.Cell;
  * Tiles can be of any type.
  */
 
-public class CommonGoal12 implements Goal{
-    private static final int SCORE = 1; //TODO: inserire valore del goal
+public class CommonGoal12 extends CommonGoal implements Goal{
 
     private boolean firstCheck(Cell[] row){
         for (Cell cell : row) if (cell.isCellEmpty()) return false;
@@ -28,6 +27,6 @@ public class CommonGoal12 implements Goal{
 
             if(!(len == lenSucc+1 || len == lenSucc-1)) return 0;
         }
-        return SCORE;
+        return getScore();
     }
 }

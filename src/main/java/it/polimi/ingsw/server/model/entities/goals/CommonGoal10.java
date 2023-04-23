@@ -8,8 +8,7 @@ import it.polimi.ingsw.exceptions.CellGetCardException;
  * Five tiles of the same type forming an X.
  */
 
-public class CommonGoal10 implements Goal{
-    private static final int SCORE = 1; //TODO:inserire valore del goal
+public class CommonGoal10 extends CommonGoal implements Goal{
     private boolean isX(int row, int column, Bookshelf b){
         Card c1, c2, c3, c4, c5;
 
@@ -30,7 +29,7 @@ public class CommonGoal10 implements Goal{
     @Override
     public int checkGoal(Bookshelf bookshelf) {
         for(int i = 0; (i+2)<6; i++){
-            for (int j = 0; (j+2)<5; j++) if(isX(j, i, bookshelf)) return SCORE;
+            for (int j = 0; (j+2)<5; j++) if(isX(j, i, bookshelf)) return getScore();
         }
         return 0;
     }

@@ -9,7 +9,7 @@ import java.util.Set;
  * Questo CommonGoal si riferisce ai Goals presente sulla Board
  */
 
-public class CommonGoal0 implements Goal{
+public class CommonGoal0 extends CommonGoal implements Goal{
     private static final int SCORE = 1; //TODO: inserire valore del goal
     private int[][] mColor = new int[6][5];
 

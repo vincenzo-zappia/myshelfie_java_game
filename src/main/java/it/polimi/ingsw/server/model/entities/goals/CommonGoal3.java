@@ -14,8 +14,7 @@ import it.polimi.ingsw.server.model.entities.Bookshelf;
  * The tiles of one group can be different from those of another group.
  */
 
-public class CommonGoal3 implements Goal{
-    private static final int SCORE = 1; //TODO:inserire valore del goal
+public class CommonGoal3 extends CommonGoal implements Goal{
 
     @Override
     public int checkGoal(Bookshelf bs) {
@@ -24,7 +23,7 @@ public class CommonGoal3 implements Goal{
 
         //TODO algoritmo per trovare la sequenza di carte della figura 3.
 
-        if(tmp>=4) return SCORE;
+        if(tmp>=4) return getScore();
         return 0;
     }
 }

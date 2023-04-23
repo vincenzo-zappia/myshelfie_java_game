@@ -13,8 +13,7 @@ import it.polimi.ingsw.server.model.entities.Bookshelf;
  * The tiles of one group can be different from those of another groups.
  */
 
-public class CommonGoal4 implements Goal{
-    private static final int SCORE = 1; //TODO:inserire valore del goal
+public class CommonGoal4 extends CommonGoal implements Goal{
 
     @Override
     public int checkGoal(Bookshelf bs) {
@@ -153,7 +152,7 @@ public class CommonGoal4 implements Goal{
                 }
             }
         }
-        if(tmp>=6) return SCORE;
+        if(tmp>=6) return getScore();
         return 0;
     }
 }
