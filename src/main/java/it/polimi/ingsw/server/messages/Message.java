@@ -31,6 +31,10 @@ public abstract class Message {
     public String getContent() {
         return content;
     }
+
+    public MessageType getType() {
+        return type;
+    }
     //endregion
 
 }

@@ -4,6 +4,8 @@ package it.polimi.ingsw.server.model.mechanics;
 import it.polimi.ingsw.server.ClientHandler;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.server.messages.InsertionMessage;
+import it.polimi.ingsw.server.messages.Message;
+import it.polimi.ingsw.server.messages.MessageType;
 import it.polimi.ingsw.server.messages.SelectionMessage;
 import it.polimi.ingsw.server.model.state.Game;
 import it.polimi.ingsw.server.model.entities.Card;
@@ -16,7 +18,9 @@ public class GameController {
     private final Game game;
     private final ArrayList<String> playerUsernames;
     private String currentPlayer;
+    private turnPhase currentPhase;
     private boolean endGame;
+
     //endregion
 
     //region CONSTRUCTOR
@@ -28,6 +32,8 @@ public class GameController {
 
     }
     //endregion
+
+    enum turnPhase {SELECTION, INSERTION};
 
     //region TURN
     //TODO: Esportarlo in una classe esterna?
@@ -55,8 +61,11 @@ public class GameController {
         //TODO: chiamata metodo in attesa del comando (forse metodo di Lobby)
 
         //TODO: CHI PASSA PARAMETRI??????
-        //cardSelection();
-        //cardInsertion();
+
+        //while(turnPhase ==)
+        //cardSelection((SelectionMessage) awaitMessage(MessageType.SELECTION_MESSAGE));
+
+        //cardInsertion((InsertionMessage) awaitMessage(MessageType.INSERTION_MESSAGE));
 
         //if the bookshelf is full then the endgame begins
         if(game.isPlayerBookshelfFull(currentPlayer)) endGame = true;
@@ -68,6 +77,22 @@ public class GameController {
     //endregion
 
     //region METHODS
+
+    private void waitPhase(turnPhase phase){
+        while(!currentPhase.equals(phase)){
+            waitPhase(phase);
+        }
+    }
+
+    public void receiveMessage(Message message){
+        switch (message.getType()){
+            case SELECTION_MESSAGE -> {
+                cardSelection((SelectionMessage) message);
+
+            }
+        };
+
+    }
 
     //TODO: Metodo che chiama il primo startTurn()
     public void startGame(){

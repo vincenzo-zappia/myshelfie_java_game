@@ -14,6 +14,9 @@ public enum MessageType {
     //GAME LOGIC
     //client2server
 
+    SELECTION_MESSAGE,
+    INSERTION_MESSAGE,
+
     //server2client
 
 
