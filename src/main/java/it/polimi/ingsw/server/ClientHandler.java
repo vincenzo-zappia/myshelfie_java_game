@@ -15,10 +15,10 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ServerSideController implements Runnable{
+public class ClientHandler implements Runnable{
     private final Socket socket;
 
-    public ServerSideController(Socket socket) {this.socket = socket;}
+    public ClientHandler(Socket socket) {this.socket = socket;}
 
     public void run(){
         try {

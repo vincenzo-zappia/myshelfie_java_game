@@ -6864,7 +6864,7 @@
 											"top": 418,
 											"width": 653.50390625,
 											"height": 13,
-											"text": "+GameController(playerUsernames: ArrayList<String>, game: Game, serverSideController: ServerSideController)",
+											"text": "+GameController(playerUsernames: ArrayList<String>, game: Game, clientHandler: ServerSideController)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -17869,7 +17869,7 @@
 															"_parent": {
 																"$ref": "AAAAAAGHhZtASNCEkuY="
 															},
-															"name": "serverSideController",
+															"name": "clientHandler",
 															"type": {
 																"$ref": "AAAAAAGHQ0J2rgwPU7I="
 															}

@@ -1,7 +1,7 @@
 
 package it.polimi.ingsw.server.model.mechanics;
 
-import it.polimi.ingsw.server.ServerSideController;
+import it.polimi.ingsw.server.ClientHandler;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.server.model.state.Game;
 import it.polimi.ingsw.server.model.entities.Card;
@@ -18,7 +18,7 @@ public class GameController {
     //endregion
 
     //region CONSTRUCTOR
-    public GameController(ArrayList<String> playerUsernames, Game game, ServerSideController serverSideController){
+    public GameController(ArrayList<String> playerUsernames, Game game, ClientHandler clientHandler){
         this.playerUsernames = playerUsernames;
         currentPlayer = playerUsernames.get(0); //TODO: the couch
         this.game = game;

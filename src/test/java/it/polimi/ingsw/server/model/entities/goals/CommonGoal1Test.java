@@ -16,7 +16,7 @@ class CommonGoal1Test {
     private static CommonGoal1 cg1;
 
     @BeforeAll
-    public static void inizialize(){
+    public static void inizialize() {
         cg1 = new CommonGoal1();
     }
 
@@ -35,7 +35,7 @@ class CommonGoal1Test {
      */
 
     @Test
-    public void normalGroups2x2(){
+    public void normalGroups2x2() {
         try {
 
             for(int i=0; i<2; i++) {
@@ -57,7 +57,7 @@ class CommonGoal1Test {
     }
 
     @Test
-    public void infectedGroups2x2(){
+    public void infectedGroups2x2() {
         try {
 
             for(int i=0; i<2; i++) {
@@ -79,7 +79,7 @@ class CommonGoal1Test {
     }
 
     @Test
-    public void matrix2x3(){
+    public void matrix2x3() {
 
         try {
 
@@ -98,7 +98,7 @@ class CommonGoal1Test {
     }
 
     @Test
-    public void matrix2x4(){
+    public void matrix2x4() {
         try {
             for(int i=0; i<4; i++) {
                 bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
@@ -114,7 +114,7 @@ class CommonGoal1Test {
     }
 
     @Test
-    public void matrix3x2(){
+    public void matrix3x2() {
         try {
 
             for(int i=0; i<2; i++) {
@@ -132,7 +132,7 @@ class CommonGoal1Test {
     }
 
     @Test
-    public void matrix4x2(){
+    public void matrix4x2() {
         try {
 
             for(int i=0; i<2; i++) {

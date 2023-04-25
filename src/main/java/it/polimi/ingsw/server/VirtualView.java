@@ -4,10 +4,10 @@ import it.polimi.ingsw.observer.Observer;
 
 public class VirtualView implements Observer {
 
-    private final ServerSideController serverSideController;
+    private final ClientHandler clientHandler;
 
-    public VirtualView(ServerSideController serverSideController){
-        this.serverSideController = serverSideController;
+    public VirtualView(ClientHandler clientHandler){
+        this.clientHandler = clientHandler;
     }
 
     @Override

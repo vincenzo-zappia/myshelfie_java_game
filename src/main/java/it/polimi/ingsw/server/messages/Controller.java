@@ -4,9 +4,9 @@ package it.polimi.ingsw.server.messages;
 // link utile: https://www.baeldung.com/jackson-xml-serialization-and-deserialization
 
 public class Controller {
-    public synchronized void handleMessage(Message m){
+    /*public synchronized void handleMessage(Message m){
         m.visit(this);
-    }
+    }*/
 
     public synchronized void handle(NicknameMessage m){
         //TODO implementazione con libreria Jackson

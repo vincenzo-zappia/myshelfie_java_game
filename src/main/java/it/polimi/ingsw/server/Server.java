@@ -38,7 +38,7 @@ public class Server {
             try {
                 Socket socket = serverSocket.accept();
                 System.out.println("INFO: Tentativo di connessione...");
-                executor.submit(new ServerSideController(socket));
+                executor.submit(new ClientHandler(socket));
             } catch (IOException ex) {
                 break;
             }

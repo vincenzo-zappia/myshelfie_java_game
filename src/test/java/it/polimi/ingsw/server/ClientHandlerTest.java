@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-class ServerSideControllerTest {
+class ClientHandlerTest {
     //TODO: testing the validity of each command sent by the client
 
     @BeforeAll
