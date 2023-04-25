@@ -23,8 +23,8 @@ public class CommonGoal0Test {
                 {0,0,0,0,0},
                 {0,0,0,0,0},
                 {0,1,0,0,0},
-                {1,1,0,0,0},
-                {1,1,1,0,0}
+                {1,1,0,1,0},
+                {1,1,1,1,0}
         };
 
         cg0.setColorMatrix(matrix);
@@ -33,7 +33,7 @@ public class CommonGoal0Test {
     @Test
     public void test1(){
         int result = cg0.checkGoal(b);
-        assertEquals(6, result);
+        assertEquals(8, result);
     }
 
 }
