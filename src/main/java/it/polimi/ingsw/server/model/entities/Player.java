@@ -16,6 +16,7 @@ public class Player implements Comparable<Player>{
     private final int gameID; //per contesto multipartita
     private int score;
     private boolean isMyTurn;
+    private boolean firstPlayer;
     private PrivateGoal privateGoal;
     private final Bookshelf bookshelf;
     //endregion
