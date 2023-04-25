@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.messages;
 
+//TODO: Gestione implementazione Serializable
 public abstract class Message {
 
     //region ATTRIBUTI
@@ -17,7 +18,7 @@ public abstract class Message {
     }
     //endregion
 
-    //region METHOD
+    //region METHODS
     public boolean isContent() {
         return isContent;
     }

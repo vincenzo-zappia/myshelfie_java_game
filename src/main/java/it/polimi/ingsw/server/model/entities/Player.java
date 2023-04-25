@@ -43,7 +43,7 @@ public class Player implements Comparable<Player>{
     //region METHODS
     public void addScore(int points){score+=points;}
 
-    //TODO: review
+    //TODO: dovrebbe essere metodo di Bookshelf
     public boolean isBookshelfFull(){
         boolean full = false;
         for(int i=0; i<6; i++) {

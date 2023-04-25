@@ -3,6 +3,7 @@ package it.polimi.ingsw.observer;
 import java.util.ArrayList;
 
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.server.messages.Message;
 
 //Subject maintains a list of its observers and notifies them of any state changes
 public abstract class Subject {
@@ -19,9 +20,9 @@ public abstract class Subject {
     }
 
     //notifies all observers in the list
-    public void notifyObserver() {
+    public void notifyObserver(Message message) {
         for(Observer o : observers){
-            o.update();
+            o.update(message);
         }
     }
 }

@@ -7,16 +7,21 @@
 
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.server.messages.Message;
 import it.polimi.ingsw.server.model.entities.Player;
 import it.polimi.ingsw.server.model.state.Game;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
 public class ClientHandler implements Runnable{
     private final Socket socket;
+    private ObjectOutputStream outputStream;
+    private ObjectInputStream inputStream;
 
     public ClientHandler(Socket socket) {this.socket = socket;}
 
@@ -55,6 +60,15 @@ public class ClientHandler implements Runnable{
             closeConnection();
         }
         catch (IOException e) {System.err.println(e.getMessage());}
+    }
+
+    public void sendMessage(Message message){
+        try {
+            outputStream.writeObject(message);
+            outputStream.reset(); //anziché flush
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void closeConnection(){
