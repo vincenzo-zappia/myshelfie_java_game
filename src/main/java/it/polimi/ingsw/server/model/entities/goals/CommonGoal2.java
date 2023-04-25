@@ -17,7 +17,7 @@ public class CommonGoal2 extends CommonGoal implements Goal{
         int[] colors = new int[6];
         for(int i=0; i<6; i++) {
             try {
-                if (!b.getCell(i, column).isCellEmpty()) colors[i] = b.getCell(i, column).getCard().getColor();
+                if (!b.getCell(i, column).isCellEmpty()) colors[i] = b.getCell(i, column).getCard().getType().ordinal();
             } catch (CellGetCardException e) {
                 throw new RuntimeException(e);
             }

@@ -27,14 +27,16 @@ public class Bookshelf {
     //endregion
 
     //region METHODS
-    public void addCard(int column, Card card) throws AddCardException { //TODO add code try/catch where it will be used
+
+    //TODO: Revisionare!!
+    public void addCard(int column, Card card) throws AddCardException { //TODO: add code try/catch where it will be used
         int i = 5;
         while(!bookshelf[i][column].isCellEmpty() && i>=0) i--;
         bookshelf[i][column].setCard(card);
     }
 
     //TODO: rename to "cardsInColumn()"
-    public int numOfCards(int column){
+    public int numOfCards(int column) {
         int i=5, count=0;
         while (!bookshelf[i][column].isCellEmpty() && i>=0){
             i--;
@@ -44,13 +46,13 @@ public class Bookshelf {
     }
 
     //TODO: rename to "getMatrixColors()"
-    public int[][] getColorMatrix(){
+    public int[][] getColorMatrix() {
         int[][] x = new int[6][5];
 
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 5; j++) {
                 try {
-                    if(!getCell(i,j).isCellEmpty())x[i][j] = getCell(i,j).getCard().getColor(); // save the value in matrix x[][]
+                    if(!getCell(i,j).isCellEmpty())x[i][j] = getCell(i,j).getCard().getType().ordinal(); //save the value in matrix x[][]
                     else x[i][j] = Goal.UNAVAILABLE; //if a cell is empty, use the value UNAVAILABLE(104) to detect in the int matrix
 
                 } catch (CellGetCardException e) {

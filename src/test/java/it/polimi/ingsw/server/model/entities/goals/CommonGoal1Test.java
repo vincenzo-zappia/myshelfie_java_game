@@ -3,11 +3,11 @@ package it.polimi.ingsw.server.model.entities.goals;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.server.model.entities.Bookshelf;
 import it.polimi.ingsw.server.model.entities.Card;
+import it.polimi.ingsw.server.model.entities.TileType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.print.Book;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,13 +39,13 @@ class CommonGoal1Test {
         try {
 
             for(int i=0; i<2; i++) {
-                bookshelf.addCard(i, new Card("img.png", 0));
-                bookshelf.addCard(i, new Card("img.png", 0));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
             }
 
             for(int i=3; i<5; i++) {
-                bookshelf.addCard(i, new Card("img.png", 0));
-                bookshelf.addCard(i, new Card("img.png", 0));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
             }
 
         } catch (AddCardException e) {
@@ -53,7 +53,7 @@ class CommonGoal1Test {
         }
 
         int score = cg1.checkGoal(bookshelf);
-        assertEquals(1, score);
+        assertEquals(8, score);
     }
 
     @Test
@@ -61,13 +61,13 @@ class CommonGoal1Test {
         try {
 
             for(int i=0; i<2; i++) {
-                bookshelf.addCard(i, new Card("img.png", 0));
-                bookshelf.addCard(i, new Card("img.png", 0));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
             }
 
             for(int i=3; i<5; i++) {
-                bookshelf.addCard(i, new Card("img.png", 0));
-                bookshelf.addCard(i, new Card("img.png", 1));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
+                bookshelf.addCard(i, new Card("img.png", TileType.CATS));
             }
 
         } catch (AddCardException e) {
@@ -84,8 +84,8 @@ class CommonGoal1Test {
         try {
 
             for(int i=0; i<3; i++) {
-                bookshelf.addCard(i, new Card("img.png", 0));
-                bookshelf.addCard(i, new Card("img.png", 0));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
             }
 
         } catch (AddCardException e) {
@@ -101,8 +101,8 @@ class CommonGoal1Test {
     public void matrix2x4(){
         try {
             for(int i=0; i<4; i++) {
-                bookshelf.addCard(i, new Card("img.png", 0));
-                bookshelf.addCard(i, new Card("img.png", 0));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
             }
 
         } catch (AddCardException e) {
@@ -110,7 +110,7 @@ class CommonGoal1Test {
         }
 
         int score = cg1.checkGoal(bookshelf);
-        assertEquals(0, score);
+        assertEquals(6, score);
     }
 
     @Test
@@ -118,9 +118,9 @@ class CommonGoal1Test {
         try {
 
             for(int i=0; i<2; i++) {
-                bookshelf.addCard(i, new Card("img.png", 0));
-                bookshelf.addCard(i, new Card("img.png", 0));
-                bookshelf.addCard(i, new Card("img.png", 0));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
             }
 
         } catch (AddCardException e) {
@@ -136,10 +136,10 @@ class CommonGoal1Test {
         try {
 
             for(int i=0; i<2; i++) {
-                bookshelf.addCard(i, new Card("img.png", 0));
-                bookshelf.addCard(i, new Card("img.png", 0));
-                bookshelf.addCard(i, new Card("img.png", 0));
-                bookshelf.addCard(i, new Card("img.png", 0));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
+                bookshelf.addCard(i, new Card("img.png", TileType.FRAMES));
             }
 
         } catch (AddCardException e) {
@@ -147,7 +147,7 @@ class CommonGoal1Test {
         }
 
         int score = cg1.checkGoal(bookshelf);
-        assertEquals(0, score);
+        assertEquals(4, score);
     }
 
 

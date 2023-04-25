@@ -19,7 +19,7 @@ public class CommonGoal5 extends CommonGoal implements Goal{
             for(int i = 0; i < 5; i++){
                 tmp=0;
                 for(int j = 0; j < 6; j++){
-                    if(!bs.getCell(j,i).isCellEmpty() && !bs.getCell(0, i).getCard().sameColor(bs.getCell(j,i).getCard())){
+                    if(!bs.getCell(j,i).isCellEmpty() && !bs.getCell(0, i).getCard().sameType(bs.getCell(j,i).getCard())){
                         tmp++;
                     }
                 }

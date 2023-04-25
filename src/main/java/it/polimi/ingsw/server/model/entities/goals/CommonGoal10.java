@@ -22,7 +22,7 @@ public class CommonGoal10 extends CommonGoal implements Goal{
             throw new RuntimeException(e);
         }
 
-        return (c1.sameColor(c2) && c1.sameColor(c3) && c1.sameColor(c4) && c4.sameColor(c5));
+        return (c1.sameType(c2) && c1.sameType(c3) && c1.sameType(c4) && c4.sameType(c5));
 
     }
 

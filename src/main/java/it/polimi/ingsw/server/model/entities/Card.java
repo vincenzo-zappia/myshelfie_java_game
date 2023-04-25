@@ -11,12 +11,12 @@ public class Card {
 
     //region ATTRIBUTES
     private final String img;
-    private final int color; //also we can use Enumeration<...>
+    private final TileType type; //also we can use Enumeration<...>
     //endregion
 
     //region CONSTRUCTOR
-    public Card(String imgName, int color){
-        this.color = color;
+    public Card(String imgName, TileType type){
+        this.type = type;
         this.img = imgName;
     }
     //endregion
@@ -25,14 +25,14 @@ public class Card {
     public String getImg() {
         return img;
     }
-    public int getColor() {
-        return color;
+    public TileType getType() {
+        return type;
     }
-    public boolean sameColor(Card c){
-        return (color == c.color);
+    public boolean sameType(Card c){
+        return (this.type == c.getType());
     }
     public boolean sameCard(Card card) {
-        return card.getColor() == this.color && card.getImg().equals(this.img);
+        return card.getType() == this.type && card.getImg().equals(this.img);
     }
     //endregion
 

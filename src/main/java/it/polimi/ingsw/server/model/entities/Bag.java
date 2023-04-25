@@ -17,36 +17,28 @@ public class Bag {
     //region ATTRIBUTES
     private final ArrayList<Card> bag;
 
-    //TODO: how to manage colors and images. Now thought about as String and integer arrays
+    //TODO: how to manage colors and imasge. Now thought about as String and integer arrays
     private final String[][] cardImgName = {
-            {"blue1.png", "blue2.png", "blue3.png"},
-            {"green1.png", "green2.png", "green3.png"},
-            {"orange1.png", "orange2.png", "orange3.png"},
-            {"white1.png", "white2.png", "white3.png"},
-            {"pink1.png", "pink2.png", "pink3.png"},
-            {"lBlue1.png", "lBlue2.png", "lBlue3.png"}
+            {"frames1.png", "frames2.png", "frames3.png"},
+            {"cats1.png", "cats2.png", "cats3.png"},
+            {"games1.png", "games2.png", "games3.png"},
+            {"books1.png", "books2.png", "books3.png"},
+            {"plants1.png", "plants2.png", "plants3.png"},
+            {"trophies1.png", "trophies2.png", "trophies3.png"}
     };
-    private final int[] cardColor = {1, 2, 3, 4, 5, 6}; //TODO: might be implemented with an enumeration
     //endregion
 
     //region CONSTRUCTOR
     public Bag() {
         bag = new ArrayList<>();
 
-        //loop for each one of the 6 colors
-        for (int i = 0; i < cardColor.length; i++) {
-            //for each color there are 3 types of images
-            for (int j = 0; j < 3; j++) {
-                //creation of 7 copies of the same card
-                for (int k = 0; k < 7; k++) {
-                    bag.add(new Card(cardImgName[i][j], cardColor[i]));
+        //for each one of the 6 colors create 22 cards
+        for (int i = 0; i < 6; i++)
+            for(int j = 0; j < 22; j++)
+                bag.add(new Card(cardImgName[i][j%3], TileType.values()[i]));
 
-                    //TODO: how to manage the last card: right now 7 each => 21 per color, what about the 22th?
-                }
-            }
-            //method that shuffles the bag
-            Collections.shuffle(bag);
-        }
+        //method that shuffles the bag
+        Collections.shuffle(bag);
     }
     //endregion
 

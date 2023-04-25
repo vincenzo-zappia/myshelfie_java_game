@@ -18,7 +18,7 @@ class BookshelfTest {
     @Test
     void cardInsertion() throws CellGetCardException, AddCardException {
         //TODO: review when implemented enumerations
-        Card card = new Card("white1.png", 4);
+        Card card = new Card("white1.png", TileType.values()[4]);
 
         //Because the bookshelf is empty the row to check is the last one
         assertTrue(bookshelf.getCell(5, 4).isCellEmpty());

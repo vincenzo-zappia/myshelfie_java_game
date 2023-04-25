@@ -23,7 +23,7 @@ public class CommonGoal8 extends CommonGoal implements Goal {
             throw new RuntimeException(e);
         }
 
-        if(c1.sameColor(c2) && c3.sameColor(c4) && c2.sameColor(c4)) return getScore();
+        if(c1.sameType(c2) && c3.sameType(c4) && c2.sameType(c4)) return getScore();
         else return 0;
     }
 }

@@ -19,9 +19,9 @@ public class CommonGoal11 extends CommonGoal implements Goal{
 
 
         try {
-            compareColor = b.getCell(row, column).getCard().getColor();
+            compareColor = b.getCell(row, column).getCard().getType().ordinal();
         for(int i=0; i<5; i++) {
-                int color = b.getCell(row+(i*mRow),column+(i+mColumn)).getCard().getColor();
+                int color = b.getCell(row+(i*mRow),column+(i+mColumn)).getCard().getType().ordinal();
                 if (!(color == compareColor)) return false;
             }
             }catch (CellGetCardException e) {
