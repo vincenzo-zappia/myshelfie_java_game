@@ -1,17 +1,15 @@
 package it.polimi.ingsw.server;
 
-//import java.io.File;
+import java.io.File;
 import java.io.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import it.polimi.ingsw.server.model.entities.*;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import it.polimi.ingsw.server.model.entities.BoardCell;
-import it.polimi.ingsw.server.model.entities.Card;
-import it.polimi.ingsw.server.model.entities.Player;
 
 public class ToolXML {
 
@@ -87,6 +85,7 @@ public class ToolXML {
     //region REMOVE BOARD CARDS
     //endregion
 
+
     //region BOARD
     public static BoardCell[][] xmlToBoard(String xml) {
         Element root = getRootDocElement(xml);
@@ -100,7 +99,7 @@ public class ToolXML {
             String[] data = e.getTextContent().split(";");
 
             matrix[row][column].setCellActive();
-            matrix[row][column].setCard(new Card(data[0], Integer.parseInt(data[1])));
+            //matrix[row][column].setCard(new Card(data[0], Integer.parseInt(data[1]))); TODO: risolvere questo problemino
         }
         return matrix;
     }
@@ -138,17 +137,44 @@ public class ToolXML {
     }
     //endregion
 
+    //region PRIVATE GOAL
+    public static SpecialCell[] getSpecialCells(int id){
+        SpecialCell[] specialCell = new SpecialCell[6];
+        File file = new File("");
+        Element root = getRootDocElement(file);
+        NodeList goal = root.getElementsByTagName("Goal");
+
+        Node cellsNode = goal.item(id);
+        if(cellsNode.getNodeType() == Node.ELEMENT_NODE){
+            Element cells = (Element) cellsNode;
+            for(int i=0; i<6; i++){
+
+                int row = Integer.parseInt(cells.getAttribute("row")),
+                column = Integer.parseInt(cells.getAttribute("column"));
+
+                TileType type = TileType.valueOf(cells.getElementsByTagName("Card").item(i).getTextContent());
+
+                specialCell[i] = new SpecialCell(row, column, type);
+            }
+        }
+
+        return specialCell;
+
+    }
+    //endregion
+
     public static Card xmlToCard(String xml) {
-        int color, id;
+        int id;
+        TileType type = TileType.BOOKS;
         String imgName;
 
         Element root = getRootDocElement(xml);
 
         id = Integer.parseInt(root.getElementsByTagName("ID").item(0).getTextContent());
-        color = Integer.parseInt(root.getElementsByTagName("Color").item(0).getTextContent());
+        //type = Integer.parseInt(root.getElementsByTagName("Color").item(0).getTextContent()); TODO: risolvere questo problemino
         imgName = root.getElementsByTagName("ImgName").item(0).getTextContent();
 
-        return new Card(imgName, color);
+        return new Card(imgName, type);
     }
 
 }
