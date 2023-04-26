@@ -13,11 +13,11 @@ public enum MessageType {
 
     //GAME LOGIC
     //client2server
-
+    START_GAME,
     SELECTION_MESSAGE,
     INSERTION_MESSAGE,
 
     //server2client
-
+    GAME_START,
 
 }

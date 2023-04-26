@@ -35,8 +35,6 @@ public class Player implements Comparable<Player>{
     }
     //endregion
 
-
-
     //region METHODS
     public void addScore(int points){score+=points;}
 

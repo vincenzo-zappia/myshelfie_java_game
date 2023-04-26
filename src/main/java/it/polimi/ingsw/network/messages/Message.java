@@ -2,11 +2,10 @@ package it.polimi.ingsw.network.messages;
 
 import java.io.Serializable;
 
-//TODO: Gestione implementazione Serializable
 public abstract class Message implements Serializable {
 
     //region ATTRIBUTI
-    private final String sender;
+    private final String username;
     private final MessageType type;
     private String content;
     private boolean isContent;
@@ -14,7 +13,7 @@ public abstract class Message implements Serializable {
 
     //region COSTRUTTORE
     protected Message(String sender, MessageType type) {
-        this.sender = sender;
+        this.username = sender;
         this.type = type;
         this.isContent = false;
     }
@@ -36,6 +35,10 @@ public abstract class Message implements Serializable {
 
     public MessageType getType() {
         return type;
+    }
+
+    public String getUsername() {
+        return username;
     }
     //endregion
 

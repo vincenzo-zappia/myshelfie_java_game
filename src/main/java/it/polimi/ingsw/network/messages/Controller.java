@@ -6,7 +6,7 @@ package it.polimi.ingsw.network.messages;
 public class Controller {
     /*public synchronized void handleMessage(Message m){
         m.visit(this);
-    }*/
+    }
 
     public synchronized void handle(NicknameMessage m){
         //TODO implementazione con libreria Jackson
@@ -23,4 +23,6 @@ public class Controller {
     public synchronized void handle(MoveMessage m){
         //TODO implementazione con libreria Jackson
     }
+
+     */
 }
