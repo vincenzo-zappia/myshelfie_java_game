@@ -20,7 +20,7 @@ class BookshelfTest {
 
     @Test
     void cardInsertion() throws CellGetCardException, AddCardException {
-        //TODO: REVIEW
+        //TODO: review when implemented enumerations
         Card card = new Card("white1.png", CardType.values()[4]);
 
         //Because the bookshelf is empty the row to check is the last one

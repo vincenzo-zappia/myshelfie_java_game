@@ -18,6 +18,6 @@ public enum MessageType {
     INSERTION_MESSAGE,
 
     //server2client
-    GAME_STARTED,
+    GAME_START,
 
 }

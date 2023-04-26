@@ -8,25 +8,25 @@ public abstract class Message implements Serializable {
     private final String username;
     private final MessageType type;
     private String content;
-    private boolean hasContent;
+    private boolean isContent;
     //endregion
 
-    //region CONSTRUCTOR
+    //region COSTRUTTORE
     protected Message(String sender, MessageType type) {
         this.username = sender;
         this.type = type;
-        this.hasContent = false;
+        this.isContent = false;
     }
     //endregion
 
     //region METHODS
-    public boolean hasContent() {
-        return hasContent;
+    public boolean isContent() {
+        return isContent;
     }
 
     public void setContent(String content) {
         this.content = content;
-        this.hasContent = true;
+        this.isContent = true;
     }
 
     public String getContent() {

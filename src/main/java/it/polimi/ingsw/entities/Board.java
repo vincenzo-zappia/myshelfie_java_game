@@ -111,7 +111,7 @@ public class Board {
                                 .append(";")
                                 .append(j)
                                 .append("): \n\t Img: ")
-                                .append(selCell.getCard().getImgPath())
+                                .append(selCell.getCard().getImg())
                                 .append("\n\t Color: ")
                                 .append(selCell.getCard().getType())
                                 .append("\n");

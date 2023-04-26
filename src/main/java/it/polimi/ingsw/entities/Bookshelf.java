@@ -39,16 +39,15 @@ public class Bookshelf {
         return true;
     }
 
-    public void addCard(int column, Card card) throws AddCardException {
+    public void addCard(int column, Card card) throws AddCardException { //TODO: add code try/catch where it will be used
         int i = 5;
-        if(!bookshelf[0][column].isCellEmpty()) throw new AddCardException(); //if the topmost cell contains a card it throws an exception
-        while(!bookshelf[i][column].isCellEmpty() && i>0) i--;
+        while(!bookshelf[i][column].isCellEmpty() && i>0) i--; //changed from "i>=0" to "i>0"
         bookshelf[i][column].setCard(card);
     }
 
     public int cardsInColumn(int column) {
         int i=5, count=0;
-        while (i>=0 && !bookshelf[i][column].isCellEmpty()){
+        while (!bookshelf[i][column].isCellEmpty() && i>0){   //changed from "i>=0" to "i>0"
             i--;
             count++;
         }
