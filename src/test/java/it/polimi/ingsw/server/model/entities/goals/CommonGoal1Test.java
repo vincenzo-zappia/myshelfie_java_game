@@ -1,9 +1,10 @@
 package it.polimi.ingsw.server.model.entities.goals;
 
+import it.polimi.ingsw.entities.goals.CommonGoal1;
 import it.polimi.ingsw.exceptions.AddCardException;
-import it.polimi.ingsw.server.model.entities.Bookshelf;
-import it.polimi.ingsw.server.model.entities.Card;
-import it.polimi.ingsw.server.model.entities.TileType;
+import it.polimi.ingsw.entities.Bookshelf;
+import it.polimi.ingsw.entities.Card;
+import it.polimi.ingsw.entities.TileType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

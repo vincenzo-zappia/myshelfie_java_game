@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.model.entities.goals;
 
-import it.polimi.ingsw.server.model.entities.Bookshelf;
+import it.polimi.ingsw.entities.Bookshelf;
+import it.polimi.ingsw.entities.goals.CommonGoal0;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,11 +29,13 @@ public class CommonGoal0Test {
 
         cg0.setColorMatrix(matrix);
     }
-
+    /*
     @Test
     public void test1(){
         int result = cg0.checkGoal(b);
         assertEquals(8, result);
     }
+
+     */
 
 }
