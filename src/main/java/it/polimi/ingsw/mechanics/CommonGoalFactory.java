@@ -1,7 +1,6 @@
 package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.goals.*;
-import it.polimi.ingsw.server.model.entities.goals.*;
 
 import java.util.Random;
 
