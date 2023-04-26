@@ -21,8 +21,8 @@ public class Lobby {
         this.clients = clients;
         this.playerList = playerUsernames;
     }
-    public void addToQueue(Player p){
-        playerList.add(p);
+    public void addToQueue(String username){
+        playerList.add(username);
     }
     public Game startMatch(){return new Game(playerList.size());}
 }
