@@ -35,23 +35,13 @@ public class Player implements Comparable<Player>{
     }
     //endregion
 
-    @Override
-    public String toString(){
-        return "\n\tUsername: " + username + "\n\tGameId: " + gameID + "\n\tScore: " + score;
-    }
+
 
     //region METHODS
     public void addScore(int points){score+=points;}
 
-    //TODO: dovrebbe essere metodo di Bookshelf
     public boolean isBookshelfFull(){
-        boolean full = false;
-        for(int i=0; i<6; i++) {
-            for(int j=0; j<5; j++){
-                full = !bookshelf.getCell(i, j).isCellEmpty();
-            }
-        }
-        return full;
+        return bookshelf.checkIfFull();    //per non cambiare precedenti metodi, implementazione corretta e spostata in bookshelf.
     }
 
     //method to order players by score (see class Game.java)
@@ -83,6 +73,12 @@ public class Player implements Comparable<Player>{
     }
     public int getScore(){return score;}
     public void setScore(int newScore){score = newScore;}  //TODO remove after test
+
+    @Override
+    public String toString(){
+        return "\n\tUsername: " + username + "\n\tGameId: " + gameID + "\n\tScore: " + score;
+    }
+
     //endregion
 
 }

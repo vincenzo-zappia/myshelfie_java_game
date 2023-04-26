@@ -1,7 +1,9 @@
 package it.polimi.ingsw.server.messages;
 
+import java.io.Serializable;
+
 //TODO: Gestione implementazione Serializable
-public abstract class Message {
+public abstract class Message implements Serializable {
 
     //region ATTRIBUTI
     private final String sender;

@@ -12,6 +12,7 @@ import it.polimi.ingsw.server.model.entities.Card;
 import it.polimi.ingsw.server.model.entities.Player;
 import it.polimi.ingsw.server.model.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.AddCardException;
+import it.polimi.ingsw.server.model.mechanics.CommonGoalFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,8 +24,7 @@ public class Game{
     //private ArrayList<Bookshelf> bookshelves; //Game is the class that puts together multiple entities and has specific value
     private ArrayList<Player> players;
     private int playerNum;
-    private Goal commonGoal1;
-    private Goal commonGoal2;
+    private Goal[] commonGoals;
     private boolean endGame;
     //endregion
 
@@ -40,6 +40,9 @@ public class Game{
             b = new Bookshelf();
         }
         */
+
+        commonGoals = new CommonGoalFactory().makeCommonGoal(); //set the common goals of the game
+
         System.out.println(board);
     }
     //endregion
@@ -93,7 +96,7 @@ public class Game{
     //}
     public ArrayList<Card> removeCardFromBoard(int[][] coordinates){
         ArrayList<Card> removedCards = new ArrayList<>();
-        for(int i = 0; i < coordinates.length; i++) removedCards.add(board.removeCard(coordinates[i][0], coordinates[i][1]));
+        for (int[] coordinate : coordinates) removedCards.add(board.removeCard(coordinate[0], coordinate[1]));
         System.out.println("Cards removed!");
         return removedCards;
     }
@@ -109,8 +112,8 @@ public class Game{
 
     public void scoreCommonGoal(){
         for(Player p : players){
-            p.addScore(commonGoal1.checkGoal(p.getBookshelf()));
-            p.addScore(commonGoal2.checkGoal(p.getBookshelf()));
+            p.addScore(commonGoals[0].checkGoal(p.getBookshelf()));
+            p.addScore(commonGoals[1].checkGoal(p.getBookshelf()));
         }
     }
 

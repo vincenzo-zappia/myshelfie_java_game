@@ -22,8 +22,8 @@ public class CommonGoal12 extends CommonGoal implements Goal{
         if(!firstCheck(bookshelf.getRow(5))) return 0; //verifico che sia presente una carta in almeno tutte le 5 colonne
 
         for(int i=0; i<4; i++){
-            int len = bookshelf.numOfCards(i);
-            int lenSucc = bookshelf.numOfCards(i+1);
+            int len = bookshelf.cardsInColumn(i);
+            int lenSucc = bookshelf.cardsInColumn(i+1);
 
             if(!(len == lenSucc+1 || len == lenSucc-1)) return 0;
         }

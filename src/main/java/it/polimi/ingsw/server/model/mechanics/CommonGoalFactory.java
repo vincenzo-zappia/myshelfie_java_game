@@ -4,8 +4,6 @@ import it.polimi.ingsw.server.model.entities.goals.*;
 
 import java.util.Random;
 
-//TODO test for methods
-
 public class CommonGoalFactory {
 
     private Goal goalFactory(int goal_id){

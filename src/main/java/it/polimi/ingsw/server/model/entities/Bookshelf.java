@@ -2,7 +2,7 @@
  * Date: 21/03/2023
  * IDE: IntelliJ IDEA
  * Version 0.2
- * Comments: none
+ * Comments: the bookshelf is an attribute of player (info for test purposes)
  */
 
 package it.polimi.ingsw.server.model.entities;
@@ -15,8 +15,7 @@ public class Bookshelf {
 
     //region ATTRIBUTES
     private final Cell[][] bookshelf;
-    //TODO: how to manage attribution of a bookshelf to a player? (Not in constructor, otherwise tests get fu***d
-    //private final Player player;
+
     //endregion
 
     //region CONSTRUCTOR
@@ -28,25 +27,33 @@ public class Bookshelf {
 
     //region METHODS
 
-    //TODO: Revisionare!!
+    public boolean checkIfFull(){   //check if the bookshelf is full or not
+        boolean sentinel = false;
+        for(int i=0; i<6; i++) {
+            for(int j=0; j<5; j++){
+                sentinel = bookshelf[i][j].isCellEmpty();   // if a single cell of bookshelf is empty,
+                if(sentinel)return false;                   // the method immediately return false
+            }
+        }
+        return true;
+    }
+
     public void addCard(int column, Card card) throws AddCardException { //TODO: add code try/catch where it will be used
         int i = 5;
-        while(!bookshelf[i][column].isCellEmpty() && i>=0) i--;
+        while(!bookshelf[i][column].isCellEmpty() && i>0) i--; //changed from "i>=0" to "i>0"
         bookshelf[i][column].setCard(card);
     }
 
-    //TODO: rename to "cardsInColumn()"
-    public int numOfCards(int column) {
+    public int cardsInColumn(int column) {
         int i=5, count=0;
-        while (!bookshelf[i][column].isCellEmpty() && i>=0){
+        while (!bookshelf[i][column].isCellEmpty() && i>0){   //changed from "i>=0" to "i>0"
             i--;
             count++;
         }
         return count;
     }
 
-    //TODO: rename to "getMatrixColors()"
-    public int[][] getColorMatrix() {
+    public int[][] getMatrixColors() {
         int[][] x = new int[6][5];
 
         for(int i = 0; i < 6; i++){

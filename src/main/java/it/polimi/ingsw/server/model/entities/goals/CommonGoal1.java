@@ -20,10 +20,9 @@ public class CommonGoal1 extends CommonGoal implements Goal{
     public int checkGoal(Bookshelf bs) {
         //equal square card
         int tmp=0;
-        int[][] x = bs.getColorMatrix();
+        int[][] x = bs.getMatrixColors();
 
         for(int i = 0; i < 5 ; i++){  //search from row 0 to row-1
-            //TODO verificare che funzioni senza controllo in questa sezione
             for(int j = 0; j < 4; j++){ //search from column 0 to column-1
                 if(x[i][j] != UNAVAILABLE){  //check the cell if it is empty or not
                     if(x[i][j] == x[i][j+1] && x[i][j] == x[i+1][j] && x[i][j] == x[i+1][j+1]){

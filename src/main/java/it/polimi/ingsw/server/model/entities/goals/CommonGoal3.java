@@ -19,7 +19,7 @@ public class CommonGoal3 extends CommonGoal implements Goal{
     @Override
     public int checkGoal(Bookshelf bs) {
         int tmp=0;
-        int[][] x = bs.getColorMatrix();
+        int[][] x = bs.getMatrixColors();
 
         //TODO algoritmo per trovare la sequenza di carte della figura 3.
 
