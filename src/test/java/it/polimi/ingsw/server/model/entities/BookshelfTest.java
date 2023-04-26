@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.model.entities;
 
+import it.polimi.ingsw.entities.Bookshelf;
+import it.polimi.ingsw.entities.Card;
+import it.polimi.ingsw.entities.TileType;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.exceptions.CellGetCardException;
 import org.junit.jupiter.api.BeforeAll;
