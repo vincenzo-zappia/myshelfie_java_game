@@ -8,9 +8,9 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.ToolXML;
-import it.polimi.ingsw.entities.Player;
-import it.polimi.ingsw.entities.Game;
+import it.polimi.ingsw.util.ToolXML;
+import it.polimi.ingsw.util.Player;
+import it.polimi.ingsw.mechanics.Game;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

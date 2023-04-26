@@ -3,8 +3,8 @@ package it.polimi.ingsw.entities.goals;
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.exceptions.CellGetCardException;
-import it.polimi.ingsw.ToolXML;
-import it.polimi.ingsw.entities.SpecialCell;
+import it.polimi.ingsw.util.ToolXML;
+import it.polimi.ingsw.util.SpecialCell;
 
 import java.util.HashMap;
 

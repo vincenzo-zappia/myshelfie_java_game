@@ -9,6 +9,7 @@ package it.polimi.ingsw.entities;
 
 import it.polimi.ingsw.exceptions.CellGetCardException;
 import it.polimi.ingsw.exceptions.NoMoreCardsException;
+import it.polimi.ingsw.util.BoardCell;
 
 public class Board {
 

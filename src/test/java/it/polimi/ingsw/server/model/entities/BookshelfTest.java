@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.model.entities;
 
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.entities.TileType;
+import it.polimi.ingsw.util.CardType;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.exceptions.CellGetCardException;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +21,7 @@ class BookshelfTest {
     @Test
     void cardInsertion() throws CellGetCardException, AddCardException {
         //TODO: review when implemented enumerations
-        Card card = new Card("white1.png", TileType.values()[4]);
+        Card card = new Card("white1.png", CardType.values()[4]);
 
         //Because the bookshelf is empty the row to check is the last one
         assertTrue(bookshelf.getCell(5, 4).isCellEmpty());

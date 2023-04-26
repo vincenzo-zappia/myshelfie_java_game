@@ -10,6 +10,7 @@ package it.polimi.ingsw.entities;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.exceptions.CellGetCardException;
+import it.polimi.ingsw.util.Cell;
 
 public class Bookshelf {
 

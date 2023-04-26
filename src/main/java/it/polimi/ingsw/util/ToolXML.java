@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.util;
 
 import it.polimi.ingsw.entities.*;
 import org.w3c.dom.Document;
@@ -154,7 +154,7 @@ public class ToolXML {
                 int row = Integer.parseInt(cells.getAttribute("row")),
                 column = Integer.parseInt(cells.getAttribute("column"));
 
-                TileType type = TileType.valueOf(cells.getElementsByTagName("Card").item(i).getTextContent());
+                CardType type = CardType.valueOf(cells.getElementsByTagName("Card").item(i).getTextContent());
 
                 specialCell[i] = new SpecialCell(row, column, type);
             }
@@ -167,7 +167,7 @@ public class ToolXML {
 
     public static Card xmlToCard(String xml) {
         int id;
-        TileType type = TileType.BOOKS;
+        CardType type = CardType.BOOKS;
         String imgName;
 
         Element root = getRootDocElement(xml);

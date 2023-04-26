@@ -5,8 +5,9 @@
  * Comments: none
  */
 
-package it.polimi.ingsw.entities;
+package it.polimi.ingsw.util;
 
+import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 
 public class Player implements Comparable<Player>{

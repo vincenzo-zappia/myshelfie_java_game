@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.network.ClientHandler;
 import it.polimi.ingsw.observer.Observer;

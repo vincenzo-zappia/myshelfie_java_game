@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model.entities.state;
 
-import it.polimi.ingsw.entities.Player;
-import it.polimi.ingsw.entities.Game;
+import it.polimi.ingsw.util.Player;
+import it.polimi.ingsw.mechanics.Game;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

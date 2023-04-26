@@ -5,11 +5,11 @@
  * Comments: none
  */
 
-package it.polimi.ingsw.entities;
+package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.entities.Player;
+import it.polimi.ingsw.util.Player;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.mechanics.CommonGoalFactory;

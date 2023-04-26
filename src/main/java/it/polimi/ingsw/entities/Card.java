@@ -7,32 +7,34 @@
 
 package it.polimi.ingsw.entities;
 
+import it.polimi.ingsw.util.CardType;
+
 public class Card {
 
     //region ATTRIBUTES
     private final String img;
-    private final TileType type; //also we can use Enumeration<...>
+    private final CardType type; //also we can use Enumeration<...>
     //endregion
 
     //region CONSTRUCTOR
-    public Card(String imgName, TileType type){
+    public Card(String imgName, CardType type){
         this.type = type;
         this.img = imgName;
     }
     //endregion
 
     //region METHODS
-    public String getImg() {
-        return img;
+    public String getImgPath() {
+        return "/assets/Cards/" + img;
     }
-    public TileType getType() {
+    public CardType getType() {
         return type;
     }
     public boolean sameType(Card c){
         return (this.type == c.getType());
     }
     public boolean sameCard(Card card) {
-        return card.getType() == this.type && card.getImg().equals(this.img);
+        return card.getType() == this.type && card.getImgPath().equals(getImgPath());
     }
     //endregion
 

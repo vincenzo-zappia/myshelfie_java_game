@@ -5,8 +5,9 @@
  * Comments: none
  */
 
-package it.polimi.ingsw.entities;
+package it.polimi.ingsw.util;
 
+import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.exceptions.CellGetCardException;
 
 public class Cell {

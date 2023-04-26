@@ -8,6 +8,8 @@
 package it.polimi.ingsw.entities;
 
 import it.polimi.ingsw.exceptions.NoMoreCardsException;
+import it.polimi.ingsw.util.CardType;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -35,7 +37,7 @@ public class Bag {
         //for each one of the 6 colors create 22 cards
         for (int i = 0; i < 6; i++)
             for(int j = 0; j < 22; j++)
-                bag.add(new Card(cardImgName[i][j%3], TileType.values()[i]));
+                bag.add(new Card(cardImgName[i][j%3], CardType.values()[i]));
 
         //method that shuffles the bag
         Collections.shuffle(bag);

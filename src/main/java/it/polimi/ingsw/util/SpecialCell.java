@@ -1,10 +1,14 @@
-package it.polimi.ingsw.entities;
+package it.polimi.ingsw.util;
 
-public class SpecialCell extends Cell{
+import it.polimi.ingsw.entities.Card;
+import it.polimi.ingsw.util.CardType;
+import it.polimi.ingsw.util.Cell;
+
+public class SpecialCell extends Cell {
     private int row;
     private int column;
 
-    public SpecialCell(int row, int column, TileType type) {
+    public SpecialCell(int row, int column, CardType type) {
         super();
         setCard(new Card("img.png", type));
         this.row = row;

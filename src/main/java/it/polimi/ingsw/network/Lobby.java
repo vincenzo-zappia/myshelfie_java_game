@@ -1,7 +1,6 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.entities.Player;
-import it.polimi.ingsw.entities.Game;
+import it.polimi.ingsw.mechanics.Game;
 import it.polimi.ingsw.mechanics.GameController;
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
-package it.polimi.ingsw.entities;
+package it.polimi.ingsw.util;
 
-public enum TileType {
+public enum CardType {
     FRAMES,
     CATS,
     GAMES,
