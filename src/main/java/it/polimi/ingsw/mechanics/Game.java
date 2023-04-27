@@ -24,7 +24,7 @@ public class Game{
     //private ArrayList<Bookshelf> bookshelves; //Game is the class that puts together multiple entities and has specific value
     private ArrayList<Player> players;
     private int playerNum;
-    private Goal[] commonGoals;
+    private final Goal[] commonGoals;
     private boolean endGame;
     //endregion
 
