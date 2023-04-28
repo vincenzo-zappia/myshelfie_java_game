@@ -35,7 +35,8 @@ public class GameController {
     enum turnPhase {SELECTION, INSERTION};
 
     //region TURN
-    //TODO: Esportarlo in una classe esterna?
+    //TODO: Esportarlo in una classe esterna? Si, ma TurnController non si occuperà più di gestire legalità
+    //TODO: delle mosse. Unico utilizzo eventuale gestione nello scandire fasi di gioco
     //method that sets the current player and starts the endgame
     public void nextTurn(){
         int currentPlayerIndex = playerUsernames.indexOf(currentPlayer);
@@ -45,6 +46,8 @@ public class GameController {
         else if(!endGame) currentPlayerIndex = 0;
             //the player to the right of the sofa is the last player (the player who goes after the first one is the one to his left because the game turns go clockwise)
         else {
+            //TODO: spostare implementazione logica di gioco: in base alla fase corrente setatta da TurnController
+            //TODO: Lobby chiamerà gli eventi di gioco
             findWinner();
             return;
         }
@@ -57,10 +60,7 @@ public class GameController {
     public void startTurn(){
         //int playerIndex = playerUsernames.indexOf(currentPlayer);
 
-        //TODO: chiamata metodo in attesa del comando (forse metodo di Lobby)
-
-        //TODO: Creare metodo generale switch case che viene chiamato da ClientHandler a sua volta chiamato da Lobby
-
+        //TODO: Check legalità verrà fatto in Lobby(?) e non nello gestore turni
         //if the bookshelf is full then the endgame begins
         if(game.isPlayerBookshelfFull(currentPlayer)) endGame = true;
 
@@ -72,6 +72,7 @@ public class GameController {
 
     //region METHODS
 
+    //TODO: Inutile
     private void waitPhase(turnPhase phase){
         while(!currentPhase.equals(phase)){
             waitPhase(phase);
@@ -108,7 +109,7 @@ public class GameController {
             game.removeCardFromBoard(message.getCoordinates()); //Removal of the selected cards form the game board
         }
 
-        //TODO: notifica gli altri player (chiamata metodi VirtualView) (Observer)
+        //TODO: notifica gli altri player (chiamata metodi VirtualView) (Observer) oppure in Game (meglio in Game)
 
         //TODO: invio eccezione
     }
@@ -132,7 +133,7 @@ public class GameController {
         //TODO: calling of Game method that creates ordered ArrayList of Players
     }
 
-    public ClientHandler getClHndl(){return clientHandler;}
+    public ClientHandler getClientHandler(){return clientHandler;}
     public String getCurrentPlayer(){return currentPlayer;}
 
     //endregion

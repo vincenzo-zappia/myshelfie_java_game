@@ -36,7 +36,7 @@ public class ClientHandler implements Runnable{
     public void run(){
 
     }
-
+    //TODO: Quale tra i due metodi send7receive chiama metodo di Lobby/GameController ?
     public void sendMessage(Message message){
         try {
             objOut.writeObject(message);
