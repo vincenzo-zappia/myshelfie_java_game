@@ -59,12 +59,7 @@ public class GameController {
 
         //TODO: chiamata metodo in attesa del comando (forse metodo di Lobby)
 
-        //TODO: CHI PASSA PARAMETRI??????
-
-        //while(turnPhase ==)
-        //cardSelection((SelectionMessage) awaitMessage(MessageType.SELECTION_MESSAGE));
-
-        //cardInsertion((InsertionMessage) awaitMessage(MessageType.INSERTION_MESSAGE));
+        //TODO: Creare metodo generale switch case che viene chiamato da ClientHandler a sua volta chiamato da Lobby
 
         //if the bookshelf is full then the endgame begins
         if(game.isPlayerBookshelfFull(currentPlayer)) endGame = true;
@@ -83,17 +78,22 @@ public class GameController {
         }
     }
 
+//TODO: Metodo switch case chiamato da ClientHandler a sua volta chiamato da Lobby
     public void receiveMessage(Message message){
         switch (message.getType()){
+
+            //TODO: Logica di gioco conseguentemente gestita esternamente alla gestione turni
             case SELECTION_MESSAGE -> {
                 cardSelection((SelectionMessage) message);
 
             }
+            case INSERTION_MESSAGE -> {
+                cardInsertion((InsertionMessage) message);
+            }
         };
-
     }
 
-    //TODO: Metodo che chiama il primo startTurn()
+    //TODO: Metodo che chiama il primo startTurn() (forse gestito da Lobby)
     public void startGame(){
         //TODO: Inizializzazione
 
