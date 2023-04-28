@@ -2,6 +2,8 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.mechanics.Game;
 import it.polimi.ingsw.mechanics.GameController;
+import it.polimi.ingsw.network.messages.GameStarted;
+import it.polimi.ingsw.network.messages.MessageType;
 
 import java.util.ArrayList;
 //TODO: classe che crea effettivamente la partita: crea istanza di Game, crea i CommonGoal da associare a Game, associa Game a GameController
@@ -31,7 +33,10 @@ public class Lobby {
     }
     public Game startMatch(){
         assert (playerList.size()>1 && playerList.size()<=4);
+
         //TODO: implementare invio messaggio di startgame (dopo verifica dei prerequisiti)
+        gameController.getClHndl().sendMessage(new GameStarted(gameController.getCurrentPlayer(), MessageType.GAME_STARTED));
+
         return new Game(playerList.size());
     }
 }

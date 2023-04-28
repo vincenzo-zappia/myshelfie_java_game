@@ -24,14 +24,12 @@ public class ClientHandler implements Runnable{
     public ClientHandler(Socket socket) {
         this.socket = socket;
 
-        /*
         try {
-            inputStream = new ObjectInputStream(socket.getInputStream());
-            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            objIn = new ObjectInputStream(socket.getInputStream());
+            objOut = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-         */
 
     }
 
@@ -46,6 +44,18 @@ public class ClientHandler implements Runnable{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    //TODO check method below
+    public Message receiveMessage() {
+        try {
+            return (Message) objIn.readObject();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Classe non trovata");
+        }
+        return null;
     }
 
     public void closeConnection(){

@@ -10,22 +10,20 @@ package it.polimi.ingsw.util;
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 
-public class Player implements Comparable<Player>{
+import java.io.Serializable;
+
+public class Player implements Comparable<Player>, Serializable {
 
     //region ATTRIBUTES
-    private final String username;
-    private final int gameID; //per contesto multipartita
+    private String username;
+    private int gameID; //per contesto multipartita
     private int score;
     private boolean isMyTurn;
     private boolean firstPlayer;
     private PrivateGoal privateGoal;
-    private final Bookshelf bookshelf;
+    private Bookshelf bookshelf;
     //endregion
 
-    /*
-    if needed, the empty constructor method:
-    public Player(){}
-     */
 
     //region CONSTRUCTOR
     public Player(String username, int gameID){
@@ -33,6 +31,10 @@ public class Player implements Comparable<Player>{
         this.gameID=gameID;
         score = 0;
         bookshelf = new Bookshelf();
+    }
+
+    public Player() {
+        //TODO: remove after networking complete
     }
     //endregion
 
@@ -70,6 +72,7 @@ public class Player implements Comparable<Player>{
     public String getUsername(){
         return username;
     }
+    public void setUsername(String username){this.username=username;} //TODO: remove after networking complete
     public int getScore(){return score;}
     public void setScore(int newScore){score = newScore;}  //TODO remove after test
 

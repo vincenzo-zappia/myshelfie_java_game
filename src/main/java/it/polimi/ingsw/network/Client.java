@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.util.Player;
+import it.polimi.ingsw.network.messages.*;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.NoSuchElementException;
@@ -14,23 +17,26 @@ public class Client {
     private Scanner socketIn;
     private PrintWriter socketOut;
 
-    //private ObjectOutputStream outputStream;
-    //private ObjectInputStream inputStream;
-    //private int playerID;
+    private ObjectOutputStream objOut;
+    private ObjectInputStream objIn;
+    private int playerID; //TODO: serve davvero usare playerID? Username non sufficiente?
+    private Player player;
+
     //endregion
 
     //region CONSTRUCTOR
     public Client(String ip, int port){
         System.out.println("----Client----");
-        /*
+
         try {
             socket = new Socket("localhost", 2024); //Fixed IP and port
-            inputStream = new ObjectInputStream(socket.getInputStream());
-            outputStream = new ObjectOutputStream(socket.getOutputStream());
+            objIn = new ObjectInputStream(socket.getInputStream());
+            objOut = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             System.out.println("IO Exception from Client constructor");
         }
-         */
+
+        player = new Player();
 
         this.port = port;
         this.ip = ip;
@@ -41,14 +47,19 @@ public class Client {
     public static void main(String[] args) throws IOException {
         Client client = new Client("localhost", 2024);
 
+        System.out.println("Inserire Username: ");
+        client.player.setUsername(String.valueOf(System.in.read()));
+
         //TODO: Gestire IO con ObjectStream e non Scanner e Writer direttamente nel costruttore di Client (?)
-        BufferedReader breader = new BufferedReader(new FileReader("XML/player.xml"));
-        Scanner stdin = new Scanner(System.in);
-        //FileReader freader = new FileReader("player.xml");
-        String contenuto = breader.readLine();
+        //region OLD
+           // BufferedReader breader = new BufferedReader(new FileReader("XML/player.xml"));
+           // Scanner stdin = new Scanner(System.in);
+              //FileReader freader = new FileReader("player.xml");
+           // String contenuto = breader.readLine();
+        //endregion
 
         try {
-            client.requestConnection(contenuto);
+            client.requestConnection(client.player);
             client.startGame();
             client.quitGame();
         }
@@ -57,11 +68,13 @@ public class Client {
     //endregion
 
     //region METHODS
-    public void requestConnection(String req) throws IOException{
+    public void requestConnection(Player player) throws IOException{
         socket = new Socket(ip, port);
         System.out.println("INFO: Connessione stabilita");
 
-        socketIn = new Scanner(socket.getInputStream());
+        //aggiungere string req come parametro e rimuovere player
+
+        /*socketIn = new Scanner(socket.getInputStream());
         socketOut = new PrintWriter(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
 
@@ -76,11 +89,27 @@ public class Client {
             socketIn.close();
             socketOut.close();
             socket.close();
+        }*/
+
+        Scanner stdin = new Scanner(System.in);
+
+        try{
+            socketOut.println("connect()");
+            objOut.writeObject(player);
+            objOut.reset();
+        }
+        catch (NoSuchElementException e){
+            System.out.println("INFO: Connessione chiusa");
+            stdin.close();
+            objIn.close();
+            objOut.close();
+            socket.close();
         }
     }
-    public void startGame(){
-        socketOut.println("start()");
-        socketOut.flush();
+    public void startGame() throws IOException {
+        StartGame message = new StartGame(player.getUsername(), MessageType.START_GAME);
+        objOut.writeObject(message);
+        objOut.reset();
         System.out.println("INFO: Avvio partita");
     }
     public void quitGame(){

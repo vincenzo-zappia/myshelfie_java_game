@@ -18,6 +18,8 @@ public class GameController {
     private turnPhase currentPhase;
     private boolean endGame;
 
+    private ClientHandler clientHandler;
+
     //endregion
 
     //region CONSTRUCTOR
@@ -129,5 +131,9 @@ public class GameController {
         //TODO: creation of the scoreboard based on the calculated scores for each one of the players
         //TODO: calling of Game method that creates ordered ArrayList of Players
     }
+
+    public ClientHandler getClHndl(){return clientHandler;}
+    public String getCurrentPlayer(){return currentPlayer;}
+
     //endregion
 }
