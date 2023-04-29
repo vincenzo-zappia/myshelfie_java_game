@@ -10,6 +10,7 @@ package it.polimi.ingsw.mechanics;
 import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.Player;
+import it.polimi.ingsw.entities.goals.CommonGoal0;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.AddCardException;
 
@@ -22,6 +23,7 @@ public class Game{
     private final Board board;
     private ArrayList<Player> players;
     private final Goal[] commonGoals;
+    private CommonGoal0 commonGoal0;
     //endregion
 
     //region CONSTRUCTOR
@@ -34,6 +36,7 @@ public class Game{
         for(String user: usernames) players.add(new Player(user));
 
         commonGoals = new CommonGoalFactory().makeCommonGoal(); //sets the common goals of the game
+        commonGoal0 = new CommonGoal0();
     }
     //endregion
 
@@ -114,6 +117,7 @@ public class Game{
     public void scorePrivateGoal(){
         for(Player p : players){
             p.addScore(p.getPrivateGoal().checkGoal(p.getBookshelf()));
+            p.addScore(commonGoal0.checkGoal(p.getBookshelf()));
         }
     }
 
