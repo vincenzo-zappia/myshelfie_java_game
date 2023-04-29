@@ -37,7 +37,7 @@ public class Lobby {
         assert (playerList.size()>1 && playerList.size()<=4);
 
         //TODO: implementare invio messaggio di startgame (dopo verifica dei prerequisiti)
-        gameController.getClHndl().sendMessage(new GameStarted(gameController.getCurrentPlayer(), MessageType.GAME_STARTED));
+        gameController.getClientHandler().sendMessage(new GameStarted(gameController.getCurrentPlayer(), MessageType.GAME_STARTED));
 
         return new Game(playerList.size());
     }
