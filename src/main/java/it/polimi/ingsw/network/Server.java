@@ -10,18 +10,24 @@ package it.polimi.ingsw.network;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
+    //region ATTRIBUTES
     private final int port;
     private ServerSocket serverSocket;
+    private HashMap<Integer, Lobby> lobbyMap;
+    //endregion
 
     public Server(int port) {
         this.port = port;
         try {
             serverSocket = new ServerSocket(port);
-            System.out.println("INFO: Server in ascolto sulla porta " + port);
+            lobbyMap = new HashMap<>();
+            //System.out.println("INFO: Server in ascolto sulla porta " + port);
         } catch (IOException e) {
             System.err.println("Error:" + e.getMessage());
             //return removed
@@ -60,5 +66,25 @@ public class Server {
             System.err.println("Error: " + e.getMessage());
         }
     }
+
+    public boolean existsLobby(int lobbyId){
+        return lobbyMap.containsKey(lobbyId);
+    }
+
+    public Lobby getLobby(int lobbyId){
+        return lobbyMap.get(lobbyId);
+    }
+
+    public Lobby createLobby(String creatorUsername){
+        int id = lobbyMap.size()+1;
+        Lobby lobby = new Lobby(this, creatorUsername, id);
+        lobbyMap.put(id, lobby);
+        return lobby;
+    }
+
+    public void removeLobby(int lobbyId){
+        lobbyMap.remove(lobbyId);
+    }
+
     //endregion
 }
