@@ -56,7 +56,7 @@ public class Bag {
 
     /**
      * Draw one card from the bag
-     * @return
+     * @return the last card in the bag
      * @throws NoMoreCardsException
      */
     public Card drawCard() throws NoMoreCardsException{
