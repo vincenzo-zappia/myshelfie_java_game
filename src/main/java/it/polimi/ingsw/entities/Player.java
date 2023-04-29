@@ -11,7 +11,7 @@ import it.polimi.ingsw.entities.goals.PrivateGoal;
 
 import java.io.Serializable;
 
-public class Player implements Comparable<Player>, Serializable {
+public class Player implements Comparable<Player> {
 
     //region ATTRIBUTES
     private String username;
@@ -34,13 +34,28 @@ public class Player implements Comparable<Player>, Serializable {
     //endregion
 
     //region METHODS
+
+    /**
+     * add to the player's total score the new points
+     * @param points added by completing common or private goals
+     */
     public void addScore(int points){score+=points;}
 
+    /**
+     * check if player's bookshelf is full
+     * @return boolean value (true if full)
+     */
     public boolean isBookshelfFull(){
-        return bookshelf.checkIfFull();    //per non cambiare precedenti metodi, implementazione corretta e spostata in bookshelf.
+        return bookshelf.checkIfFull();
     }
 
     //method to order players by score (see class Game.java)
+
+    /**
+     * override of method compareTo (cass Object)
+     * @param o the object to be compared.
+     * @return integer used for ordering players
+     */
     @Override
     public int compareTo(Player o) {
         return Integer.compare(score, o.getScore());
