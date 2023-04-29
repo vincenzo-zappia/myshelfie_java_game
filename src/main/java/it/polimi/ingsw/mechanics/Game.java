@@ -43,14 +43,13 @@ public class Game{
     //region METHODS
 
     //TODO: in questo modo il giocatore deve inviare la selezione e aspettare che venga valutata, bisognerebbe implementare con feedback in tempo reale
-    public boolean isSelectable(int[][] coord){
 
-        //"coord" is a matrix with the coordinates of the max 3 cards that the player selected:
-        //pos = {
-        //  {x1, y1},
-        //  {x2, y2},
-        //  {x3, y3}
-        //}
+    /**
+     * check if the cards selected by player are selectable (legit)
+     * @param coord coordinates of selected cards
+     * @return true if the cards (pointed by the coordinates) are selectable
+     */
+    public boolean isSelectable(int[][] coord){
 
         if(coord.length==3 && (coord[0][0] == coord[1][0]+1 && coord[1][0] == coord[2][0]+1 || coord[0][1] == coord[1][1]+1 && coord[1][1] == coord[2][1]+1) )
         {
@@ -80,13 +79,11 @@ public class Game{
         return false;
     }
 
-    //method that calls "Board.removeCard()" checking if it's the player's turn
-    //"coordinates" is a matrix with the coordinates of the max 3 cards that the player selected:
-    //pos = {
-    //  {x1, y1},
-    //  {x2, y2},
-    //  {x3, y3}
-    //}
+    /**
+     * Remove card from game's board
+     * @param coordinates contains the coordinate of maximum three cards and at least one card
+     * @return the removed cards
+     */
     public ArrayList<Card> removeCardFromBoard(int[][] coordinates){
         ArrayList<Card> removedCards = new ArrayList<>();
         for (int[] coordinate : coordinates) removedCards.add(board.removeCard(coordinate[0], coordinate[1]));
@@ -94,10 +91,16 @@ public class Game{
         return removedCards;
     }
 
+    /**
+     * inserts each selected card into the player's bookshelf
+     * @param playerUsername identify the single player
+     * @param column of the player's bookshelf
+     * @param cards to insert
+     * @throws AddCardException if column are already full
+     */
     public void addCardToBookshelf(String playerUsername, int column, ArrayList<Card> cards) throws AddCardException {
         int playerIndex = players.indexOf(playerUsername); //TODO: exception in case username not found
 
-        //inserts each selected card into the player's bookshelf
         for(Card c : cards){
             players.get(playerIndex).getBookshelf().addCard(column, c);
         }

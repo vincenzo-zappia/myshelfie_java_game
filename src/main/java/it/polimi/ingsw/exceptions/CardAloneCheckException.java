@@ -1,4 +1,4 @@
 package it.polimi.ingsw.exceptions;
 
-public class CardAloneCheckException extends Exception{
+public class CardAloneCheckException extends RuntimeException{
 }
