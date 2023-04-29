@@ -15,11 +15,15 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable{
+    //region ATTRIBUTES
     private final Socket socket;
+    private Server server;
+    private Lobby lobby;
 
     //ObjectXStream because Server and Client will only exchange serialized Objects between themselves
     private ObjectOutputStream objOut;
     private ObjectInputStream objIn;
+    //endregion
 
     public ClientHandler(Socket socket) {
         this.socket = socket;

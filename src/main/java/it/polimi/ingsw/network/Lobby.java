@@ -15,6 +15,7 @@ public class Lobby {
     private final Server server;
     private ArrayList<Client> clients; //TODO: perche ci serve la lista dei client?
     private ArrayList<String> playerList;
+    private boolean inGame;
     //endregion
 
     private GameController gameController;
@@ -23,6 +24,7 @@ public class Lobby {
     //TODO: verificare quali attributi servono alla creazione della lobby
 
     public Lobby(Server server, String creatorUsername) {
+        inGame=false;
         this.server = server;
         addPlayer(creatorUsername);
     }

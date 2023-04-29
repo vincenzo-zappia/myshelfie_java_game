@@ -41,7 +41,7 @@ public class Bookshelf {
 
     public void addCard(int column, Card card) throws AddCardException {
         int i = 5;
-        if(!bookshelf[0][column].isCellEmpty()) throw new AddCardException(); //if the topmost cell contains a card it throws an exception
+        if(!bookshelf[0][column].isCellEmpty()) throw new AddCardException("Colonna piena!"); //if the topmost cell contains a card it throws an exception
         while(!bookshelf[i][column].isCellEmpty() && i>0) i--;
         bookshelf[i][column].setCard(card);
     }
