@@ -1,9 +1,9 @@
 package it.polimi.ingsw.network.messages;
 
 public class ResponseMessage extends Message{
-    private boolean response;
-    public ResponseMessage(String sender, MessageType type, boolean response) {
-        super(sender, type);
+    private final boolean response;
+    public ResponseMessage(boolean response) {
+        super("server", MessageType.RESPONSE);
         this.response = response;
     }
 }

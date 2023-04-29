@@ -26,7 +26,7 @@ public class VirtualView implements Observer {
      * @param coordinates coordinates of the removed cards
      */
     public void sendCardRemoval(int[][] coordinates){
-        clientHandler.sendMessage(new CardRemovalMessage("server", MessageType.CARD_REMOVAL, coordinates));
+        clientHandler.sendMessage(new CardRemovalMessage(coordinates));
     }
 
     /**
@@ -34,7 +34,7 @@ public class VirtualView implements Observer {
      * @param board refilled Board
      */
     public void sendBoardRefill(Board board){
-        clientHandler.sendMessage(new BoardRefillMessage("server", MessageType.BOARD_REFILL, board));
+        clientHandler.sendMessage(new BoardRefillMessage(board));
     }
 
     /**
@@ -42,6 +42,6 @@ public class VirtualView implements Observer {
      * @param response boolean that is true if the command sent by the client was accepted, 0 otherwise
      */
     public void sendResponse(boolean response){
-        clientHandler.sendMessage(new ResponseMessage("server", MessageType.RESPONSE, response));
+        clientHandler.sendMessage(new ResponseMessage(response));
     }
 }
