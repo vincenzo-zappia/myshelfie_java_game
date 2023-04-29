@@ -34,7 +34,7 @@ public class VirtualView implements Observer {
      * @param board refilled Board
      */
     public void sendBoardRefill(Board board){
-        clientHandler.sendMessage(new BoardRefillMessage(board));
+        clientHandler.sendMessage(new BoardRefillUpdate(board));
     }
 
     /**

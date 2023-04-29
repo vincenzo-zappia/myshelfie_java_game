@@ -13,8 +13,6 @@ import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.entities.goals.CommonGoal0;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.AddCardException;
-import it.polimi.ingsw.network.messages.BoardRefillMessage;
-import it.polimi.ingsw.observer.Subject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +21,6 @@ public class Game{
 
     //region ATTRIBUTES
     private final Board board;
-    //TODO: hashmap (username, view) corrispondente ad ogni player (è la struttura dati contenete gli "observer")
     private ArrayList<Player> players;
     private final Goal[] commonGoals;
     private CommonGoal0 commonGoal0;
@@ -32,31 +29,26 @@ public class Game{
     //region CONSTRUCTOR
     public Game(ArrayList<String> usernames){
         board = new Board(usernames.size());
+
+        //TODO: Non è meglio chiamarlo nel costruttore di Board?
         board.fillBoard(); //filling of the board with cards
-        players=new ArrayList<>();
+        players = new ArrayList<>();
 
         //player (game entity) creation
         for(String user: usernames) players.add(new Player(user));
 
         commonGoals = new CommonGoalFactory().makeCommonGoal(); //sets the common goals of the game
         commonGoal0 = new CommonGoal0();
-
-        //TODO: scorrere hashmap e per ogni view chiamare sendBoardRefill(board) (implementare notifyObserver)
-        /*
-        notifyObserver();
-
-         */
     }
     //endregion
 
     //region METHODS
 
     //TODO: in questo modo il giocatore deve inviare la selezione e aspettare che venga valutata, bisognerebbe implementare con feedback in tempo reale
-
     /**
-     * check if the cards selected by player are selectable (legit)
-     * @param coord coordinates of selected cards
-     * @return true if the cards (pointed by the coordinates) are selectable
+     * Checks if the selected cards are actually selectable
+     * @param coord coordinates of the selected cards
+     * @return true if the cards are selectable, false otherwise
      */
     public boolean isSelectable(int[][] coord){
 
@@ -89,8 +81,8 @@ public class Game{
     }
 
     /**
-     * Remove card from game's board
-     * @param coordinates contains the coordinate of maximum three cards and at least one card
+     * Removes at most three cards from the board
+     * @param coordinates of the cards selected to be removed
      * @return the removed cards
      */
     public ArrayList<Card> removeCardFromBoard(int[][] coordinates){
@@ -98,15 +90,13 @@ public class Game{
         for (int[] coordinate : coordinates) removedCards.add(board.removeCard(coordinate[0], coordinate[1]));
         System.out.println("Cards removed!");
         return removedCards;
-
-
     }
 
     /**
-     * inserts each selected card into the player's bookshelf
-     * @param playerUsername identify the single player
-     * @param column of the player's bookshelf
-     * @param cards to insert
+     * Inserts each selected card in order into the player's bookshelf
+     * @param playerUsername player who performs the move
+     * @param column into which insert the cards selected by the player
+     * @param cards selected and arranged by the player in the desired order
      * @throws AddCardException if column are already full
      */
     public void addCardToBookshelf(String playerUsername, int column, ArrayList<Card> cards) throws AddCardException {
@@ -118,6 +108,11 @@ public class Game{
     }
 
     //TODO: da revisionare
+
+    /**
+     * Checks if a common goal has been achieved by a player
+     * @param username player whose eventual achievement we want to check
+     */
     public void scoreCommonGoal(String username){
         for(Player p : players){
             if(p.getUsername().equals(username)) {
@@ -127,7 +122,9 @@ public class Game{
         }
     }
 
-
+    /**
+     * For each player checks the progress of the achievement of his private goal and the general common goal 0
+     */
     public void scorePrivateGoal(){
         for(Player p : players){
             p.addScore(p.getPrivateGoal().checkGoal(p.getBookshelf()));
@@ -156,7 +153,9 @@ public class Game{
     public ArrayList<Player> getPlayers(){
         return players;
     }
-
+    public Board getBoard(){
+        return board;
+    }
     //endregion
 
 }

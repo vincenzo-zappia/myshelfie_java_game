@@ -36,7 +36,7 @@ public class Lobby {
         //TODO: implementare la verifica che la lobby non sia piena e restituzione messaggio di accettazione o errore
         playerList.add(username);
     }
-    public Game startMatch(){
+    public Game startGame(){
         assert (playerList.size()>1 && playerList.size()<=4);
 
         //TODO: implementare invio messaggio di startgame (dopo verifica dei prerequisiti)

@@ -19,7 +19,7 @@ public enum MessageType {
 
     //server2client
     RESPONSE,
-    GAME_STARTED,
+    GAME_START,
     CARD_REMOVAL,
     BOARD_REFILL,
 
