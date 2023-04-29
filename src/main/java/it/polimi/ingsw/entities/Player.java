@@ -49,8 +49,6 @@ public class Player implements Comparable<Player> {
         return bookshelf.checkIfFull();
     }
 
-    //method to order players by score (see class Game.java)
-
     /**
      * override of method compareTo (cass Object)
      * @param o the object to be compared.
