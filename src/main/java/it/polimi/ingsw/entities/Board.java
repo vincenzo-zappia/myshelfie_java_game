@@ -31,7 +31,9 @@ public class Board {
 
     }
 
-    //method that activates the board cells that do NOT depend on the number of players (basic board)
+    /**
+     * method that activates the board cells that do NOT depend on the number of players (basic board)
+     */
     private void initBoard(){
         for(int i = 3; i<=4;i++)matrix[1][i].setCellActive();
         for(int i = 3; i<=5;i++)matrix[2][i].setCellActive();
@@ -44,7 +46,12 @@ public class Board {
         for(int i = 4; i<=5;i++)matrix[7][i].setCellActive();
     }
 
-    //method that activates the additional board cells that depend on the number of players
+    //
+
+    /**
+     * method that activates the additional board cells that depend on the number of players
+     * @param x number of players
+     */
     private void initBoard(int x){
         if(x >= 3){
             matrix[0][3].setCellActive();
@@ -68,7 +75,9 @@ public class Board {
         }
     }
 
-    //method that fills the board. It's called in two occasions: 1) when the board is created 2) when a player cannot select more than 1 or 2 cards
+    /**
+     * method that fills the board. It's called in two occasions: 1) when the board is created 2) when a player cannot select more than 1 or 2 cards
+     */
     public void fillBoard(){
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
@@ -85,7 +94,12 @@ public class Board {
 
     //region METHODS
 
-    //TODO deve solo svuotare tabella o deve anche resituire carta?
+    /**
+     * take a card from the table and return the card
+     * @param row of the chosen card
+     * @param column of the chosen card
+     * @return card chosen by player
+     */
     public Card removeCard(int row, int column){
         Card card;
         try {
@@ -97,10 +111,12 @@ public class Board {
         return card;
     }
 
-    //TODO: needs comment
+    /**
+     * override of method toString() of class Object
+     * @return the created string
+     */
     public String toString(){
         StringBuilder ret = new StringBuilder();
-
         try {
             for (int i = 0; i < 9; i++){
                 for (int j=0;j < 9; j++){
@@ -121,12 +137,17 @@ public class Board {
         } catch (CellGetCardException e) {     //see method Cell.getCard()
             throw new RuntimeException(e);
         }
-
         return ret.toString();
-
     }
 
     //check if a single card is selectable
+
+    /**
+     * check if a single card is selectable
+     * @param x card's row
+     * @param y card's column
+     * @return true if the card is selectable (by player)
+     */
     public boolean selectableCard(int x, int y){
         if(matrix[x][y].isCellActive() && !matrix[x][y].isCellEmpty()){
             if((y < 8) && (matrix[x][y+1].isCellEmpty() || !matrix[x][y+1].isCellActive()))return true;

@@ -28,7 +28,11 @@ public class Bookshelf {
 
     //region METHODS
 
-    public boolean checkIfFull(){   //check if the bookshelf is full or not
+    /**
+     * check if the bookshelf is full
+     * @return false while bookshelf is not full
+     */
+    public boolean checkIfFull(){
         boolean sentinel = false;
         for(int i=0; i<6; i++) {
             for(int j=0; j<5; j++){
@@ -39,13 +43,24 @@ public class Bookshelf {
         return true;
     }
 
+    /**
+     * method that add card in the bookshelf (by columns)
+     * @param column where player want to insert card
+     * @param card to insert
+     * @throws AddCardException when the column is full
+     */
     public void addCard(int column, Card card) throws AddCardException {
         int i = 5;
-        if(!bookshelf[0][column].isCellEmpty()) throw new AddCardException("Colonna piena!"); //if the topmost cell contains a card it throws an exception
+        if(!bookshelf[0][column].isCellEmpty()) throw new AddCardException("Colonna piena!");
         while(!bookshelf[i][column].isCellEmpty() && i>0) i--;
         bookshelf[i][column].setCard(card);
     }
 
+    /**
+     * count the number of cards in a single column
+     * @param column of the bookshelf
+     * @return number of cards
+     */
     public int cardsInColumn(int column) {
         int i=5, count=0;
         while (i>=0 && !bookshelf[i][column].isCellEmpty()){
@@ -55,6 +70,10 @@ public class Bookshelf {
         return count;
     }
 
+    /**
+     * method that return a matrix 6x5 of only colours of the cards
+     * @return the matrix itself
+     */
     public int[][] getMatrixColors() {
         int[][] x = new int[6][5];
 
