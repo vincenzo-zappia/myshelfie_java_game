@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.messages;
 
-import it.polimi.ingsw.util.Player;
+import it.polimi.ingsw.entities.Player;
 
 public class CreateLobby extends Message {
 

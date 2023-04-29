@@ -3,6 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.mechanics.Game;
 import it.polimi.ingsw.mechanics.GameController;
 import it.polimi.ingsw.network.messages.GameStarted;
+import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 
 import java.util.ArrayList;
@@ -39,6 +40,10 @@ public class Lobby {
         //TODO: implementare invio messaggio di startgame (dopo verifica dei prerequisiti)
         gameController.getClientHandler().sendMessage(new GameStarted(gameController.getCurrentPlayer(), MessageType.GAME_STARTED));
 
-        return new Game(playerList.size());
+        return new Game(playerList);
+    }
+
+    public void sendToController(Message msg){
+        gameController.messageHandler(msg);
     }
 }

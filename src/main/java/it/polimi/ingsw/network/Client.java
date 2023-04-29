@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.util.Player;
+import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.Message;
 

@@ -13,78 +13,73 @@ public class GameController {
 
     //region ATTRIBUTES
     private final Game game;
-    private final ArrayList<String> playerUsernames;
-    private String currentPlayer;
-    private boolean endGame;
-    private ClientHandler clientHandler;
-
+    private final TurnManager turnManager;
     //endregion
 
     //region CONSTRUCTOR
-    public GameController(ArrayList<String> playerUsernames, Game game, ClientHandler clientHandler){
-        this.playerUsernames = playerUsernames;
-        currentPlayer = playerUsernames.get(0); //TODO: the couch
+    public GameController(ArrayList<String> playerUsernames, Game game){
+        turnManager = new TurnManager(playerUsernames);
         this.game = game;
-        endGame = false;
-
     }
     //endregion
 
-
     //region METHODS
 
+    //TODO: revisionare javaDoc
     /**
-     * switch case method called by ClientHandler called by Lobby
+     *
      * @param message received message
      */
-    //TODO:
-    public void receiveMessage(Message message){
+    public void messageHandler(Message message){
+        //Gestione logica turni
+        if (!turnManager.getCurrentPlayer().equals(message.getUsername())) return; //TODO: inviare messaggio di errore al player non di turno
+
         switch (message.getType()){
-
-            //TODO: Logica di gioco conseguentemente gestita esternamente alla gestione turni
-            case SELECTION_MESSAGE -> {
-                cardSelection((SelectionMessage) message);
-
+            case SELECTION_MESSAGE -> cardSelection((SelectionMessage) message);
+            case INSERTION_MESSAGE -> cardInsertion((InsertionMessage) message);
+            default -> {
+                //TODO: generare eccezione?
             }
-            case INSERTION_MESSAGE -> {
-                cardInsertion((InsertionMessage) message);
-            }
-        };
+        }
     }
 
-    //method that extracts the coordinates from the XML command, checks the validity of the selection and turns the
-    //coordinates into their corresponding Cards
+    /**
+     * method that extracts the coordinates from the message checking the validity of the selection
+     * @param message
+     */
     public void cardSelection(SelectionMessage message){
         if(game.isSelectable(message.getCoordinates())) {
             game.removeCardFromBoard(message.getCoordinates()); //Removal of the selected cards form the game board
+            //TODO: inviare messaggio di conferma
         }
 
-        //TODO: notifica gli altri player (chiamata metodi VirtualView) (Observer) oppure in Game (meglio in Game)
-
-        //TODO: invio eccezione
+        //TODO: invio eccezione nel caso in cui le celle non sono selezionabili
     }
 
     //method that extracts the chosen column from the XML and inserts the cards previously selected into the player's bookshelf
     public void cardInsertion(InsertionMessage message){
         //Insertion of the cards removed from the board into the player's bookshelf
         try {
-            game.addCardToBookshelf(currentPlayer, message.getSelectedColumn(), message.getSelectedCards());
+            game.addCardToBookshelf(message.getUsername(), message.getSelectedColumn(), message.getSelectedCards());
+            endTurn(message.getUsername());
         } catch (AddCardException e) {
             throw new RuntimeException(e);
         }
     }
 
+    private void endTurn(String username){
+        game.scoreCommonGoal(turnManager.getCurrentPlayer());
+        if(game.isPlayerBookshelfFull(username)) turnManager.startEndGame();
+        if(!turnManager.nextTurn()) findWinner(); //qui avviene effettivamente il cambio turno (se è disponibile)
+    }
+
     //method that creates the final scoreboard
     public void findWinner(){
-        game.scoreCommonGoal();
         game.scorePrivateGoal();
 
         //TODO: creation of the scoreboard based on the calculated scores for each one of the players
         //TODO: calling of Game method that creates ordered ArrayList of Players
     }
-
-    public ClientHandler getClientHandler(){return clientHandler;}
-    public String getCurrentPlayer(){return currentPlayer;}
 
     //endregion
 }

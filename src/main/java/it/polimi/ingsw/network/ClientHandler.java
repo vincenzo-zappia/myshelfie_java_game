@@ -38,9 +38,23 @@ public class ClientHandler implements Runnable{
     }
 
     public void run(){
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                Message msg = (Message) objIn.readObject();
+                if (msg != null /*TODO: mettere anche che non sia un ping message*/){
 
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
     //TODO: Quale tra i due metodi send7receive chiama metodo di Lobby/GameController ?
+
+    /**
+     * Invia i messaggi attraverso TCP/IP a/ai client
+     * @param message rappresenta il messaggio da inviare
+     */
     public void sendMessage(Message message){
         try {
             objOut.writeObject(message);

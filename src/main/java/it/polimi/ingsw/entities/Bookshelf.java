@@ -33,11 +33,12 @@ public class Bookshelf {
         for(int i=0; i<6; i++) {
             for(int j=0; j<5; j++){
                 sentinel = bookshelf[i][j].isCellEmpty();   // if a single cell of bookshelf is empty,
-                if(sentinel)return false;                   // the method immediately return false
+                if(sentinel) return false;                  // the method immediately return false
             }
         }
         return true;
     }
+
 
     public void addCard(int column, Card card) throws AddCardException {
         int i = 5;

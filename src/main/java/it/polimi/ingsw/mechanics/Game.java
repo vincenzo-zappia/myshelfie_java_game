@@ -9,10 +9,9 @@ package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.util.Player;
+import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.AddCardException;
-import it.polimi.ingsw.mechanics.CommonGoalFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,29 +20,20 @@ public class Game{
 
     //region ATTRIBUTES
     private final Board board;
-    //private ArrayList<Bookshelf> bookshelves; //Game is the class that puts together multiple entities and has specific value
     private ArrayList<Player> players;
-    private int playerNum;
     private final Goal[] commonGoals;
-    private boolean endGame;
     //endregion
 
     //region CONSTRUCTOR
-    public Game(int playerNum){
-        board = new Board(playerNum);
+    public Game(ArrayList<String> usernames){
+        board = new Board(usernames.size());
         board.fillBoard(); //filling of the board with cards
         players=new ArrayList<>();
-        /*
-        //initialization of playerNum bookshelves
-        bookshelves = new Bookshelf[playerNum];
-        for (Bookshelf b : bookshelves){
-            b = new Bookshelf();
-        }
-        */
 
-        commonGoals = new CommonGoalFactory().makeCommonGoal(); //set the common goals of the game
+        //player (game entity) creation
+        for(String user: usernames) players.add(new Player(user));
 
-        System.out.println(board);
+        commonGoals = new CommonGoalFactory().makeCommonGoal(); //sets the common goals of the game
     }
     //endregion
 
@@ -110,15 +100,17 @@ public class Game{
         }
     }
 
-    public void scoreCommonGoal(){
+    //TODO: da revisionare
+    public void scoreCommonGoal(String username){
         for(Player p : players){
-            p.addScore(commonGoals[0].checkGoal(p.getBookshelf()));
-            p.addScore(commonGoals[1].checkGoal(p.getBookshelf()));
+            if(p.getUsername().equals(username)) {
+                p.addScore(commonGoals[0].checkGoal(p.getBookshelf()));
+                p.addScore(commonGoals[1].checkGoal(p.getBookshelf()));
+            }
         }
     }
 
-    //method that checks each player's private goal (can be called during and at the end of the game
-    //TODO: deciding when the method will be called (end game or repeatedly mid game)
+
     public void scorePrivateGoal(){
         for(Player p : players){
             p.addScore(p.getPrivateGoal().checkGoal(p.getBookshelf()));
@@ -131,16 +123,13 @@ public class Game{
         return ordered;
     }
 
+    //metodo forwarding
     public boolean isPlayerBookshelfFull(String username){
         boolean full = false;
         for(Player p : players){
             if(p.getUsername().equals(username)) full = p.isBookshelfFull();
         }
         return full;
-    }
-
-    public void addPlayers (Player x){    //used for test purpose
-        players.add(x);
     }
 
     //endregion

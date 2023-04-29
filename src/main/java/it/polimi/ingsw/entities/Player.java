@@ -5,9 +5,8 @@
  * Comments: none
  */
 
-package it.polimi.ingsw.util;
+package it.polimi.ingsw.entities;
 
-import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 
 import java.io.Serializable;
@@ -16,19 +15,15 @@ public class Player implements Comparable<Player>, Serializable {
 
     //region ATTRIBUTES
     private String username;
-    private int gameID; //per contesto multipartita
     private int score;
-    private boolean isMyTurn;
-    private boolean firstPlayer;
     private PrivateGoal privateGoal;
     private Bookshelf bookshelf;
     //endregion
 
 
     //region CONSTRUCTOR
-    public Player(String username, int gameID){
+    public Player(String username){
         this.username=username;
-        this.gameID=gameID;
         score = 0;
         bookshelf = new Bookshelf();
     }
@@ -57,12 +52,6 @@ public class Player implements Comparable<Player>, Serializable {
     public Bookshelf getBookshelf(){
         return bookshelf;
     }
-    public boolean getTurn(){
-        return isMyTurn;
-    }
-    public void setTurn(boolean turn){
-        isMyTurn = turn;
-    }
     public PrivateGoal getPrivateGoal() {
         return privateGoal;
     }
@@ -78,7 +67,7 @@ public class Player implements Comparable<Player>, Serializable {
 
     @Override
     public String toString(){
-        return "\n\tUsername: " + username + "\n\tGameId: " + gameID + "\n\tScore: " + score;
+        return "\n\tUsername: " + username + "\n\tScore: " + score;
     }
 
     //endregion
