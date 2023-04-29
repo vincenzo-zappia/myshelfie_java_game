@@ -16,7 +16,6 @@ public class Bookshelf {
 
     //region ATTRIBUTES
     private final Cell[][] bookshelf;
-
     //endregion
 
     //region CONSTRUCTOR

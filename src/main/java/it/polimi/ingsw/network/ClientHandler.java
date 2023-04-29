@@ -7,6 +7,7 @@
 
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.network.messages.JoinLobby;
 import it.polimi.ingsw.network.messages.Message;
 
 import java.io.IOException;
@@ -50,6 +51,30 @@ public class ClientHandler implements Runnable{
         }
     }
     //TODO: Quale tra i due metodi send7receive chiama metodo di Lobby/GameController ?
+
+    private void inizializeLobbyConnection(){
+        boolean res = false;
+        Message msg = null;
+        try {
+            while(!res){
+                msg = (Message) objIn.readObject();
+                res = msg!=null;
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        switch (msg.getType()){
+            case JOIN_LOBBY -> {
+                JoinLobby joinLobby = (JoinLobby) msg;
+                if (server.existsLobby(joinLobby.getLobbyId())) this.lobby = server.getLobby(joinLobby.getLobbyId());
+            }
+            case CREATE_LOBBY -> this.lobby = server.createLobby(msg.getUsername());
+            default -> {
+                //TODO: generare eccezione?
+            }
+        }
+    }
 
     /**
      * Invia i messaggi attraverso TCP/IP a/ai client
