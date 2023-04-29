@@ -45,10 +45,20 @@ public class Bag {
     //endregion
 
     //region METHODS
+
+    /**
+     * check if the bag is empty
+     * @return true if bag empty, false in the other case
+     */
     public boolean isBagEmpty(){
         return bag.size() == 0;
     }
 
+    /**
+     * Draw one card from the bag
+     * @return the last card in the bag
+     * @throws NoMoreCardsException
+     */
     public Card drawCard() throws NoMoreCardsException{
             return bag.remove(bag.size() - 1);
     }
