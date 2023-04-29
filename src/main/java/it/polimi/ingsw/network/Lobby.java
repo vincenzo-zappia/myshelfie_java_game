@@ -13,8 +13,9 @@ public class Lobby {
 
     //TODO: verificare quali attributi servono effettivamente alla lobby
     //region ATTRIBUTES
+    private final int lobbyId;
     private final Server server;
-    private ArrayList<Client> clients; //TODO: perche ci serve la lista dei client?
+    private ArrayList<ClientHandler> clientsHandler;
     private ArrayList<String> playerList;
     private boolean inGame;
     //endregion
@@ -24,8 +25,9 @@ public class Lobby {
     //TODO: DA REVISIONARE (quando la lobby viene creata non si conoscono gli username di tutti i player)
     //TODO: verificare quali attributi servono alla creazione della lobby
 
-    public Lobby(Server server, String creatorUsername) {
+    public Lobby(Server server, String creatorUsername, int lobbyId) {
         inGame=false;
+        this.lobbyId = lobbyId;
         this.server = server;
         addPlayer(creatorUsername);
     }
@@ -38,7 +40,7 @@ public class Lobby {
         assert (playerList.size()>1 && playerList.size()<=4);
 
         //TODO: implementare invio messaggio di startgame (dopo verifica dei prerequisiti)
-        gameController.getClientHandler().sendMessage(new GameStarted(gameController.getCurrentPlayer(), MessageType.GAME_STARTED));
+        //gameController.getClientHandler().sendMessage(new GameStarted(gameController.getCurrentPlayer(), MessageType.GAME_STARTED));
 
         return new Game(playerList);
     }
