@@ -16,7 +16,6 @@ public class GameController {
     private final ArrayList<String> playerUsernames;
     private String currentPlayer;
     private boolean endGame;
-
     private ClientHandler clientHandler;
 
     //endregion
