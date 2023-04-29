@@ -1,8 +1,9 @@
 package it.polimi.ingsw.mechanics;
 
+import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.network.ClientHandler;
+import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.network.messages.Message;
 
 public class VirtualView implements Observer {
 
@@ -18,4 +19,29 @@ public class VirtualView implements Observer {
     }
 
     //TODO: Gestione particolare messaggi server -> client
+
+    /**
+     * Method that after each turn sends the updated Board (without the Cards corresponding to the
+     * coordinates
+     * @param coordinates coordinates of the removed cards
+     */
+    public void sendCardRemoval(int[][] coordinates){
+        clientHandler.sendMessage(new CardRemovalMessage("server", MessageType.CARD_REMOVAL, coordinates));
+    }
+
+    /**
+     * Method that after each refill sends the new Board to the clients
+     * @param board refilled Board
+     */
+    public void sendBoardRefill(Board board){
+        clientHandler.sendMessage(new BoardRefillMessage("server", MessageType.BOARD_REFILL, board));
+    }
+
+    /**
+     * Method that gives feedback to the player about his last sent command.
+     * @param response boolean that is true if the command sent by the client was accepted, 0 otherwise
+     */
+    public void sendResponse(boolean response){
+        clientHandler.sendMessage(new ResponseMessage("server", MessageType.RESPONSE, response));
+    }
 }

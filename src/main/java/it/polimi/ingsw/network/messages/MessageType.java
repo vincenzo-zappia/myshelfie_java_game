@@ -18,6 +18,9 @@ public enum MessageType {
     INSERTION_MESSAGE,
 
     //server2client
+    RESPONSE,
     GAME_STARTED,
+    CARD_REMOVAL,
+    BOARD_REFILL,
 
 }

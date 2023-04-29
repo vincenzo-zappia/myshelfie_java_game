@@ -13,6 +13,8 @@ import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.entities.goals.CommonGoal0;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.AddCardException;
+import it.polimi.ingsw.network.messages.BoardRefillMessage;
+import it.polimi.ingsw.observer.Subject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +23,7 @@ public class Game{
 
     //region ATTRIBUTES
     private final Board board;
+    //TODO: hashmap (username, view) corrispondente ad ogni player (è la struttura dati contenete gli "observer")
     private ArrayList<Player> players;
     private final Goal[] commonGoals;
     private CommonGoal0 commonGoal0;
@@ -37,6 +40,12 @@ public class Game{
 
         commonGoals = new CommonGoalFactory().makeCommonGoal(); //sets the common goals of the game
         commonGoal0 = new CommonGoal0();
+
+        //TODO: scorrere hashmap e per ogni view chiamare sendBoardRefill(board) (implementare notifyObserver)
+        /*
+        notifyObserver();
+
+         */
     }
     //endregion
 
@@ -89,6 +98,8 @@ public class Game{
         for (int[] coordinate : coordinates) removedCards.add(board.removeCard(coordinate[0], coordinate[1]));
         System.out.println("Cards removed!");
         return removedCards;
+
+
     }
 
     /**
