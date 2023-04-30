@@ -61,6 +61,7 @@ public class CliUtil {
                 System.out.println(green + "┤" + reset);
             }
         }
+        return "";
     }
 
     public static String makeTitle(String title) {

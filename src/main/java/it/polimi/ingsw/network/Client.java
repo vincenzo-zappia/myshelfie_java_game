@@ -16,47 +16,26 @@ public class Client {
 
     private ObjectOutputStream objOut;
     private ObjectInputStream objIn;
-    private Player player;
 
     //endregion
 
     //region CONSTRUCTOR
     public Client(String ip, int port){
-        System.out.println("----Client----");
 
         try {
-            socket = new Socket("localhost", 2024); //Fixed IP and port
+            socket = new Socket(ip, port);
             objIn = new ObjectInputStream(socket.getInputStream());
             objOut = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             System.out.println("IO Exception from Client constructor");
         }
 
-        player = new Player();
-
         this.port = port;
         this.ip = ip;
     }
     //endregion
 
-    //region MAIN
-    public static void main(String[] args) throws IOException {
-        Client client = new Client("localhost", 2024);
-
-        //TODO: Gestire IO con ObjectStream e non Scanner e Writer direttamente nel costruttore di Client (?)
-    }
-    //region METHODS
-
-
-
-    public void startGame() throws IOException {
-        StartGame message = new StartGame(player.getUsername(), MessageType.START_GAME);
-        objOut.writeObject(message);
-        objOut.reset();
-        System.out.println("INFO: Avvio partita");
-    }
-
-   public void sendMsg(Message msg){
+   public void sendMessage(Message msg){
        try {
            objOut.writeObject(msg);
            objOut.reset();
@@ -64,6 +43,20 @@ public class Client {
            throw new RuntimeException(e);
        }
    }
+
+    public Message receiveMessage(){
+        boolean res = false;
+        Message msg = null;
+        try {
+            while(!res){
+                msg = (Message) objIn.readObject();
+                res = msg!=null;
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return msg;
+    }
     //endregion
 
 }

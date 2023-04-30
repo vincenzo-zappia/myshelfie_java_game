@@ -77,6 +77,7 @@ public class Server {
         int id = lobbyMap.size()+1;
         Lobby lobby = new Lobby(this, id);
         lobbyMap.put(id, lobby);
+        System.out.println("INFO: Lobby created.");
         return lobby;
     }
 

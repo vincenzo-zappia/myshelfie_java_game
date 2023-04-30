@@ -4,9 +4,17 @@ import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.util.CardType;
+import it.polimi.ingsw.view.cli.CLI;
+
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("");
+        Scanner in = new Scanner(System.in);
+        System.out.println("Cosa vuoi avvire?");
+        System.out.println("[0] CLI");
+        int selezione = Integer.parseInt(in.nextLine());
+        CLI cli = new CLI();
+        if (selezione==0) new Thread(cli).start();
     }
 }

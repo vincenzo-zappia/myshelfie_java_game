@@ -9,4 +9,8 @@ public class ResponseMessage extends Message{
         super("server", type);
         this.response = response;
     }
+
+    public boolean getResponse() {
+        return response;
+    }
 }
