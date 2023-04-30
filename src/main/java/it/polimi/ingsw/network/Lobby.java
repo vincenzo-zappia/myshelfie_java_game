@@ -60,10 +60,6 @@ public class Lobby {
         VirtualView view = new VirtualView(netPlayer.getClientHandler());
         netPlayer.setVirtualView(view);
         networkMap.put(username, netPlayer);
-
-        //invio messaggio di accettazione
-        response = new ResponseMessage(MessageType.LOBBY_ACCESS_RESPONSE,true);
-        netPlayer.getClientHandler().sendMessage(response);
     }
 
     public void startGame(){
