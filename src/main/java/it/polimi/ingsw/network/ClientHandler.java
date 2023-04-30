@@ -43,6 +43,7 @@ public class ClientHandler implements Runnable{
 
     public void run(){
         initializeLobbyConnection();
+
         try {
             while(!Thread.currentThread().isInterrupted()){
                 Message msg = (Message) objIn.readObject();
