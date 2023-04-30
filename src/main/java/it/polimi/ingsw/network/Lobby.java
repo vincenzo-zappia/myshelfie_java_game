@@ -26,11 +26,13 @@ public class Lobby {
         inGame = false;
         this.lobbyId = lobbyId;
         this.server = server;
+        playerUsernames = new ArrayList<>();
     }
     //endregion
 
     //region METHOD
     public void joinLobby(NetworkPlayer netPlayer){
+        System.out.println("Enter JoinLobby");
         ResponseMessage response;
         //se il gioco sta andando non faccio entrare il player
         if(inGame) {
@@ -39,6 +41,7 @@ public class Lobby {
             netPlayer.getClientHandler().sendMessage(response);
             return;
         }
+        System.out.println("Verifica che non ingame");
         //se si è raggiunto il numero massimo di giocatori non faccio entrare il player
         if(playerUsernames.size()>=4){
             response = new ResponseMessage(MessageType.LOBBY_ACCESS_RESPONSE,false);
@@ -46,6 +49,8 @@ public class Lobby {
             netPlayer.getClientHandler().sendMessage(response);
             return;
         }
+        System.out.println("verifica che non max 4");
+
 
         String username = netPlayer.getUsername();
         assert (username != null);
@@ -54,6 +59,8 @@ public class Lobby {
             response.setContent("Username already taken!");
             return;
         }
+
+        System.out.println("Aggiunta player...");
 
         //Aggiunta effettiva del player
         playerUsernames.add(username);
