@@ -54,7 +54,7 @@ public class Server {
             try {
                 Socket socket = serverSocket.accept();
                 System.out.println("INFO: Tentativo di connessione...");
-                executor.submit(new ClientHandler(socket)); //thread creation
+                executor.submit(new ClientHandler(this, socket)); //thread creation
             } catch (IOException ex) {
                 break;
             }
@@ -75,9 +75,9 @@ public class Server {
         return lobbyMap.get(lobbyId);
     }
 
-    public Lobby createLobby(String creatorUsername){
+    public Lobby createLobby(){
         int id = lobbyMap.size()+1;
-        Lobby lobby = new Lobby(this, creatorUsername, id);
+        Lobby lobby = new Lobby(this, id);
         lobbyMap.put(id, lobby);
         return lobby;
     }

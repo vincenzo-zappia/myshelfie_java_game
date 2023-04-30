@@ -16,7 +16,6 @@ public class Client {
 
     private ObjectOutputStream objOut;
     private ObjectInputStream objIn;
-    private int playerID; //TODO: serve davvero usare playerID? Username non sufficiente?
     private Player player;
 
     //endregion

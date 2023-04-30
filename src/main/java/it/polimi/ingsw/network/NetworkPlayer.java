@@ -5,12 +5,11 @@ import it.polimi.ingsw.mechanics.VirtualView;
 public class NetworkPlayer {
     private final String username;
     private final ClientHandler clientHandler;
-    private final VirtualView virtualView;
+    private VirtualView virtualView;
 
-    public NetworkPlayer(String username, ClientHandler clientHandler, VirtualView virtualView) {
+    public NetworkPlayer(String username, ClientHandler clientHandler) {
         this.username = username;
         this.clientHandler = clientHandler;
-        this.virtualView = virtualView;
     }
 
     public String getUsername() {
@@ -23,5 +22,9 @@ public class NetworkPlayer {
 
     public VirtualView getVirtualView() {
         return virtualView;
+    }
+
+    public void setVirtualView(VirtualView virtualView){
+        this.virtualView = virtualView;
     }
 }

@@ -9,6 +9,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.JoinLobby;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.MessageType;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,6 +17,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable{
+
     //region ATTRIBUTES
     private final Socket socket;
     private Server server;
@@ -26,8 +28,9 @@ public class ClientHandler implements Runnable{
     private ObjectInputStream objIn;
     //endregion
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Server server, Socket socket) {
         this.socket = socket;
+        this.server = server;
 
         try {
             objIn = new ObjectInputStream(socket.getInputStream());
@@ -35,45 +38,55 @@ public class ClientHandler implements Runnable{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public void run(){
-        try {
-            while (!Thread.currentThread().isInterrupted()) {
-                Message msg = (Message) objIn.readObject();
-                if (msg != null /*TODO: mettere anche che non sia un ping message*/){
+        initializeLobbyConnection();
+        Message msg = receiveMessage(!Thread.currentThread().isInterrupted());
+        lobby.sendToController(msg);
 
-                }
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
     }
-    //TODO: Quale tra i due metodi send7receive chiama metodo di Lobby/GameController ?
 
-    private void inizializeLobbyConnection(){
-        boolean res = false;
-        Message msg = null;
-        try {
-            while(!res){
-                msg = (Message) objIn.readObject();
-                res = msg!=null;
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    private void initializeLobbyConnection() {
+        Message msg = receiveMessage();
 
         switch (msg.getType()){
             case JOIN_LOBBY -> {
                 JoinLobby joinLobby = (JoinLobby) msg;
                 if (server.existsLobby(joinLobby.getLobbyId())) this.lobby = server.getLobby(joinLobby.getLobbyId());
             }
-            case CREATE_LOBBY -> this.lobby = server.createLobby(msg.getUsername());
+            case CREATE_LOBBY -> {
+                this.lobby = server.createLobby();
+                lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this));
+                startMatch();
+            }
             default -> {
                 //TODO: generare eccezione?
             }
         }
+
+    }
+
+    private Message receiveMessage(boolean... conditions){
+        boolean res = false;
+        Message msg = null;
+        try {
+            while(!res && conditions[0]){
+                msg = (Message) objIn.readObject();
+                res = msg!=null;
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return msg;
+    }
+
+    private void startMatch() {
+        Message msg = receiveMessage();
+        if (msg.getType() == MessageType.START_GAME){
+
+        }
+
     }
 
     /**
@@ -89,19 +102,4 @@ public class ClientHandler implements Runnable{
         }
     }
 
-    //TODO check method below
-    public Message receiveMessage() {
-        try {
-            return (Message) objIn.readObject();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            System.out.println("Classe non trovata");
-        }
-        return null;
-    }
-
-    public void closeConnection(){
-
-    }
 }
