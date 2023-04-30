@@ -4,6 +4,8 @@ import it.polimi.ingsw.mechanics.Game;
 import it.polimi.ingsw.mechanics.GameController;
 import it.polimi.ingsw.mechanics.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.MessageType;
+import it.polimi.ingsw.network.messages.ResponseMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +21,6 @@ public class Lobby {
     private GameController gameController;
     //endregion
 
-    //TODO: DA REVISIONARE (quando la lobby viene creata non si conoscono gli username di tutti i player)
     //region CONSTRUCTOR
     public Lobby(Server server, int lobbyId) {
         inGame = false;
@@ -29,30 +30,53 @@ public class Lobby {
     //endregion
 
     //region METHOD
-    //TODO: Metodo chiamato da clientHandler per aggiungere se stesso alla Lobby
     public void joinLobby(NetworkPlayer netPlayer){
-        String username = netPlayer.getUsername();
-        if(playerUsernames.size()>=4) return; //TODO: invio messaggio lobby piena
+        ResponseMessage response;
+        //se il gioco sta andando non faccio entrare il player
+        if(inGame) {
+            response = new ResponseMessage(MessageType.LOBBY_ACCESS_RESPONSE, false);
+            response.setContent("Game already started!");
+            netPlayer.getClientHandler().sendMessage(response);
+            return;
+        }
+        //se si è raggiunto il numero massimo di giocatori non faccio entrare il player
+        if(playerUsernames.size()>=4){
+            response = new ResponseMessage(MessageType.LOBBY_ACCESS_RESPONSE,false);
+            response.setContent("Lobby is full!");
+            netPlayer.getClientHandler().sendMessage(response);
+            return;
+        }
 
+        String username = netPlayer.getUsername();
         assert (username != null);
-        if(playerUsernames.contains(username)) return; //TODO: invio messaggio username already taken
+        if(playerUsernames.contains(username)){
+            response = new ResponseMessage(MessageType.LOBBY_ACCESS_RESPONSE,false);
+            response.setContent("Username already taken!");
+            return;
+        }
 
         //Aggiunta effettiva del player
         playerUsernames.add(username);
         VirtualView view = new VirtualView(netPlayer.getClientHandler());
         netPlayer.setVirtualView(view);
         networkMap.put(username, netPlayer);
+
+        //invio messaggio di accettazione
+        response = new ResponseMessage(MessageType.LOBBY_ACCESS_RESPONSE,true);
+        netPlayer.getClientHandler().sendMessage(response);
     }
 
-    //TODO: Metodo che deve inizializzare Game e GameController (a cui deve essere passata l'hashmap)
-    public Game startGame(){
-        assert (playerList.size()>1 && playerList.size()<=4)
+    public void startGame(){
+        assert (playerUsernames.size()>1 && playerUsernames.size()<=4);
 
-        //TODO: implementare invio messaggio di startgame (dopo verifica dei prerequisiti)
+        HashMap<String, VirtualView> viewHashMap = new HashMap<>();
+        for (NetworkPlayer netPlayer: networkMap.values()) viewHashMap.put(netPlayer.getUsername(), netPlayer.getVirtualView());
 
-        gameController = new GameController(playerUsernames, new Game(playerUsernames), );
+        gameController = new GameController(new Game(playerUsernames), viewHashMap);
         inGame = true;
     }
+
+
 
     public void sendToController(Message msg){
         gameController.messageHandler(msg);

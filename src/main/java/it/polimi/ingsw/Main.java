@@ -7,6 +7,6 @@ import it.polimi.ingsw.util.CardType;
 
 public class Main {
     public static void main(String[] args) {
-
+        System.out.println("");
     }
 }

@@ -41,7 +41,15 @@ public class VirtualView implements Observer {
      * Method that gives feedback to the player about his last sent command.
      * @param response boolean that is true if the command sent by the client was accepted, 0 otherwise
      */
-    public void sendResponse(boolean response){
-        clientHandler.sendMessage(new ResponseMessage(response));
+    public void sendSelectionResponse(boolean response){
+        clientHandler.sendMessage(new ResponseMessage(MessageType.SELECTION_RESPONSE, response));
+    }
+
+    public void sendInsertionResponse(boolean response){
+        clientHandler.sendMessage(new ResponseMessage(MessageType.INSERTION_RESPONSE, response));
+    }
+
+    public void sendNotYourTurn(){
+        clientHandler.sendMessage(new ResponseMessage(MessageType.NOT_YOUR_TURN, false));
     }
 }

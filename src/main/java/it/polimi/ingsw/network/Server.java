@@ -39,8 +39,6 @@ public class Server {
         Server server = new Server(2024);
         server.startConnection();
 
-        //TODO ?
-
     }
     //endregion
 

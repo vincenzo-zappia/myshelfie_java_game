@@ -4,6 +4,7 @@ package it.polimi.ingsw.mechanics;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.network.messages.InsertionMessage;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.SelectionMessage;
 
 import java.util.ArrayList;
@@ -18,16 +19,14 @@ public class GameController {
     private final TurnManager turnManager;
 
     //attributi verso la parte di networking
-    private HashMap<String, VirtualView> virtualViewMap;
-    private ArrayList<String> playerUsernames;
+    private final HashMap<String, VirtualView> viewHashMap;
     //endregion
 
     //region CONSTRUCTOR
-    public GameController(ArrayList<String> playerUsernames, Game game, HashMap<String, VirtualView> virtualViewMap){
-        turnManager = new TurnManager(playerUsernames);
+    public GameController(Game game, HashMap<String, VirtualView> viewHashMap){
+        turnManager = new TurnManager(new ArrayList<>(viewHashMap.keySet()));
         this.game = game;
-        this.virtualViewMap = virtualViewMap;
-        this.playerUsernames = playerUsernames;
+        this.viewHashMap = viewHashMap;
     }
     //endregion
 
@@ -45,7 +44,7 @@ public class GameController {
 
             //TODO: inviare messaggio di errore al player non di turno
             //Invio riscontro negativo al client
-            virtualViewMap.get(message.getUsername()).sendResponse(false);
+            viewHashMap.get(message.getUsername()).sendNotYourTurn();
             return;
         }
 
@@ -67,18 +66,22 @@ public class GameController {
         if(game.isSelectable(message.getCoordinates())) {
             game.removeCardFromBoard(message.getCoordinates()); //Removal of the selected cards form the game board
 
-            //Invio riscontro positivo al client
-            virtualViewMap.get(message.getUsername()).sendResponse(true);
+            //Invio riscontro positivo al client (questo abilita lato client a effettuare inserzione)
+            viewHashMap.get(message.getUsername()).sendSelectionResponse(true);
 
-            //TODO: Invio broadcast aggiornamento Board (potrebbe essere implementato in Lobby)
-            for(String username : playerUsernames){
-                virtualViewMap.get(username).sendBoardRefill(game.getBoard());
-            }
+            broadcastMessage(MessageType.BOARD_REFILL);
         }
 
-        //TODO: invio eccezione nel caso in cui le celle non sono selezionabili (per ora messaggio negativo generale)
         //Invio riscontro negativo al client
-        virtualViewMap.get(message.getUsername()).sendResponse(false);
+        viewHashMap.get(message.getUsername()).sendSelectionResponse(false);
+    }
+
+    public void broadcastMessage(MessageType type){
+        for(String username : viewHashMap.keySet()) {
+            switch (type) {
+                case BOARD_REFILL -> viewHashMap.get(username).sendBoardRefill(game.getBoard());
+            }
+        }
     }
 
     /**
@@ -94,12 +97,12 @@ public class GameController {
             game.addCardToBookshelf(message.getUsername(), message.getSelectedColumn(), message.getSelectedCards());
 
             //Invio riscontro positivo al client
-            virtualViewMap.get(message.getUsername()).sendResponse(true);
+            viewHashMap.get(message.getUsername()).sendInsertionResponse(true);
 
             endTurn();
         } catch (AddCardException e) {
             //Invio riscontro negativo al client
-            virtualViewMap.get(message.getUsername()).sendResponse(false);
+            viewHashMap.get(message.getUsername()).sendInsertionResponse(false);
             throw new RuntimeException(e);
         }
     }
@@ -128,4 +131,5 @@ public class GameController {
     }
 
     //endregion
+
 }

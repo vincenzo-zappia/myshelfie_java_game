@@ -54,11 +54,12 @@ public class ClientHandler implements Runnable{
             case JOIN_LOBBY -> {
                 JoinLobby joinLobby = (JoinLobby) msg;
                 if (server.existsLobby(joinLobby.getLobbyId())) this.lobby = server.getLobby(joinLobby.getLobbyId());
+                lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this));
             }
             case CREATE_LOBBY -> {
                 this.lobby = server.createLobby();
                 lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this));
-                startMatch();
+                startGameHandler();
             }
             default -> {
                 //TODO: generare eccezione?
@@ -81,12 +82,14 @@ public class ClientHandler implements Runnable{
         return msg;
     }
 
-    private void startMatch() {
+    private void startGameHandler() {
         Message msg = receiveMessage();
         if (msg.getType() == MessageType.START_GAME){
-
+            lobby.startGame();
         }
-
+        else {
+            //TODO: invio messaggio di errore
+        }
     }
 
     /**

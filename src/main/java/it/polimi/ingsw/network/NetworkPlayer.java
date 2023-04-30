@@ -2,6 +2,9 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.mechanics.VirtualView;
 
+/**
+ * Classe creata per collegare ad un username il relativo ClientHandler e VirtualView (gia inizializzato con il ClientHandler)
+ */
 public class NetworkPlayer {
     private final String username;
     private final ClientHandler clientHandler;
