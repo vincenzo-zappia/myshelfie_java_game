@@ -6,6 +6,11 @@ import java.util.Random;
 
 public class CommonGoalFactory {
 
+    /**
+     * return an istance of a CommonGoal using integer parameter
+     * @param goal_id integer value to decide which CommonGoal return
+     * @return the chosen CommonGoal
+     */
     private Goal goalFactory(int goal_id){
         if(goal_id==1)return new CommonGoal1();
         if(goal_id==2)return new CommonGoal2();
@@ -21,6 +26,11 @@ public class CommonGoalFactory {
         if(goal_id==12)return new CommonGoal12();
         return null;
     }
+
+    /**
+     * method to decide the two CommonGoal of a game
+     * @return array of two CommonGoal
+     */
     public Goal[] makeCommonGoal(){  //goal_id: intero che corrisponde alla cifra finale sul nome dei CommonGoalX
         Random x = new Random();
         int tmp;
