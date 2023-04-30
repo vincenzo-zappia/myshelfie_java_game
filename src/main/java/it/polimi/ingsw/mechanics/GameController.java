@@ -1,15 +1,12 @@
 
 package it.polimi.ingsw.mechanics;
 
-import it.polimi.ingsw.network.ClientHandler;
 import it.polimi.ingsw.exceptions.AddCardException;
-import it.polimi.ingsw.network.Lobby;
 import it.polimi.ingsw.network.messages.InsertionMessage;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.SelectionMessage;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 public class GameController {
@@ -22,6 +19,7 @@ public class GameController {
 
     //attributi verso la parte di networking
     private HashMap<String, VirtualView> virtualViewMap;
+    private ArrayList<String> playerUsernames;
     //endregion
 
     //region CONSTRUCTOR
@@ -29,19 +27,27 @@ public class GameController {
         turnManager = new TurnManager(playerUsernames);
         this.game = game;
         this.virtualViewMap = virtualViewMap;
+        this.playerUsernames = playerUsernames;
     }
     //endregion
 
     //region METHODS
 
-    //TODO: revisionare javaDoc
+    //TODO: Metodo inizio partita che dopo la creazione di Game e quindi di Board aggiorna i player del fillBoard() (forse in Lobby?)
+
     /**
-     *
+     * Method that handles the received generic Message by checking its actual type and calls the wanted method
      * @param message received message
      */
-    public void messageHandler(Message message){
+    public synchronized void messageHandler(Message message){
         //Gestione logica turni
-        if (!turnManager.getCurrentPlayer().equals(message.getUsername())) return; //TODO: inviare messaggio di errore al player non di turno
+        if (!turnManager.getCurrentPlayer().equals(message.getUsername())) {
+
+            //TODO: inviare messaggio di errore al player non di turno
+            //Invio riscontro negativo al client
+            virtualViewMap.get(message.getUsername()).sendResponse(false);
+            return;
+        }
 
         switch (message.getType()){
             case SELECTION_MESSAGE -> cardSelection((SelectionMessage) message);
@@ -57,23 +63,30 @@ public class GameController {
      * @param message message sent by the client with the coordinates of the cards selected to be put
      *                into the player's Bookshelf
      */
-    public void cardSelection(SelectionMessage message){
+    public synchronized void cardSelection(SelectionMessage message){
         if(game.isSelectable(message.getCoordinates())) {
             game.removeCardFromBoard(message.getCoordinates()); //Removal of the selected cards form the game board
 
             //Invio riscontro positivo al client
-            VirtualView view = virtualViewMap.get(message.getUsername());
-            view.sendResponse(true);
+            virtualViewMap.get(message.getUsername()).sendResponse(true);
 
-            //TODO: Invio broadcast aggiornamento Board (chi chiama sendBoardRefill())
-
+            //TODO: Invio broadcast aggiornamento Board (potrebbe essere implementato in Lobby)
+            for(String username : playerUsernames){
+                virtualViewMap.get(username).sendBoardRefill(game.getBoard());
+            }
         }
 
-        //TODO: invio eccezione nel caso in cui le celle non sono selezionabili
+        //TODO: invio eccezione nel caso in cui le celle non sono selezionabili (per ora messaggio negativo generale)
+        //Invio riscontro negativo al client
+        virtualViewMap.get(message.getUsername()).sendResponse(false);
     }
 
-    //method that extracts the chosen column from the XML and inserts the cards previously selected into the player's bookshelf
-    public void cardInsertion(InsertionMessage message){
+    /**
+     * Method that inserts the cards selected by the player into his bookshelf
+     * @param message Message containing the cards arranged in the order picked by the player and the column into which
+     *                he wants to put them in his bookshelf
+     */
+    public synchronized void cardInsertion(InsertionMessage message){
         //Insertion of the cards removed from the board into the player's bookshelf
         try {
             //inserzione carte nel Bookshelf di Player
@@ -81,11 +94,12 @@ public class GameController {
             game.addCardToBookshelf(message.getUsername(), message.getSelectedColumn(), message.getSelectedCards());
 
             //Invio riscontro positivo al client
-            VirtualView view = virtualViewMap.get(message.getUsername());
-            view.sendResponse(true);
+            virtualViewMap.get(message.getUsername()).sendResponse(true);
 
             endTurn();
         } catch (AddCardException e) {
+            //Invio riscontro negativo al client
+            virtualViewMap.get(message.getUsername()).sendResponse(false);
             throw new RuntimeException(e);
         }
     }
@@ -98,7 +112,8 @@ public class GameController {
     private void endTurn(){
         game.scoreCommonGoal(turnManager.getCurrentPlayer());
         if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer())) turnManager.startEndGame();
-        //qui avviene effettivamente il cambio turno (se è disponibile)
+
+        //Nella chiamata di nextTurn() avviene effettivamente il cambiamento del turno del giocatore (nel caso non sia l'ultimo)
         if(!turnManager.nextTurn()) findWinner();
     }
 
@@ -112,8 +127,5 @@ public class GameController {
         //TODO: calling of Game method that creates ordered ArrayList of Players
     }
 
-    //endregion
-
-    //region GETTER AND SETTER
     //endregion
 }
