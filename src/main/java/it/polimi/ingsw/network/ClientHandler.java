@@ -34,8 +34,8 @@ public class ClientHandler implements Runnable{
         this.server = server;
 
         try {
-            objIn = new ObjectInputStream(socket.getInputStream());
             objOut = new ObjectOutputStream(socket.getOutputStream());
+            objIn = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
