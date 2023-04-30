@@ -30,7 +30,7 @@ public class CLI implements Runnable{
         if (selection == 0){
             client.sendMessage(new CreateLobby(username));
             Message msg = client.receiveMessage();
-            if(msg.getType() = MessageType.LOBBY_CREATION_RESPONSE){
+            if(msg.getType() == MessageType.LOBBY_CREATION_RESPONSE){
                 ResponseMessage response = (ResponseMessage) msg;
                 if (response.getResponse()) System.out.println("bravooo!!");
             }
