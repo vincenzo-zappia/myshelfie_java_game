@@ -69,17 +69,19 @@ public class GameController {
             //Invio riscontro positivo al client (questo abilita lato client a effettuare inserzione)
             viewHashMap.get(message.getUsername()).sendSelectionResponse(true);
 
-            broadcastMessage(MessageType.BOARD_REFILL);
+            //Invio a tutti i client la posizonie delle carete da rimuovere
+            broadcastMessage(MessageType.CARD_REMOVAL, (Object) message.getCoordinates());
         }
 
         //Invio riscontro negativo al client
         viewHashMap.get(message.getUsername()).sendSelectionResponse(false);
     }
 
-    public void broadcastMessage(MessageType type){
+    public void broadcastMessage(MessageType type, Object... payload){
         for(String username : viewHashMap.keySet()) {
             switch (type) {
                 case BOARD_REFILL -> viewHashMap.get(username).sendBoardRefill(game.getBoard());
+                case CARD_REMOVAL -> viewHashMap.get(username).sendCardRemoval((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
             }
         }
     }
@@ -113,7 +115,13 @@ public class GameController {
      * the condition for the actual end of the game is reached.
      */
     private void endTurn(){
+        //invio aggiornamento board a tutti i player nel caso in cui la board venga riempita
+        if(game.checkRefill()) broadcastMessage(MessageType.BOARD_REFILL);
+
+        //Check if the current player has achieved anyone of the common goals
         game.scoreCommonGoal(turnManager.getCurrentPlayer());
+
+        //Check if the current player's bookshelf is full
         if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer())) turnManager.startEndGame();
 
         //Nella chiamata di nextTurn() avviene effettivamente il cambiamento del turno del giocatore (nel caso non sia l'ultimo)

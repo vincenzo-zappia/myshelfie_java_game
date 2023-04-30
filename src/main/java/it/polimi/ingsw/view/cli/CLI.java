@@ -10,14 +10,20 @@ import java.util.Scanner;
 
 public class CLI implements Runnable{
 
+    //region ATTRIBUTES
     private final Client client;
+    //endregion
 
     public CLI() {
         client = new Client("10.0.0.3", 2023);
+        new Thread(client).start(); //Loop execution of receiveMessage by Client
     }
-
+    
     @Override
     public void run() {
+    /*
+        //TODO: Come fa la CLI a tenere traccia dei cmabiamenti che avvengono lato Client
+        //TODO:con l'invio di comandi in base ai messaggi ricevuti?
         Scanner in = new Scanner(System.in);
 
         System.out.println("[0] Create new lobby");
@@ -35,5 +41,8 @@ public class CLI implements Runnable{
                 System.out.println("bravooo!!");
             }
         }
+
+     */
+
     }
 }

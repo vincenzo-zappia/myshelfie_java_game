@@ -27,6 +27,7 @@ public class Lobby {
         this.lobbyId = lobbyId;
         this.server = server;
         playerUsernames = new ArrayList<>();
+        networkMap = new HashMap<>();
     }
     //endregion
 

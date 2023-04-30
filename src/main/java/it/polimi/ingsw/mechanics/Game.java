@@ -13,6 +13,7 @@ import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.entities.goals.CommonGoal0;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.AddCardException;
+import it.polimi.ingsw.util.BoardCell;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -105,6 +106,23 @@ public class Game{
         for(Card c : cards){
             players.get(playerIndex).getBookshelf().addCard(column, c);
         }
+    }
+
+    /**
+     * Checks if the board has no more selectable cards
+     * @return if every card doesn't have another adjacent card
+     */
+    public boolean checkRefill(){
+        BoardCell[][] matrix = board.getMatrix();
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(!matrix[i][j].isCellActive()) continue;
+                if((!matrix[i][j].isCellEmpty() && !matrix[i + 1][j].isCellEmpty())
+                        || (!matrix[i][j].isCellEmpty() && !matrix[i][j + 1].isCellEmpty())) return false;
+            }
+        }
+        board.fillBoard();
+        return true;
     }
 
     //TODO: da revisionare
