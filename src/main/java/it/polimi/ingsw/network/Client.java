@@ -24,10 +24,11 @@ public class Client {
 
         try {
             socket = new Socket(ip, port);
-            objIn = new ObjectInputStream(socket.getInputStream());
             objOut = new ObjectOutputStream(socket.getOutputStream());
+            objIn = new ObjectInputStream(socket.getInputStream());
+
         } catch (IOException e) {
-            System.out.println("IO Exception from Client constructor");
+            System.out.println(e.getMessage());
         }
 
         this.port = port;

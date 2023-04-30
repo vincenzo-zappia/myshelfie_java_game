@@ -10,6 +10,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.network.messages.JoinLobby;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
+import it.polimi.ingsw.network.messages.ResponseMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -42,8 +43,14 @@ public class ClientHandler implements Runnable{
 
     public void run(){
         initializeLobbyConnection();
-        Message msg = receiveMessage(!Thread.currentThread().isInterrupted());
-        lobby.sendToController(msg);
+        try {
+            while(!Thread.currentThread().isInterrupted()){
+                Message msg = (Message) objIn.readObject();
+                if(msg != null) lobby.sendToController(msg);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -55,10 +62,12 @@ public class ClientHandler implements Runnable{
                 JoinLobby joinLobby = (JoinLobby) msg;
                 if (server.existsLobby(joinLobby.getLobbyId())) this.lobby = server.getLobby(joinLobby.getLobbyId());
                 lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this));
+                sendMessage(new ResponseMessage(MessageType.LOBBY_ACCESS_RESPONSE, true));
             }
             case CREATE_LOBBY -> {
                 this.lobby = server.createLobby();
                 lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this));
+                sendMessage(new ResponseMessage(MessageType.LOBBY_CREATION_RESPONSE, true));
                 startGameHandler();
             }
             default -> {
@@ -68,11 +77,11 @@ public class ClientHandler implements Runnable{
 
     }
 
-    private Message receiveMessage(boolean... conditions){
+    private Message receiveMessage(/*boolean... conditions*/){
         boolean res = false;
         Message msg = null;
         try {
-            while(!res && conditions[0]){
+            while(!res){
                 msg = (Message) objIn.readObject();
                 res = msg!=null;
             }

@@ -27,7 +27,7 @@ public class Server {
         try {
             serverSocket = new ServerSocket(port);
             lobbyMap = new HashMap<>();
-            //System.out.println("INFO: Server in ascolto sulla porta " + port);
+            System.out.println("INFO: Server in ascolto sulla porta " + port);
         } catch (IOException e) {
             System.err.println("Error:" + e.getMessage());
             //return removed
@@ -36,7 +36,7 @@ public class Server {
 
     //region MAIN
     public static void main(String[] args) {
-        Server server = new Server(2024);
+        Server server = new Server(2023);
         server.startConnection();
 
     }

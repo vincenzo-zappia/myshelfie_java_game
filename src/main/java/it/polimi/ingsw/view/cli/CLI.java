@@ -13,19 +13,24 @@ public class CLI implements Runnable{
     private final Client client;
 
     public CLI() {
-        client = new Client("localhost", 2023);
+        client = new Client("10.0.0.3", 2023);
     }
-    @Override
-    public void run() {
+
+    public static void main(String[] args) {
+
+        Client client = new Client("10.0.0.3", 2023);
+
         Scanner in = new Scanner(System.in);
+
+
+
+        System.out.println("Inserisci il tuo username:");
+        String username = in.nextLine();
 
         System.out.println("[0] Create new lobby");
         System.out.println("[1] Connect to existing lobby");
 
         int selection = Integer.parseInt(in.nextLine());
-
-        System.out.println("Inserisci il tuo username:");
-        String username = in.nextLine();
 
         if (selection == 0){
             client.sendMessage(new CreateLobby(username));
@@ -35,5 +40,9 @@ public class CLI implements Runnable{
                 if (response.getResponse()) System.out.println("bravooo!!");
             }
         }
+    }
+    @Override
+    public void run() {
+
     }
 }
