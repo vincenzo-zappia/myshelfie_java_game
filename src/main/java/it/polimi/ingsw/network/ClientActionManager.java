@@ -26,4 +26,6 @@ public class ClientActionManager implements Observer {
     public void setTurnState(TurnState turnState) {
         this.turnState = turnState;
     }
+
+    //TODO: Metodi impacchettamento messaggi
 }

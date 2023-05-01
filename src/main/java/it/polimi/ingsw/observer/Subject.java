@@ -8,17 +8,26 @@ import it.polimi.ingsw.network.messages.Message;
 public abstract class Subject {
     private ArrayList<Observer> observers = new ArrayList<>();
 
-    //adds observer to the list
+    /**
+     * adds observer to the list
+     * @param o observer to add
+     */
     public void register(Observer o) {
         observers.add(o);
     }
 
-    //removes observer from the list
+    /**
+     * removes observer from the list
+     */
     public void unregister(Observer o) {
         observers.remove(o);
     }
 
-    //notifies all observers in the list
+    //TODO: Capire che parametro far prendere per far passarevalori impacchetto messaggio CLI -> ClientActionManager
+    /**
+     * notifies all observers in the list
+     * @param message object with the updated information
+     */
     public void notifyObserver(Message message) {
         for(Observer o : observers){
             o.update(message);
