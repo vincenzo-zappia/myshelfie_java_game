@@ -1,6 +1,7 @@
 
 package it.polimi.ingsw.mechanics;
 
+import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.network.messages.InsertionMessage;
 import it.polimi.ingsw.network.messages.Message;
@@ -42,9 +43,7 @@ public class GameController {
         //Gestione logica turni
         if (!turnManager.getCurrentPlayer().equals(message.getUsername())) {
 
-            //TODO: inviare messaggio di errore al player non di turno
-            //Invio riscontro negativo al client
-            viewHashMap.get(message.getUsername()).sendNotYourTurn();
+            viewHashMap.get(message.getUsername()).sendNotYourTurn(); //Invio riscontro negativo al client
             return;
         }
 
@@ -77,6 +76,12 @@ public class GameController {
         viewHashMap.get(message.getUsername()).sendSelectionResponse(false);
     }
 
+    /**
+     * Send a broadcast message, used for refilling user's
+     * boards or notify that a single removed certain cards
+     * @param type of the message
+     * @param payload
+     */
     public void broadcastMessage(MessageType type, Object... payload){
         for(String username : viewHashMap.keySet()) {
             switch (type) {
@@ -133,9 +138,10 @@ public class GameController {
      */
     public void findWinner(){
         game.scorePrivateGoal();
+        ArrayList<Player> scoreboard = game.orderByScore(); //estrarre giocatori partendo dal termine della lista
 
         //TODO: creation of the scoreboard based on the calculated scores for each one of the players
-        //TODO: calling of Game method that creates ordered ArrayList of Players
+
     }
 
     //endregion

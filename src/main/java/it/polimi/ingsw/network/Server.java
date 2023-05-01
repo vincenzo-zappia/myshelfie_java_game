@@ -44,6 +44,11 @@ public class Server {
 
 
     //region ServerMethods
+
+    /**
+     * Networking methods to start the connections
+     * between server and clients
+     */
     public void startConnection() {
         ExecutorService executor = Executors.newCachedThreadPool();
 
@@ -65,6 +70,11 @@ public class Server {
         }
     }
 
+    /**
+     * Check that the lobby hashmap contains a certain ID
+     * @param lobbyId that needs to be checked
+     * @return true if map contains the ID
+     */
     public boolean existsLobby(int lobbyId){
         return lobbyMap.containsKey(lobbyId);
     }
@@ -73,6 +83,10 @@ public class Server {
         return lobbyMap.get(lobbyId);
     }
 
+    /**
+     * Create lobby as requested by player
+     * @return the new initialized lobby
+     */
     public Lobby createLobby(){
         int id = lobbyMap.size()+1;
         Lobby lobby = new Lobby(this, id);
@@ -81,6 +95,10 @@ public class Server {
         return lobby;
     }
 
+    /**
+     * Remove specified lobby from the server
+     * @param lobbyId to identify the lobby to delete
+     */
     public void removeLobby(int lobbyId){
         lobbyMap.remove(lobbyId);
     }

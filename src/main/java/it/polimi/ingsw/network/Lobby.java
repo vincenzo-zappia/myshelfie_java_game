@@ -32,6 +32,11 @@ public class Lobby {
     //endregion
 
     //region METHOD
+
+    /**
+     * Method used by clients to enter a lobby
+     * @param netPlayer player that request access to lobby
+     */
     public void joinLobby(NetworkPlayer netPlayer){
         System.out.println("Enter JoinLobby");
         ResponseMessage response;
@@ -70,6 +75,9 @@ public class Lobby {
         networkMap.put(username, netPlayer);
     }
 
+    /**
+     * Method that start the game and initialize hashmaps and GameController
+     */
     public void startGame(){
         assert (playerUsernames.size()>1 && playerUsernames.size()<=4);
 
@@ -80,8 +88,10 @@ public class Lobby {
         inGame = true;
     }
 
-
-
+    /**
+     * Forwards an external message to the GameController
+     * @param msg message to forwards
+     */
     public void sendToController(Message msg){
         gameController.messageHandler(msg);
     }

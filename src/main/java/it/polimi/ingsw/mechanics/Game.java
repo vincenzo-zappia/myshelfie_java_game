@@ -125,8 +125,6 @@ public class Game{
         return true;
     }
 
-    //TODO: da revisionare
-
     /**
      * Checks if a common goal has been achieved by a player
      * @param username player whose eventual achievement we want to check
@@ -150,6 +148,10 @@ public class Game{
         }
     }
 
+    /**
+     * Method that order players by increasing point
+     * @return the ordered list of players
+     */
     public ArrayList<Player> orderByScore(){
         ArrayList<Player> ordered = players;
         Collections.sort(ordered);
