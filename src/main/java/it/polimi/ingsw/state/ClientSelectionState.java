@@ -1,13 +1,14 @@
 package it.polimi.ingsw.state;
 
 import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.ClientActionManager;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.ResponseMessage;
 
 public class ClientSelectionState implements TurnState {
-    private final Client client;
+    private final ClientActionManager client;
 
-    public ClientSelectionState(Client client){
+    public ClientSelectionState(ClientActionManager client){
         this.client = client;
     }
 
@@ -21,7 +22,7 @@ public class ClientSelectionState implements TurnState {
                 //TODO: Creazione messaggio invio effettivo cartein ordine e colonna selezionata
 
                 //Aggiornamento stato del client
-                client.setClientState(new ClientInsertionState(client));
+                client.setTurnState(new ClientInsertionState(client));
             }
             case INSERTION_RESPONSE -> {
                 //TODO: Gestione errore

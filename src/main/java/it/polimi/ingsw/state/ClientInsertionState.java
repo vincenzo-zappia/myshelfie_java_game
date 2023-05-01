@@ -1,13 +1,14 @@
 package it.polimi.ingsw.state;
 
 import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.ClientActionManager;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.ResponseMessage;
 
 public class ClientInsertionState implements TurnState {
-    private final Client client;
+    private final ClientActionManager client;
 
-    public ClientInsertionState(Client client){
+    public ClientInsertionState(ClientActionManager client){
         this.client = client;
     }
 
@@ -23,7 +24,7 @@ public class ClientInsertionState implements TurnState {
                 //TODO: Aggiorna GUI (fine turno)
 
                 //Aggiornamento stato del client
-                client.setClientState(new ClientSelectionState(client));
+                client.setTurnState(new ClientSelectionState(client));
             }
         }
     }

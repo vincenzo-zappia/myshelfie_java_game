@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.observer.Subject;
 import it.polimi.ingsw.state.ClientSelectionState;
 import it.polimi.ingsw.state.TurnState;
 
@@ -11,13 +12,12 @@ import java.net.Socket;
  * Class that manages only the network functionality of the Client (send and receive message,
  * server connection, ...)
  */
-public class Client implements Runnable{
+public class Client extends Subject implements Runnable{
 
     //region ATTRIBUTES
     private final String ip;
     private final int port;
     private Socket socket;
-    private TurnState turnState; //Attribute that mirrors the turn of the game
     private ObjectOutputStream objOut;
     private ObjectInputStream objIn;
 
@@ -37,7 +37,9 @@ public class Client implements Runnable{
 
         this.port = port;
         this.ip = ip;
-        turnState = new ClientSelectionState(this);
+
+        //Adding the only observer of the class
+        this.register(new ClientActionManager());
     }
     //endregion
 
@@ -76,14 +78,9 @@ public class Client implements Runnable{
         }
 
         //Actual management of the received message relatively to the state of Client
-        turnState.messageHandler(msg);
+        notifyObserver(msg);
     }
 
     //endregion
-
-    public void setClientState(TurnState turnState) {
-        this.turnState = turnState;
-    }
-
 
 }

@@ -5,8 +5,10 @@ import it.polimi.ingsw.network.ClientHandler;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.observer.Observer;
 
+/**
+ * Class that manages the creation of messages server -> client
+ */
 public class VirtualView implements Observer {
-
     private final ClientHandler clientHandler;
 
     public VirtualView(ClientHandler clientHandler){
@@ -21,8 +23,7 @@ public class VirtualView implements Observer {
     //TODO: Gestione particolare messaggi server -> client
 
     /**
-     * Method that after each turn sends the updated Board (without the Cards corresponding to the
-     * coordinates
+     * Sends the coordinates of the cards successfully removed by the current player
      * @param coordinates coordinates of the removed cards
      */
     public void sendCardRemoval(int[][] coordinates){
@@ -30,26 +31,38 @@ public class VirtualView implements Observer {
     }
 
     /**
-     * Method that after each refill sends the new Board to the clients
+     * Sends the new refilled Board
      * @param board refilled Board
      */
     public void sendBoardRefill(Board board){
         clientHandler.sendMessage(new BoardRefillUpdate(board));
     }
 
+    //region RESPONSE
+    //All the methods that use the generic boolean ResponseMessage
+
     /**
-     * Method that gives feedback to the player about his last sent command.
-     * @param response boolean that is true if the command sent by the client was accepted, 0 otherwise
+     * Gives feedback to the client about his selection command
+     * @param response if selection is valid
      */
     public void sendSelectionResponse(boolean response){
         clientHandler.sendMessage(new ResponseMessage(MessageType.SELECTION_RESPONSE, response));
     }
 
+    /**
+     * Gives feedback to the client about his insertion command
+     * @param response if insertion is valid
+     */
     public void sendInsertionResponse(boolean response){
         clientHandler.sendMessage(new ResponseMessage(MessageType.INSERTION_RESPONSE, response));
     }
 
+    /**
+     * Gives a generic negative feedback to any type of command sent by the player that is not playing
+     * the current turn
+     */
     public void sendNotYourTurn(){
         clientHandler.sendMessage(new ResponseMessage(MessageType.NOT_YOUR_TURN, false));
     }
+    //endregion
 }
