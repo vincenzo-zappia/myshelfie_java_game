@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.state.ClientSelectionState;
 import it.polimi.ingsw.state.TurnState;
@@ -22,6 +23,15 @@ public class ClientActionManager implements Observer {
     public void update(Message message){
         turnState.messageHandler(message);
     }
+
+    /*
+    @Override
+    public void update(String userInput, MessageType type){
+        //TODO: Creazione messaggio specifico????
+
+    }
+
+     */
 
     public void setTurnState(TurnState turnState) {
         this.turnState = turnState;
