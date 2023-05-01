@@ -1,8 +1,16 @@
 package it.polimi.ingsw.view.cli;
 
-enum ColorCode{
-    DEFAULT("\033[0m"),
-    GREEN("gre");
+enum ColorCode {
+    DEFAULT("\u001B[0m"),
+    RED("\u001B[31m"),
+    GREEN("\u001B[32m"),
+    BLUE("\u001B[34m"),
+    L_BLUE("\u001B[94m"),
+    MAGENTA("\u001B[35m"),
+    WHITE("\u001B[37m"),
+    BROWN("\u001B[33m"),
+    ORANGE("\u001B[38;2;255;165;0m");
+
     private final String code;
     ColorCode(String code){
         this.code = code;
@@ -13,70 +21,179 @@ enum ColorCode{
     }
 
 }
-public class CliUtil {
-    public static String makeBoard(Character[] matrix) {
-        String green = ColorCode.GREEN.getCode();
-        String reset = ColorCode.DEFAULT.getCode();
 
-        StringBuilder builder = new StringBuilder();
+enum AsciiTool {
+    T("─────┬"),
+    LT("├"),
+    RT("─────┤\n"),
+    BT("─────┴"),
+    LT_CORNER("┌"),
+    RT_CORNER("─────┐\n"),
+    CROSS("─────┼"),
+    LB_CORNER("└"),
+    RB_CORNER("─────┘\n"),
+    L_CONTENT("│  "),
+    M_CONTENT("  │  "),
+    R_CONTENT("  │\n"),
+    SPACES("      "),
+    DOT("● ");
 
-        int[][] matrice = new int[9][9];
-
-        // Popolamento della matrice con valori di esempio
-        for (int i = 0; i < matrice.length; i++) {
-            for (int j = 0; j < matrice[i].length; j++) {
-                matrice[i][j] = i + j;
-            }
-        }
-
-        // Stampa della matrice con linee verdi
-        for (int i = 0; i < matrice.length; i++) {
-            // Linea superiore della cella
-            System.out.print(green + "┌─────" + reset);
-            for (int j = 1; j < matrice[i].length; j++) {
-                // Linee orizzontali della cella
-                System.out.print(green + "┬─────" + reset);
-            }
-            // Linea superiore destra della cella
-            System.out.println(green + "┐" + reset);
-
-            // Contenuto della cella
-            for (int j = 0; j < matrice[i].length; j++) {
-                System.out.printf("%s│%4d ", green, matrice[i][j]); // %4d indica uno spazio di 4 cifre per l'intero
-            }
-            System.out.println(green + "│" + reset); // Linea verticale destra della cella
-
-            // Linea inferiore della cella
-            if (i == matrice.length - 1) {
-                System.out.print(green + "└─────" + reset);
-                for (int j = 1; j < matrice[i].length; j++) {
-                    System.out.print(green + "┴─────" + reset);
-                }
-                System.out.println(green + "┘" + reset);
-            } else {
-                System.out.print(green + "├─────" + reset);
-                for (int j = 1; j < matrice[i].length; j++) {
-                    System.out.print(green + "┼─────" + reset);
-                }
-                System.out.println(green + "┤" + reset);
-            }
-        }
-        return "";
+    private final String symbol;
+    AsciiTool(String symbol){
+        this.symbol = symbol;
     }
+
+    public String getSymbol() {
+        return symbol;
+    }
+}
+public class CliUtil {
+
+    private static String getRowContent(Character[] row) {
+        StringBuilder rowContent = new StringBuilder();
+        rowContent.append(AsciiTool.L_CONTENT.getSymbol());
+        for (int i=0; i<row.length; i++){
+            if(row[i] == 'u') continue;
+            rowContent.append(row[i]);
+            if(i < (row.length-1) && row[i+1]!='u') rowContent.append(AsciiTool.M_CONTENT.getSymbol());
+        }
+        rowContent.append(AsciiTool.R_CONTENT.getSymbol());
+        return rowContent.toString();
+    }
+
+    private static String getHeader(int length) {
+        length--;
+        return AsciiTool.LT_CORNER.getSymbol() + AsciiTool.T.getSymbol().repeat(length) + AsciiTool.RT_CORNER.getSymbol();
+    }
+
+    private static String getIntermediate(int length) {
+        length--;
+        return AsciiTool.LT.getSymbol() + AsciiTool.CROSS.getSymbol().repeat(length) + AsciiTool.RT.getSymbol();
+    }
+
+    private static String getFooter(int length) {
+        length--;
+        return AsciiTool.LB_CORNER.getSymbol() + AsciiTool.BT.getSymbol().repeat(length) + AsciiTool.RB_CORNER.getSymbol();
+    }
+
+    private static String makeLegend() {
+        String line1 = ColorCode.GREEN.getCode() + AsciiTool.DOT.getSymbol() + "C: Cat\t\t" + ColorCode.WHITE.getCode() + AsciiTool.DOT.getSymbol() + "B: Books\n";
+        String line2 = ColorCode.ORANGE.getCode() + AsciiTool.DOT.getSymbol() + "G: Game\t\t" + ColorCode.BLUE.getCode() + AsciiTool.DOT.getSymbol() + "F: Frames\n";
+        String line3 = ColorCode.L_BLUE.getCode() + AsciiTool.DOT.getSymbol() + "T: Trophies\t" + ColorCode.MAGENTA.getCode() + AsciiTool.DOT.getSymbol() + "P: Plants\n";
+
+        return line3 + line2 + line1;
+    }
+
+
+    //TODO: funziona, ma da revisionare
+    public static String makeBoard(Character[][] matrix) {
+
+        return ColorCode.GREEN.getCode() +
+                AsciiTool.SPACES.getSymbol().repeat(3) +
+                getHeader(2) +
+                AsciiTool.SPACES.getSymbol().repeat(3) +
+                getRowContent(matrix[0]) +
+                AsciiTool.SPACES.getSymbol().repeat(3) +
+                AsciiTool.LT.getSymbol() +
+                AsciiTool.CROSS.getSymbol().repeat(2) +
+                AsciiTool.RT_CORNER.getSymbol() +
+                AsciiTool.SPACES.getSymbol().repeat(3) +
+                getRowContent(matrix[1]) +
+                AsciiTool.SPACES.getSymbol().repeat(2) +
+                AsciiTool.LT_CORNER.getSymbol() +
+                AsciiTool.CROSS.getSymbol().repeat(4) +
+                AsciiTool.RT_CORNER.getSymbol() +
+                AsciiTool.SPACES.getSymbol().repeat(2) +
+                getRowContent(matrix[2]) +
+                AsciiTool.SPACES.getSymbol() +
+                AsciiTool.LT_CORNER.getSymbol() +
+                AsciiTool.CROSS.getSymbol().repeat(6) +
+                AsciiTool.T.getSymbol() +
+                AsciiTool.RT_CORNER.getSymbol() +
+                AsciiTool.SPACES.getSymbol() +
+                getRowContent(matrix[3]) +
+                AsciiTool.LT_CORNER.getSymbol() +
+                AsciiTool.CROSS.getSymbol().repeat(8) +
+                AsciiTool.RT.getSymbol() +
+                getRowContent(matrix[4]) +
+                AsciiTool.LT.getSymbol() +
+                AsciiTool.CROSS.getSymbol().repeat(8) +
+                AsciiTool.RB_CORNER.getSymbol() +
+                getRowContent(matrix[5]) +
+                AsciiTool.LB_CORNER.getSymbol() +
+                AsciiTool.BT.getSymbol() +
+                AsciiTool.CROSS.getSymbol().repeat(6) +
+                AsciiTool.RB_CORNER.getSymbol() +
+                AsciiTool.SPACES.getSymbol().repeat(2) +
+                getRowContent(matrix[6]) +
+                AsciiTool.SPACES.getSymbol().repeat(2) +
+                AsciiTool.LB_CORNER.getSymbol() +
+                AsciiTool.CROSS.getSymbol().repeat(4) +
+                AsciiTool.RB_CORNER.getSymbol() +
+                AsciiTool.SPACES.getSymbol().repeat(3) +
+                getRowContent(matrix[7]) +
+                AsciiTool.SPACES.getSymbol().repeat(3) +
+                AsciiTool.LB_CORNER.getSymbol() +
+                AsciiTool.CROSS.getSymbol().repeat(2) +
+                AsciiTool.RT.getSymbol() +
+                AsciiTool.SPACES.getSymbol().repeat(4) +
+                getRowContent(matrix[8]) +
+                AsciiTool.SPACES.getSymbol().repeat(4) +
+                getFooter(2);
+    }
+
+    public static String makeBookshelf(Character[][] matrix) {
+        String bookshelf = ColorCode.BROWN.getCode() + getHeader(5);
+        for(int i=0; i<matrix[0].length-1; i++){
+            bookshelf += getRowContent(matrix[i])+
+                    getIntermediate(5);
+        }
+        bookshelf += getRowContent(matrix[matrix[0].length-1]) + getFooter(5);
+        return bookshelf;
+    }
+    public static void main(String[] args) {
+        System.out.println(makeTitle("Livingroom"));
+        Character[][] matrix;
+        matrix = new Character[][]{
+                {'u', 'u', 'u', 't', 't', 'u', 'u', 'u', 'u'},
+                {'u', 'u', 'u', 't', 't', 't', 'u', 'u', 'u'},
+                {'u', 'u', 't', 't', 't', 't', 't', 'u', 'u'},
+                {'u', 't', 't', 't', 't', 't', 't', 't', 't'},
+                {'t', 't', 't', 't', 't', 't', 't', 't', 't'},
+                {'t', 't', 't', 't', 't', 't', 't', 't', 'u'},
+                {'u', 'u', 't', 't', 't', 't', 't', 'u', 'u'},
+                {'u', 'u', 'u', 't', 't', 't', 'u', 'u', 'u'},
+                {'u', 'u', 'u', 'u', 't', 't', 'u', 'u', 'u'}
+        };
+        System.out.println(makeBoard(matrix));
+        System.out.println(makeLegend());
+
+        Character[][] matrix2;
+        matrix2 = new Character[][]{
+                {'t', 't', 't', 't', 't'},
+                {'t', 't', 't', 't', 't'},
+                {'t', 't', 't', 't', 't'},
+                {'t', 't', 't', 't', 't'},
+                {'t', 't', 't', 't', 't'},
+                {'t', 't', 't', 't', 't'}
+        };
+        System.out.println(makeBookshelf(matrix2));
+    }
+
 
     public static String makeTitle(String title) {
         int titleLength = title.length();
-        int delimiterLength = 80 - titleLength - 2;
+        int delimiterLength = /*80*/ 55 - titleLength - 2;
         int delimiterLeftLength = delimiterLength / 2;
-        int delimiterRightLength = delimiterLength - delimiterLeftLength;
+        int delimiterRightLength = delimiterLength - delimiterLeftLength-2;
 
         String delimiterLeft = "-".repeat(delimiterLeftLength);
         String delimiterRight = "-".repeat(delimiterRightLength);
 
         String res;
-        res = ("\u001B[31m--------------------------------------------------------------------------------\n" +
+        res = (ColorCode.BLUE.getCode() + "-".repeat(55) + "\n" +
                 "|"+ delimiterLeft + " " + title + " " + delimiterRight + "|\n" +
-                "--------------------------------------------------------------------------------\u001B[0m\n");
+                "-".repeat(55) + "\n");
 
         return res;
     }
