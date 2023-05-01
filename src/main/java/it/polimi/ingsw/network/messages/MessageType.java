@@ -24,6 +24,7 @@ public enum MessageType {
     GAME_START,
     CARD_REMOVAL,
     BOARD_REFILL,
+    ERROR_MESSAGE,
     END_GAME,
 
 }

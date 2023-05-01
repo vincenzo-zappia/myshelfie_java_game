@@ -7,10 +7,7 @@
 
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.network.messages.JoinLobby;
-import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.network.messages.ResponseMessage;
+import it.polimi.ingsw.network.messages.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -98,7 +95,7 @@ public class ClientHandler implements Runnable{
             lobby.startGame();
         }
         else {
-            //TODO: invio messaggio di errore
+            sendMessage(new ErrorMessage("server", MessageType.ERROR_MESSAGE, "received " + msg.getType() + " instead of START_GAME message"));
         }
     }
 

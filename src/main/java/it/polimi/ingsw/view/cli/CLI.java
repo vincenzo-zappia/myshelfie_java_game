@@ -74,7 +74,12 @@ public class CLI extends Subject implements Runnable, SubjectView{
 
     @Override
     public void askNumberOfPlayers() {
-
+        System.out.println("How many players do you want in Lobby?");
+        System.out.println("[0] Two");
+        System.out.println("[1] Three");
+        System.out.println("[2] Four");
+        int num = Integer.parseInt(scanner.nextLine());
+        //TODO messaggio con numero di giocatori nella lobby o aggiungere ad askLobby?
     }
 
     @Override
