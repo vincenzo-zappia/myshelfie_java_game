@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.ClientActionManager;
 import it.polimi.ingsw.network.messages.CreateLobby;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
@@ -19,11 +20,11 @@ public class CLI extends Subject implements Runnable, SubjectView{
         new Thread(client).start(); //Loop execution of receiveMessage by Client
     }
 
-    //TODO: Registrare il nuovo client appena dopo inserimento username/creazione lobby con this.register(new ClientActionManager(this))
     @Override
     public void run() {
+
     /*
-        //TODO: Come fa la CLI a tenere traccia dei cmabiamenti che avvengono lato Client con l'invio di comandi in base ai messaggi ricevuti?
+        //TODO: Come fa la CLI a tenere traccia dei cambiamenti che avvengono lato Client con l'invio di comandi in base ai messaggi ricevuti?
 
         System.out.println("[0] Create new lobby");
         System.out.println("[1] Connect to existing lobby");
@@ -38,6 +39,7 @@ public class CLI extends Subject implements Runnable, SubjectView{
             Message msg = client.receiveMessage();
             if(msg.getType() == MessageType.LOBBY_CREATION_RESPONSE){
                 System.out.println("bravooo!!");
+                this.register(new ClientActionManager(this)); //TODO aggiungere dove serve
             }
         }
 

@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 public class GameTest {
     Game game;
-/*
+
+    /*
     @Test
     public void test_OderByScore() {
         ArrayList<String> usernames = new ArrayList<>();

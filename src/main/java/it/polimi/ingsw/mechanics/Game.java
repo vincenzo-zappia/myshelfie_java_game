@@ -30,8 +30,6 @@ public class Game{
     //region CONSTRUCTOR
     public Game(ArrayList<String> usernames){
         board = new Board(usernames.size());
-
-        //TODO: Non è meglio chiamarlo nel costruttore di Board?
         board.fillBoard(); //filling of the board with cards
         players = new ArrayList<>();
 
