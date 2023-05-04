@@ -1,6 +1,8 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.network.messages.BoardRefillUpdate;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.ResponseMessage;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.state.ClientSelectionState;
 import it.polimi.ingsw.state.TurnState;
@@ -31,6 +33,18 @@ public class ClientController implements Observer {
      */
     @Override
     public void update(Message message){
+
+        //TODO: Per il momento non uso lo state
+        switch (message.getType()){
+            case BOARD_REFILL -> {
+                //view.showRefilledBoard((BoardRefillUpdate) message.getBoard()); //TODO: Come?
+            }
+            case SELECTION_RESPONSE -> {}
+            case INSERTION_RESPONSE -> {}
+            case CREATE_LOBBY -> {
+                client.sendMessage(message); //TODO: Semplice forwarding del messaggio creato in CLI?
+            }
+        }
         //TODO: Chiamata di metodi View per sputare su GUI/CLI
         turnState.messageHandler(message);
     }

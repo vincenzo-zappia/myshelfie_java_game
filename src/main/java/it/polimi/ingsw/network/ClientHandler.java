@@ -52,6 +52,40 @@ public class ClientHandler implements Runnable{
 
     }
 
+    /**
+     *
+     * @return
+     */
+    private Message receiveMessage(/*boolean... conditions*/){
+        boolean res = false;
+        Message msg = null;
+        try {
+            while(!res){
+                msg = (Message) objIn.readObject();
+                res = msg!=null;
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return msg;
+    }
+
+    /**
+     * Invia i messaggi attraverso TCP/IP a/ai client
+     * @param message rappresenta il messaggio da inviare
+     */
+    public void sendMessage(Message message){
+        try {
+            objOut.writeObject(message);
+            objOut.reset(); //anziché flush
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     *
+     */
     private void initializeLobbyConnection() {
         Message msg = receiveMessage();
 
@@ -75,20 +109,9 @@ public class ClientHandler implements Runnable{
 
     }
 
-    private Message receiveMessage(/*boolean... conditions*/){
-        boolean res = false;
-        Message msg = null;
-        try {
-            while(!res){
-                msg = (Message) objIn.readObject();
-                res = msg!=null;
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return msg;
-    }
-
+    /**
+     *
+     */
     private void startGameHandler() {
         Message msg = receiveMessage();
         if (msg.getType() == MessageType.START_GAME){
@@ -99,17 +122,6 @@ public class ClientHandler implements Runnable{
         }
     }
 
-    /**
-     * Invia i messaggi attraverso TCP/IP a/ai client
-     * @param message rappresenta il messaggio da inviare
-     */
-    public void sendMessage(Message message){
-        try {
-            objOut.writeObject(message);
-            objOut.reset(); //anziché flush
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 
 }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.cli;
 import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
+import it.polimi.ingsw.network.messages.CreateLobby;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.observer.Subject;
 import it.polimi.ingsw.observer.SubjectView;
@@ -78,7 +79,7 @@ public class CLI extends SubjectView implements Runnable, View {
         if(selection == 0){
 
             //TODO: Creazione messaggio di creazione lobby
-            //notifyObserver();
+            notifyObserver(new CreateLobby());
 
             //TODO: Attesa riscontro server oppure gestione attraverso altro metodo showLobbyConfirmation()?
         }
@@ -115,7 +116,7 @@ public class CLI extends SubjectView implements Runnable, View {
 
     @Override
     public void showRefilledBoard(Board board) {
-
+        //TODO: CliUtil.makeBoard() con che parametro?
     }
 
     @Override

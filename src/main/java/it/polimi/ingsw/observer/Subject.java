@@ -35,12 +35,4 @@ public abstract class Subject {
         }
     }
 
-    /**
-     * Overload of method notifyObserver() in order to allow the CLI to update its observer by passing
-     * the keyboard input of the user as parameter
-     * @param userInput string user keyboard input
-     * @param type message type useful to ClientActionManager to creare a Message object out of the user
-     *             input
-     */
-
 }
