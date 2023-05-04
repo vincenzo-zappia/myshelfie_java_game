@@ -1,14 +1,13 @@
 package it.polimi.ingsw.state;
 
-import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.network.ClientActionManager;
+import it.polimi.ingsw.network.ClientController;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.ResponseMessage;
 
 public class ClientSelectionState implements TurnState {
-    private final ClientActionManager client;
+    private final ClientController client;
 
-    public ClientSelectionState(ClientActionManager client){
+    public ClientSelectionState(ClientController client){
         this.client = client;
     }
 

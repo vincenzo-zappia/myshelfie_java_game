@@ -1,14 +1,13 @@
 package it.polimi.ingsw.network.messages;
 
-
+/**
+ * Generic message on par with ResponseMessage used to pass specific error content
+ */
 public class ErrorMessage extends Message{
-    private final String description;
-    public ErrorMessage(String sender, MessageType type, String description) {
-        super(sender, type);
-        this.description = "ERROR: "+description;
+
+    public ErrorMessage(String description) {
+        super("server", MessageType.ERROR_MESSAGE);
+        this.setContent("ERROR: " + description);
     }
 
-    public String getDescription() {
-        return description;
-    }
 }

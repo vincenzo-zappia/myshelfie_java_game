@@ -11,6 +11,9 @@ import it.polimi.ingsw.network.messages.SelectionMessage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Calls the VirtualView to sent messages to the Client. Receives messages from the Clients and defines the relative behavior of the Game.
+ */
 public class GameController {
 
     //region ATTRIBUTES
@@ -31,6 +34,7 @@ public class GameController {
     }
     //endregion
 
+    //Every method is involved in the reception of a message, calling the specific action associated with the message and the generation of a response
     //region METHODS
 
     //TODO: Metodo inizio partita che dopo la creazione di Game e quindi di Board aggiorna i player del fillBoard() (forse in Lobby?)
@@ -57,6 +61,24 @@ public class GameController {
     }
 
     /**
+     * Send a broadcast message, used for refilling user's
+     * boards or notify that a single removed certain cards
+     * @param type of the message
+     * @param payload eventual attributes of the received message
+     */
+    public void broadcastMessage(MessageType type, Object... payload){
+        for(String username : viewHashMap.keySet()) {
+            switch (type) {
+                case BOARD_REFILL -> viewHashMap.get(username).showRefilledBoard(game.getBoard());
+                case CARD_REMOVAL -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
+            }
+        }
+    }
+
+    //TODO: Metodo startTurn() che chiama view.askCardSelection()
+
+    //TODO: cardSelection() non invia più riscontro positivo ma chiama view.askCardInsertion()
+    /**
      * method that extracts the coordinates from the message checking the validity of the selection
      * @param message message sent by the client with the coordinates of the cards selected to be put
      *                into the player's Bookshelf
@@ -66,29 +88,14 @@ public class GameController {
             game.removeCardFromBoard(message.getCoordinates()); //Removal of the selected cards form the game board
 
             //Invio riscontro positivo al client (questo abilita lato client a effettuare inserzione)
-            viewHashMap.get(message.getUsername()).sendSelectionResponse(true);
+            viewHashMap.get(message.getUsername()).sendResponse(true, MessageType.SELECTION_RESPONSE);
 
             //Invio a tutti i client la posizonie delle carete da rimuovere
             broadcastMessage(MessageType.CARD_REMOVAL, (Object) message.getCoordinates());
         }
 
         //Invio riscontro negativo al client
-        viewHashMap.get(message.getUsername()).sendSelectionResponse(false);
-    }
-
-    /**
-     * Send a broadcast message, used for refilling user's
-     * boards or notify that a single removed certain cards
-     * @param type of the message
-     * @param payload
-     */
-    public void broadcastMessage(MessageType type, Object... payload){
-        for(String username : viewHashMap.keySet()) {
-            switch (type) {
-                case BOARD_REFILL -> viewHashMap.get(username).sendBoardRefill(game.getBoard());
-                case CARD_REMOVAL -> viewHashMap.get(username).sendCardRemoval((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
-            }
-        }
+        viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.SELECTION_RESPONSE);
     }
 
     /**
@@ -104,12 +111,12 @@ public class GameController {
             game.addCardToBookshelf(message.getUsername(), message.getSelectedColumn(), message.getSelectedCards());
 
             //Invio riscontro positivo al client
-            viewHashMap.get(message.getUsername()).sendInsertionResponse(true);
+            viewHashMap.get(message.getUsername()).sendResponse(true, MessageType.INSERTION_RESPONSE);
 
             endTurn();
         } catch (AddCardException e) {
             //Invio riscontro negativo al client
-            viewHashMap.get(message.getUsername()).sendInsertionResponse(false);
+            viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.INSERTION_RESPONSE);
             throw new RuntimeException(e);
         }
     }
@@ -143,7 +150,6 @@ public class GameController {
         //TODO: creation of the scoreboard based on the calculated scores for each one of the players
 
     }
-
     //endregion
 
 }

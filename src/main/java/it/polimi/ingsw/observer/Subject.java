@@ -42,9 +42,5 @@ public abstract class Subject {
      * @param type message type useful to ClientActionManager to creare a Message object out of the user
      *             input
      */
-    public void notifyObserver(String userInput, MessageType type){
-        for(Observer o : observers){
-            //TODO: Capire come e dove creare messaggio utente CLI -> Manager -> Server
-        }
-    }
+
 }

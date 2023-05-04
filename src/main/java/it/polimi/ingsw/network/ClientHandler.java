@@ -95,7 +95,7 @@ public class ClientHandler implements Runnable{
             lobby.startGame();
         }
         else {
-            sendMessage(new ErrorMessage("server", MessageType.ERROR_MESSAGE, "received " + msg.getType() + " instead of START_GAME message"));
+            sendMessage(new ErrorMessage("received " + msg.getType() + " instead of START_GAME message"));
         }
     }
 

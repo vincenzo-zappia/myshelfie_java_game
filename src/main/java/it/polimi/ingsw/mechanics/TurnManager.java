@@ -2,8 +2,10 @@ package it.polimi.ingsw.mechanics;
 
 import java.util.ArrayList;
 
-//TurnManager disaccoppiato dal gioco: non ha modo di verificare legalità delle mosse
-//è un "iteratore" che scorre se stesso: unico compito quello di dire chi è il currentPlayer
+//TODO: Decidere se il TurnManager debba essere in grado di inviare messaggi ai client. In quel caso diventerebbe "TurnController" e avrebbe bisogno di un'hashmap come attributo.
+/**
+ * "Iterator" that has the role to select the current player relatively to the logic of the game
+ */
 public class TurnManager {
 
     //region ATTRIBUTES

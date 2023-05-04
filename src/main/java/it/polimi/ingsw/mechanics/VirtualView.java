@@ -4,11 +4,13 @@ import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.network.ClientHandler;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.view.cli.View;
 
+//TODO: Aggiornare descrizione nel caso in cui TurnManager diventi TurnController
 /**
- * Class that manages the creation of messages server -> client
+ * Class that manages the creation of messages server -> client. Used by Lobby, GameController
  */
-public class VirtualView implements Observer {
+public class VirtualView implements View, Observer {
     private final ClientHandler clientHandler;
 
     public VirtualView(ClientHandler clientHandler){
@@ -20,49 +22,50 @@ public class VirtualView implements Observer {
         clientHandler.sendMessage(message);
     }
 
-    //TODO: Gestione particolare messaggi server -> client
+    //TODO: Popolare metodi
 
-    /**
-     * Sends the coordinates of the cards successfully removed by the current player
-     * @param coordinates coordinates of the removed cards
-     */
-    public void sendCardRemoval(int[][] coordinates){
+    @Override
+    public void requestUsername() {
+
+    }
+
+    @Override
+    public void requestLobby() {
+
+    }
+
+    @Override
+    public void requestNumberOfPlayers() {
+
+    }
+
+    @Override
+    public void requestCardSelection() {
+
+    }
+
+    @Override
+    public void requestCardInsertion() {
+
+    }
+
+    @Override
+    public void showRemovedCards(int[][] coordinates){
         clientHandler.sendMessage(new CardRemovalMessage(coordinates));
     }
 
-    /**
-     * Sends the new refilled Board
-     * @param board refilled Board
-     */
-    public void sendBoardRefill(Board board){
+    @Override
+    public void showRefilledBoard(Board board){
         clientHandler.sendMessage(new BoardRefillUpdate(board));
     }
 
-    //region RESPONSE
-    //All the methods that use the generic boolean ResponseMessage
-
-    /**
-     * Gives feedback to the client about his selection command
-     * @param response if selection is valid
-     */
-    public void sendSelectionResponse(boolean response){
-        clientHandler.sendMessage(new ResponseMessage(MessageType.SELECTION_RESPONSE, response));
+    @Override
+    public void sendResponse(boolean response, MessageType responseType){
+        clientHandler.sendMessage(new ResponseMessage(responseType, response));
     }
 
-    /**
-     * Gives feedback to the client about his insertion command
-     * @param response if insertion is valid
-     */
-    public void sendInsertionResponse(boolean response){
-        clientHandler.sendMessage(new ResponseMessage(MessageType.INSERTION_RESPONSE, response));
-    }
-
-    /**
-     * Gives a generic negative feedback to any type of command sent by the player that is not playing
-     * the current turn
-     */
+    @Override
     public void sendNotYourTurn(){
         clientHandler.sendMessage(new ResponseMessage(MessageType.NOT_YOUR_TURN, false));
     }
-    //endregion
 }

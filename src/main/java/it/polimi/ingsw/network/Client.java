@@ -38,8 +38,8 @@ public class Client extends Subject implements Runnable{
         this.port = port;
         this.ip = ip;
 
-        //Adding the only observer of the class
-        this.register(new ClientActionManager());
+        //TODO: Se è la CLI/GUI a creare ClientManager come si fa a passare un già esistente ClientManager al Client?
+        //this.register(new ClientActionManager());
     }
     //endregion
 
