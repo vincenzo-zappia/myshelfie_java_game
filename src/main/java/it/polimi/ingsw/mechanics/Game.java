@@ -17,6 +17,7 @@ import it.polimi.ingsw.util.BoardCell;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class Game{
 
@@ -98,12 +99,21 @@ public class Game{
      * @param cards selected and arranged by the player in the desired order
      * @throws AddCardException if column are already full
      */
-    public void addCardToBookshelf(String playerUsername, int column, ArrayList<Card> cards) throws AddCardException {
-        int playerIndex = players.indexOf(playerUsername); //TODO: exception in case username not found
+    public boolean addCardToBookshelf(String playerUsername, int column, ArrayList<Card> cards) throws AddCardException {
+        //now the method check if the arraylist contains a player with username == playerUsername
+        int playerIndex;
+        boolean sentinel = false;
+        int i = 0;
+        do{
+            if(Objects.equals(players.get(i).getUsername(), playerUsername)){
+                playerIndex=i;
+                sentinel=true;
+                for(Card c : cards) players.get(playerIndex).getBookshelf().addCard(column, c);
+            }
+            i++;
+        }while(!sentinel || i < 4);
 
-        for(Card c : cards){
-            players.get(playerIndex).getBookshelf().addCard(column, c);
-        }
+        return sentinel;
     }
 
     /**

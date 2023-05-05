@@ -30,7 +30,6 @@ public class Server {
             System.out.println("INFO: Server in ascolto sulla porta " + port);
         } catch (IOException e) {
             System.err.println("Error:" + e.getMessage());
-            //return removed
         }
     }
 

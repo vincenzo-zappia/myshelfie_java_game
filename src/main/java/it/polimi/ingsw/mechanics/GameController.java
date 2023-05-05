@@ -107,14 +107,19 @@ public class GameController {
     public synchronized void cardInsertion(InsertionMessage message){
         //Insertion of the cards removed from the board into the player's bookshelf
         try {
-            //inserzione carte nel Bookshelf di Player
-            //TODO: gestire caso overflow carte selezionate (check legalità o eccezione metodo?)
-            game.addCardToBookshelf(message.getUsername(), message.getSelectedColumn(), message.getSelectedCards());
 
-            //Invio riscontro positivo al client
-            viewHashMap.get(message.getUsername()).sendResponse(true, MessageType.INSERTION_RESPONSE);
+            //cards insertion in player's bookshelf
+            //if statement can be simplified, not sure if it's correct with message's code
+
+            if(game.addCardToBookshelf(message.getUsername(), message.getSelectedColumn(), message.getSelectedCards())){
+                //Invio riscontro positivo al client
+                viewHashMap.get(message.getUsername()).sendResponse(true, MessageType.INSERTION_RESPONSE);
+            }
+            else viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.INSERTION_RESPONSE); //invia riscontro negativo
+
 
             endTurn();
+
         } catch (AddCardException e) {
             //Invio riscontro negativo al client
             viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.INSERTION_RESPONSE);
