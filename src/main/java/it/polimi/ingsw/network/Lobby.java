@@ -5,7 +5,8 @@ import it.polimi.ingsw.mechanics.GameController;
 import it.polimi.ingsw.mechanics.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.network.messages.ResponseMessage;
+import it.polimi.ingsw.network.messages.server2client.ErrorMessage;
+import it.polimi.ingsw.network.messages.server2client.ResponseMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,35 +39,30 @@ public class Lobby {
      * @param netPlayer player that request access to lobby
      */
     public void joinLobby(NetworkPlayer netPlayer){
-        System.out.println("Enter JoinLobby");
-        ResponseMessage response;
+        Message response;
         //se il gioco sta andando non faccio entrare il player
         if(inGame) {
-            response = new ResponseMessage(MessageType.LOBBY_ACCESS_RESPONSE, false);
-            response.setContent("Game already started!");
+            response = new ErrorMessage("Game already started!");
             netPlayer.getClientHandler().sendMessage(response);
             return;
         }
-        System.out.println("Verifica che non ingame");
+
         //se si è raggiunto il numero massimo di giocatori non faccio entrare il player
         if(playerUsernames.size()>=4){
-            response = new ResponseMessage(MessageType.LOBBY_ACCESS_RESPONSE,false);
-            response.setContent("Lobby is full!");
+            response = new ErrorMessage("Lobby is full!");
             netPlayer.getClientHandler().sendMessage(response);
             return;
         }
-        System.out.println("verifica che non max 4");
 
 
         String username = netPlayer.getUsername();
         assert (username != null);
         if(playerUsernames.contains(username)){
-            response = new ResponseMessage(MessageType.LOBBY_ACCESS_RESPONSE,false);
-            response.setContent("Username already taken!");
+            response = new ErrorMessage("Username already taken!");
+            netPlayer.getClientHandler().sendMessage(response);
             return;
         }
 
-        System.out.println("Aggiunta player...");
 
         //Aggiunta effettiva del player
         playerUsernames.add(username);

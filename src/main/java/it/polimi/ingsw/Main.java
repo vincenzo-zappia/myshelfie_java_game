@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.exceptions.AddCardException;
+import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.util.CardType;
 import it.polimi.ingsw.view.cli.CLI;
 
@@ -14,7 +15,8 @@ public class Main {
         System.out.println("Cosa vuoi avvire?");
         System.out.println("[0] CLI");
         int selezione = Integer.parseInt(in.nextLine());
-        CLI cli = new CLI();
+        Client client = new Client("localhost", 2023);
+        CLI cli = new CLI(client);
         if (selezione==0) new Thread(cli).start();
     }
 }

@@ -71,7 +71,7 @@ public class Bookshelf {
     }
 
     /**
-     * method that return a matrix 6x5 of only colours of the cards
+     * method that returns a matrix 6x5 of only colours of the cards
      * @return the matrix itself
      */
     public int[][] getMatrixColors() {

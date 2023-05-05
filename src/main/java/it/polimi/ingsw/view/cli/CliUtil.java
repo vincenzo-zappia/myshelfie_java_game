@@ -36,7 +36,9 @@ enum AsciiTool {
     M_CONTENT("  │  "),
     R_CONTENT("  │\n"),
     SPACES("      "),
-    DOT("● ");
+    DOT("● "),
+    X("\u274C"),
+    V("\u2714");
 
     private final String symbol;
     AsciiTool(String symbol){
@@ -47,6 +49,7 @@ enum AsciiTool {
         return symbol;
     }
 }
+
 public class CliUtil {
 
     private static String getRowContent(Character[] row) {
@@ -168,6 +171,7 @@ public class CliUtil {
         System.out.println(makeBoard(matrix));
         System.out.println(makeLegend());
 
+        System.out.println(makeTitle("Bookshelf"));
         Character[][] matrix2;
         matrix2 = new Character[][]{
                 {'t', 't', 't', 't', 't'},
@@ -178,8 +182,9 @@ public class CliUtil {
                 {'t', 't', 't', 't', 't'}
         };
         System.out.println(makeBookshelf(matrix2));
-    }
 
+        System.out.println(CliUtil.makeErrorMessage("Enter valid number."));
+    }
 
     public static String makeTitle(String title) {
         int titleLength = title.length();
@@ -196,6 +201,10 @@ public class CliUtil {
                 "-".repeat(55) + "\n");
 
         return res;
+    }
+
+    public static String makeErrorMessage(String message){
+        return ColorCode.RED.getCode() + AsciiTool.X.getSymbol() + message;
     }
 
 

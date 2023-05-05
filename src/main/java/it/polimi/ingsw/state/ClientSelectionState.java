@@ -2,7 +2,7 @@ package it.polimi.ingsw.state;
 
 import it.polimi.ingsw.network.ClientController;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.ResponseMessage;
+import it.polimi.ingsw.network.messages.server2client.ResponseMessage;
 
 public class ClientSelectionState implements TurnState {
     private final ClientController client;

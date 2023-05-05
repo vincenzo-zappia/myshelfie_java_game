@@ -3,10 +3,10 @@ package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.exceptions.AddCardException;
-import it.polimi.ingsw.network.messages.InsertionMessage;
+import it.polimi.ingsw.network.messages.client2server.InsertionMessage;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.network.messages.SelectionMessage;
+import it.polimi.ingsw.network.messages.client2server.SelectionMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +31,7 @@ public class GameController {
         turnManager = new TurnManager(new ArrayList<>(viewHashMap.keySet()));
         this.game = game;
         this.viewHashMap = viewHashMap;
+        broadcastMessage(MessageType.BOARD_REFILL);
     }
     //endregion
 

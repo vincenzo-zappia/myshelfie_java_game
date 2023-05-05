@@ -3,111 +3,82 @@ package it.polimi.ingsw.view.cli;
 import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
-import it.polimi.ingsw.network.messages.CreateLobby;
 import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.observer.Subject;
-import it.polimi.ingsw.observer.SubjectView;
+import it.polimi.ingsw.view.View;
 
 import java.util.Scanner;
 
-public class CLI extends SubjectView implements Runnable, View {
-
-    private final Client client; //TODO: Perché la CLI ha un'istanza di client?
+public class CLI implements Runnable, View {
     private final Scanner scanner;
+    private final ClientController controller;
 
-    public CLI() {
-        client = new Client("10.0.0.3", 2023);
+    public CLI(Client client) {
         scanner = new Scanner(System.in);
-        new Thread(client).start(); //Loop execution of receiveMessage() by Client
-        this.register(new ClientController(this));
+        controller = new ClientController(this, client);
     }
 
     @Override
     public void run() {
 
-
-        //TODO: Come fa la CLI a tenere traccia dei cambiamenti che avvengono lato Client con l'invio di comandi in base ai messaggi ricevuti?
-
         //TODO: Stampa a schermo titolo di gioco da metodo di CliUtils
 
-        requestUsername();
-        requestLobby();
-        requestNumberOfPlayers();
-
-
-
-        /*
-        int selection = Integer.parseInt(in.nextLine());
-
-        System.out.println("Inserisci il tuo username:");
-        String username = in.nextLine();
-
-        if (selection == 0){
-            client.sendMessage(new CreateLobby(username));
-            Message msg = client.receiveMessage();
-            if(msg.getType() == MessageType.LOBBY_CREATION_RESPONSE){
-                System.out.println("bravooo!!");
-            }
-        }
-
-        */
+        connection();
 
     }
 
-    @Override
-    public void requestUsername() {
+    //region PRIVATE METHODS
+    /**
+     * The client interface asks the player his username
+     */
+    private String requestUsername() {
         String username;
-        System.out.println("Enter username:");
         do{
+            System.out.println("Enter username:");
             username = scanner.nextLine();
-            if (username.equals("")) System.out.println("Enter valid username:");
-        }while(username.equals(""));
+            if (username.replace(" ", "").equals("")) System.out.println(CliUtil.makeErrorMessage("Enter valid username:"));
+        }while(username.replace(" ", "").equals(""));
 
-        //TODO: Come generare messaggio di invio username/create lobby al client tramite il ClientActionManager?
-        //notifyObserver();
+        return username;
     }
 
-    @Override
-    public void requestLobby() {
+    /**
+     * The client interface asks the player if he wants to create a new lobby and, if he doesn't,
+     * the ID of the lobby he wants to join
+     */
+    public int requestLobby() {
         int selection;
         do {
             System.out.println("[0] Create new lobby");
             System.out.println("[1] Join existing lobby");
             selection = Integer.parseInt(scanner.nextLine());
-            if(selection != 0 && selection != 1) System.out.println("Enter valid number.");
+            if(selection != 0 && selection != 1) System.out.println(CliUtil.makeErrorMessage("Enter valid number."));
         }while (selection != 0 && selection != 1);
-        if(selection == 0){
+        return selection;
+    }
 
-            //TODO: Creazione messaggio di creazione lobby
-            notifyObserver(new CreateLobby());
+    //endregion
 
-            //TODO: Attesa riscontro server oppure gestione attraverso altro metodo showLobbyConfirmation()?
+    public void connection(){
+        int choice = requestLobby();
+        String username = requestUsername();
+
+        if(choice == 0){
+            controller.createLobby(username);
         }
-    }
+        else if(choice == 1){
+            System.out.println("Enter lobby id:");
+            int id = Integer.parseInt(scanner.nextLine());
+            controller.joinLobby(username, id);
+        }
 
-    @Override
-    public void requestNumberOfPlayers() {
-        int num;
-        do {
-            System.out.println("How many players do you want in Lobby?");
-            System.out.println("[0] Two");
-            System.out.println("[1] Three");
-            System.out.println("[2] Four");
-            num = Integer.parseInt(scanner.nextLine());
-            if (num != 0 && num != 1 && num != 2) System.out.println("Enter valid number.");
-        }while (num != 0 && num != 1 && num != 2);
-        //TODO messaggio con numero di giocatori nella lobby o aggiungere ad askLobby?
-    }
-
-    @Override
-    public void requestCardSelection() {
 
     }
 
-    @Override
-    public void requestCardInsertion() {
+    public void showErrorMessage(){
 
     }
+
+
 
     @Override
     public void showRemovedCards(int[][] coordinates) {

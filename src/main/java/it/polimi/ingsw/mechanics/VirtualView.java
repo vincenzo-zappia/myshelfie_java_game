@@ -3,8 +3,11 @@ package it.polimi.ingsw.mechanics;
 import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.network.ClientHandler;
 import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.network.messages.server2client.BoardRefillUpdate;
+import it.polimi.ingsw.network.messages.server2client.CardRemovalMessage;
+import it.polimi.ingsw.network.messages.server2client.ResponseMessage;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.view.cli.View;
+import it.polimi.ingsw.view.View;
 
 //TODO: Aggiornare descrizione nel caso in cui TurnManager diventi TurnController
 /**
@@ -20,32 +23,6 @@ public class VirtualView implements View, Observer {
     @Override
     public void update(Message message){
         clientHandler.sendMessage(message);
-    }
-
-    //TODO: Popolare metodi
-
-    @Override
-    public void requestUsername() {
-    }
-
-    @Override
-    public void requestLobby() {
-
-    }
-
-    @Override
-    public void requestNumberOfPlayers() {
-
-    }
-
-    @Override
-    public void requestCardSelection() {
-
-    }
-
-    @Override
-    public void requestCardInsertion() {
-
     }
 
     @Override

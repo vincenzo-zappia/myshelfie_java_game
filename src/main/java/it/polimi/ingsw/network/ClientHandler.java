@@ -8,6 +8,9 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.network.messages.client2server.JoinLobbyMessage;
+import it.polimi.ingsw.network.messages.server2client.ErrorMessage;
+import it.polimi.ingsw.network.messages.server2client.ResponseMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -91,8 +94,8 @@ public class ClientHandler implements Runnable{
 
         switch (msg.getType()){
             case JOIN_LOBBY -> {
-                JoinLobby joinLobby = (JoinLobby) msg;
-                if (server.existsLobby(joinLobby.getLobbyId())) this.lobby = server.getLobby(joinLobby.getLobbyId());
+                JoinLobbyMessage joinLobbyMessage = (JoinLobbyMessage) msg;
+                if (server.existsLobby(joinLobbyMessage.getLobbyId())) this.lobby = server.getLobby(joinLobbyMessage.getLobbyId());
                 lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this));
                 sendMessage(new ResponseMessage(MessageType.LOBBY_ACCESS_RESPONSE, true));
             }
