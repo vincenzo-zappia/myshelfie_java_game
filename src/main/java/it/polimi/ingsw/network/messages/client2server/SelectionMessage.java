@@ -4,9 +4,10 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 
 public class SelectionMessage extends Message {
-    private int[][] coordinates;
-    protected SelectionMessage(String sender) {
+    private final int[][] coordinates;
+    public SelectionMessage(String sender, int[][] coordinates) {
         super(sender, MessageType.SELECTION_MESSAGE);
+        this.coordinates = coordinates;
     }
 
     public int[][] getCoordinates(){

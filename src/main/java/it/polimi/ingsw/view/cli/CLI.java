@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.entities.Board;
+import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
 import it.polimi.ingsw.network.messages.MessageType;
@@ -13,6 +14,8 @@ import java.util.Scanner;
 public class CLI implements Runnable, View {
     private final Scanner scanner;
     private final ClientController controller;
+    private BoardCell[][] board;
+    private int[][] selection;
 
     public CLI(Client client) {
         scanner = new Scanner(System.in);
@@ -30,7 +33,15 @@ public class CLI implements Runnable, View {
             String[] splitted = read.split(" ");
 
             switch (splitted[0]){
-                case "select" -> {}
+                case "select" -> {
+                    String[] coordinate = splitted[1].split(",");
+                    int[][] coordinates = new int[coordinate.length][2];
+                    for(int i=0; i< coordinate.length; i++){
+                        coordinates[i] = parseCoordinates(coordinate[i]);
+                    }
+                    selection = coordinates;
+                    controller.sendSelection(coordinates);
+                }
                 case "show" -> {
                     if(splitted[1].equals("board")) showBoard();
                     else if(splitted[1].equals("bookshelf")) showBookshelf();
@@ -38,13 +49,26 @@ public class CLI implements Runnable, View {
                 }
                 case "help" -> {}
                 case "move" -> {}
-                case "insert" ->{
-                    //TODO
+                case "insert" -> {
+                    ArrayList<Card> cards = new ArrayList<Card>();
+                    for(int i=0; i<selection.length; i++) cards.add(board[selection[i][0]][selection[i][0]].getCard());
+                    controller.sendInsertion(cards, Integer.parseInt(splitted[1]));
                 }
+
                 case "" -> {}
             }
         }
 
+    }
+
+    public static int[] parseCoordinates(String input) {
+        String[] parts = input.substring(1, input.length() - 1).split(",");
+
+        int[] result = new int[2];
+        result[0] = Integer.parseInt(parts[0].trim());
+        result[1] = Integer.parseInt(parts[1].trim());
+
+        return result;
     }
 
 
