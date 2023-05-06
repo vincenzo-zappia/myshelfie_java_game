@@ -70,7 +70,7 @@ public class GameController {
     public void broadcastMessage(MessageType type, Object... payload){
         for(String username : viewHashMap.keySet()) {
             switch (type) {
-                case BOARD_REFILL -> viewHashMap.get(username).showRefilledBoard(game.getBoard());
+                case BOARD_REFILL -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getMatrix());
                 case CARD_REMOVAL -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
             }
         }

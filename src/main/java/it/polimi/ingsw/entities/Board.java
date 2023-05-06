@@ -11,6 +11,8 @@ import it.polimi.ingsw.exceptions.CellGetCardException;
 import it.polimi.ingsw.exceptions.NoMoreCardsException;
 import it.polimi.ingsw.util.BoardCell;
 
+import java.io.Serializable;
+
 public class Board {
 
     //region ATTRIBUTES

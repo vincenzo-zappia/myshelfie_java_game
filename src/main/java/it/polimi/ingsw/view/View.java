@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.network.messages.MessageType;
+import it.polimi.ingsw.util.BoardCell;
 
 import java.util.ArrayList;
 
@@ -35,7 +36,7 @@ public interface View {
      * Sends the newly refilled board after the calling of the fillBoard() method
      * @param board refilled board
      */
-    void showRefilledBoard(Board board);
+    void showRefilledBoard(BoardCell[][] boardCells);
     //endregion
 
     /**

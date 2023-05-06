@@ -7,7 +7,9 @@
 
 package it.polimi.ingsw.util;
 
-public class BoardCell extends Cell {
+import java.io.Serializable;
+
+public class BoardCell extends Cell implements Serializable {
 
     //region ATTRIBUTES
     private Boolean active; //see board doc/code

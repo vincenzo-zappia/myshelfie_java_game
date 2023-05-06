@@ -7,6 +7,7 @@ import it.polimi.ingsw.network.messages.server2client.BoardRefillUpdate;
 import it.polimi.ingsw.network.messages.server2client.CardRemovalMessage;
 import it.polimi.ingsw.network.messages.server2client.ResponseMessage;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
@@ -48,8 +49,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showRefilledBoard(Board board){
-        clientHandler.sendMessage(new BoardRefillUpdate(board));
+    public void showRefilledBoard(BoardCell[][] boardCells){
+        clientHandler.sendMessage(new BoardRefillUpdate(boardCells));
     }
 
     @Override

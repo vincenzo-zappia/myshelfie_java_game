@@ -4,6 +4,7 @@ import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
 import it.polimi.ingsw.network.messages.MessageType;
+import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
@@ -90,6 +91,11 @@ public class CLI implements Runnable, View {
 
         if(choice == 0){
             controller.createLobby(username);
+            String read;
+            do{
+                read = scanner.nextLine();
+            }while(!read.equals("start"));
+            controller.startGame();
         }
         else if(choice == 1){
             System.out.println("Enter lobby id:");
@@ -123,9 +129,9 @@ public class CLI implements Runnable, View {
     }
 
     @Override
-    public void showRefilledBoard(Board board) {
+    public void showRefilledBoard(BoardCell[][] boardCells) {
         CliUtil.makeTitle("Livingroom");
-        CliUtil.makeBoard(CliUtil.boardConverter(board));
+        CliUtil.makeBoard(CliUtil.boardConverter(boardCells));
     }
 
     @Override

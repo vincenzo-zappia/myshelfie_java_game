@@ -45,7 +45,7 @@ public class ClientController implements Observer {
         switch (message.getType()){
             case BOARD_REFILL -> {
                 BoardRefillUpdate boardUpdate = (BoardRefillUpdate) message;
-                view.showRefilledBoard(boardUpdate.getBoard());
+                view.showRefilledBoard(boardUpdate.getBoardCells());
             }
             case SELECTION_RESPONSE -> {}
             case INSERTION_RESPONSE -> {}
