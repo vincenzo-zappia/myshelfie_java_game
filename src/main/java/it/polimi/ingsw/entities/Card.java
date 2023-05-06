@@ -9,7 +9,9 @@ package it.polimi.ingsw.entities;
 
 import it.polimi.ingsw.util.CardType;
 
-public class Card {
+import java.io.Serializable;
+
+public class Card implements Serializable {
 
     //region ATTRIBUTES
     private final String img;

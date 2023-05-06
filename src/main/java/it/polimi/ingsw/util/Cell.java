@@ -10,7 +10,9 @@ package it.polimi.ingsw.util;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.exceptions.CellGetCardException;
 
-public class Cell {
+import java.io.Serializable;
+
+public class Cell implements Serializable {
 
     //region ATTRIBUTES
     private Card card;

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.util;
 
-public enum CardType {
+import java.io.Serializable;
+
+public enum CardType implements Serializable {
     FRAMES,
     CATS,
     GAMES,
