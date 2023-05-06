@@ -167,8 +167,7 @@ public class CliUtil {
         return bookshelf;
     }
 
-    public static Character[][] boardConverter(Board board){
-        BoardCell tmp[][] = board.getMatrix();
+    public static Character[][] boardConverter(BoardCell[][] tmp){
 
         Character result[][] = new Character[][]{
                 {'u', 'u', 'u', ' ', ' ', 'u', 'u', 'u', 'u'},
