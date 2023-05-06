@@ -1,5 +1,8 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.entities.Board;
+import it.polimi.ingsw.util.BoardCell;
+
 import java.util.ArrayList;
 
 enum ColorCode {
@@ -163,6 +166,39 @@ public class CliUtil {
         bookshelf += getRowContent(matrix[matrix[0].length-1]) + getFooter(5);
         return bookshelf;
     }
+
+    public static Character[][] boardConverter(Board board){
+        BoardCell tmp[][] = board.getMatrix();
+
+        Character result[][] = new Character[][]{
+                {'u', 'u', 'u', ' ', ' ', 'u', 'u', 'u', 'u'},
+                {'u', 'u', 'u', ' ', ' ', ' ', 'u', 'u', 'u'},
+                {'u', 'u', ' ', ' ', ' ', ' ', ' ', 'u', 'u'},
+                {'u', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'u'},
+                {'u', 'u', ' ', ' ', ' ', ' ', ' ', 'u', 'u'},
+                {'u', 'u', 'u', ' ', ' ', ' ', 'u', 'u', 'u'},
+                {'u', 'u', 'u', 'u', ' ', ' ', 'u', 'u', 'u'}
+        };
+
+        for (int i = 0; i<9;i++){
+            for(int j = 0; j<9; j++){
+                if(tmp[i][j].isCellActive() && !tmp[i][j].isCellEmpty()){
+                    switch(tmp[i][j].getCard().getType()){
+                        case FRAMES -> result[i][j] = 'F';
+                        case CATS -> result[i][j] = 'C';
+                        case BOOKS -> result[i][j] = 'B';
+                        case GAMES -> result[i][j] = 'G';
+                        case PLANTS -> result[i][j] = 'P';
+                        case TROPHIES -> result[i][j] = 'T';
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         System.out.println(makeTitle("Livingroom"));
         Character[][] matrix;

@@ -124,7 +124,8 @@ public class CLI implements Runnable, View {
 
     @Override
     public void showRefilledBoard(Board board) {
-        //TODO: CliUtil.makeBoard() con che parametro?
+        CliUtil.makeTitle("Livingroom");
+        CliUtil.makeBoard(CliUtil.boardConverter(board));
     }
 
     @Override
