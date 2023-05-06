@@ -26,6 +26,16 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
+    public void showError(String content) {
+
+    }
+
+    @Override
+    public void connectionSuccess(int lobbyId) {
+
+    }
+
+    @Override
     public void showRemovedCards(int[][] coordinates){
         clientHandler.sendMessage(new CardRemovalMessage(coordinates));
     }

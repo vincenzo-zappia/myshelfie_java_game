@@ -71,6 +71,14 @@ public class Lobby {
         networkMap.put(username, netPlayer);
     }
 
+    //TODO: nuovo metodo da vedere se mantenere
+    public void sendLobbyMessage(Message message){
+        for(NetworkPlayer player: networkMap.values()){
+            player.getClientHandler().sendMessage(message);
+        }
+    }
+
+
     /**
      * Method that start the game and initialize hashmaps and GameController
      */
@@ -94,6 +102,10 @@ public class Lobby {
 
     public int getLobbyId() {
         return lobbyId;
+    }
+
+    public ArrayList<String> getPlayerUsernames(){
+        return playerUsernames;
     }
     //endregion
 }

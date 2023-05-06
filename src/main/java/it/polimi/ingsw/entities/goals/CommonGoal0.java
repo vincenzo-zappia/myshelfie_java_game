@@ -1,6 +1,9 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
+import it.polimi.ingsw.util.CardType;
+
+import java.util.HashMap;
 
 
 /*
@@ -9,14 +12,23 @@ import it.polimi.ingsw.entities.Bookshelf;
 
 public class CommonGoal0 implements Goal{
     private int[][] mColor = new int[6][5];
+    private final int[] scores;
 
     public void setColorMatrix(int[][] matrix){
         mColor = matrix;
     }
 
+    public CommonGoal0() {
+        scores = new int[]{2,3,5,8};
+    }
+
     @Override
     public int checkGoal(Bookshelf bookshelf) {
 
+        int partial = 0;
+        for(CardType type: CardType.values()){
+
+        }
         return findLargestAdjacentGroup(mColor);
     }
 

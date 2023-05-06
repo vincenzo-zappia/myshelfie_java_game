@@ -49,7 +49,8 @@ public class Client extends Subject implements Runnable{
     @Override
     public void run() {
         while(!Thread.currentThread().isInterrupted()){
-            receiveMessage();
+            //Actual management of the received message relatively to the state of Client
+            notifyObserver(receiveMessage());
         }
     }
 
@@ -65,7 +66,7 @@ public class Client extends Subject implements Runnable{
     /**
      * Waits the reception of a message and manages it accordingly to the state of Client
      */
-    public void receiveMessage(){
+    public Message receiveMessage(){
         boolean res = false;
         Message msg = null;
         try {
@@ -76,9 +77,7 @@ public class Client extends Subject implements Runnable{
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
-        //Actual management of the received message relatively to the state of Client
-        notifyObserver(msg);
+        return msg;
     }
 
     //endregion

@@ -16,6 +16,10 @@ public interface View {
     //Server shows Client: CLI/GUI show User
     //region SHOW
 
+    void showError(String content);
+
+    void connectionSuccess(int lobbyId);
+
     /**
      * Sends the coordinates of the cards successfully removed by the current player
      * @param coordinates coordinates of the removed cards

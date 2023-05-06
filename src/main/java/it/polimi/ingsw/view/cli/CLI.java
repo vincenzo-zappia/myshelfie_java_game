@@ -23,6 +23,31 @@ public class CLI implements Runnable, View {
         //TODO: Stampa a schermo titolo di gioco da metodo di CliUtils
 
         connection();
+        while(true){
+            String read = scanner.nextLine();
+            String[] splitted = read.split(" ");
+
+            switch (splitted[0]){
+                case "select" -> {}
+                case "show" -> {
+                    if(splitted[1].equals("board")) showBoard();
+                    else if(splitted[1].equals("bookshelf")) showBookshelf();
+                    else System.out.println("comando non corretto"); //TODO: cambiare;
+                }
+                case "help" -> {}
+                case "move" -> {}
+                case "" -> {}
+            }
+        }
+
+    }
+
+
+    private void showBookshelf() {
+
+    }
+
+    private void showBoard() {
 
     }
 
@@ -74,11 +99,16 @@ public class CLI implements Runnable, View {
 
     }
 
-    public void showErrorMessage(){
 
+    @Override
+    public void showError(String content) {
+        System.out.println(CliUtil.makeErrorMessage(content));
     }
 
-
+    @Override
+    public void connectionSuccess(int lobbyId) {
+        System.out.println("Connessione alla loby riuscita con successo! Lobby id: " + lobbyId);
+    }
 
     @Override
     public void showRemovedCards(int[][] coordinates) {

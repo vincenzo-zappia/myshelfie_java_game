@@ -4,6 +4,8 @@ import it.polimi.ingsw.network.messages.client2server.CreateLobbyMessage;
 import it.polimi.ingsw.network.messages.client2server.JoinLobbyMessage;
 import it.polimi.ingsw.network.messages.server2client.BoardRefillUpdate;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.server2client.ErrorMessage;
+import it.polimi.ingsw.network.messages.server2client.LobbyCreationResponse;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.state.ClientSelectionState;
 import it.polimi.ingsw.state.TurnState;
@@ -22,6 +24,8 @@ public class ClientController implements Observer {
     public ClientController(View view, Client client){
         this.view = view;
         this.client = client;
+        client.register(this);
+        new Thread(client).start();
 
         //TODO: Decidere come gestire fase iniziale se da costruttore o dal primo messaggio inviato da server
         turnState = new ClientSelectionState(this);
@@ -45,6 +49,15 @@ public class ClientController implements Observer {
             }
             case SELECTION_RESPONSE -> {}
             case INSERTION_RESPONSE -> {}
+            case LOBBY_CREATION_RESPONSE -> {
+                LobbyCreationResponse newLobby = (LobbyCreationResponse) message;
+                view.connectionSuccess(newLobby.getLobbyId());
+            }
+            case LOBBY_ACCESS_RESPONSE -> {}
+            case ERROR_MESSAGE -> {
+                ErrorMessage error = (ErrorMessage) message;
+                view.showError(error.getContent());
+            }
         }
         //TODO: Chiamata di metodi View per sputare su GUI/CLI
         turnState.messageHandler(message);

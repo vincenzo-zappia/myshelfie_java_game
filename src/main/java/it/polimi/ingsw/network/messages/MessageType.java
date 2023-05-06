@@ -26,5 +26,6 @@ public enum MessageType {
     BOARD_REFILL,
     ERROR_MESSAGE,
     END_GAME,
+    NEW_CONNECTION;
 
 }
