@@ -9,8 +9,8 @@ public class LobbyAccessResponse extends Message {
     private final boolean successful;
     //endregion
 
-    public LobbyAccessResponse(String sender, MessageType type, boolean successful) {
-        super(sender, type);
+    public LobbyAccessResponse(boolean successful) {
+        super("server", MessageType.LOBBY_ACCESS_RESPONSE);
         this.successful = successful;
     }
 
