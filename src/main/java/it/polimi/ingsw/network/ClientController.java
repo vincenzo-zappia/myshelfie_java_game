@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.client2server.CreateLobbyMessage;
 import it.polimi.ingsw.network.messages.client2server.JoinLobbyMessage;
+import it.polimi.ingsw.network.messages.client2server.StartGame;
 import it.polimi.ingsw.network.messages.server2client.*;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.observer.Observer;
@@ -77,13 +78,20 @@ public class ClientController implements Observer {
 
     public void createLobby(String username){
         Message create = new CreateLobbyMessage(username);
+        this.username = username;
         client.sendMessage(create);
     }
 
     public void joinLobby(String username, int lobbyId){
         Message join = new JoinLobbyMessage(username, lobbyId);
         this.lobbyId = lobbyId;
+        this.username = username;
         client.sendMessage(join);
+    }
+
+    public void startGame(){
+        StartGame start = new StartGame(username);
+        client.sendMessage(start);
     }
 
     //TODO: Metodi impacchettamento messaggi. Outsource con creazione di interfaccia parallela a Observer con diversi tipi di implementazione del metodo update o locale?
