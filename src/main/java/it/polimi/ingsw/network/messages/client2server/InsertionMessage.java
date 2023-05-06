@@ -7,11 +7,13 @@ import it.polimi.ingsw.network.messages.MessageType;
 import java.util.ArrayList;
 
 public class InsertionMessage extends Message {
-    private ArrayList<Card> selectedCards;
-    private int selectedColumn;
+    private final ArrayList<Card> selectedCards;
+    private final int selectedColumn;
 
-    protected InsertionMessage(String sender) {
+    public InsertionMessage(String sender, ArrayList<Card> selectedCards, int selectedColumn) {
         super(sender, MessageType.INSERTION_MESSAGE);
+        this.selectedCards = selectedCards;
+        this.selectedColumn = selectedColumn;
     }
 
 

@@ -38,6 +38,9 @@ public class CLI implements Runnable, View {
                 }
                 case "help" -> {}
                 case "move" -> {}
+                case "insert" ->{
+                    //TODO
+                }
                 case "" -> {}
             }
         }

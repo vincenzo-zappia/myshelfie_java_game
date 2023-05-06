@@ -1,6 +1,8 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.network.messages.client2server.CreateLobbyMessage;
+import it.polimi.ingsw.network.messages.client2server.InsertionMessage;
 import it.polimi.ingsw.network.messages.client2server.JoinLobbyMessage;
 import it.polimi.ingsw.network.messages.client2server.StartGame;
 import it.polimi.ingsw.network.messages.server2client.*;
@@ -9,6 +11,8 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.state.ClientSelectionState;
 import it.polimi.ingsw.state.TurnState;
 import it.polimi.ingsw.view.View;
+
+import java.util.ArrayList;
 
 //TODO: Per l'impacchettamento messaggi serve implementare un nuovo tipo di Observer che cambia i parametri di implementazione update
 public class ClientController implements Observer {
@@ -95,5 +99,17 @@ public class ClientController implements Observer {
     }
 
     //TODO: Metodi impacchettamento messaggi. Outsource con creazione di interfaccia parallela a Observer con diversi tipi di implementazione del metodo update o locale?
+
+    /**
+     * method that send the selected cards and
+     * bookshelf's column to insert them to the server
+     * @param selected cards (arrayList of cards)
+     * @param column of the player bookshelf
+     */
+    public void sendInsertion(ArrayList<Card> selected, int column){
+        Message insert = new InsertionMessage(this.username, selected, column);
+        client.sendMessage(insert);
+    }
+
     //endregion
 }
