@@ -130,8 +130,8 @@ public class CLI implements Runnable, View {
 
     @Override
     public void showRefilledBoard(BoardCell[][] boardCells) {
-        CliUtil.makeTitle("Livingroom");
-        CliUtil.makeBoard(CliUtil.boardConverter(boardCells));
+        System.out.println(CliUtil.makeTitle("Livingroom"));
+        System.out.println(CliUtil.makeBoard(CliUtil.boardConverter(boardCells)));
     }
 
     @Override
