@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
+import java.util.ArrayList;
+
 enum ColorCode {
     DEFAULT("\u001B[0m"),
     RED("\u001B[31m"),
@@ -38,7 +40,8 @@ enum AsciiTool {
     SPACES("      "),
     DOT("● "),
     X("\u274C"),
-    V("\u2714");
+    V("\u2714"),
+    USER("\u1F464");
 
     private final String symbol;
     AsciiTool(String symbol){
@@ -143,6 +146,12 @@ public class CliUtil {
                 getRowContent(matrix[8]) +
                 AsciiTool.SPACES.getSymbol().repeat(4) +
                 getFooter(2);
+    }
+
+    public static String makePlayersList(ArrayList<String> players){
+        String partial = "";
+        for(String p: players) partial += AsciiTool.DOT.getSymbol() + p + "\n";
+        return partial;
     }
 
     public static String makeBookshelf(Character[][] matrix) {

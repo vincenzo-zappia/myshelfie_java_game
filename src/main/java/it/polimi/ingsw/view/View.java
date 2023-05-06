@@ -3,6 +3,8 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.network.messages.MessageType;
 
+import java.util.ArrayList;
+
 /**
  * Standardization of all the methods that the Server uses to send requests, updates, error messages, etc
  * Implemented by VirtualView (called by GameController) and CLI/GUI (Server -> Client, CLI/GUI -> User)
@@ -17,6 +19,8 @@ public interface View {
     //region SHOW
 
     void showError(String content);
+
+    void refreshConnectedPlayers(ArrayList<String> playeUsernames);
 
     void connectionSuccess(int lobbyId);
 

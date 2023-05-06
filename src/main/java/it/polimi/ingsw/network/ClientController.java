@@ -2,10 +2,8 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.client2server.CreateLobbyMessage;
 import it.polimi.ingsw.network.messages.client2server.JoinLobbyMessage;
-import it.polimi.ingsw.network.messages.server2client.BoardRefillUpdate;
+import it.polimi.ingsw.network.messages.server2client.*;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.server2client.ErrorMessage;
-import it.polimi.ingsw.network.messages.server2client.LobbyCreationResponse;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.state.ClientSelectionState;
 import it.polimi.ingsw.state.TurnState;
@@ -18,6 +16,7 @@ public class ClientController implements Observer {
     private final View view; //either CLI or GUI for the packing of messages User interface -> Server
     private Client client; //for the unpacking of messages Server -> User interface
     private String username;
+    private int lobbyId;
     //endregion
 
     //region CONSTRUCTOR
@@ -53,10 +52,17 @@ public class ClientController implements Observer {
                 LobbyCreationResponse newLobby = (LobbyCreationResponse) message;
                 view.connectionSuccess(newLobby.getLobbyId());
             }
-            case LOBBY_ACCESS_RESPONSE -> {}
+            case LOBBY_ACCESS_RESPONSE -> {
+                LobbyAccessResponse access = (LobbyAccessResponse) message;
+                view.connectionSuccess(lobbyId);
+            }
             case ERROR_MESSAGE -> {
                 ErrorMessage error = (ErrorMessage) message;
                 view.showError(error.getContent());
+            }
+            case NEW_CONNECTION -> {
+                NewConnectionMessage connectionMessage = (NewConnectionMessage) message;
+                view.refreshConnectedPlayers(connectionMessage.getUsernameList());
             }
         }
         //TODO: Chiamata di metodi View per sputare su GUI/CLI
@@ -76,6 +82,7 @@ public class ClientController implements Observer {
 
     public void joinLobby(String username, int lobbyId){
         Message join = new JoinLobbyMessage(username, lobbyId);
+        this.lobbyId = lobbyId;
         client.sendMessage(join);
     }
 

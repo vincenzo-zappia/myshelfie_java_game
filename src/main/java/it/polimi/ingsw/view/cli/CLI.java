@@ -6,6 +6,7 @@ import it.polimi.ingsw.network.ClientController;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.view.View;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CLI implements Runnable, View {
@@ -103,6 +104,12 @@ public class CLI implements Runnable, View {
     @Override
     public void showError(String content) {
         System.out.println(CliUtil.makeErrorMessage(content));
+    }
+
+    @Override
+    public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
+        System.out.println("Lista dei players connessi:");
+        System.out.println(CliUtil.makePlayersList(playerUsernames));
     }
 
     @Override

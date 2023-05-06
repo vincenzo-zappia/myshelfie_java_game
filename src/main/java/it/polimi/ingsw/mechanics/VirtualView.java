@@ -9,6 +9,8 @@ import it.polimi.ingsw.network.messages.server2client.ResponseMessage;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.View;
 
+import java.util.ArrayList;
+
 //TODO: Aggiornare descrizione nel caso in cui TurnManager diventi TurnController
 /**
  * Class that manages the creation of messages server -> client. Used by Lobby, GameController
@@ -28,6 +30,11 @@ public class VirtualView implements View, Observer {
     @Override
     public void showError(String content) {
 
+    }
+
+    @Override
+    public void refreshConnectedPlayers(ArrayList<String> playeUsernames) {
+        //TODO: picccolo problema questo metodo è oblbigatorio ma non puo essere implementato in virtual view (è stato implementato in lobby)
     }
 
     @Override
