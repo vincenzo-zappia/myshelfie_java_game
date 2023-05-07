@@ -50,9 +50,23 @@ public class ClientController implements Observer {
 
         //TODO: Per il momento non uso lo state
         switch (message.getType()){
-            case BOARD_REFILL -> {
-                BoardRefillUpdate boardUpdate = (BoardRefillUpdate) message;
-                view.showRefilledBoard(boardUpdate.getBoardCells());
+            case LOBBY_CREATION_RESPONSE -> {
+                LobbyCreationResponse newLobby = (LobbyCreationResponse) message;
+                view.showSuccessfulConnection(newLobby.getLobbyId());
+            }
+            case LOBBY_ACCESS_RESPONSE -> {
+                LobbyAccessResponse access = (LobbyAccessResponse) message;
+                view.showSuccessfulConnection(lobbyId);
+            }
+            case NEW_CONNECTION -> {
+                NewConnectionMessage connectionMessage = (NewConnectionMessage) message;
+                view.refreshConnectedPlayers(connectionMessage.getUsernameList());
+            }
+            case GAME_START -> {
+                view.showConfirmation(MessageType.GAME_START);
+            }
+            case CURRENT_PLAYER -> {
+                view.showCurrentPlayer(message.getContent());
             }
             case SELECTION_RESPONSE -> {
                 ResponseMessage response = (ResponseMessage) message;
@@ -62,25 +76,15 @@ public class ClientController implements Observer {
                 ResponseMessage response = (ResponseMessage) message;
                 if(response.getResponse()) view.showConfirmation(MessageType.INSERTION_RESPONSE);
             }
-            case LOBBY_CREATION_RESPONSE -> {
-                LobbyCreationResponse newLobby = (LobbyCreationResponse) message;
-                view.showSuccessfulConnection(newLobby.getLobbyId());
-            }
-            case LOBBY_ACCESS_RESPONSE -> {
-                LobbyAccessResponse access = (LobbyAccessResponse) message;
-                view.showSuccessfulConnection(lobbyId);
+            case BOARD_REFILL -> {
+                BoardRefillUpdate boardUpdate = (BoardRefillUpdate) message;
+                view.showRefilledBoard(boardUpdate.getBoardCells());
             }
             case ERROR_MESSAGE -> {
                 ErrorMessage error = (ErrorMessage) message;
                 view.showError(error.getContent());
             }
-            case NEW_CONNECTION -> {
-                NewConnectionMessage connectionMessage = (NewConnectionMessage) message;
-                view.refreshConnectedPlayers(connectionMessage.getUsernameList());
-            }
-            case GAME_START -> {
-                view.showConfirmation(MessageType.GAME_START);
-            }
+
         }
         //TODO: Chiamata di metodi View per sputare su GUI/CLI
         turnState.messageHandler(message);

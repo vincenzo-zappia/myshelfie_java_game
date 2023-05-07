@@ -35,15 +35,18 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void run() {
-
         //TODO: Stampa a schermo titolo di gioco da metodo di CliUtils
 
-        connection();
+        connection(); //Creation or joining of a lobby and starting the game (initialization of all the data structures)
+
+        //While loop to read the user keyboard input (until the game ends)
         while(true){
             String read = scanner.nextLine();
             String[] splitted = read.split(" ");
 
             switch (splitted[0]){
+
+                //Card selection command eg: "select (x;y)"
                 case "select" -> {
                     String[] coordinate = splitted[1].split(",");
                     int[][] coordinates = new int[coordinate.length][2];
@@ -53,17 +56,23 @@ public class CLI implements Runnable, UserInterface {
                     selection = coordinates;
                     controller.sendSelection(coordinates);
                 }
-                case "show" -> {
-                    if(splitted[1].equals("board")) showBoard();
-                    else if(splitted[1].equals("bookshelf")) showBookshelf();
-                    else System.out.println("comando non corretto"); //TODO: cambiare;
-                }
-                case "help" -> {}
+
+                //Card insertion command (bookshelf column n) eg: "insert n" //TODO: La scelta dell'ordine delle carte?
                 case "insert" -> {
                     ArrayList<Card> cards = new ArrayList<Card>();
                     for(int i=0; i<selection.length; i++) cards.add(board[selection[i][0]][selection[i][0]].getCard());
                     controller.sendInsertion(cards, Integer.parseInt(splitted[1]));
                 }
+
+                //Show command to prompt the printing of either the board or the bookshelf of the player
+                case "show" -> {
+                    if(splitted[1].equals("board")) showBoard();
+                    else if(splitted[1].equals("bookshelf")) showBookshelf();
+                    else System.out.println("comando non corretto"); //TODO: cambiare;
+                }
+
+                //Help command for syntax aid
+                case "help" -> {}
 
                 case "" -> {}
             }
@@ -71,7 +80,11 @@ public class CLI implements Runnable, UserInterface {
 
     }
 
-    public void connection(){
+    //region PRIVATE METHODS
+    /**
+     * Prompts the creation of either a lobby creation command or a lobby access request based on the user input
+     */
+    private void connection(){
         int choice = requestLobby();
         String username = requestUsername();
 
@@ -90,7 +103,12 @@ public class CLI implements Runnable, UserInterface {
         }
     }
 
-    public static int[] parseCoordinates(String input) {
+    /**
+     * Makes card coordinates (two int array) out of the user keyboard input
+     * @param input user keyboard input for coordinates eg: "(x;y)"
+     * @return actual card coordinates (two int array)
+     */
+    private int[] parseCoordinates(String input) {
         String[] parts = input.substring(1, input.length() - 1).split(";");
 
         int[] result = new int[2];
@@ -99,6 +117,48 @@ public class CLI implements Runnable, UserInterface {
 
         return result;
     }
+
+    /**
+     * The client interface asks the player his username
+     */
+    private String requestUsername() {
+        String username;
+        do{
+            System.out.println("Enter username:");
+            username = scanner.nextLine();
+            if (username.replace(" ", "").equals("")) System.out.println(CliUtil.makeErrorMessage("Enter valid username:"));
+        }while(username.replace(" ", "").equals(""));
+
+        return username;
+    }
+
+    /**
+     * The client interface asks the player if he wants to create a new lobby and, if he doesn't,
+     * the ID of the lobby he wants to join
+     */
+    public int requestLobby() {
+        int selection;
+        do {
+            System.out.println("[0] Create new lobby");
+            System.out.println("[1] Join existing lobby");
+            selection = Integer.parseInt(scanner.nextLine());
+            if(selection != 0 && selection != 1) System.out.println(CliUtil.makeErrorMessage("Enter valid number."));
+        }while (selection != 0 && selection != 1);
+        return selection;
+    }
+
+    private void showBookshelf() {
+        System.out.println(CliUtil.makeTitle("Bookshelf"));
+        System.out.println(CliUtil.makeBookshelf(CliUtil.bookshelfConverter(bookshelf)));
+        System.out.println(CliUtil.makeLegend());
+    }
+
+    private void showBoard() {
+        System.out.println(CliUtil.makeTitle("Livingroom"));
+        System.out.println(CliUtil.makeBoard(CliUtil.boardConverter(board)));
+        System.out.println(CliUtil.makeLegend());
+    }
+    //endregion
 
     //region USER INTERFACE
     @Override
@@ -156,6 +216,11 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
+    public void showCurrentPlayer(String currentPlayer){
+        System.out.println("Current player: " + currentPlayer);
+    }
+
+    @Override
     public void sendResponse(boolean response, MessageType responseType) {
 
     }
@@ -163,49 +228,6 @@ public class CLI implements Runnable, UserInterface {
     @Override
     public void sendNotYourTurn() {
 
-    }
-    //endregion
-
-    //region PRIVATE METHODS
-    /**
-     * The client interface asks the player his username
-     */
-    private String requestUsername() {
-        String username;
-        do{
-            System.out.println("Enter username:");
-            username = scanner.nextLine();
-            if (username.replace(" ", "").equals("")) System.out.println(CliUtil.makeErrorMessage("Enter valid username:"));
-        }while(username.replace(" ", "").equals(""));
-
-        return username;
-    }
-
-    /**
-     * The client interface asks the player if he wants to create a new lobby and, if he doesn't,
-     * the ID of the lobby he wants to join
-     */
-    public int requestLobby() {
-        int selection;
-        do {
-            System.out.println("[0] Create new lobby");
-            System.out.println("[1] Join existing lobby");
-            selection = Integer.parseInt(scanner.nextLine());
-            if(selection != 0 && selection != 1) System.out.println(CliUtil.makeErrorMessage("Enter valid number."));
-        }while (selection != 0 && selection != 1);
-        return selection;
-    }
-
-    private void showBookshelf() {
-        System.out.println(CliUtil.makeTitle("Bookshelf"));
-        System.out.println(CliUtil.makeBookshelf(CliUtil.bookshelfConverter(bookshelf)));
-        System.out.println(CliUtil.makeLegend());
-    }
-
-    private void showBoard() {
-        System.out.println(CliUtil.makeTitle("Livingroom"));
-        System.out.println(CliUtil.makeBoard(CliUtil.boardConverter(board)));
-        System.out.println(CliUtil.makeLegend());
     }
     //endregion
 

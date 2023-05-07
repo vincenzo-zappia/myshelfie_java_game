@@ -80,7 +80,8 @@ public class Lobby {
     }
 
     /**
-     * Method that start the game and initialize hashmaps and GameController
+     * Creates and initializes all the data structures needed for the creation of an actual new game. The game has now
+     * officially started.
      */
     public void startGame(){
         assert (playerUsernames.size()>1 && playerUsernames.size()<=4);

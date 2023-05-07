@@ -27,6 +27,12 @@ public interface View {
     void showRefilledBoard(BoardCell[][] boardCells);
 
     /**
+     * Shows the username of the current player
+     * @param currentPlayer username of the current player
+     */
+    void showCurrentPlayer(String currentPlayer);
+
+    /**
      * Gives feedback to the client about his last command
      * @param response if command was successful/valid
      * @param responseType type of the command
