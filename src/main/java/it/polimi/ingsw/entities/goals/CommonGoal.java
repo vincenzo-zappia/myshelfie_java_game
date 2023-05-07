@@ -1,5 +1,7 @@
 package it.polimi.ingsw.entities.goals;
 
+import it.polimi.ingsw.entities.Bookshelf;
+
 public abstract class CommonGoal {
     private int score = 8;
 

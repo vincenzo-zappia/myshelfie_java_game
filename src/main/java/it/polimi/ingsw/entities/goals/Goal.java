@@ -6,7 +6,7 @@ public interface Goal {
     int UNAVAILABLE = 104; //DEBUG use
 
     /**
-     * check if the player have completed a goal
+     * checks if the player has completed a goal
      * @param bookshelf where method operates
      * @return points
      */

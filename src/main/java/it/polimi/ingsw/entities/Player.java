@@ -28,12 +28,13 @@ public class Player implements Comparable<Player> {
         bookshelf = new Bookshelf();
     }
 
-    public Player() {
-        //TODO: remove after networking complete
-    }
     //endregion
 
     //region METHODS
+
+    public void addCardToBookshelf(int column, Card card){
+        bookshelf.addCard(column, card);
+    }
 
     /**
      * add to the player's total score the new points

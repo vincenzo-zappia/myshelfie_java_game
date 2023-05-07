@@ -112,9 +112,8 @@ public class GameController {
 
             //cards insertion in player's bookshelf
             //if statement can be simplified, not sure if it's correct with message's code
-
-            if(game.addCardToBookshelf(message.getUsername(), message.getSelectedColumn(), message.getSelectedCards())){
-                System.out.println("INFO: Carte inserite nella colonna " + message.getSelectedColumn());
+            if(game.addCardToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards())){
+            System.out.println("INFO: Carte inserite nella colonna " + message.getSelectedColumn());
                 //Invio riscontro positivo al client
                 viewHashMap.get(message.getUsername()).sendResponse(true, MessageType.INSERTION_RESPONSE);
             }
@@ -136,17 +135,23 @@ public class GameController {
      * the condition for the actual end of the game is reached.
      */
     private void endTurn(){
+        System.out.println("INFO: Entrato in endturn");
         //invio aggiornamento board a tutti i player nel caso in cui la board venga riempita
         if(game.checkRefill()) broadcastMessage(MessageType.BOARD_REFILL);
 
+        System.out.println("INFO: diocancerogeno");
         //Check if the current player has achieved anyone of the common goals
         game.scoreCommonGoal(turnManager.getCurrentPlayer());
 
+        System.out.println("INFO: Controllo fullezza");
         //Check if the current player's bookshelf is full
         if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer())) turnManager.startEndGame();
 
+        System.out.println("INFO: Chiamata effettiva di nextTurn");
         //Nella chiamata di nextTurn() avviene effettivamente il cambiamento del turno del giocatore (nel caso non sia l'ultimo)
         if(!turnManager.nextTurn()) findWinner();
+
+        System.out.println("INFO: Fine metodo endTurn");
     }
 
     /**

@@ -171,7 +171,9 @@ public class CLI implements Runnable, View {
                 String sel = Arrays.toString(selection);
                 System.out.println(CliUtil.makeConfirmationMessage("Selezione corretta"));
             }
-            case INSERTION_RESPONSE -> {}
+            case INSERTION_RESPONSE -> {
+                System.out.println(CliUtil.makeConfirmationMessage("Carte inserite correttamente!"));
+            }
         }
     }
 

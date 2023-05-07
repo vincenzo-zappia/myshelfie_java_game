@@ -287,7 +287,7 @@ public class CliUtil {
     }
 
     public static String makeConfirmationMessage(String message){
-        return ColorCode.GREEN.getCode() + AsciiTool.V.getSymbol() + message;
+        return ColorCode.GREEN.getCode() + AsciiTool.V.getSymbol() + " " + message;
     }
 
 }
