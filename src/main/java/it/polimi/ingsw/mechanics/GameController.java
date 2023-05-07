@@ -47,7 +47,7 @@ public class GameController {
     public synchronized void messageHandler(Message message){
         //Gestione logica turni
         if (!turnManager.getCurrentPlayer().equals(message.getUsername())) {
-
+            System.out.println("INFO: player " + message.getUsername() + " non di turno");
             viewHashMap.get(message.getUsername()).sendNotYourTurn(); //Invio riscontro negativo al client
             return;
         }
@@ -85,6 +85,7 @@ public class GameController {
      *                into the player's Bookshelf
      */
     public synchronized void cardSelection(SelectionMessage message){
+        System.out.println("INFO: entrato in selection");
         if(game.isSelectable(message.getCoordinates())) {
             game.removeCardFromBoard(message.getCoordinates()); //Removal of the selected cards form the game board
 
@@ -96,7 +97,7 @@ public class GameController {
         }
 
         //Invio riscontro negativo al client
-        viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.SELECTION_RESPONSE);
+        else viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.SELECTION_RESPONSE);
     }
 
     /**
@@ -106,12 +107,14 @@ public class GameController {
      */
     public synchronized void cardInsertion(InsertionMessage message){
         //Insertion of the cards removed from the board into the player's bookshelf
+        System.out.println("INFO: Entrato in insertion");
         try {
 
             //cards insertion in player's bookshelf
             //if statement can be simplified, not sure if it's correct with message's code
 
             if(game.addCardToBookshelf(message.getUsername(), message.getSelectedColumn(), message.getSelectedCards())){
+                System.out.println("INFO: Carte inserite nella colonna " + message.getSelectedColumn());
                 //Invio riscontro positivo al client
                 viewHashMap.get(message.getUsername()).sendResponse(true, MessageType.INSERTION_RESPONSE);
             }

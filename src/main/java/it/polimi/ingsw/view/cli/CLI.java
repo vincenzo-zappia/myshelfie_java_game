@@ -169,7 +169,7 @@ public class CLI implements Runnable, View {
             case GAME_START -> System.out.println(CliUtil.makeConfirmationMessage("Now in game!"));
             case SELECTION_RESPONSE -> {
                 String sel = Arrays.toString(selection);
-                System.out.println(CliUtil.makeConfirmationMessage("Selezione corretta" + sel));
+                System.out.println(CliUtil.makeConfirmationMessage("Selezione corretta"));
             }
             case INSERTION_RESPONSE -> {}
         }

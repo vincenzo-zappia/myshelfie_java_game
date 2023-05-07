@@ -20,6 +20,8 @@ public class TurnManager {
     //region CONSTRUCTOR
     public TurnManager(ArrayList<String> playerUsernames){
         this.playerUsernames = playerUsernames;
+        this.currentPlayer = playerUsernames.get(0);
+        System.out.println(currentPlayer);
         endGame = false;
     }
     //endregion
@@ -39,6 +41,7 @@ public class TurnManager {
         else if(!endGame) currentPlayerIndex = 0;
         else return false;
         currentPlayer = playerUsernames.get(currentPlayerIndex);
+        System.out.println("INFO: Di turno adesso: " + currentPlayer);
         return true;
     }
 

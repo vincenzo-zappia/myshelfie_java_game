@@ -56,9 +56,11 @@ public class ClientController implements Observer {
             case SELECTION_RESPONSE -> {
                 ResponseMessage response = (ResponseMessage) message;
                 if(response.getResponse()) view.showConfirmation(MessageType.SELECTION_RESPONSE);
-                else view.showError("fhfjf");
             }
-            case INSERTION_RESPONSE -> {}
+            case INSERTION_RESPONSE -> {
+                ResponseMessage response = (ResponseMessage) message;
+                if(response.getResponse()) view.showConfirmation(MessageType.INSERTION_RESPONSE);
+            }
             case LOBBY_CREATION_RESPONSE -> {
                 LobbyCreationResponse newLobby = (LobbyCreationResponse) message;
                 view.connectionSuccess(newLobby.getLobbyId());
