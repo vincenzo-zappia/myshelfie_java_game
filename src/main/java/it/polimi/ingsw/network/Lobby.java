@@ -6,6 +6,7 @@ import it.polimi.ingsw.mechanics.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.server2client.ErrorMessage;
+import it.polimi.ingsw.network.messages.server2client.GameStarted;
 import it.polimi.ingsw.network.messages.server2client.ResponseMessage;
 
 import java.util.ArrayList;
@@ -90,6 +91,7 @@ public class Lobby {
 
         gameController = new GameController(new Game(playerUsernames), viewHashMap);
         inGame = true;
+        sendLobbyMessage(new GameStarted());
     }
 
     /**
