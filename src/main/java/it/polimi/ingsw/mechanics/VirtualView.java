@@ -44,6 +44,11 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
+    public void showConfirmation(MessageType type) {
+
+    }
+
+    @Override
     public void showRemovedCards(int[][] coordinates){
         clientHandler.sendMessage(new CardRemovalMessage(coordinates));
     }

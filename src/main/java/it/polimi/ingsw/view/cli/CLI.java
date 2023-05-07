@@ -6,20 +6,30 @@ import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.BoardCell;
+import it.polimi.ingsw.util.Cell;
 import it.polimi.ingsw.view.View;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class CLI implements Runnable, View {
     private final Scanner scanner;
     private final ClientController controller;
     private BoardCell[][] board;
+    private Cell[][] bookshelf;
     private int[][] selection;
 
     public CLI(Client client) {
         scanner = new Scanner(System.in);
         controller = new ClientController(this, client);
+        bookshelf = new Cell[6][5];
+        for (int i = 0; i < bookshelf.length; i++) {
+            for (int j = 0; j < bookshelf[i].length; j++) {
+                bookshelf[i][j] = new Cell();
+            }
+        }
     }
 
     @Override
@@ -48,7 +58,6 @@ public class CLI implements Runnable, View {
                     else System.out.println("comando non corretto"); //TODO: cambiare;
                 }
                 case "help" -> {}
-                case "move" -> {}
                 case "insert" -> {
                     ArrayList<Card> cards = new ArrayList<Card>();
                     for(int i=0; i<selection.length; i++) cards.add(board[selection[i][0]][selection[i][0]].getCard());
@@ -62,7 +71,7 @@ public class CLI implements Runnable, View {
     }
 
     public static int[] parseCoordinates(String input) {
-        String[] parts = input.substring(1, input.length() - 1).split(",");
+        String[] parts = input.substring(1, input.length() - 1).split(";");
 
         int[] result = new int[2];
         result[0] = Integer.parseInt(parts[0].trim());
@@ -73,11 +82,15 @@ public class CLI implements Runnable, View {
 
 
     private void showBookshelf() {
-
+        System.out.println(CliUtil.makeTitle("Bookshelf"));
+        System.out.println(CliUtil.makeBookshelf(CliUtil.bookshelfConverter(bookshelf)));
+        System.out.println(CliUtil.makeLegend());
     }
 
     private void showBoard() {
-
+        System.out.println(CliUtil.makeTitle("Livingroom"));
+        System.out.println(CliUtil.makeBoard(CliUtil.boardConverter(board)));
+        System.out.println(CliUtil.makeLegend());
     }
 
     //region PRIVATE METHODS
@@ -151,14 +164,26 @@ public class CLI implements Runnable, View {
     }
 
     @Override
+    public void showConfirmation(MessageType type) {
+        switch (type){
+            case GAME_START -> System.out.println(CliUtil.makeConfirmationMessage("Now in game!"));
+            case SELECTION_RESPONSE -> {
+                String sel = Arrays.toString(selection);
+                System.out.println(CliUtil.makeConfirmationMessage("Selezione corretta" + sel));
+            }
+            case INSERTION_RESPONSE -> {}
+        }
+    }
+
+    @Override
     public void showRemovedCards(int[][] coordinates) {
 
     }
 
     @Override
     public void showRefilledBoard(BoardCell[][] boardCells) {
-        System.out.println(CliUtil.makeTitle("Livingroom"));
-        System.out.println(CliUtil.makeBoard(CliUtil.boardConverter(boardCells)));
+        this.board = boardCells;
+        showBoard();
     }
 
     @Override

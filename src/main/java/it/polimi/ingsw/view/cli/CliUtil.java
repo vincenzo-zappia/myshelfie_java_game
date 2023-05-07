@@ -2,6 +2,8 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.util.BoardCell;
+import it.polimi.ingsw.util.CardType;
+import it.polimi.ingsw.util.Cell;
 
 import java.util.ArrayList;
 
@@ -85,7 +87,7 @@ public class CliUtil {
         return AsciiTool.LB_CORNER.getSymbol() + AsciiTool.BT.getSymbol().repeat(length) + AsciiTool.RB_CORNER.getSymbol();
     }
 
-    private static String makeLegend() {
+    public static String makeLegend() {
         String line1 = ColorCode.GREEN.getCode() + AsciiTool.DOT.getSymbol() + "C: Cat\t\t" + ColorCode.WHITE.getCode() + AsciiTool.DOT.getSymbol() + "B: Books\n";
         String line2 = ColorCode.ORANGE.getCode() + AsciiTool.DOT.getSymbol() + "G: Game\t\t" + ColorCode.BLUE.getCode() + AsciiTool.DOT.getSymbol() + "F: Frames\n";
         String line3 = ColorCode.L_BLUE.getCode() + AsciiTool.DOT.getSymbol() + "T: Trophies\t" + ColorCode.MAGENTA.getCode() + AsciiTool.DOT.getSymbol() + "P: Plants\n";
@@ -167,7 +169,34 @@ public class CliUtil {
         return bookshelf;
     }
 
-    public static Character[][] boardConverter(BoardCell[][] tmp){
+    private static Character getTypeCharacter(CardType type) {
+
+        switch (type) {
+            case FRAMES -> {
+                return 'F';
+            }
+            case CATS -> {
+                return 'C';
+            }
+            case BOOKS -> {
+                return 'B';
+            }
+            case GAMES -> {
+                return 'G';
+            }
+            case PLANTS -> {
+                return 'P';
+            }
+            case TROPHIES -> {
+                return 'T';
+            }
+            default -> {
+                return null;
+            }
+        }
+    }
+
+    public static Character[][] boardConverter(BoardCell[][] tmp) {
 
         Character result[][] = new Character[][]{
                 {'u', 'u', 'u', ' ', ' ', 'u', 'u', 'u', 'u'},
@@ -184,15 +213,21 @@ public class CliUtil {
         for (int i = 0; i<9;i++){
             for(int j = 0; j<9; j++){
                 if(tmp[i][j].isCellActive() && !tmp[i][j].isCellEmpty()){
-                    switch(tmp[i][j].getCard().getType()){
-                        case FRAMES -> result[i][j] = 'F';
-                        case CATS -> result[i][j] = 'C';
-                        case BOOKS -> result[i][j] = 'B';
-                        case GAMES -> result[i][j] = 'G';
-                        case PLANTS -> result[i][j] = 'P';
-                        case TROPHIES -> result[i][j] = 'T';
-                    }
+                    result[i][j] = getTypeCharacter(tmp[i][j].getCard().getType());
                 }
+            }
+        }
+        return result;
+    }
+
+    public static Character[][] bookshelfConverter(Cell[][] bookshelf) {
+        Character[][] result = new Character[6][5];
+        for(int i = 0; i<bookshelf.length; i++){
+            for(int j=0; j<bookshelf[0].length; j++){
+                if (!bookshelf[i][j].isCellEmpty()){
+                    result[i][j] = getTypeCharacter(bookshelf[i][j].getCard().getType());
+                }
+                else result[i][j] = ' ';
             }
         }
         return result;
@@ -251,5 +286,8 @@ public class CliUtil {
         return ColorCode.RED.getCode() + AsciiTool.X.getSymbol() + message;
     }
 
+    public static String makeConfirmationMessage(String message){
+        return ColorCode.GREEN.getCode() + AsciiTool.V.getSymbol() + message;
+    }
 
 }

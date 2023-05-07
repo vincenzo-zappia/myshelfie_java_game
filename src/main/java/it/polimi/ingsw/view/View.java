@@ -25,6 +25,8 @@ public interface View {
 
     void connectionSuccess(int lobbyId);
 
+    void showConfirmation(MessageType type);
+
     /**
      * Sends the coordinates of the cards successfully removed by the current player
      * @param coordinates coordinates of the removed cards

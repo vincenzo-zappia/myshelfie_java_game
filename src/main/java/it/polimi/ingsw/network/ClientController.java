@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.entities.Card;
+import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.client2server.CreateLobbyMessage;
 import it.polimi.ingsw.network.messages.client2server.InsertionMessage;
 import it.polimi.ingsw.network.messages.client2server.JoinLobbyMessage;
@@ -52,7 +53,11 @@ public class ClientController implements Observer {
                 BoardRefillUpdate boardUpdate = (BoardRefillUpdate) message;
                 view.showRefilledBoard(boardUpdate.getBoardCells());
             }
-            case SELECTION_RESPONSE -> {}
+            case SELECTION_RESPONSE -> {
+                ResponseMessage response = (ResponseMessage) message;
+                if(response.getResponse()) view.showConfirmation(MessageType.SELECTION_RESPONSE);
+                else view.showError("fhfjf");
+            }
             case INSERTION_RESPONSE -> {}
             case LOBBY_CREATION_RESPONSE -> {
                 LobbyCreationResponse newLobby = (LobbyCreationResponse) message;
@@ -69,6 +74,9 @@ public class ClientController implements Observer {
             case NEW_CONNECTION -> {
                 NewConnectionMessage connectionMessage = (NewConnectionMessage) message;
                 view.refreshConnectedPlayers(connectionMessage.getUsernameList());
+            }
+            case GAME_START -> {
+                view.showConfirmation(MessageType.GAME_START);
             }
         }
         //TODO: Chiamata di metodi View per sputare su GUI/CLI
