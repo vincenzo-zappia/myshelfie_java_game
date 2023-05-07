@@ -13,14 +13,6 @@ public interface View {
 
     //TODO: Creazione di un metodo per ogni oggetto specifico da inviare
 
-    void showError(String content);
-
-    void refreshConnectedPlayers(ArrayList<String> playeUsernames);
-
-    void showSuccessfulConnection(int lobbyId);
-
-    void showConfirmation(MessageType type);
-
     /**
      * Sends the coordinates of the cards successfully removed by the current player
      * @param coordinates coordinates of the removed cards

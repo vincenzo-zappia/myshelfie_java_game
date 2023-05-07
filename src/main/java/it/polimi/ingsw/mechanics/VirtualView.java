@@ -29,26 +29,6 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showError(String content) {
-
-    }
-
-    @Override
-    public void refreshConnectedPlayers(ArrayList<String> playeUsernames) {
-        //TODO: picccolo problema questo metodo è oblbigatorio ma non puo essere implementato in virtual view (è stato implementato in lobby)
-    }
-
-    @Override
-    public void showSuccessfulConnection(int lobbyId) {
-
-    }
-
-    @Override
-    public void showConfirmation(MessageType type) {
-
-    }
-
-    @Override
     public void showRemovedCards(int[][] coordinates){
         clientHandler.sendMessage(new CardRemovalMessage(coordinates));
     }

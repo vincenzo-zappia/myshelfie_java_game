@@ -12,6 +12,7 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.state.ClientSelectionState;
 import it.polimi.ingsw.state.TurnState;
+import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
@@ -20,14 +21,14 @@ import java.util.ArrayList;
 public class ClientController implements Observer {
     //region ATTRIBUTES
     private TurnState turnState; //TODO: Decidere se rimuovere il design pattern
-    private final View view; //either CLI or GUI for the packing of messages User interface -> Server
+    private final UserInterface view; //either CLI or GUI for the packing of messages User interface -> Server
     private Client client; //for the unpacking of messages Server -> User interface
     private String username;
     private int lobbyId;
     //endregion
 
     //region CONSTRUCTOR
-    public ClientController(View view, Client client){
+    public ClientController(UserInterface view, Client client){
         this.view = view;
         this.client = client;
         client.register(this);

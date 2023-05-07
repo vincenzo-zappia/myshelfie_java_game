@@ -7,6 +7,7 @@ import it.polimi.ingsw.network.ClientController;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.View;
 
 import java.lang.reflect.Array;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class CLI implements Runnable, View {
+public class CLI implements Runnable, UserInterface {
     private final Scanner scanner;
     private final ClientController controller;
     private BoardCell[][] board;
@@ -70,16 +71,6 @@ public class CLI implements Runnable, View {
 
     }
 
-    public static int[] parseCoordinates(String input) {
-        String[] parts = input.substring(1, input.length() - 1).split(";");
-
-        int[] result = new int[2];
-        result[0] = Integer.parseInt(parts[0].trim());
-        result[1] = Integer.parseInt(parts[1].trim());
-
-        return result;
-    }
-
     public void connection(){
         int choice = requestLobby();
         String username = requestUsername();
@@ -99,11 +90,17 @@ public class CLI implements Runnable, View {
         }
     }
 
-    @Override
-    public void showError(String content) {
-        System.out.println(CliUtil.makeErrorMessage(content));
+    public static int[] parseCoordinates(String input) {
+        String[] parts = input.substring(1, input.length() - 1).split(";");
+
+        int[] result = new int[2];
+        result[0] = Integer.parseInt(parts[0].trim());
+        result[1] = Integer.parseInt(parts[1].trim());
+
+        return result;
     }
 
+    //region USER INTERFACE
     @Override
     public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
         System.out.println("Lista dei players connessi:");
@@ -131,6 +128,23 @@ public class CLI implements Runnable, View {
     }
 
     @Override
+    public void showError(String content) {
+        System.out.println(CliUtil.makeErrorMessage(content));
+    }
+
+    @Override
+    public void requestCardSelection() {
+
+    }
+
+    @Override
+    public void requestCardInsertion() {
+
+    }
+    //endregion
+
+    //region VIEW
+    @Override
     public void showRemovedCards(int[][] coordinates) {
 
     }
@@ -150,6 +164,7 @@ public class CLI implements Runnable, View {
     public void sendNotYourTurn() {
 
     }
+    //endregion
 
     //region PRIVATE METHODS
     /**
