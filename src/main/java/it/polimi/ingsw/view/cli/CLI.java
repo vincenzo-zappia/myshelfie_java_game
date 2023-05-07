@@ -136,7 +136,7 @@ public class CLI implements Runnable, UserInterface {
      * The client interface asks the player if he wants to create a new lobby and, if he doesn't,
      * the ID of the lobby he wants to join
      */
-    public int requestLobby() {
+    private int requestLobby() {
         int selection;
         do {
             System.out.println("[0] Create new lobby");
