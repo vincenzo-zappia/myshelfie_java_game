@@ -8,23 +8,26 @@
 package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Board;
+import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.entities.goals.CommonGoal0;
+import it.polimi.ingsw.entities.goals.CommonGoal1;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.util.BoardCell;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
+import java.util.HashMap;
+import it.polimi.ingsw.entities.goals.*;
 
 public class Game{
 
     //region ATTRIBUTES
     private final Board board;
-    private ArrayList<Player> players;
-    private final Goal[] commonGoals;
+    private final HashMap<String, Player> players;
+    private final ArrayList<Goal> commonGoals;
     private CommonGoal0 commonGoal0;
     //endregion
 
@@ -32,12 +35,18 @@ public class Game{
     public Game(ArrayList<String> usernames){
         board = new Board(usernames.size());
         board.fillBoard(); //filling of the board with cards
-        players = new ArrayList<>();
+        players = new HashMap<>();
 
         //player (game entity) creation
-        for(String user: usernames) players.add(new Player(user));
+        for(String user: usernames) players.put(user, new Player(user));
 
-        commonGoals = new CommonGoalFactory().makeCommonGoal(); //sets the common goals of the game
+        CommonGoalFactory factory = new CommonGoalFactory();
+        //commonGoals = new Goal[2];
+        //commonGoals = factory.makeCommonGoal(); //sets the common goals of the game
+        commonGoals = new ArrayList<>();
+        commonGoals.add(new CommonGoal2());
+
+
         commonGoal0 = new CommonGoal0();
     }
     //endregion
@@ -88,7 +97,7 @@ public class Game{
     public ArrayList<Card> removeCardFromBoard(int[][] coordinates){
         ArrayList<Card> removedCards = new ArrayList<>();
         for (int[] coordinate : coordinates) removedCards.add(board.removeCard(coordinate[0], coordinate[1]));
-        System.out.println("Cards removed!");
+        System.out.println("INFO: Cards removed!");
         return removedCards;
     }
 
@@ -99,21 +108,12 @@ public class Game{
      * @param cards selected and arranged by the player in the desired order
      * @throws AddCardException if column are already full
      */
-    public boolean addCardToBookshelf(String playerUsername, int column, ArrayList<Card> cards) throws AddCardException {
+    public boolean addCardToBookshelf(String playerUsername, int column, ArrayList<Card> cards) {
         //now the method check if the arraylist contains a player with username == playerUsername
-        int playerIndex;
-        boolean sentinel = false;
-        int i = 0;
-        do{
-            if(Objects.equals(players.get(i).getUsername(), playerUsername)){
-                playerIndex=i;
-                sentinel=true;
-                for(Card c : cards) players.get(playerIndex).getBookshelf().addCard(column, c);
-            }
-            i++;
-        }while(!sentinel || i < 4);
-
-        return sentinel;
+        if(column <0 || column>5) return false;
+        if(!players.get(playerUsername).getBookshelf().getCell(cards.size(), column).isCellEmpty()) return false;
+        for(Card c : cards) players.get(playerUsername).addCardToBookshelf(column, c);
+        return true;
     }
 
     /**
@@ -138,19 +138,16 @@ public class Game{
      * @param username player whose eventual achievement we want to check
      */
     public void scoreCommonGoal(String username){
-        for(Player p : players){
-            if(p.getUsername().equals(username)) {
-                p.addScore(commonGoals[0].checkGoal(p.getBookshelf()));
-                p.addScore(commonGoals[1].checkGoal(p.getBookshelf()));
-            }
-        }
+        Player p = players.get(username);
+        p.addScore(commonGoals.get(0).checkGoal(p.getBookshelf()));
+
     }
 
     /**
      * For each player checks the progress of the achievement of his private goal and the general common goal 0
      */
     public void scorePrivateGoal(){
-        for(Player p : players){
+        for(Player p : players.values()){
             p.addScore(p.getPrivateGoal().checkGoal(p.getBookshelf()));
             p.addScore(commonGoal0.checkGoal(p.getBookshelf()));
         }
@@ -161,7 +158,7 @@ public class Game{
      * @return the ordered list of players
      */
     public ArrayList<Player> orderByScore(){
-        ArrayList<Player> ordered = players;
+        ArrayList<Player> ordered = new ArrayList<>(players.values());
         Collections.sort(ordered);
         return ordered;
     }
@@ -169,7 +166,7 @@ public class Game{
     //metodo forwarding
     public boolean isPlayerBookshelfFull(String username){
         boolean full = false;
-        for(Player p : players){
+        for(Player p : players.values()){
             if(p.getUsername().equals(username)) full = p.isBookshelfFull();
         }
         return full;
@@ -179,7 +176,7 @@ public class Game{
 
     //region GETTER AND SETTER
     public ArrayList<Player> getPlayers(){
-        return players;
+        return new ArrayList<>(players.values());
     }
     public Board getBoard(){
         return board;

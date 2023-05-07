@@ -192,7 +192,6 @@ public class CLI implements Runnable, View {
         System.out.println(CliUtil.makeBoard(CliUtil.boardConverter(board)));
         System.out.println(CliUtil.makeLegend());
     }
-
     //endregion
 
 }

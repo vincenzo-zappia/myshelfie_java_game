@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model.entities.goals;
 
 import it.polimi.ingsw.entities.goals.CommonGoal2;
+import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CommonGoal2Test {
     private static Bookshelf bookshelf;
-    private static CommonGoal2 cg2;
+    private static Goal cg2;
 
     @BeforeAll
     public static void inizialize(){

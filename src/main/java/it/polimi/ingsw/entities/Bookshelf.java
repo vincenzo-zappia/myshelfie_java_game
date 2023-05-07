@@ -79,8 +79,9 @@ public class Bookshelf {
 
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 5; j++) {
+                System.out.println("hhvkkld");
                 try {
-                    if(!getCell(i,j).isCellEmpty())x[i][j] = getCell(i,j).getCard().getType().ordinal(); //save the value in matrix x[][]
+                    if(!getCell(i,j).isCellEmpty()) x[i][j] = getCell(i,j).getCard().getType().ordinal(); //save the value in matrix x[][]
                     else x[i][j] = Goal.UNAVAILABLE; //if a cell is empty, use the value UNAVAILABLE(104) to detect in the int matrix
 
                 } catch (CellGetCardException e) {
