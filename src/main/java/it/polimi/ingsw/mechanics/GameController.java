@@ -141,7 +141,7 @@ public class GameController {
         if(game.checkRefill()) broadcastMessage(MessageType.BOARD_REFILL);
 
         //Check if the current player has achieved anyone of the common goals
-        //game.scoreCommonGoal(turnManager.getCurrentPlayer()); //TODO: Decommentare quando finito debugging
+        game.scoreCommonGoal(turnManager.getCurrentPlayer());
 
         //Check if the current player's bookshelf is full
         if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer())) turnManager.startEndGame();
