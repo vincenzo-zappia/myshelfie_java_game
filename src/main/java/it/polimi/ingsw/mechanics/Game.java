@@ -44,7 +44,7 @@ public class Game{
         //commonGoals = new Goal[2];
         //commonGoals = factory.makeCommonGoal(); //sets the common goals of the game
         commonGoals = new ArrayList<>();
-        commonGoals.add(new CommonGoal2());
+        commonGoals.add(new CommonGoal10());
 
 
         commonGoal0 = new CommonGoal0();

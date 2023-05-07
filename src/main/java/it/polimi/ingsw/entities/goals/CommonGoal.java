@@ -1,9 +1,34 @@
 package it.polimi.ingsw.entities.goals;
 
-import it.polimi.ingsw.entities.Bookshelf;
+import it.polimi.ingsw.util.CardType;
+import it.polimi.ingsw.util.Cell;
+
+import java.util.HashSet;
 
 public abstract class CommonGoal {
     private int score = 8;
+
+    protected static boolean allTypesDifferent(Cell[] list) {
+        HashSet<CardType> types = new HashSet<>();
+
+        for (Cell c: list) {
+            if (types.contains(c.getCard().getType())) return false;
+            else types.add(c.getCard().getType());
+        }
+        return true;
+    }
+
+    protected static boolean sameTypes(Cell[] list) {
+        for(int i=0; i< list.length-1; i++){
+            if (!(list[i]==list[i+1])) return false;
+        }
+        return true;
+    }
+
+    protected static boolean existEmpty(Cell[] list) {
+        for (Cell c: list) if (c.isCellEmpty()) return true;
+        return false;
+    }
 
     //TODO: soluzione da migliorare, magari implementando il numero di giocatori
 

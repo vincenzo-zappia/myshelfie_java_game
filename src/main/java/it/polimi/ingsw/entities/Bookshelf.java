@@ -59,7 +59,7 @@ public class Bookshelf {
     /**
      * count the number of cards in a single column
      * @param column of the bookshelf
-     * @return number of cards
+     * @return number of cards in a column
      */
     public int cardsInColumn(int column) {
         int i=5, count=0;
@@ -68,6 +68,12 @@ public class Bookshelf {
             count++;
         }
         return count;
+    }
+
+    public int cardsInRow(int row){
+        int i=0;
+        while (i<5 && !bookshelf[row][i].isCellEmpty()) i++;
+        return i;
     }
 
     /**
@@ -79,11 +85,11 @@ public class Bookshelf {
 
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 5; j++) {
-                System.out.println("hhvkkld");
+
                 try {
                     if(!getCell(i,j).isCellEmpty()) x[i][j] = getCell(i,j).getCard().getType().ordinal(); //save the value in matrix x[][]
                     else x[i][j] = Goal.UNAVAILABLE; //if a cell is empty, use the value UNAVAILABLE(104) to detect in the int matrix
-
+                    System.out.println("[" + i + "][" + j + "]");
                 } catch (CellGetCardException e) {
                     throw new RuntimeException(e);
                 }
@@ -99,6 +105,11 @@ public class Bookshelf {
     }
     public Cell[] getRow(int row) {
         return bookshelf[row];
+    }
+    public Cell[] getColumn(int column){
+        Cell[] result = new Cell[6];
+        for(int i=0; i<bookshelf.length; i++) result[i] = bookshelf[i][column];
+        return result;
     }
     //endregion
 
