@@ -39,7 +39,7 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void connectionSuccess(int lobbyId) {
+    public void showSuccessfulConnection(int lobbyId) {
 
     }
 

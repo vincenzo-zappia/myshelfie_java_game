@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.BoardCell;
 
@@ -14,16 +13,11 @@ public interface View {
 
     //TODO: Creazione di un metodo per ogni oggetto specifico da inviare
 
-
-
-    //Server shows Client: CLI/GUI show User
-    //region SHOW
-
     void showError(String content);
 
     void refreshConnectedPlayers(ArrayList<String> playeUsernames);
 
-    void connectionSuccess(int lobbyId);
+    void showSuccessfulConnection(int lobbyId);
 
     void showConfirmation(MessageType type);
 
@@ -36,10 +30,9 @@ public interface View {
     //TODO: Con che tipo di struttura dati viene fatta vedere l'informazione rilevante di Board alla CLI/GUI?
     /**
      * Sends the newly refilled board after the calling of the fillBoard() method
-     * @param board refilled board
+     * @param boardCells refilled board
      */
     void showRefilledBoard(BoardCell[][] boardCells);
-    //endregion
 
     /**
      * Gives feedback to the client about his last command

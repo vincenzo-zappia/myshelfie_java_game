@@ -62,8 +62,7 @@ public class GameController {
     }
 
     /**
-     * Send a broadcast message, used for refilling user's
-     * boards or notify that a single removed certain cards
+     * Sends the same message to all the players
      * @param type of the message
      * @param payload eventual attributes of the received message
      */
@@ -80,7 +79,7 @@ public class GameController {
 
     //TODO: cardSelection() non invia più riscontro positivo ma chiama view.askCardInsertion()
     /**
-     * method that extracts the coordinates from the message checking the validity of the selection
+     * Extracts the coordinates from the message checking the validity of the selection and calls the game command
      * @param message message sent by the client with the coordinates of the cards selected to be put
      *                into the player's Bookshelf
      */
@@ -101,7 +100,7 @@ public class GameController {
     }
 
     /**
-     * Method that inserts the cards selected by the player into his bookshelf
+     * Calls the game command to insert the cards selected by the player into his bookshelf
      * @param message Message containing the cards arranged in the order picked by the player and the column into which
      *                he wants to put them in his bookshelf
      */

@@ -1,6 +1,10 @@
 package it.polimi.ingsw.view;
 
-public interface UserAction {
+/**
+ * Defines all the methods used by the user interface (CLI/GUI) to take input from keyboard and call the methods in
+ * ClientController that generate the respective message to send to the Server
+ */
+public interface UserInterface {
 
     /**
      * The client interface asks the player to select the cards

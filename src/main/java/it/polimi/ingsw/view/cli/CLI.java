@@ -80,17 +80,75 @@ public class CLI implements Runnable, View {
         return result;
     }
 
+    public void connection(){
+        int choice = requestLobby();
+        String username = requestUsername();
 
-    private void showBookshelf() {
-        System.out.println(CliUtil.makeTitle("Bookshelf"));
-        System.out.println(CliUtil.makeBookshelf(CliUtil.bookshelfConverter(bookshelf)));
-        System.out.println(CliUtil.makeLegend());
+        if(choice == 0){
+            controller.createLobby(username);
+            String read;
+            do{
+                read = scanner.nextLine();
+            }while(!read.equals("start"));
+            controller.startGame();
+        }
+        else if(choice == 1){
+            System.out.println("Enter lobby id:");
+            int id = Integer.parseInt(scanner.nextLine());
+            controller.joinLobby(username, id);
+        }
     }
 
-    private void showBoard() {
-        System.out.println(CliUtil.makeTitle("Livingroom"));
-        System.out.println(CliUtil.makeBoard(CliUtil.boardConverter(board)));
-        System.out.println(CliUtil.makeLegend());
+    @Override
+    public void showError(String content) {
+        System.out.println(CliUtil.makeErrorMessage(content));
+    }
+
+    @Override
+    public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
+        System.out.println("Lista dei players connessi:");
+        System.out.println(CliUtil.makePlayersList(playerUsernames));
+    }
+
+    @Override
+    public void showSuccessfulConnection(int lobbyId) {
+        System.out.println("Connessione alla loby riuscita con successo! Lobby id: " + lobbyId);
+    }
+
+    @Override
+    public void showConfirmation(MessageType type) {
+        switch (type){
+            case GAME_START -> System.out.println(CliUtil.makeConfirmationMessage("Now in game!"));
+            case SELECTION_RESPONSE -> {
+                String sel = Arrays.toString(selection);
+                System.out.println(CliUtil.makeConfirmationMessage("Selezione valida!"));
+            }
+            case INSERTION_RESPONSE -> {
+                String ins = Arrays.toString(selection);
+                System.out.println(CliUtil.makeConfirmationMessage("Inserimento avvenuto con successo!"));
+            }
+        }
+    }
+
+    @Override
+    public void showRemovedCards(int[][] coordinates) {
+
+    }
+
+    @Override
+    public void showRefilledBoard(BoardCell[][] boardCells) {
+        this.board = boardCells;
+        showBoard();
+    }
+
+    @Override
+    public void sendResponse(boolean response, MessageType responseType) {
+
+    }
+
+    @Override
+    public void sendNotYourTurn() {
+
     }
 
     //region PRIVATE METHODS
@@ -123,78 +181,18 @@ public class CLI implements Runnable, View {
         return selection;
     }
 
+    private void showBookshelf() {
+        System.out.println(CliUtil.makeTitle("Bookshelf"));
+        System.out.println(CliUtil.makeBookshelf(CliUtil.bookshelfConverter(bookshelf)));
+        System.out.println(CliUtil.makeLegend());
+    }
+
+    private void showBoard() {
+        System.out.println(CliUtil.makeTitle("Livingroom"));
+        System.out.println(CliUtil.makeBoard(CliUtil.boardConverter(board)));
+        System.out.println(CliUtil.makeLegend());
+    }
+
     //endregion
-
-    public void connection(){
-        int choice = requestLobby();
-        String username = requestUsername();
-
-        if(choice == 0){
-            controller.createLobby(username);
-            String read;
-            do{
-                read = scanner.nextLine();
-            }while(!read.equals("start"));
-            controller.startGame();
-        }
-        else if(choice == 1){
-            System.out.println("Enter lobby id:");
-            int id = Integer.parseInt(scanner.nextLine());
-            controller.joinLobby(username, id);
-        }
-
-
-    }
-
-
-    @Override
-    public void showError(String content) {
-        System.out.println(CliUtil.makeErrorMessage(content));
-    }
-
-    @Override
-    public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
-        System.out.println("Lista dei players connessi:");
-        System.out.println(CliUtil.makePlayersList(playerUsernames));
-    }
-
-    @Override
-    public void connectionSuccess(int lobbyId) {
-        System.out.println("Connessione alla loby riuscita con successo! Lobby id: " + lobbyId);
-    }
-
-    @Override
-    public void showConfirmation(MessageType type) {
-        switch (type){
-            case GAME_START -> System.out.println(CliUtil.makeConfirmationMessage("Now in game!"));
-            case SELECTION_RESPONSE -> {
-                String sel = Arrays.toString(selection);
-                System.out.println(CliUtil.makeConfirmationMessage("Selezione corretta"));
-            }
-            case INSERTION_RESPONSE -> {}
-        }
-    }
-
-    @Override
-    public void showRemovedCards(int[][] coordinates) {
-
-    }
-
-    @Override
-    public void showRefilledBoard(BoardCell[][] boardCells) {
-        this.board = boardCells;
-        showBoard();
-    }
-
-    @Override
-    public void sendResponse(boolean response, MessageType responseType) {
-
-    }
-
-    @Override
-    public void sendNotYourTurn() {
-
-    }
-
 
 }

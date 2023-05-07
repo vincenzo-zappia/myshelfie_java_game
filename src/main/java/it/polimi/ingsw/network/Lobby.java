@@ -33,7 +33,7 @@ public class Lobby {
     }
     //endregion
 
-    //region METHOD
+    //region METHODS
 
     /**
      * Method used by clients to enter a lobby
@@ -78,7 +78,6 @@ public class Lobby {
             player.getClientHandler().sendMessage(message);
         }
     }
-
 
     /**
      * Method that start the game and initialize hashmaps and GameController
