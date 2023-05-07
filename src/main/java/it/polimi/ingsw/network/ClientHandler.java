@@ -116,7 +116,8 @@ public class ClientHandler implements Runnable{
     }
 
     /**
-     *
+     * It waits for the lobby master to send a start game command to prompt the lobby to create the actual new game
+     * (initialization of all the data structures needed for the game to work)
      */
     private void startGameHandler() {
         Message msg = receiveMessage();

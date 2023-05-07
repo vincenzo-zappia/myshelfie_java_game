@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public abstract class Message implements Serializable {
 
-    //region ATTRIBUTI
-    private final String username;
+    //region ATTRIBUTES
+    private final String username; //Sender. Can be either server or a player
     private final MessageType type;
     private String content;
     private boolean hasContent;

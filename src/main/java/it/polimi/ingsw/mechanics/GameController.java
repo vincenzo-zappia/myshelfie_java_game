@@ -7,6 +7,7 @@ import it.polimi.ingsw.network.messages.client2server.InsertionMessage;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.client2server.SelectionMessage;
+import it.polimi.ingsw.network.messages.server2client.CurrentPlayerMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,9 +62,9 @@ public class GameController {
         }
     }
 
+    //TODO: Ripetizione di codice "viewHashMap.get(username)"
     /**
-     * Send a broadcast message, used for refilling user's
-     * boards or notify that a single removed certain cards
+     * Sends the same message to all the players
      * @param type of the message
      * @param payload eventual attributes of the received message
      */
@@ -72,6 +73,7 @@ public class GameController {
             switch (type) {
                 case BOARD_REFILL -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getMatrix());
                 case CARD_REMOVAL -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
+                case CURRENT_PLAYER -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
             }
         }
     }
@@ -80,7 +82,7 @@ public class GameController {
 
     //TODO: cardSelection() non invia più riscontro positivo ma chiama view.askCardInsertion()
     /**
-     * method that extracts the coordinates from the message checking the validity of the selection
+     * Extracts the coordinates from the message checking the validity of the selection and calls the game command
      * @param message message sent by the client with the coordinates of the cards selected to be put
      *                into the player's Bookshelf
      */
@@ -101,7 +103,7 @@ public class GameController {
     }
 
     /**
-     * Method that inserts the cards selected by the player into his bookshelf
+     * Calls the game command to insert the cards selected by the player into his bookshelf
      * @param message Message containing the cards arranged in the order picked by the player and the column into which
      *                he wants to put them in his bookshelf
      */
@@ -135,23 +137,19 @@ public class GameController {
      * the condition for the actual end of the game is reached.
      */
     private void endTurn(){
-        System.out.println("INFO: Entrato in endturn");
         //invio aggiornamento board a tutti i player nel caso in cui la board venga riempita
         if(game.checkRefill()) broadcastMessage(MessageType.BOARD_REFILL);
 
-        System.out.println("INFO: diocancerogeno");
         //Check if the current player has achieved anyone of the common goals
-        game.scoreCommonGoal(turnManager.getCurrentPlayer());
+        //game.scoreCommonGoal(turnManager.getCurrentPlayer()); //TODO: Decommentare quando finito debugging
 
-        System.out.println("INFO: Controllo fullezza");
         //Check if the current player's bookshelf is full
         if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer())) turnManager.startEndGame();
 
-        System.out.println("INFO: Chiamata effettiva di nextTurn");
         //Nella chiamata di nextTurn() avviene effettivamente il cambiamento del turno del giocatore (nel caso non sia l'ultimo)
         if(!turnManager.nextTurn()) findWinner();
 
-        System.out.println("INFO: Fine metodo endTurn");
+        broadcastMessage(MessageType.CURRENT_PLAYER);
     }
 
     /**

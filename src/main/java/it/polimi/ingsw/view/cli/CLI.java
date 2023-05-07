@@ -7,6 +7,7 @@ import it.polimi.ingsw.network.ClientController;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.View;
 
 import java.lang.reflect.Array;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class CLI implements Runnable, View {
+public class CLI implements Runnable, UserInterface {
     private final Scanner scanner;
     private final ClientController controller;
     private BoardCell[][] board;
@@ -34,15 +35,18 @@ public class CLI implements Runnable, View {
 
     @Override
     public void run() {
-
         //TODO: Stampa a schermo titolo di gioco da metodo di CliUtils
 
-        connection();
+        connection(); //Creation or joining of a lobby and starting the game (initialization of all the data structures)
+
+        //While loop to read the user keyboard input (until the game ends)
         while(true){
             String read = scanner.nextLine();
             String[] splitted = read.split(" ");
 
             switch (splitted[0]){
+
+                //Card selection command eg: "select (x;y)"
                 case "select" -> {
                     String[] coordinate = splitted[1].split(",");
                     int[][] coordinates = new int[coordinate.length][2];
@@ -52,17 +56,23 @@ public class CLI implements Runnable, View {
                     selection = coordinates;
                     controller.sendSelection(coordinates);
                 }
-                case "show" -> {
-                    if(splitted[1].equals("board")) showBoard();
-                    else if(splitted[1].equals("bookshelf")) showBookshelf();
-                    else System.out.println("comando non corretto"); //TODO: cambiare;
-                }
-                case "help" -> {}
+
+                //Card insertion command (bookshelf column n) eg: "insert n" //TODO: La scelta dell'ordine delle carte?
                 case "insert" -> {
                     ArrayList<Card> cards = new ArrayList<Card>();
                     for(int i=0; i<selection.length; i++) cards.add(board[selection[i][0]][selection[i][0]].getCard());
                     controller.sendInsertion(cards, Integer.parseInt(splitted[1]));
                 }
+
+                //Show command to prompt the printing of either the board or the bookshelf of the player
+                case "show" -> {
+                    if(splitted[1].equals("board")) showBoard();
+                    else if(splitted[1].equals("bookshelf")) showBookshelf();
+                    else System.out.println("comando non corretto"); //TODO: cambiare;
+                }
+
+                //Help command for syntax aid
+                case "help" -> {}
 
                 case "" -> {}
             }
@@ -70,7 +80,35 @@ public class CLI implements Runnable, View {
 
     }
 
-    public static int[] parseCoordinates(String input) {
+    //region PRIVATE METHODS
+    /**
+     * Prompts the creation of either a lobby creation command or a lobby access request based on the user input
+     */
+    private void connection(){
+        int choice = requestLobby();
+        String username = requestUsername();
+
+        if(choice == 0){
+            controller.createLobby(username);
+            String read;
+            do{
+                read = scanner.nextLine();
+            }while(!read.equals("start"));
+            controller.startGame();
+        }
+        else if(choice == 1){
+            System.out.println("Enter lobby id:");
+            int id = Integer.parseInt(scanner.nextLine());
+            controller.joinLobby(username, id);
+        }
+    }
+
+    /**
+     * Makes card coordinates (two int array) out of the user keyboard input
+     * @param input user keyboard input for coordinates eg: "(x;y)"
+     * @return actual card coordinates (two int array)
+     */
+    private int[] parseCoordinates(String input) {
         String[] parts = input.substring(1, input.length() - 1).split(";");
 
         int[] result = new int[2];
@@ -80,20 +118,6 @@ public class CLI implements Runnable, View {
         return result;
     }
 
-
-    private void showBookshelf() {
-        System.out.println(CliUtil.makeTitle("Bookshelf"));
-        System.out.println(CliUtil.makeBookshelf(CliUtil.bookshelfConverter(bookshelf)));
-        System.out.println(CliUtil.makeLegend());
-    }
-
-    private void showBoard() {
-        System.out.println(CliUtil.makeTitle("Livingroom"));
-        System.out.println(CliUtil.makeBoard(CliUtil.boardConverter(board)));
-        System.out.println(CliUtil.makeLegend());
-    }
-
-    //region PRIVATE METHODS
     /**
      * The client interface asks the player his username
      */
@@ -112,7 +136,7 @@ public class CLI implements Runnable, View {
      * The client interface asks the player if he wants to create a new lobby and, if he doesn't,
      * the ID of the lobby he wants to join
      */
-    public int requestLobby() {
+    private int requestLobby() {
         int selection;
         do {
             System.out.println("[0] Create new lobby");
@@ -123,35 +147,20 @@ public class CLI implements Runnable, View {
         return selection;
     }
 
+    private void showBookshelf() {
+        System.out.println(CliUtil.makeTitle("Bookshelf"));
+        System.out.println(CliUtil.makeBookshelf(CliUtil.bookshelfConverter(bookshelf)));
+        System.out.println(CliUtil.makeLegend());
+    }
+
+    private void showBoard() {
+        System.out.println(CliUtil.makeTitle("Livingroom"));
+        System.out.println(CliUtil.makeBoard(CliUtil.boardConverter(board)));
+        System.out.println(CliUtil.makeLegend());
+    }
     //endregion
 
-    public void connection(){
-        int choice = requestLobby();
-        String username = requestUsername();
-
-        if(choice == 0){
-            controller.createLobby(username);
-            String read;
-            do{
-                read = scanner.nextLine();
-            }while(!read.equals("start"));
-            controller.startGame();
-        }
-        else if(choice == 1){
-            System.out.println("Enter lobby id:");
-            int id = Integer.parseInt(scanner.nextLine());
-            controller.joinLobby(username, id);
-        }
-
-
-    }
-
-
-    @Override
-    public void showError(String content) {
-        System.out.println(CliUtil.makeErrorMessage(content));
-    }
-
+    //region USER INTERFACE
     @Override
     public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
         System.out.println("Lista dei players connessi:");
@@ -159,7 +168,7 @@ public class CLI implements Runnable, View {
     }
 
     @Override
-    public void connectionSuccess(int lobbyId) {
+    public void showSuccessfulConnection(int lobbyId) {
         System.out.println("Connessione alla loby riuscita con successo! Lobby id: " + lobbyId);
     }
 
@@ -169,14 +178,32 @@ public class CLI implements Runnable, View {
             case GAME_START -> System.out.println(CliUtil.makeConfirmationMessage("Now in game!"));
             case SELECTION_RESPONSE -> {
                 String sel = Arrays.toString(selection);
-                System.out.println(CliUtil.makeConfirmationMessage("Selezione corretta"));
+                System.out.println(CliUtil.makeConfirmationMessage("Selezione valida!"));
             }
             case INSERTION_RESPONSE -> {
-                System.out.println(CliUtil.makeConfirmationMessage("Carte inserite correttamente!"));
+                String ins = Arrays.toString(selection);
+                System.out.println(CliUtil.makeConfirmationMessage("Inserimento avvenuto con successo!"));
             }
         }
     }
 
+    @Override
+    public void showError(String content) {
+        System.out.println(CliUtil.makeErrorMessage(content));
+    }
+
+    @Override
+    public void requestCardSelection() {
+
+    }
+
+    @Override
+    public void requestCardInsertion() {
+
+    }
+    //endregion
+
+    //region VIEW
     @Override
     public void showRemovedCards(int[][] coordinates) {
 
@@ -189,6 +216,11 @@ public class CLI implements Runnable, View {
     }
 
     @Override
+    public void showCurrentPlayer(String currentPlayer){
+        System.out.println("Current player: " + currentPlayer);
+    }
+
+    @Override
     public void sendResponse(boolean response, MessageType responseType) {
 
     }
@@ -197,6 +229,6 @@ public class CLI implements Runnable, View {
     public void sendNotYourTurn() {
 
     }
-
+    //endregion
 
 }

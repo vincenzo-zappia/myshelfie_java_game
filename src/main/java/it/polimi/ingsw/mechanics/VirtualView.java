@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.ClientHandler;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.server2client.BoardRefillUpdate;
 import it.polimi.ingsw.network.messages.server2client.CardRemovalMessage;
+import it.polimi.ingsw.network.messages.server2client.CurrentPlayerMessage;
 import it.polimi.ingsw.network.messages.server2client.ResponseMessage;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.util.BoardCell;
@@ -29,26 +30,6 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showError(String content) {
-
-    }
-
-    @Override
-    public void refreshConnectedPlayers(ArrayList<String> playeUsernames) {
-        //TODO: picccolo problema questo metodo è oblbigatorio ma non puo essere implementato in virtual view (è stato implementato in lobby)
-    }
-
-    @Override
-    public void connectionSuccess(int lobbyId) {
-
-    }
-
-    @Override
-    public void showConfirmation(MessageType type) {
-
-    }
-
-    @Override
     public void showRemovedCards(int[][] coordinates){
         clientHandler.sendMessage(new CardRemovalMessage(coordinates));
     }
@@ -56,6 +37,11 @@ public class VirtualView implements View, Observer {
     @Override
     public void showRefilledBoard(BoardCell[][] boardCells){
         clientHandler.sendMessage(new BoardRefillUpdate(boardCells));
+    }
+
+    @Override
+    public void showCurrentPlayer(String currentPlayer){
+        clientHandler.sendMessage(new CurrentPlayerMessage(currentPlayer));
     }
 
     @Override
