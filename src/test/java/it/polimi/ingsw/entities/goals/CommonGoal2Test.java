@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.model.entities.goals;
+package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.goals.CommonGoal2;
 import it.polimi.ingsw.entities.goals.Goal;
