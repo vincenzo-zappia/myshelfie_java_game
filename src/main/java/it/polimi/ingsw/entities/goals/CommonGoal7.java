@@ -19,7 +19,7 @@ public class CommonGoal7 extends CommonGoal implements Goal{
             for(int i = 0; i < 6; i++){
                 tmp=0;
                 for(int j = 0; j < 5; j++){
-                    if(!bs.getCell(j,i).isCellEmpty() && !bs.getCell(i, 0).getCard().sameType(bs.getCell(i,j).getCard())){
+                    if(!bs.getCell(i,j).isCellEmpty() && !bs.getCell(i, 0).getCard().sameType(bs.getCell(i,j).getCard())){
                         tmp++;
                     }
                 }

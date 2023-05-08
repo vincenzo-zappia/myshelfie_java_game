@@ -17,7 +17,7 @@ class CommonGoal1Test {
     private static CommonGoal1 cg1;
 
     @BeforeAll
-    public static void inizialize() {
+    public static void initialize() {
         cg1 = new CommonGoal1();
     }
 
@@ -38,7 +38,6 @@ class CommonGoal1Test {
     @Test
     public void normalGroups2x2() {
         try {
-
             for(int i=0; i<2; i++) {
                 bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
                 bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
@@ -48,7 +47,6 @@ class CommonGoal1Test {
                 bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
                 bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
             }
-
         } catch (AddCardException e) {
             throw new RuntimeException(e);
         }

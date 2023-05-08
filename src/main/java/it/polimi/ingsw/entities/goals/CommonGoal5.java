@@ -4,7 +4,7 @@ import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.exceptions.CellGetCardException;
 
 /*
- * Three columns each cformed by 6 tiles of maximum three different types.
+ * Three columns each formed by 6 tiles of maximum three different types.
  * One column can show the same or a different combination of another column.
  */
 

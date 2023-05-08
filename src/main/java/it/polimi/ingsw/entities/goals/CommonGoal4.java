@@ -24,7 +24,7 @@ public class CommonGoal4 extends CommonGoal implements Goal{
             for (int j = 0; j < 5; j++) {
                 if (x[i][j] != UNAVAILABLE) {
                     if (i == 0 && j == 0) {               //CASE 1: [0][0]
-                        if (x[i][j] == x[i][j + 1]) {     //check at dx
+                        if (x[0][0] == x[0][1]) {     //check at dx
                             x[i][j] = UNAVAILABLE;
                             x[i][j + 1] = UNAVAILABLE;
                             tmp++;
@@ -82,12 +82,12 @@ public class CommonGoal4 extends CommonGoal implements Goal{
                         }
                     }
                     if(i > 0 && i < 5 && j == 0){         //CASE 5: [x][0/1] check rows in the first or second column
-                        if (x[i][j] == x[i][j + 1]) {
+                        if (x[i][0] == x[i][1]) {
                             x[i][j] = UNAVAILABLE;
                             x[i][j + 1] = UNAVAILABLE;
                             tmp++;
                         }
-                        if (x[i][j] == x[i + 1][j]) {
+                        if (x[i][0] == x[i + 1][0]) {
                             x[i][j] = UNAVAILABLE;
                             x[i + 1][j] = UNAVAILABLE;
                             tmp++;
@@ -116,12 +116,12 @@ public class CommonGoal4 extends CommonGoal implements Goal{
                         }
                     }
                     if (i == 0 && j > 0 && j < 4) {       //CASE 7
-                        if (x[i][j] == x[i][j + 1]) {
+                        if (x[0][j] == x[0][j + 1]) {
                             x[i][j] = UNAVAILABLE;
                             x[i][j + 1] = UNAVAILABLE;
                             tmp++;
                         }
-                        if (x[i][j] == x[i + 1][j]) {
+                        if (x[0][j] == x[i + 1][j]) {
                             x[i][j] = UNAVAILABLE;
                             x[i + 1][j] = UNAVAILABLE;
                             tmp++;

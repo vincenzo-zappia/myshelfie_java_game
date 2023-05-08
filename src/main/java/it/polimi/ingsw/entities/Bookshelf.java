@@ -99,22 +99,6 @@ public class Bookshelf {
         return x;
     }
 
-    public CardType[][] getMatrixTypes() {
-        CardType[][] x = new CardType[6][5];
-
-        for(int i = 0; i < 6; i++){
-            for(int j = 0; j < 5; j++) {
-
-                try {
-                    if(!getCell(i,j).isCellEmpty()) x[i][j] = getCell(i,j).getCard().getType(); //save the value in matrix x[][]
-                    System.out.println("[" + i + "][" + j + "]");
-                } catch (CellGetCardException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        return x;
-    }
     //endregion
 
     //region GETTER AND SETTER
