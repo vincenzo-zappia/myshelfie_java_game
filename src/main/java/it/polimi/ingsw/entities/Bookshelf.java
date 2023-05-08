@@ -10,6 +10,7 @@ package it.polimi.ingsw.entities;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.exceptions.CellGetCardException;
+import it.polimi.ingsw.util.CardType;
 import it.polimi.ingsw.util.Cell;
 
 public class Bookshelf {
@@ -89,6 +90,23 @@ public class Bookshelf {
                 try {
                     if(!getCell(i,j).isCellEmpty()) x[i][j] = getCell(i,j).getCard().getType().ordinal(); //save the value in matrix x[][]
                     else x[i][j] = Goal.UNAVAILABLE; //if a cell is empty, use the value UNAVAILABLE(104) to detect in the int matrix
+                    System.out.println("[" + i + "][" + j + "]");
+                } catch (CellGetCardException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return x;
+    }
+
+    public CardType[][] getMatrixTypes() {
+        CardType[][] x = new CardType[6][5];
+
+        for(int i = 0; i < 6; i++){
+            for(int j = 0; j < 5; j++) {
+
+                try {
+                    if(!getCell(i,j).isCellEmpty()) x[i][j] = getCell(i,j).getCard().getType(); //save the value in matrix x[][]
                     System.out.println("[" + i + "][" + j + "]");
                 } catch (CellGetCardException e) {
                     throw new RuntimeException(e);

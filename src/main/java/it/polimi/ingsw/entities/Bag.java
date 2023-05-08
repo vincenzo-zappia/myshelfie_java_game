@@ -19,7 +19,7 @@ public class Bag {
     //region ATTRIBUTES
     private final ArrayList<Card> bag;
 
-    //TODO: how to manage colors and imasge. Now thought about as String and integer arrays
+    //TODO: how to manage colors and image. Now thought about as String and integer arrays
     private final String[][] cardImgName = {
             {"frames1.png", "frames2.png", "frames3.png"},
             {"cats1.png", "cats2.png", "cats3.png"},

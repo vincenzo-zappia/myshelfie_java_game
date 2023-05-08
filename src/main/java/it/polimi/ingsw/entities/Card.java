@@ -15,7 +15,7 @@ public class Card implements Serializable {
 
     //region ATTRIBUTES
     private final String img;
-    private final CardType type; //also we can use Enumeration<...>
+    private final CardType type;
     //endregion
 
     //region CONSTRUCTOR
