@@ -16,7 +16,7 @@ import java.util.HashMap;
  */
 public class GameController {
 
-    //region ATTRIBUTES
+    //region NETWORK ATTRIBUTES
 
     //attributi verso la parte del modello
     private final Game game;
@@ -24,6 +24,11 @@ public class GameController {
 
     //attributi verso la parte di networking
     private final HashMap<String, VirtualView> viewHashMap;
+    //endregion
+
+    //region LOCAL ATTRIBUTES
+    //TODO: Vedere se si riesce a rimuovere l'attributo
+    private int[][] coordinates; //Turn coordinates temporarily saved as attributes to send them as message
     //endregion
 
     //region CONSTRUCTOR
@@ -87,13 +92,14 @@ public class GameController {
      *                into the player's Bookshelf
      */
     public synchronized void cardSelection(SelectionMessage message){
-        System.out.println("INFO: entrato in selection");
 
         if(game.isSelectable(message.getCoordinates())) {
             game.removeCardFromBoard(message.getCoordinates()); //Removal of the selected cards form the game board
 
             //Invio riscontro positivo al client (questo abilita lato client a effettuare inserzione)
             viewHashMap.get(message.getUsername()).sendResponse(true, MessageType.SELECTION_RESPONSE);
+
+            coordinates = message.getCoordinates();
 
             //Invio a tutti i client la posizonie delle carete da rimuovere
             broadcastMessage(MessageType.CARD_REMOVAL, (Object) message.getCoordinates());
@@ -109,10 +115,7 @@ public class GameController {
      *                he wants to put them in his bookshelf
      */
     public synchronized void cardInsertion(InsertionMessage message){
-        //Insertion of the cards removed from the board into the player's bookshelf
-        System.out.println("INFO: Entrato in insertion");
         try {
-
             //cards insertion in player's bookshelf
             //if statement can be simplified, not sure if it's correct with message's code
             if(game.addCardToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards())){
@@ -139,7 +142,8 @@ public class GameController {
      * the condition for the actual end of the game is reached.
      */
     private void endTurn(){
-        viewHashMap.get(turnManager.getCurrentPlayer()).sendRemovalMessage();
+        //TODO: è possibile che le stesse coordinate vengano inviate due volte
+        viewHashMap.get(turnManager.getCurrentPlayer()).showRemovedCards(coordinates);
 
         //invio aggiornamento board a tutti i player nel caso in cui la board venga riempita
         if(game.checkRefill()) broadcastMessage(MessageType.BOARD_REFILL);
