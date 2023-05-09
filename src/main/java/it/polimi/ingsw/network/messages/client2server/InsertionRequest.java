@@ -6,12 +6,12 @@ import it.polimi.ingsw.network.messages.MessageType;
 
 import java.util.ArrayList;
 
-public class InsertionMessage extends Message {
+public class InsertionRequest extends Message {
     private final ArrayList<Card> selectedCards;
     private final int selectedColumn;
 
-    public InsertionMessage(String sender, ArrayList<Card> selectedCards, int selectedColumn) {
-        super(sender, MessageType.INSERTION_MESSAGE);
+    public InsertionRequest(String sender, ArrayList<Card> selectedCards, int selectedColumn) {
+        super(sender, MessageType.INSERTION_REQUEST);
         this.selectedCards = selectedCards;
         this.selectedColumn = selectedColumn;
     }

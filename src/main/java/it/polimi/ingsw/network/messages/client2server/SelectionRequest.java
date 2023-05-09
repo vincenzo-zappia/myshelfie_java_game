@@ -3,10 +3,10 @@ package it.polimi.ingsw.network.messages.client2server;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 
-public class SelectionMessage extends Message {
+public class SelectionRequest extends Message {
     private final int[][] coordinates;
-    public SelectionMessage(String sender, int[][] coordinates) {
-        super(sender, MessageType.SELECTION_MESSAGE);
+    public SelectionRequest(String sender, int[][] coordinates) {
+        super(sender, MessageType.SELECTION_REQUEST);
         this.coordinates = coordinates;
     }
 

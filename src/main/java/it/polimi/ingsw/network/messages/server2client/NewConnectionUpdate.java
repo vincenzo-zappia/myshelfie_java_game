@@ -5,10 +5,10 @@ import it.polimi.ingsw.network.messages.MessageType;
 
 import java.util.ArrayList;
 
-public class NewConnectionMessage extends Message {
+public class NewConnectionUpdate extends Message {
     private final ArrayList<String> usernameList;
-    public NewConnectionMessage(ArrayList<String> usernameList) {
-        super("server", MessageType.NEW_CONNECTION);
+    public NewConnectionUpdate(ArrayList<String> usernameList) {
+        super("server", MessageType.NEW_CONNECTION_UPDATE);
         this.usernameList = usernameList;
     }
 

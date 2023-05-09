@@ -3,10 +3,10 @@ package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.exceptions.AddCardException;
-import it.polimi.ingsw.network.messages.client2server.InsertionMessage;
+import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.network.messages.client2server.SelectionMessage;
+import it.polimi.ingsw.network.messages.client2server.SelectionRequest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,16 +36,13 @@ public class GameController {
         turnManager = new TurnManager(new ArrayList<>(viewHashMap.keySet()));
         this.game = game;
         this.viewHashMap = viewHashMap;
-        broadcastMessage(MessageType.BOARD_REFILL);
-        broadcastMessage(MessageType.CURRENT_PLAYER);
+        broadcastMessage(MessageType.BOARD_REFILL_UPDATE);
+        broadcastMessage(MessageType.CURRENT_PLAYER_UPDATE);
     }
     //endregion
 
     //Every method is involved in the reception of a message, calling the specific action associated with the message and the generation of a response
     //region METHODS
-
-    //TODO: Metodo inizio partita che dopo la creazione di Game e quindi di Board aggiorna i player del fillBoard() (forse in Lobby?)
-
     /**
      * Method that handles the received generic Message by checking its actual type and calls the wanted method
      * @param message received message
@@ -59,15 +56,14 @@ public class GameController {
         }
 
         switch (message.getType()){
-            case SELECTION_MESSAGE -> cardSelection((SelectionMessage) message);
-            case INSERTION_MESSAGE -> cardInsertion((InsertionMessage) message);
+            case SELECTION_REQUEST -> cardSelection((SelectionRequest) message);
+            case INSERTION_REQUEST -> cardInsertion((InsertionRequest) message);
             default -> {
                 //TODO: generare eccezione?
             }
         }
     }
 
-    //TODO: Ripetizione di codice "viewHashMap.get(username)"
     /**
      * Sends the same message to all the players
      * @param type of the message
@@ -76,9 +72,10 @@ public class GameController {
     public void broadcastMessage(MessageType type, Object... payload){
         for(String username : viewHashMap.keySet()) {
             switch (type) {
-                case BOARD_REFILL -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getMatrix());
-                case CARD_REMOVAL -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
-                case CURRENT_PLAYER -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
+                case BOARD_REFILL_UPDATE -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getMatrix());
+                case CARD_REMOVE_UPDATE -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
+                case CURRENT_PLAYER_UPDATE -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
+                case SCOREBOARD -> viewHashMap.get(username).showScoreboard((HashMap<String, Integer>) payload[0]);
             }
         }
     }
@@ -91,7 +88,7 @@ public class GameController {
      * @param message message sent by the client with the coordinates of the cards selected to be put
      *                into the player's Bookshelf
      */
-    public synchronized void cardSelection(SelectionMessage message){
+    public synchronized void cardSelection(SelectionRequest message){
 
         if(game.isSelectable(message.getCoordinates())) {
             game.removeCardFromBoard(message.getCoordinates()); //Removal of the selected cards form the game board
@@ -102,7 +99,7 @@ public class GameController {
             coordinates = message.getCoordinates();
 
             //Invio a tutti i client la posizonie delle carete da rimuovere
-            broadcastMessage(MessageType.CARD_REMOVAL, (Object) message.getCoordinates());
+            broadcastMessage(MessageType.CARD_REMOVE_UPDATE, (Object) message.getCoordinates());
         }
 
         //Invio riscontro negativo al client
@@ -114,7 +111,7 @@ public class GameController {
      * @param message Message containing the cards arranged in the order picked by the player and the column into which
      *                he wants to put them in his bookshelf
      */
-    public synchronized void cardInsertion(InsertionMessage message){
+    public synchronized void cardInsertion(InsertionRequest message){
         try {
             //cards insertion in player's bookshelf
             //if statement can be simplified, not sure if it's correct with message's code
@@ -124,8 +121,9 @@ public class GameController {
                 viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), true);
                 System.out.println("INFO: carta inserita "+ game.getPlayerBookshelf(turnManager.getCurrentPlayer())[5][0].getCard().getType().toString());
             }
-            else viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), true); //invia riscontro negativo
 
+            //TODO: Richiedere colonna valida
+            else viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), true); //invia riscontro negativo
 
             endTurn();
 
@@ -146,7 +144,7 @@ public class GameController {
         viewHashMap.get(turnManager.getCurrentPlayer()).showRemovedCards(coordinates);
 
         //invio aggiornamento board a tutti i player nel caso in cui la board venga riempita
-        if(game.checkRefill()) broadcastMessage(MessageType.BOARD_REFILL);
+        if(game.checkRefill()) broadcastMessage(MessageType.BOARD_REFILL_UPDATE);
 
         //Check if the current player has achieved anyone of the common goals
         game.scoreCommonGoal(turnManager.getCurrentPlayer());
@@ -157,7 +155,7 @@ public class GameController {
         //Nella chiamata di nextTurn() avviene effettivamente il cambiamento del turno del giocatore (nel caso non sia l'ultimo)
         if(!turnManager.nextTurn()) findWinner();
 
-        broadcastMessage(MessageType.CURRENT_PLAYER);
+        broadcastMessage(MessageType.CURRENT_PLAYER_UPDATE);
     }
 
     /**
@@ -165,10 +163,8 @@ public class GameController {
      */
     public void findWinner(){
         game.scorePrivateGoal();
-        ArrayList<Player> scoreboard = game.orderByScore(); //estrarre giocatori partendo dal termine della lista
-
-        //TODO: creation of the scoreboard based on the calculated scores for each one of the players
-
+        HashMap<String, Integer> scoreboard = game.orderByScore();
+        broadcastMessage(MessageType.SCOREBOARD, scoreboard);
     }
     //endregion
 

@@ -1,9 +1,8 @@
 package it.polimi.ingsw.observer;
 
-import java.util.ArrayList;
-
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.MessageType;
+
+import java.util.ArrayList;
 
 //Subject maintains a list of its observers and notifies them of any state changes
 public abstract class Subject {

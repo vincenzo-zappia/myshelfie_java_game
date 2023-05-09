@@ -8,8 +8,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.*;
-import it.polimi.ingsw.network.messages.client2server.CreateLobbyMessage;
-import it.polimi.ingsw.network.messages.client2server.JoinLobbyMessage;
+import it.polimi.ingsw.network.messages.client2server.JoinLobbyRequest;
 import it.polimi.ingsw.network.messages.server2client.*;
 
 import java.io.IOException;
@@ -93,15 +92,15 @@ public class ClientHandler implements Runnable{
         Message msg = receiveMessage();
 
         switch (msg.getType()){
-            case JOIN_LOBBY -> {
-                JoinLobbyMessage joinLobbyMessage = (JoinLobbyMessage) msg;
-                if (server.existsLobby(joinLobbyMessage.getLobbyId())) this.lobby = server.getLobby(joinLobbyMessage.getLobbyId());
+            case JOIN_LOBBY_REQUEST -> {
+                JoinLobbyRequest joinLobbyRequest = (JoinLobbyRequest) msg;
+                if (server.existsLobby(joinLobbyRequest.getLobbyId())) this.lobby = server.getLobby(joinLobbyRequest.getLobbyId());
                 lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this));
                 sendMessage(new LobbyAccessResponse(true));
                 System.out.println("INFO: Messaggio di conferma creazione inviato.");
-                lobby.sendLobbyMessage(new NewConnectionMessage(lobby.getPlayerUsernames()));
+                lobby.sendLobbyMessage(new NewConnectionUpdate(lobby.getPlayerUsernames()));
             }
-            case CREATE_LOBBY -> {
+            case CREATE_LOBBY_REQUEST -> {
                 this.lobby = server.createLobby();
                 lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this));
                 sendMessage(new LobbyCreationResponse(lobby.getLobbyId()));
@@ -121,7 +120,7 @@ public class ClientHandler implements Runnable{
      */
     private void startGameHandler() {
         Message msg = receiveMessage();
-        if (msg.getType() == MessageType.START_GAME){
+        if (msg.getType() == MessageType.START_GAME_REQUEST){
             lobby.startGame();
         }
         else {
