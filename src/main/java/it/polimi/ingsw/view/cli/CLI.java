@@ -232,7 +232,7 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void showScoreboard(HashMap<String, Integer> scoreboard) {
-        
+
     }
 
     @Override

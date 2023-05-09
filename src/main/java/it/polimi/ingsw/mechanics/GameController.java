@@ -96,10 +96,8 @@ public class GameController {
             //Invio riscontro positivo al client (questo abilita lato client a effettuare inserzione)
             viewHashMap.get(message.getUsername()).sendResponse(true, MessageType.SELECTION_RESPONSE);
 
+            //Saving the coordinate of the removed cards to send them in broadcast at the end of the turn
             coordinates = message.getCoordinates();
-
-            //Invio a tutti i client la posizonie delle carete da rimuovere
-            broadcastMessage(MessageType.CARD_REMOVE_UPDATE, (Object) message.getCoordinates());
         }
 
         //Invio riscontro negativo al client
@@ -141,7 +139,8 @@ public class GameController {
      */
     private void endTurn(){
         //TODO: è possibile che le stesse coordinate vengano inviate due volte
-        viewHashMap.get(turnManager.getCurrentPlayer()).showRemovedCards(coordinates);
+        //Invio a tutti i client la posizonie delle carete da rimuovere
+        broadcastMessage(MessageType.CARD_REMOVE_UPDATE, (Object) coordinates);
 
         //invio aggiornamento board a tutti i player nel caso in cui la board venga riempita
         if(game.checkRefill()) broadcastMessage(MessageType.BOARD_REFILL_UPDATE);
@@ -164,7 +163,7 @@ public class GameController {
     public void findWinner(){
         game.scorePrivateGoal();
         HashMap<String, Integer> scoreboard = game.orderByScore();
-        broadcastMessage(MessageType.SCOREBOARD, scoreboard);
+        broadcastMessage(MessageType.SCOREBOARD, (Object) scoreboard);
     }
     //endregion
 
