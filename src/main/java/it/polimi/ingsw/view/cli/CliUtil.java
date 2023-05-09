@@ -116,8 +116,8 @@ public class CliUtil {
     public static char[][] bookshelfConverter(Cell[][] bookshelf) {
         char[][] result = new char[6][5];
 
-        for(int i = 0; i<bookshelf.length; i++){
-            for(int j=0; j<bookshelf[0].length; j++){
+        for(int i = 0; i<6; i++){
+            for(int j=0; j<5; j++){
                 if (!bookshelf[i][j].isCellEmpty()){
                     result[i][j] = getTypeCharacter(bookshelf[i][j].getCard().getType());
                 }
@@ -236,11 +236,11 @@ public class CliUtil {
 
     public static String makeBookshelf(char[][] matrix) {
         String bookshelf = ColorCode.BROWN.getCode() + getHeader(5);
-        for(int i=0; i<matrix[0].length-1; i++){
+        for(int i=0; i<matrix[0].length; i++){
             bookshelf += getRowContent(matrix[i])+
                     getIntermediate(5);
         }
-        bookshelf += getRowContent(matrix[matrix[0].length-1]) + getFooter(5);
+        bookshelf += getRowContent(matrix[matrix[0].length]) + getFooter(5);
         return bookshelf;
     }
 

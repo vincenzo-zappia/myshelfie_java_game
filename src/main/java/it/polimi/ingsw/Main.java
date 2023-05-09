@@ -5,15 +5,21 @@ import it.polimi.ingsw.view.cli.CLI;
 
 import java.util.Scanner;
 
+import static java.lang.System.exit;
+
 public class Main {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        System.out.println("Cosa vuoi avvire?");
+        System.out.println("Select user interface?");
         System.out.println("[0] CLI");
-        int selezione = Integer.parseInt(in.nextLine());
+        String selezione = in.nextLine();
         Client client = new Client("localhost", 2023);
         CLI cli = new CLI(client);
-        if (selezione==0) new Thread(cli).start();
+        if (selezione.equals("0")) new Thread(cli).start();
+        else{
+            System.out.println("Incorrect selection!");
+            exit(0);
+        }
     }
 
     private boolean gh(){

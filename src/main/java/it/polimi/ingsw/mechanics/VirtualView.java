@@ -13,6 +13,8 @@ import it.polimi.ingsw.view.View;
  */
 public class VirtualView implements View, Observer {
     private final ClientHandler clientHandler;
+    private int[][] coordinates;
+    private boolean updated = false;
 
     public VirtualView(ClientHandler clientHandler){
         this.clientHandler = clientHandler;
@@ -25,7 +27,12 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void showRemovedCards(int[][] coordinates){
-        clientHandler.sendMessage(new CardRemovalMessage(coordinates));
+        this.coordinates = coordinates;
+        updated = true;
+    }
+    public void sendRemovalMessage(){
+        if(updated) clientHandler.sendMessage(new CardRemovalMessage(coordinates));
+        updated = false;
     }
 
     @Override

@@ -63,9 +63,14 @@ public class CLI implements Runnable, UserInterface {
 
                 //Show command to prompt the printing of either the board or the bookshelf of the player
                 case "show" -> {
-                    if(splitted[1].equals("board")) showBoard();
-                    else if(splitted[1].equals("bookshelf")) showBookshelf();
-                    else System.out.println("comando non corretto"); //TODO: cambiare;
+                    switch (splitted[1]){
+                        case "board" -> showBoard();
+                        case "bookshelf" -> showBookshelf();
+                        case "commongoals" -> {}
+                        case "privategoal" -> {}
+
+                        default -> System.out.println(CliUtil.makeErrorMessage("Error")); //TOTO: cambiare il messaggio
+                    }
                 }
 
                 //Help command for syntax aid
@@ -84,7 +89,7 @@ public class CLI implements Runnable, UserInterface {
      * Prompts the creation of either a lobby creation command or a lobby access request based on the user input
      */
     private void connection(){
-        int choice = requestLobby();
+        int choice = Integer.parseInt(requestLobby());
         String username = requestUsername();
 
         if(choice == 0){
@@ -97,7 +102,7 @@ public class CLI implements Runnable, UserInterface {
         }
         else if(choice == 1){
             System.out.println("Enter lobby id:");
-            int id = Integer.parseInt(scanner.nextLine());
+            int id = Integer.parseInt(scanner.nextLine()); //TODO: mettere controllo se intero
             controller.joinLobby(username, id);
         }
     }
@@ -135,14 +140,14 @@ public class CLI implements Runnable, UserInterface {
      * The client interface asks the player if he wants to create a new lobby and, if he doesn't,
      * the ID of the lobby he wants to join
      */
-    private int requestLobby() {
-        int selection;
+    private String requestLobby() {
+        String selection;
         do {
             System.out.println("[0] Create new lobby");
             System.out.println("[1] Join existing lobby");
-            selection = Integer.parseInt(scanner.nextLine());
-            if(selection != 0 && selection != 1) System.out.println(CliUtil.makeErrorMessage("Enter valid number."));
-        }while (selection != 0 && selection != 1);
+            selection = scanner.nextLine();
+            if(!selection.equals("0") && !selection.equals("1")) System.out.println(CliUtil.makeErrorMessage("Enter valid number."));
+        }while (selection.equals("0") && selection.equals("1"));
         return selection;
     }
 
@@ -192,9 +197,9 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void refreshBoard(int[][] coordinates) {
-        for(int i=0; i<coordinates.length; i++){
-            int row = coordinates[i][0];
-            int column = coordinates[i][1];
+        for (int[] coordinate : coordinates) {
+            int row = coordinate[0];
+            int column = coordinate[1];
             board[row][column].setCellEmpty();
         }
         showBoard();

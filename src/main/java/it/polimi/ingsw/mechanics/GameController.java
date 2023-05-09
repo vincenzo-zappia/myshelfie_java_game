@@ -32,6 +32,7 @@ public class GameController {
         this.game = game;
         this.viewHashMap = viewHashMap;
         broadcastMessage(MessageType.BOARD_REFILL);
+        broadcastMessage(MessageType.CURRENT_PLAYER);
     }
     //endregion
 
@@ -87,6 +88,7 @@ public class GameController {
      */
     public synchronized void cardSelection(SelectionMessage message){
         System.out.println("INFO: entrato in selection");
+
         if(game.isSelectable(message.getCoordinates())) {
             game.removeCardFromBoard(message.getCoordinates()); //Removal of the selected cards form the game board
 
@@ -137,6 +139,8 @@ public class GameController {
      * the condition for the actual end of the game is reached.
      */
     private void endTurn(){
+        viewHashMap.get(turnManager.getCurrentPlayer()).sendRemovalMessage();
+
         //invio aggiornamento board a tutti i player nel caso in cui la board venga riempita
         if(game.checkRefill()) broadcastMessage(MessageType.BOARD_REFILL);
 
