@@ -20,6 +20,8 @@ public interface UserInterface extends View {
 
     void showError(String content);
 
+    void refreshBoard(int[][] coordinates);
+
     /**
      * The client interface asks the player to select the cards
      */

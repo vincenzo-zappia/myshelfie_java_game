@@ -37,7 +37,7 @@ public class Cell implements Serializable {
         empty=true;
     }
     public boolean isCellEmpty(){
-        return empty;
+        return empty /*|| card == null*/;
     }
     //endregion
 

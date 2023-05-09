@@ -13,4 +13,8 @@ public class CardRemovalMessage extends Message {
         super("server", MessageType.CARD_REMOVAL);
         this.coordinates = coordinates;
     }
+
+    public int[][] getCoordinates() {
+        return coordinates;
+    }
 }

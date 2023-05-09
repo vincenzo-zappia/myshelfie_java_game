@@ -102,6 +102,9 @@ public class Bookshelf {
     //endregion
 
     //region GETTER AND SETTER
+    public Cell[][] getMatrix(){
+        return bookshelf;
+    }
     public Cell getCell(int row, int column){
         return bookshelf[row][column];
     }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.entities.Board;
+import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
@@ -26,11 +27,7 @@ public class CLI implements Runnable, UserInterface {
         scanner = new Scanner(System.in);
         controller = new ClientController(this, client);
         bookshelf = new Cell[6][5];
-        for (int i = 0; i < bookshelf.length; i++) {
-            for (int j = 0; j < bookshelf[i].length; j++) {
-                bookshelf[i][j] = new Cell();
-            }
-        }
+        for(int i=0; i<6;i++) for(int j=0; j<5; j++) bookshelf[i][j] = new Cell();
     }
 
     @Override
@@ -46,7 +43,7 @@ public class CLI implements Runnable, UserInterface {
 
             switch (splitted[0]){
 
-                //Card selection command eg: "select (x;y)"
+                //Card selection command eg: "select (x;y),(x;y),(x,y)"
                 case "select" -> {
                     String[] coordinate = splitted[1].split(",");
                     int[][] coordinates = new int[coordinate.length][2];
@@ -59,8 +56,8 @@ public class CLI implements Runnable, UserInterface {
 
                 //Card insertion command (bookshelf column n) eg: "insert n" //TODO: La scelta dell'ordine delle carte?
                 case "insert" -> {
-                    ArrayList<Card> cards = new ArrayList<Card>();
-                    for(int i=0; i<selection.length; i++) cards.add(board[selection[i][0]][selection[i][0]].getCard());
+                    ArrayList<Card> cards = new ArrayList<>();
+                    for (int[] ints : selection) cards.add(board[ints[0]][ints[1]].getCard());
                     controller.sendInsertion(cards, Integer.parseInt(splitted[1]));
                 }
 
@@ -72,9 +69,11 @@ public class CLI implements Runnable, UserInterface {
                 }
 
                 //Help command for syntax aid
-                case "help" -> {}
+                case "help" -> {
+                    System.out.println("lista comandi");
+                }
 
-                case "" -> {}
+                default -> System.out.println(CliUtil.makeErrorMessage("Comando non corretto, scrivi help per la lista comandi")); //TODO: tradurre
             }
         }
 
@@ -181,7 +180,6 @@ public class CLI implements Runnable, UserInterface {
                 System.out.println(CliUtil.makeConfirmationMessage("Selezione valida!"));
             }
             case INSERTION_RESPONSE -> {
-                String ins = Arrays.toString(selection);
                 System.out.println(CliUtil.makeConfirmationMessage("Inserimento avvenuto con successo!"));
             }
         }
@@ -190,6 +188,16 @@ public class CLI implements Runnable, UserInterface {
     @Override
     public void showError(String content) {
         System.out.println(CliUtil.makeErrorMessage(content));
+    }
+
+    @Override
+    public void refreshBoard(int[][] coordinates) {
+        for(int i=0; i<coordinates.length; i++){
+            int row = coordinates[i][0];
+            int column = coordinates[i][1];
+            board[row][column].setCellEmpty();
+        }
+        showBoard();
     }
 
     @Override
@@ -223,6 +231,12 @@ public class CLI implements Runnable, UserInterface {
     @Override
     public void sendResponse(boolean response, MessageType responseType) {
 
+    }
+
+    @Override
+    public void sendInsertionResponse(Cell[][] bookshelf, boolean response) {
+        this.bookshelf = bookshelf;
+        showBookshelf();
     }
 
     @Override

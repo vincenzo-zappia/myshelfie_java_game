@@ -7,7 +7,6 @@ import it.polimi.ingsw.network.messages.client2server.InsertionMessage;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.client2server.SelectionMessage;
-import it.polimi.ingsw.network.messages.server2client.CurrentPlayerMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,16 +116,17 @@ public class GameController {
             if(game.addCardToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards())){
             System.out.println("INFO: Carte inserite nella colonna " + message.getSelectedColumn());
                 //Invio riscontro positivo al client
-                viewHashMap.get(message.getUsername()).sendResponse(true, MessageType.INSERTION_RESPONSE);
+                viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), true);
+                System.out.println("INFO: carta inserita "+ game.getPlayerBookshelf(turnManager.getCurrentPlayer())[5][0].getCard().getType().toString());
             }
-            else viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.INSERTION_RESPONSE); //invia riscontro negativo
+            else viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), true); //invia riscontro negativo
 
 
             endTurn();
 
         } catch (AddCardException e) {
             //Invio riscontro negativo al client
-            viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.INSERTION_RESPONSE);
+            viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), true);
             throw new RuntimeException(e);
         }
     }

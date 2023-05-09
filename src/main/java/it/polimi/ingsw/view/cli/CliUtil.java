@@ -60,7 +60,78 @@ enum AsciiTool {
 
 public class CliUtil {
 
-    private static String getRowContent(Character[] row) {
+    //region CONVERSION PRIVATE METHOD
+
+    private static char getTypeCharacter(CardType type) {
+
+        switch (type) {
+            case FRAMES -> {
+                return 'F';
+            }
+            case CATS -> {
+                return 'C';
+            }
+            case BOOKS -> {
+                return 'B';
+            }
+            case GAMES -> {
+                return 'G';
+            }
+            case PLANTS -> {
+                return 'P';
+            }
+            case TROPHIES -> {
+                return 'T';
+            }
+            default -> {
+                return ' ';
+            }
+        }
+    }
+
+    public static char[][] boardConverter(BoardCell[][] tmp) {
+
+        char[][] result = new char[][]{
+                {'u', 'u', 'u', ' ', ' ', 'u', 'u', 'u', 'u'},
+                {'u', 'u', 'u', ' ', ' ', ' ', 'u', 'u', 'u'},
+                {'u', 'u', ' ', ' ', ' ', ' ', ' ', 'u', 'u'},
+                {'u', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'u'},
+                {'u', 'u', ' ', ' ', ' ', ' ', ' ', 'u', 'u'},
+                {'u', 'u', 'u', ' ', ' ', ' ', 'u', 'u', 'u'},
+                {'u', 'u', 'u', 'u', ' ', ' ', 'u', 'u', 'u'}
+        };
+
+        for (int i = 0; i<9;i++){
+            for(int j = 0; j<9; j++){
+                if(tmp[i][j].isCellActive() && !tmp[i][j].isCellEmpty()){
+                    result[i][j] = getTypeCharacter(tmp[i][j].getCard().getType());
+                }
+            }
+        }
+        return result;
+    }
+
+    public static char[][] bookshelfConverter(Cell[][] bookshelf) {
+        char[][] result = new char[6][5];
+
+        for(int i = 0; i<bookshelf.length; i++){
+            for(int j=0; j<bookshelf[0].length; j++){
+                if (!bookshelf[i][j].isCellEmpty()){
+                    result[i][j] = getTypeCharacter(bookshelf[i][j].getCard().getType());
+                }
+                else result[i][j] = ' ';
+            }
+        }
+        return result;
+    }
+
+    //endregion
+
+    //region UTILITY METHOD
+
+    private static String getRowContent(char[] row) {
         StringBuilder rowContent = new StringBuilder();
         rowContent.append(AsciiTool.L_CONTENT.getSymbol());
         for (int i=0; i<row.length; i++){
@@ -87,6 +158,10 @@ public class CliUtil {
         return AsciiTool.LB_CORNER.getSymbol() + AsciiTool.BT.getSymbol().repeat(length) + AsciiTool.RB_CORNER.getSymbol();
     }
 
+    //endregion
+
+
+
     public static String makeLegend() {
         String line1 = ColorCode.GREEN.getCode() + AsciiTool.DOT.getSymbol() + "C: Cat\t\t" + ColorCode.WHITE.getCode() + AsciiTool.DOT.getSymbol() + "B: Books\n";
         String line2 = ColorCode.ORANGE.getCode() + AsciiTool.DOT.getSymbol() + "G: Game\t\t" + ColorCode.BLUE.getCode() + AsciiTool.DOT.getSymbol() + "F: Frames\n";
@@ -97,7 +172,7 @@ public class CliUtil {
 
 
     //TODO: funziona, ma da revisionare
-    public static String makeBoard(Character[][] matrix) {
+    public static String makeBoard(char[][] matrix) {
 
         return ColorCode.GREEN.getCode() +
                 AsciiTool.SPACES.getSymbol().repeat(3) +
@@ -159,7 +234,7 @@ public class CliUtil {
         return partial;
     }
 
-    public static String makeBookshelf(Character[][] matrix) {
+    public static String makeBookshelf(char[][] matrix) {
         String bookshelf = ColorCode.BROWN.getCode() + getHeader(5);
         for(int i=0; i<matrix[0].length-1; i++){
             bookshelf += getRowContent(matrix[i])+
@@ -167,102 +242,6 @@ public class CliUtil {
         }
         bookshelf += getRowContent(matrix[matrix[0].length-1]) + getFooter(5);
         return bookshelf;
-    }
-
-    private static Character getTypeCharacter(CardType type) {
-
-        switch (type) {
-            case FRAMES -> {
-                return 'F';
-            }
-            case CATS -> {
-                return 'C';
-            }
-            case BOOKS -> {
-                return 'B';
-            }
-            case GAMES -> {
-                return 'G';
-            }
-            case PLANTS -> {
-                return 'P';
-            }
-            case TROPHIES -> {
-                return 'T';
-            }
-            default -> {
-                return null;
-            }
-        }
-    }
-
-    public static Character[][] boardConverter(BoardCell[][] tmp) {
-
-        Character result[][] = new Character[][]{
-                {'u', 'u', 'u', ' ', ' ', 'u', 'u', 'u', 'u'},
-                {'u', 'u', 'u', ' ', ' ', ' ', 'u', 'u', 'u'},
-                {'u', 'u', ' ', ' ', ' ', ' ', ' ', 'u', 'u'},
-                {'u', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'u'},
-                {'u', 'u', ' ', ' ', ' ', ' ', ' ', 'u', 'u'},
-                {'u', 'u', 'u', ' ', ' ', ' ', 'u', 'u', 'u'},
-                {'u', 'u', 'u', 'u', ' ', ' ', 'u', 'u', 'u'}
-        };
-
-        for (int i = 0; i<9;i++){
-            for(int j = 0; j<9; j++){
-                if(tmp[i][j].isCellActive() && !tmp[i][j].isCellEmpty()){
-                    result[i][j] = getTypeCharacter(tmp[i][j].getCard().getType());
-                }
-            }
-        }
-        return result;
-    }
-
-    public static Character[][] bookshelfConverter(Cell[][] bookshelf) {
-        Character[][] result = new Character[6][5];
-        for(int i = 0; i<bookshelf.length; i++){
-            for(int j=0; j<bookshelf[0].length; j++){
-                if (!bookshelf[i][j].isCellEmpty()){
-                    result[i][j] = getTypeCharacter(bookshelf[i][j].getCard().getType());
-                }
-                else result[i][j] = ' ';
-            }
-        }
-        return result;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(makeTitle("Livingroom"));
-        Character[][] matrix;
-        matrix = new Character[][]{
-                {'u', 'u', 'u', 't', 't', 'u', 'u', 'u', 'u'},
-                {'u', 'u', 'u', 't', 't', 't', 'u', 'u', 'u'},
-                {'u', 'u', 't', 't', 't', 't', 't', 'u', 'u'},
-                {'u', 't', 't', 't', 't', 't', 't', 't', 't'},
-                {'t', 't', 't', 't', 't', 't', 't', 't', 't'},
-                {'t', 't', 't', 't', 't', 't', 't', 't', 'u'},
-                {'u', 'u', 't', 't', 't', 't', 't', 'u', 'u'},
-                {'u', 'u', 'u', 't', 't', 't', 'u', 'u', 'u'},
-                {'u', 'u', 'u', 'u', 't', 't', 'u', 'u', 'u'}
-        };
-        System.out.println(makeBoard(matrix));
-        System.out.println(makeLegend());
-
-        System.out.println(makeTitle("Bookshelf"));
-        Character[][] matrix2;
-        matrix2 = new Character[][]{
-                {'t', 't', 't', 't', 't'},
-                {'t', 't', 't', 't', 't'},
-                {'t', 't', 't', 't', 't'},
-                {'t', 't', 't', 't', 't'},
-                {'t', 't', 't', 't', 't'},
-                {'t', 't', 't', 't', 't'}
-        };
-        System.out.println(makeBookshelf(matrix2));
-
-        System.out.println(CliUtil.makeErrorMessage("Enter valid number."));
     }
 
     public static String makeTitle(String title) {
@@ -279,15 +258,15 @@ public class CliUtil {
                 "|"+ delimiterLeft + " " + title + " " + delimiterRight + "|\n" +
                 "-".repeat(55) + "\n");
 
-        return res;
+        return res + ColorCode.DEFAULT.getCode();
     }
 
     public static String makeErrorMessage(String message){
-        return ColorCode.RED.getCode() + AsciiTool.X.getSymbol() + message;
+        return ColorCode.RED.getCode() + AsciiTool.X.getSymbol() + message + ColorCode.DEFAULT.getCode();
     }
 
     public static String makeConfirmationMessage(String message){
-        return ColorCode.GREEN.getCode() + AsciiTool.V.getSymbol() + " " + message;
+        return ColorCode.GREEN.getCode() + AsciiTool.V.getSymbol() + " " + message + ColorCode.DEFAULT.getCode();
     }
 
 }

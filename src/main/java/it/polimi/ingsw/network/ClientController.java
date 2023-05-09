@@ -16,6 +16,7 @@ import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 //TODO: Per l'impacchettamento messaggi serve implementare un nuovo tipo di Observer che cambia i parametri di implementazione update
 public class ClientController implements Observer {
@@ -73,8 +74,10 @@ public class ClientController implements Observer {
                 if(response.getResponse()) view.showConfirmation(MessageType.SELECTION_RESPONSE);
             }
             case INSERTION_RESPONSE -> {
-                ResponseMessage response = (ResponseMessage) message;
-                if(response.getResponse()) view.showConfirmation(MessageType.INSERTION_RESPONSE);
+                InsertionResponseMessage response = (InsertionResponseMessage) message;
+                System.out.println("INFO: " + response.getBookshelf().length + " " + response.getBookshelf()[0].length);
+                System.out.println("INFO "+ Arrays.toString(response.getBookshelf()[5]));
+                if(response.getResponse()) view.sendInsertionResponse(response.getBookshelf(), true);
             }
             case BOARD_REFILL -> {
                 BoardRefillUpdate boardUpdate = (BoardRefillUpdate) message;
@@ -83,6 +86,10 @@ public class ClientController implements Observer {
             case ERROR_MESSAGE -> {
                 ErrorMessage error = (ErrorMessage) message;
                 view.showError(error.getContent());
+            }
+            case CARD_REMOVAL -> {
+                CardRemovalMessage remove = (CardRemovalMessage) message;
+                view.refreshBoard(remove.getCoordinates());
             }
 
         }

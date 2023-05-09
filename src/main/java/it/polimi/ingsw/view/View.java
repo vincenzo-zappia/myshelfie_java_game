@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.BoardCell;
+import it.polimi.ingsw.util.Cell;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,8 @@ public interface View {
      * @param responseType type of the command
      */
     void sendResponse(boolean response, MessageType responseType);
+
+    void sendInsertionResponse(Cell[][] bookshelf, boolean response);
 
     /**
      * Gives a generic negative feedback to any type of command sent by the player that is not playing

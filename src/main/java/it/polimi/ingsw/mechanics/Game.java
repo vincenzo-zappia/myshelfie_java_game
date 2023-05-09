@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import it.polimi.ingsw.entities.goals.*;
+import it.polimi.ingsw.util.Cell;
 
 public class Game{
 
@@ -28,7 +29,7 @@ public class Game{
     private final Board board;
     private final HashMap<String, Player> players;
     private final ArrayList<Goal> commonGoals;
-    private CommonGoal0 commonGoal0;
+    private final CommonGoal0 commonGoal0;
     //endregion
 
     //region CONSTRUCTOR
@@ -53,7 +54,10 @@ public class Game{
 
     //region METHODS
 
-    //TODO: in questo modo il giocatore deve inviare la selezione e aspettare che venga valutata, bisognerebbe implementare con feedback in tempo reale
+    public Cell[][] getPlayerBookshelf(String username){
+        return players.get(username).getBookshelf().getMatrix();
+    }
+
     /**
      * Checks if the selected cards are actually selectable
      * @param coord coordinates of the selected cards
@@ -110,8 +114,10 @@ public class Game{
      */
     public boolean addCardToBookshelf(String playerUsername, int column, ArrayList<Card> cards) {
         //now the method check if the arraylist contains a player with username == playerUsername
-        if(column <0 || column>5) return false;
+        //TODO: controlli da spostare sul controller e rendere il metodo void
+        if(column <0 || column>=5) return false;
         if(!players.get(playerUsername).getBookshelf().getCell(cards.size(), column).isCellEmpty()) return false;
+
         for(Card c : cards) players.get(playerUsername).addCardToBookshelf(column, c);
         return true;
     }
@@ -165,11 +171,7 @@ public class Game{
 
     //metodo forwarding
     public boolean isPlayerBookshelfFull(String username){
-        boolean full = false;
-        for(Player p : players.values()){
-            if(p.getUsername().equals(username)) full = p.isBookshelfFull();
-        }
-        return full;
+        return players.get(username).isBookshelfFull();
     }
 
     //endregion
