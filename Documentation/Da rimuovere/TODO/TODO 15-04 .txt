@@ -1,8 +1,0 @@
-1. Una o due classi che gestiscono l'iterazione tra istanze di gioco? Ovvero, l'estrazione dei parametri per le mosse dall'XML lo fa una classe a parte o lo stesso GameController che gestisce i turni e la dinamica di gioco?
-
-2. Gestione turni: metodi gestione turni si chiamano a vicenda finché il flag endGame = true, il "ciclo" viene rotto e viene chiamato metodo findWinner.
-
-3. Metodo in Game che crea un ArrayList ordinato di player in base allo score in ordine decrescente. findWinner() chiama quel metodo e printa per ogni player dell'ArrayList lo username + score.
-
-4. Metodo in Game che attesta validità della selezione. Per il momento isSelectable(int[][] coordinates) ma sarebbe più opportuno feedback a singola selezione (ad esempio un metodo che valuta secondo la scelta precedente la validità della successiva per 3 volte).
-
