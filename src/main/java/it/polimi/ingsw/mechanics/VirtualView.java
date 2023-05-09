@@ -8,6 +8,8 @@ import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.util.Cell;
 import it.polimi.ingsw.view.View;
 
+import java.util.HashMap;
+
 /**
  * Class that manages the creation of messages server -> client. Used by Lobby, GameController
  */
@@ -25,7 +27,7 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void showRemovedCards(int[][] coordinates){
-        clientHandler.sendMessage(new CardRemovalMessage(coordinates));
+        clientHandler.sendMessage(new CardRemoveUpdate(coordinates));
     }
 
     @Override
@@ -35,9 +37,13 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void showCurrentPlayer(String currentPlayer) {
-        clientHandler.sendMessage(new GenericMessage(MessageType.CURRENT_PLAYER, currentPlayer));
+        clientHandler.sendMessage(new GenericMessage(MessageType.CURRENT_PLAYER_UPDATE, currentPlayer));
     }
 
+    @Override
+    public void showScoreboard(HashMap<String, Integer> scoreboard){
+        clientHandler.sendMessage(new ScoreboardMessage(scoreboard));
+    }
     @Override
     public void sendResponse(boolean response, MessageType responseType) {
         clientHandler.sendMessage(new ResponseMessage(responseType, response));

@@ -160,12 +160,14 @@ public class Game{
     }
 
     /**
-     * Method that order players by increasing point
+     * Method that orders players by increasing point
      * @return the ordered list of players
      */
-    public ArrayList<Player> orderByScore(){
-        ArrayList<Player> ordered = new ArrayList<>(players.values());
-        Collections.sort(ordered);
+    public HashMap<String, Integer> orderByScore(){
+        HashMap<String, Integer> ordered = new HashMap<>();
+        for(String username : players.keySet()) ordered.put(username, players.get(username).getScore());
+
+        //TODO: Effettivamente ordinarli
         return ordered;
     }
 

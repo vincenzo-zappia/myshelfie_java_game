@@ -2,31 +2,31 @@ package it.polimi.ingsw.network.messages;
 
 public enum MessageType {
 
-    //LOBBY
-    //client2server
-    JOIN_LOBBY,
-    CREATE_LOBBY,
+    //region CLIENT2SERVER
+    JOIN_LOBBY_REQUEST,
+    CREATE_LOBBY_REQUEST,
+    START_GAME_REQUEST,
+    SELECTION_REQUEST,
+    INSERTION_REQUEST,
+    //endregion
 
-    //server2client
+    //region SERVER2CLIENT
     LOBBY_ACCESS_RESPONSE,
     LOBBY_CREATION_RESPONSE,
-
-    //GAME LOGIC
-    //client2server
-    START_GAME,
-    SELECTION_MESSAGE,
-    INSERTION_MESSAGE,
-
-    //server2client
-    GAME_START,
-    NEW_CONNECTION,
-    NOT_YOUR_TURN,
+    START_GAME_RESPONSE,
     SELECTION_RESPONSE,
     INSERTION_RESPONSE,
-    CARD_REMOVAL,
-    BOARD_REFILL,
-    CURRENT_PLAYER,
+
+    CARD_REMOVE_UPDATE,
+    BOARD_REFILL_UPDATE,
+    CURRENT_PLAYER_UPDATE,
+    NEW_CONNECTION_UPDATE,
+
+    NOT_YOUR_TURN,
     ERROR_MESSAGE,
+    SCOREBOARD,
     END_GAME;
+    //endregion
+
 
 }

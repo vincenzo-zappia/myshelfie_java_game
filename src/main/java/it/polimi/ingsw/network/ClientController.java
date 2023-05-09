@@ -2,11 +2,11 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.network.messages.client2server.CreateLobbyMessage;
-import it.polimi.ingsw.network.messages.client2server.InsertionMessage;
-import it.polimi.ingsw.network.messages.client2server.JoinLobbyMessage;
-import it.polimi.ingsw.network.messages.client2server.SelectionMessage;
-import it.polimi.ingsw.network.messages.client2server.StartGame;
+import it.polimi.ingsw.network.messages.client2server.CreateLobbyRequest;
+import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
+import it.polimi.ingsw.network.messages.client2server.JoinLobbyRequest;
+import it.polimi.ingsw.network.messages.client2server.SelectionRequest;
+import it.polimi.ingsw.network.messages.client2server.StartGameRequest;
 import it.polimi.ingsw.network.messages.server2client.*;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.observer.Observer;
@@ -52,14 +52,14 @@ public class ClientController implements Observer {
                 LobbyAccessResponse access = (LobbyAccessResponse) message;
                 view.showSuccessfulConnection(lobbyId);
             }
-            case NEW_CONNECTION -> {
-                NewConnectionMessage connectionMessage = (NewConnectionMessage) message;
+            case NEW_CONNECTION_UPDATE -> {
+                NewConnectionUpdate connectionMessage = (NewConnectionUpdate) message;
                 view.refreshConnectedPlayers(connectionMessage.getUsernameList());
             }
-            case GAME_START -> {
-                view.showConfirmation(MessageType.GAME_START);
+            case START_GAME_RESPONSE -> {
+                view.showConfirmation(MessageType.START_GAME_RESPONSE);
             }
-            case CURRENT_PLAYER -> {
+            case CURRENT_PLAYER_UPDATE -> {
                 view.showCurrentPlayer(message.getContent());
             }
             case SELECTION_RESPONSE -> {
@@ -72,7 +72,7 @@ public class ClientController implements Observer {
                 System.out.println("INFO "+ Arrays.toString(response.getBookshelf()[5]));
                 if(response.getResponse()) view.sendInsertionResponse(response.getBookshelf(), true);
             }
-            case BOARD_REFILL -> {
+            case BOARD_REFILL_UPDATE -> {
                 BoardRefillUpdate boardUpdate = (BoardRefillUpdate) message;
                 view.showRefilledBoard(boardUpdate.getBoardCells());
             }
@@ -80,8 +80,8 @@ public class ClientController implements Observer {
                 ErrorMessage error = (ErrorMessage) message;
                 view.showError(error.getContent());
             }
-            case CARD_REMOVAL -> {
-                CardRemovalMessage remove = (CardRemovalMessage) message;
+            case CARD_REMOVE_UPDATE -> {
+                CardRemoveUpdate remove = (CardRemoveUpdate) message;
                 view.refreshBoard(remove.getCoordinates());
             }
 
@@ -95,7 +95,7 @@ public class ClientController implements Observer {
      * @param username of the player who creates the lobby (he will be the couch aka the game master)(?)
      */
     public void createLobby(String username){
-        Message create = new CreateLobbyMessage(username);
+        Message create = new CreateLobbyRequest(username);
         this.username = username;
         client.sendMessage(create);
     }
@@ -106,7 +106,7 @@ public class ClientController implements Observer {
      * @param lobbyId identification number of the lobby that the player wants to join
      */
     public void joinLobby(String username, int lobbyId){
-        Message join = new JoinLobbyMessage(username, lobbyId);
+        Message join = new JoinLobbyRequest(username, lobbyId);
         this.lobbyId = lobbyId;
         this.username = username;
         client.sendMessage(join);
@@ -116,7 +116,7 @@ public class ClientController implements Observer {
      * Creates and sends the Message that once received by the server will start the game
      */
     public void startGame(){
-        StartGame start = new StartGame(username);
+        StartGameRequest start = new StartGameRequest(username);
         client.sendMessage(start);
     }
 
@@ -125,8 +125,8 @@ public class ClientController implements Observer {
      * @param coordinates of the cards selected by the user
      */
     public void sendSelection(int[][] coordinates){
-        SelectionMessage selectionMessage = new SelectionMessage(username, coordinates);
-        client.sendMessage(selectionMessage);
+        SelectionRequest selectionRequest = new SelectionRequest(username, coordinates);
+        client.sendMessage(selectionRequest);
     }
 
     //TODO: Metodi impacchettamento messaggi. Outsource con creazione di interfaccia parallela a Observer con diversi tipi di implementazione del metodo update o locale?
@@ -137,7 +137,7 @@ public class ClientController implements Observer {
      * @param column where the selected cards will be inserted
      */
     public void sendInsertion(ArrayList<Card> selected, int column){
-        Message insert = new InsertionMessage(this.username, selected, column);
+        Message insert = new InsertionRequest(this.username, selected, column);
         client.sendMessage(insert);
     }
     //endregion

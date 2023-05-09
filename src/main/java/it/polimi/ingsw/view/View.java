@@ -5,6 +5,7 @@ import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.util.Cell;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Standardization of all the methods that the Server uses to send requests, updates, error messages, etc
@@ -32,6 +33,12 @@ public interface View {
      * @param currentPlayer username of the current player
      */
     void showCurrentPlayer(String currentPlayer);
+
+    /**
+     * Updates all the players with the scoreboard at the end of the game
+     * @param scoreboard endgame scoreboard ordered by points
+     */
+    void showScoreboard(HashMap<String, Integer> scoreboard);
 
     /**
      * Gives feedback to the client about his last command

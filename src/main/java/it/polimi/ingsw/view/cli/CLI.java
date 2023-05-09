@@ -1,7 +1,5 @@
 package it.polimi.ingsw.view.cli;
 
-import it.polimi.ingsw.entities.Board;
-import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
@@ -9,9 +7,7 @@ import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.util.Cell;
 import it.polimi.ingsw.view.UserInterface;
-import it.polimi.ingsw.view.View;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -179,7 +175,7 @@ public class CLI implements Runnable, UserInterface {
     @Override
     public void showConfirmation(MessageType type) {
         switch (type){
-            case GAME_START -> System.out.println(CliUtil.makeConfirmationMessage("Now in game!"));
+            case START_GAME_RESPONSE -> System.out.println(CliUtil.makeConfirmationMessage("Now in game!"));
             case SELECTION_RESPONSE -> {
                 String sel = Arrays.toString(selection);
                 System.out.println(CliUtil.makeConfirmationMessage("Selezione valida!"));
