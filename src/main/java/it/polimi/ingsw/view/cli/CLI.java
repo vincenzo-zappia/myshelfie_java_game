@@ -10,6 +10,7 @@ import it.polimi.ingsw.view.UserInterface;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class CLI implements Runnable, UserInterface {
@@ -227,6 +228,11 @@ public class CLI implements Runnable, UserInterface {
     @Override
     public void showCurrentPlayer(String currentPlayer){
         System.out.println("Current player: " + currentPlayer);
+    }
+
+    @Override
+    public void showScoreboard(HashMap<String, Integer> scoreboard) {
+        
     }
 
     @Override
