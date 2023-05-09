@@ -10,7 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CommonGoal9Test {
+class
+CommonGoal9Test {
     private static Bookshelf bookshelf;
     private static CommonGoal9 cg9;
 

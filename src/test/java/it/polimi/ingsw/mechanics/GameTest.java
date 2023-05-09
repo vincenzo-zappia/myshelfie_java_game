@@ -34,4 +34,25 @@ class GameTest {
         coordinates = new int[][]{{4, 5}, {4, 6}, {4, 7}};
         assertFalse(game.isSelectable(coordinates));
     }
+
+    @Test
+    void removeCardFromBoard() {
+
+    }
+
+    @Test
+    void addCardToBookshelf() {
+    }
+
+    @Test
+    void scoreCommonGoal() {
+    }
+
+    @Test
+    void scorePrivateGoal() {
+    }
+
+    @Test
+    void isPlayerBookshelfFull() {
+    }
 }

@@ -48,8 +48,6 @@ public class Board {
         for(int i = 4; i<=5;i++)matrix[7][i].setCellActive();
     }
 
-    //
-
     /**
      * method that activates the additional board cells that depend on the number of players
      * @param x number of players
@@ -78,7 +76,9 @@ public class Board {
     }
 
     /**
-     * method that fills the board. It's called in two occasions: 1) when the board is created 2) when a player cannot select more than 1 or 2 cards
+     * method that fills the board. It's called in two occasions:
+     *  1) when the board is created
+     *  2) when a player cannot select more than 1 or 2 cards
      */
     public void fillBoard(){
         for(int i = 0; i < 9; i++){
@@ -141,8 +141,6 @@ public class Board {
         }
         return ret.toString();
     }
-
-    //check if a single card is selectable
 
     /**
      * check if a single card is selectable

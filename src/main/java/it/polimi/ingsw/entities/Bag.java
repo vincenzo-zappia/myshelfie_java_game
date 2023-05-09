@@ -14,12 +14,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Bag {
-    //METHOD 2: ARRAY OF ALL POSSIBLE CARDS
 
     //region ATTRIBUTES
     private final ArrayList<Card> bag;
-
-    //TODO: how to manage colors and image. Now thought about as String and integer arrays
     private final String[][] cardImgName = {
             {"frames1.png", "frames2.png", "frames3.png"},
             {"cats1.png", "cats2.png", "cats3.png"},
@@ -62,56 +59,6 @@ public class Bag {
     public Card drawCard() throws NoMoreCardsException{
             return bag.remove(bag.size() - 1);
     }
-    //endregion
-
-//region OLD CODE
-
-    //METHOD 1: KEEPING TRACK ONLY OF COLORS
-    //problem: how to keep track of the images already used
-    /*
-    //region Attributes
-    private int[] types;
-    private int numUsedCard; //keeps track of the number of used cards in one game
-    private static final int MAX_CARD_NUM = 132;
-    private static final int MAX_CARD_FOR_TYPE = 22;
-
-//    private Card cards[];
-//    private int actualIndex;
-    //endregion
-
-    public Bag(){
-        types = new int[]{0, 0, 0, 0, 0, 0};
-        numUsedCard = 0;
-//        cards = new Card[CARD_NUM];
-//        actualIndex=132;
-    }
-
-
-    //region Methods
-    //returns true if the bag is empty, meaning that all the 132 cards have been used in a game
-    //one of the conditions by which the game could end
-    public boolean isEmpty(){
-        return (numUsedCard == MAX_CARD_NUM);
-    }
-
-    public Card drawACard(){
-        if(isEmpty()){
-            //TODO: generare eccezione?
-            return null;
-        }
-
-        Card card = new Card();
-        while(types[card.getColor()]>=MAX_CARD_FOR_TYPE){
-            card = new Card();
-        }
-
-        types[card.getColor()]++;
-        numUsedCard++;
-
-        return card;
-    }
-    */
-
     //endregion
 
 }

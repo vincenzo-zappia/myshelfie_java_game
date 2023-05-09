@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.model.entities;
+package it.polimi.ingsw.entities;
 
 import it.polimi.ingsw.entities.Board;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,6 @@ class BoardTest {
     Board board;
 
     //testing that the board is correctly set up for every kind of game in terms of the number of players
-    //TODO: isolating the cells that always have to be inactive and asserting false on their activation
     @Test
     void twoPlayersSetup(){
         board = new Board(2);
@@ -119,7 +118,6 @@ class BoardTest {
         //filling the board
         board.fillBoard();
 
-        //TODO: is the following one the best algorithm for board iteration?
         //emptying the board
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
@@ -139,10 +137,8 @@ class BoardTest {
     @Test
     void threePlayersBoardIsEmpty(){
         board = new Board(3);
-        //TODO: is it possible to recycle the methods with lesser number of players?
         board.fillBoard();
 
-        //TODO: is the following one the best algorithm for board iteration?
         //emptying the board
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
@@ -172,10 +168,8 @@ class BoardTest {
     @Test
     void fourPlayersBoardIsEmpty(){
         board = new Board(4);
-        //TODO: is it possible to recycle the methods with lesser number of players?
         board.fillBoard();
 
-        //TODO: is the following one the best algorithm for board iteration?
         //emptying the board
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
@@ -215,17 +209,66 @@ class BoardTest {
     @Test
     void twoPlayersBoardIsFull(){
         board = new Board(2);
-        //TODO: when I fill the board it actually gets filled
+        board.fillBoard();
+        for(int i = 3; i<=4;i++) assertFalse(board.getMatrix()[1][i].isCellEmpty());
+        for(int i = 3; i<=5;i++) assertFalse(board.getMatrix()[2][i].isCellEmpty());
+        for(int i = 4; i<=5;i++) assertFalse(board.getMatrix()[i][1].isCellEmpty());
+        for(int i = 3; i<=4;i++) assertFalse(board.getMatrix()[i][7].isCellEmpty());
+        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertFalse(board.getMatrix()[row][col].isCellEmpty());
+        for(int i = 3; i<=5;i++) assertFalse(board.getMatrix()[6][i].isCellEmpty());
+        for(int i = 4; i<=5;i++) assertFalse(board.getMatrix()[7][i].isCellEmpty());
     }
+
     @Test
     void threePlayersBoardIsFull(){
         board = new Board(3);
-        //TODO: when I fill the board it actually gets filled
+        board.fillBoard();
+        for(int i = 3; i<=4;i++) assertFalse(board.getMatrix()[1][i].isCellEmpty());
+        for(int i = 3; i<=5;i++) assertFalse(board.getMatrix()[2][i].isCellEmpty());
+        for(int i = 4; i<=5;i++) assertFalse(board.getMatrix()[i][1].isCellEmpty());
+        for(int i = 3; i<=4;i++) assertFalse(board.getMatrix()[i][7].isCellEmpty());
+        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertFalse(board.getMatrix()[row][col].isCellEmpty());
+        for(int i = 3; i<=5;i++) assertFalse(board.getMatrix()[6][i].isCellEmpty());
+        for(int i = 4; i<=5;i++) assertFalse(board.getMatrix()[7][i].isCellEmpty());
+
+        assertFalse(board.getMatrix()[0][3].isCellEmpty());
+        assertFalse(board.getMatrix()[2][2].isCellEmpty());
+        assertFalse(board.getMatrix()[2][6].isCellEmpty());
+        assertFalse(board.getMatrix()[3][8].isCellEmpty());
+        assertFalse(board.getMatrix()[5][0].isCellEmpty());
+        assertFalse(board.getMatrix()[6][2].isCellEmpty());
+        assertFalse(board.getMatrix()[6][6].isCellEmpty());
+        assertFalse(board.getMatrix()[8][5].isCellEmpty());
     }
     @Test
     void fourPlayersBoardIsFull(){
         board = new Board(4);
-        //TODO: when I fill the board it actually gets filled
+        board.fillBoard();
+        for(int i = 3; i<=4;i++) assertFalse(board.getMatrix()[1][i].isCellEmpty());
+        for(int i = 3; i<=5;i++) assertFalse(board.getMatrix()[2][i].isCellEmpty());
+        for(int i = 4; i<=5;i++) assertFalse(board.getMatrix()[i][1].isCellEmpty());
+        for(int i = 3; i<=4;i++) assertFalse(board.getMatrix()[i][7].isCellEmpty());
+        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertFalse(board.getMatrix()[row][col].isCellEmpty());
+        for(int i = 3; i<=5;i++) assertFalse(board.getMatrix()[6][i].isCellEmpty());
+        for(int i = 4; i<=5;i++) assertFalse(board.getMatrix()[7][i].isCellEmpty());
+
+        assertFalse(board.getMatrix()[0][3].isCellEmpty());
+        assertFalse(board.getMatrix()[2][2].isCellEmpty());
+        assertFalse(board.getMatrix()[2][6].isCellEmpty());
+        assertFalse(board.getMatrix()[3][8].isCellEmpty());
+        assertFalse(board.getMatrix()[5][0].isCellEmpty());
+        assertFalse(board.getMatrix()[6][2].isCellEmpty());
+        assertFalse(board.getMatrix()[6][6].isCellEmpty());
+        assertFalse(board.getMatrix()[8][5].isCellEmpty());
+
+        assertFalse(board.getMatrix()[0][4].isCellEmpty());
+        assertFalse(board.getMatrix()[1][5].isCellEmpty());
+        assertFalse(board.getMatrix()[3][1].isCellEmpty());
+        assertFalse(board.getMatrix()[4][0].isCellEmpty());
+        assertFalse(board.getMatrix()[4][8].isCellEmpty());
+        assertFalse(board.getMatrix()[5][7].isCellEmpty());
+        assertFalse(board.getMatrix()[7][3].isCellEmpty());
+        assertFalse(board.getMatrix()[8][4].isCellEmpty());
     }
 
 }
