@@ -10,10 +10,7 @@ import it.polimi.ingsw.network.messages.client2server.StartGame;
 import it.polimi.ingsw.network.messages.server2client.*;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.state.ClientSelectionState;
-import it.polimi.ingsw.state.TurnState;
 import it.polimi.ingsw.view.UserInterface;
-import it.polimi.ingsw.view.View;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +18,6 @@ import java.util.Arrays;
 //TODO: Per l'impacchettamento messaggi serve implementare un nuovo tipo di Observer che cambia i parametri di implementazione update
 public class ClientController implements Observer {
     //region ATTRIBUTES
-    private TurnState turnState; //TODO: Decidere se rimuovere il design pattern
     private final UserInterface view; //either CLI or GUI for the packing of messages User interface -> Server
     private Client client; //for the unpacking of messages Server -> User interface
     private String username;
@@ -34,9 +30,6 @@ public class ClientController implements Observer {
         this.client = client;
         client.register(this);
         new Thread(client).start();
-
-        //TODO: Decidere come gestire fase iniziale se da costruttore o dal primo messaggio inviato da server
-        turnState = new ClientSelectionState(this);
     }
     //endregion
 
@@ -93,8 +86,6 @@ public class ClientController implements Observer {
             }
 
         }
-        //TODO: Chiamata di metodi View per sputare su GUI/CLI
-        turnState.messageHandler(message);
     }
     //endregion
 
@@ -151,7 +142,4 @@ public class ClientController implements Observer {
     }
     //endregion
 
-    public void setTurnState(TurnState turnState) {
-        this.turnState = turnState;
-    }
 }

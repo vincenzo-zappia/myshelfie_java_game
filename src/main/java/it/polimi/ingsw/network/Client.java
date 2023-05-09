@@ -2,8 +2,6 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.observer.Subject;
-import it.polimi.ingsw.state.ClientSelectionState;
-import it.polimi.ingsw.state.TurnState;
 
 import java.io.*;
 import java.net.Socket;

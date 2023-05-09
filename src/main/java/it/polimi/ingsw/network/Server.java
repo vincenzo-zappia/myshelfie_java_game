@@ -41,9 +41,7 @@ public class Server {
     }
     //endregion
 
-
-    //region ServerMethods
-
+    //region METHODS
     /**
      * Networking methods to start the connections
      * between server and clients
@@ -101,6 +99,5 @@ public class Server {
     public void removeLobby(int lobbyId){
         lobbyMap.remove(lobbyId);
     }
-
     //endregion
 }

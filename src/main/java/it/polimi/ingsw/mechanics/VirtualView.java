@@ -13,8 +13,8 @@ import it.polimi.ingsw.view.View;
  */
 public class VirtualView implements View, Observer {
     private final ClientHandler clientHandler;
-    private int[][] coordinates;
-    private boolean updated = false;
+    private int[][] coordinates; //TODO: Toglierlo e metterlo in GameController in variabile locale
+    private boolean updated = false; //TODO: Toglierlo e metterlo in GameController in variabile locale
 
     public VirtualView(ClientHandler clientHandler){
         this.clientHandler = clientHandler;
@@ -30,6 +30,7 @@ public class VirtualView implements View, Observer {
         this.coordinates = coordinates;
         updated = true;
     }
+
     public void sendRemovalMessage(){
         if(updated) clientHandler.sendMessage(new CardRemovalMessage(coordinates));
         updated = false;
@@ -40,15 +41,19 @@ public class VirtualView implements View, Observer {
         clientHandler.sendMessage(new BoardRefillUpdate(boardCells));
     }
 
+    //region STRING
     @Override
     public void showCurrentPlayer(String currentPlayer) {
-        clientHandler.sendMessage(new CurrentPlayerMessage(currentPlayer));
+        clientHandler.sendMessage(new GenericMessage(MessageType.CURRENT_PLAYER, currentPlayer));
     }
+    //endregion
 
+    //region BOOLEAN
     @Override
     public void sendResponse(boolean response, MessageType responseType) {
         clientHandler.sendMessage(new ResponseMessage(responseType, response));
     }
+    //endregion
 
     @Override
     public void sendInsertionResponse(Cell[][] bookshelf, boolean response) {
