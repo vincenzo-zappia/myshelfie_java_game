@@ -16,6 +16,11 @@ import it.polimi.ingsw.entities.Bookshelf;
 
 public class CommonGoal9 extends CommonGoal implements Goal{
 
+    public CommonGoal9() {
+        super("Eight tiles of the same type.\n" +
+                "There's no restriction about the position of these tiles.");
+    }
+
     @Override
     public int checkGoal(Bookshelf bs) {
         int tmp=0;

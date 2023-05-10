@@ -18,6 +18,11 @@ import it.polimi.ingsw.util.CardType;
 
 public class CommonGoal3 extends CommonGoal implements Goal{
 
+    public CommonGoal3() {
+        super("Four groups each containing at least 4 tiles of the same types (not necessarily in the depicted shape).\n" +
+                "The tiles of one group can be different from those of another group.");
+    }
+
     /**
      * Algorithm that search a single sequence of adjacent
      * with the same tile

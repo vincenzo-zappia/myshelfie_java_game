@@ -10,6 +10,11 @@ import it.polimi.ingsw.util.CardType;
 
 public class CommonGoal11 extends CommonGoal implements Goal{
     private static final int[][] corners = {{0,0}, {0,4}, {5,0}, {5,4}};
+
+    public CommonGoal11() {
+        super("Five tiles of the same type forming a diagonal.");
+    }
+
     private boolean findDiagonalWithSameColor(int row, int column, Bookshelf b){
         int mRow = 0, mColumn = 0;
         CardType compareType;

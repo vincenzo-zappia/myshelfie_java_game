@@ -42,7 +42,6 @@ public class ClientController implements Observer {
     @Override
     public void update(Message message){
 
-        //TODO: Per il momento non uso lo state
         switch (message.getType()){
             case LOBBY_CREATION_RESPONSE -> {
                 LobbyCreationResponse newLobby = (LobbyCreationResponse) message;

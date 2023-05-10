@@ -15,6 +15,11 @@ import it.polimi.ingsw.entities.Bookshelf;
 
 public class CommonGoal4 extends CommonGoal implements Goal{
 
+    public CommonGoal4() {
+        super("Six groups each containing at least 2 tiles of the same type (not necessarily in the depicted shape).\n" +
+                "The tiles of one group can be different from those of another groups.");
+    }
+
     @Override
     public int checkGoal(Bookshelf bs) {
         int tmp=0;

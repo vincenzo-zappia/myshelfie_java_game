@@ -75,9 +75,7 @@ public class Player implements Comparable<Player> {
     public String getUsername(){
         return username;
     }
-    public void setUsername(String username){this.username=username;} //TODO: remove after networking complete
     public int getScore(){return score;}
-    public void setScore(int newScore){score = newScore;}  //TODO remove after test
 
     @Override
     public String toString(){

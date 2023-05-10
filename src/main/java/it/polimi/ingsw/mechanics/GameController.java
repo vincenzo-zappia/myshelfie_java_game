@@ -21,6 +21,7 @@ public class GameController {
     //attributi verso la parte del modello
     private final Game game;
     private final TurnManager turnManager;
+    private boolean canInsert;
 
     //attributi verso la parte di networking
     private final HashMap<String, VirtualView> viewHashMap;
@@ -36,8 +37,9 @@ public class GameController {
         turnManager = new TurnManager(new ArrayList<>(viewHashMap.keySet()));
         this.game = game;
         this.viewHashMap = viewHashMap;
-        broadcastMessage(MessageType.BOARD_REFILL_UPDATE);
         broadcastMessage(MessageType.CURRENT_PLAYER_UPDATE);
+        broadcastMessage(MessageType.BOARD_REFILL_UPDATE);
+        canInsert = false;
     }
     //endregion
 
@@ -98,6 +100,8 @@ public class GameController {
 
             //Saving the coordinate of the removed cards to send them in broadcast at the end of the turn
             coordinates = message.getCoordinates();
+
+            canInsert=true;
         }
 
         //Invio riscontro negativo al client
@@ -113,7 +117,7 @@ public class GameController {
         try {
             //cards insertion in player's bookshelf
             //if statement can be simplified, not sure if it's correct with message's code
-            if(game.addCardToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards())){
+            if(game.addCardToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards()) && canInsert){
             System.out.println("INFO: Carte inserite nella colonna " + message.getSelectedColumn());
                 //Invio riscontro positivo al client
                 viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), true);
@@ -121,13 +125,13 @@ public class GameController {
             }
 
             //TODO: Richiedere colonna valida
-            else viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), true); //invia riscontro negativo
+            else viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), false); //invia riscontro negativo
 
             endTurn();
 
         } catch (AddCardException e) {
             //Invio riscontro negativo al client
-            viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), true);
+            viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), false);
             throw new RuntimeException(e);
         }
     }

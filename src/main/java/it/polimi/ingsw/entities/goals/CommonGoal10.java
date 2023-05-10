@@ -11,6 +11,11 @@ import it.polimi.ingsw.util.Cell;
 
 public class CommonGoal10 extends CommonGoal implements Goal{
     private Bookshelf b;
+
+    public CommonGoal10() {
+        super("Five tiles of the same type forming an X.");
+    }
+
     private boolean isX(int row, int column){
         Cell[] c = new Cell[5];
 

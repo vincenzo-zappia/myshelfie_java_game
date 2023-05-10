@@ -14,11 +14,14 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class CLI implements Runnable, UserInterface {
+
+    //region ATTRIBUTES
     private final Scanner scanner;
     private final ClientController controller;
     private BoardCell[][] board;
     private Cell[][] bookshelf;
     private int[][] selection;
+    //endregion
 
     public CLI(Client client) {
         scanner = new Scanner(System.in);
@@ -51,11 +54,18 @@ public class CLI implements Runnable, UserInterface {
                     controller.sendSelection(coordinates);
                 }
 
-                //Card insertion command (bookshelf column n) eg: "insert n" //TODO: La scelta dell'ordine delle carte?
+                //Card insertion command (bookshelf column n) eg: "insert n"
                 case "insert" -> {
-                    ArrayList<Card> cards = new ArrayList<>();
-                    for (int[] ints : selection) cards.add(board[ints[0]][ints[1]].getCard());
-                    controller.sendInsertion(cards, Integer.parseInt(splitted[1]));
+                    int column;
+                    try {
+                        column = Integer.parseInt(splitted[1]);
+                        ArrayList<Card> cards = new ArrayList<>();
+                        for (int[] ints : selection) cards.add(board[ints[0]][ints[1]].getCard());
+                        controller.sendInsertion(cards, column);
+                    }
+                    catch (NumberFormatException e){
+                        System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
+                    }
                 }
 
                 //Show command to prompt the printing of either the board or the bookshelf of the player

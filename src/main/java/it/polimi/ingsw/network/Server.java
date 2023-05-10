@@ -27,7 +27,7 @@ public class Server {
         try {
             serverSocket = new ServerSocket(port);
             lobbyMap = new HashMap<>();
-            System.out.println("INFO: Server in ascolto all'indirizzo " + serverSocket.getInetAddress() + " sulla porta " + port);
+            System.out.println("INFO: Server listening @ " + serverSocket.getLocalSocketAddress());
         } catch (IOException e) {
             System.err.println("Error:" + e.getMessage());
         }

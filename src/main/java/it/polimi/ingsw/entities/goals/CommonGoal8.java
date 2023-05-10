@@ -11,6 +11,10 @@ import it.polimi.ingsw.util.Cell;
 
 public class CommonGoal8 extends CommonGoal implements Goal {
 
+    public CommonGoal8() {
+        super("Four tiles of the same type in the four corners of the bookshelf.");
+    }
+
     @Override
     public int checkGoal(Bookshelf bookshelf) {
         Cell c1, c2, c3, c4;

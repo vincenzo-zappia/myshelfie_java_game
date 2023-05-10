@@ -3,14 +3,11 @@ package it.polimi.ingsw.entities.goals;
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.util.CardType;
 
-import java.util.HashMap;
-
-
 /*
  * Questo CommonGoal si riferisce ai Goals presente sulla Board
  */
-
 public class CommonGoal0 implements Goal{
+    //TODO: revisionare (se quallcuno lo tocca vincenzo utilizzera il metodo kill(); )
     private int[][] mColor = new int[6][5];
     private final int[] scores;
 

@@ -9,6 +9,10 @@ import it.polimi.ingsw.entities.Bookshelf;
 
 public class CommonGoal2 extends CommonGoal implements Goal {
 
+    public CommonGoal2() {
+        super("Two columns each formed by 6 different type of tiles.");
+    }
+
     @Override
     public int checkGoal(Bookshelf bookshelf) {
         int count=0;

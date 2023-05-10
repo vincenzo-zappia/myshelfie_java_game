@@ -12,6 +12,13 @@ import it.polimi.ingsw.util.Cell;
 
 public class CommonGoal12 extends CommonGoal implements Goal{
 
+    public CommonGoal12() {
+        super("Five columns of increasing or decreasing height.\n" +
+                "Starting from the first column on the left or on the right,\n" +
+                "each next column must be made of exactly one more tile.\n" +
+                "Tiles can be of any type.");
+    }
+
     private boolean firstCheck(Cell[] row){
         for (Cell cell : row) if (cell.isCellEmpty()) return false;
         return true;

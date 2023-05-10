@@ -10,6 +10,11 @@ import it.polimi.ingsw.exceptions.CellGetCardException;
 
 public class CommonGoal5 extends CommonGoal implements Goal{
 
+    public CommonGoal5() {
+        super("Three columns each formed by 6 tiles of maximum three different types.\n" +
+                "One column can show the same or a different combination of another column.");
+    }
+
     @Override
     public int checkGoal(Bookshelf bs) {
         int tmp;

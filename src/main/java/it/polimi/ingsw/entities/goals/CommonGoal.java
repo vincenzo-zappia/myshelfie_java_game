@@ -6,7 +6,16 @@ import it.polimi.ingsw.util.Cell;
 import java.util.HashSet;
 
 public abstract class CommonGoal {
-    private int score = 8;
+
+    //region ATTRIBUTES
+    private int score;
+    private final String description;
+    //endregion
+
+    protected CommonGoal(String description){
+        score = 8;
+        this.description = description;
+    }
 
     protected static boolean allTypesDifferent(Cell[] list) {
         HashSet<CardType> types = new HashSet<>();
@@ -37,9 +46,13 @@ public abstract class CommonGoal {
         else score -= 2;
     }
 
-    public int getScore(){
+    protected int getScore(){
         int oldScore = score;
         decrementScore();
         return oldScore;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }
