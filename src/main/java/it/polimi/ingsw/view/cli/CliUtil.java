@@ -4,6 +4,7 @@ import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.util.CardType;
 import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.util.ToolXML;
 
 import java.util.ArrayList;
 
@@ -60,7 +61,7 @@ enum AsciiTool {
 
 public class CliUtil {
 
-    //region CONVERSION PRIVATE METHOD
+    //region CONVERSION METHOD
 
     private static char getTypeCharacter(CardType type) {
 
@@ -160,8 +161,7 @@ public class CliUtil {
 
     //endregion
 
-
-
+    //region MAKE METHOD
     public static String makeLegend() {
         String line1 = ColorCode.GREEN.getCode() + AsciiTool.DOT.getSymbol() + "C: Cat\t\t" + ColorCode.WHITE.getCode() + AsciiTool.DOT.getSymbol() + "B: Books\n";
         String line2 = ColorCode.ORANGE.getCode() + AsciiTool.DOT.getSymbol() + "G: Game\t\t" + ColorCode.BLUE.getCode() + AsciiTool.DOT.getSymbol() + "F: Frames\n";
@@ -170,8 +170,6 @@ public class CliUtil {
         return line3 + line2 + line1 + ColorCode.DEFAULT.getCode();
     }
 
-
-    //TODO: funziona, ma da revisionare
     public static String makeBoard(char[][] matrix) {
 
         return ColorCode.GREEN.getCode() +
@@ -261,12 +259,17 @@ public class CliUtil {
         return res + ColorCode.DEFAULT.getCode();
     }
 
-    public static String makeErrorMessage(String message){
+    public static String makeErrorMessage(String message) {
         return ColorCode.RED.getCode() + AsciiTool.X.getSymbol() + message + ColorCode.DEFAULT.getCode();
     }
 
-    public static String makeConfirmationMessage(String message){
+    public static String makeConfirmationMessage(String message) {
         return ColorCode.GREEN.getCode() + AsciiTool.V.getSymbol() + " " + message + ColorCode.DEFAULT.getCode();
     }
+
+    public static String makeCommandList() {
+        return String.join(" ", ToolXML.getCommandList());
+    }
+    //endregion
 
 }

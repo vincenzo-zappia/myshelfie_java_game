@@ -6,8 +6,8 @@ import it.polimi.ingsw.mechanics.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.server2client.ErrorMessage;
+import it.polimi.ingsw.network.messages.server2client.GenericMessage;
 import it.polimi.ingsw.network.messages.server2client.ResponseMessage;
-import it.polimi.ingsw.network.messages.server2client.StartGameResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,10 +89,9 @@ public class Lobby {
         HashMap<String, VirtualView> viewHashMap = new HashMap<>();
         for (NetworkPlayer netPlayer: networkMap.values()) viewHashMap.put(netPlayer.getUsername(), netPlayer.getVirtualView());
 
-        Game g = new Game(playerUsernames);
-        gameController = new GameController(g, viewHashMap);
+        gameController = new GameController(new Game(playerUsernames), viewHashMap);
         inGame = true;
-        //sendLobbyMessage(new StartGameResponse(true, g.get)); todo: importante, dove metterlo?
+        sendLobbyMessage(new ResponseMessage(MessageType.START_GAME_RESPONSE, true,  "Now in game!"));
     }
 
     /**
@@ -111,4 +110,5 @@ public class Lobby {
         return playerUsernames;
     }
     //endregion
+
 }

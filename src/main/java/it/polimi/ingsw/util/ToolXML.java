@@ -1,19 +1,24 @@
 package it.polimi.ingsw.util;
 
-import it.polimi.ingsw.entities.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.util.ArrayList;
 
 public class ToolXML {
+
+    //region CONSTANT
+    private static final ClassLoader classLoader = ToolXML.class.getClassLoader();
+    private static final String basePath = classLoader.getResource("").getPath();
+    private static final String commandListPath = basePath + "\\config\\CommandList.xml";
+    //endregion
 
     //region PRIVATE METHODS
     private static Element getRootDocElement(File file){
@@ -67,7 +72,19 @@ public class ToolXML {
     //endregion
 
     //region COMMAND LIST
+    public static ArrayList<String> getCommandList(){
+        ArrayList<String> result = new ArrayList<>();
+        File file = new File(commandListPath);
+        Element root = getRootDocElement(file);
+        NodeList commands = root.getElementsByTagName("command");
 
+        for(int i=0; i< commands.getLength(); i++){
+            Element element = (Element) commands.item(i);
+            result.add(element.getTextContent());
+        }
+
+        return result;
+    }
     //endregion
 
 }
