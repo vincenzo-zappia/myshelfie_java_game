@@ -8,9 +8,10 @@ import it.polimi.ingsw.network.messages.MessageType;
  */
 public class ResponseMessage extends Message {
     private final boolean response;
-    public ResponseMessage(MessageType type, boolean response) {
+    public ResponseMessage(MessageType type, boolean response, String content) {
         super("server", type);
         this.response = response;
+        setContent(content);
     }
 
     public boolean getResponse() {
