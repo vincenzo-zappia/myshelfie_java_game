@@ -22,6 +22,7 @@ public class Main {
         }
     }
 
+    //questo metodo dovrebbe servire per verificare la porta e l'ip
     private boolean gh(){
         return true;
     }

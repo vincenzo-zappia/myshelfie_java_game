@@ -35,10 +35,10 @@ public class PrivateGoal implements Goal{
     @Override
     public int checkGoal(Bookshelf bookshelf) {
         int checked=0;
-        for(int i=0; i< specialCells.length; i++){
+        for (SpecialCell specialCell : specialCells) {
             try {
-                Card bookshelfCard = bookshelf.getCell(specialCells[i].getRow(), specialCells[i].getColumn()).getCard(),
-                        goalCard = specialCells[i].getCard();
+                Card bookshelfCard = bookshelf.getCell(specialCell.getRow(), specialCell.getColumn()).getCard(),
+                        goalCard = specialCell.getCard();
                 if (bookshelfCard.sameType(goalCard)) checked++;
 
             } catch (CellGetCardException e) {

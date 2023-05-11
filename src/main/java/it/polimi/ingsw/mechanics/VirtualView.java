@@ -1,5 +1,7 @@
 package it.polimi.ingsw.mechanics;
 
+import it.polimi.ingsw.entities.goals.CommonGoal;
+import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.ClientHandler;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.server2client.*;
@@ -45,8 +47,8 @@ public class VirtualView implements View, Observer {
         clientHandler.sendMessage(new ScoreboardMessage(scoreboard));
     }
     @Override
-    public void sendResponse(boolean response, MessageType responseType) {
-        clientHandler.sendMessage(new ResponseMessage(responseType, response));
+    public void sendResponse(boolean response, MessageType responseType, String content) {
+        clientHandler.sendMessage(new ResponseMessage(responseType, response, content));
     }
 
     @Override
@@ -55,7 +57,12 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void sendNotYourTurn() {
-        clientHandler.sendMessage(new ResponseMessage(MessageType.NOT_YOUR_TURN, false));
+    public void sendNotYourTurn(String content) {
+        clientHandler.sendMessage(new ResponseMessage(MessageType.NOT_YOUR_TURN, false, content));
+    }
+
+    @Override
+    public void sendStartGameResponse(boolean response, CommonGoal[] commonGoals, PrivateGoal privateGoal, String content) {
+
     }
 }

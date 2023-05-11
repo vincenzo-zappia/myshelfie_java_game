@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.entities.goals.CommonGoal;
+import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.util.Cell;
@@ -45,7 +47,7 @@ public interface View {
      * @param response if command was successful/valid
      * @param responseType type of the command
      */
-    void sendResponse(boolean response, MessageType responseType);
+    void sendResponse(boolean response, MessageType responseType, String content);
 
     void sendInsertionResponse(Cell[][] bookshelf, boolean response);
 
@@ -53,5 +55,7 @@ public interface View {
      * Gives a generic negative feedback to any type of command sent by the player that is not playing
      * the current turn
      */
-    void sendNotYourTurn();
+    void sendNotYourTurn(String content);
+
+    void sendStartGameResponse(boolean response, CommonGoal[] commonGoals, PrivateGoal privateGoal, String content);
 }

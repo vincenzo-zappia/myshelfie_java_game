@@ -28,7 +28,7 @@ public class Game{
     //region ATTRIBUTES
     private final Board board;
     private final HashMap<String, Player> players;
-    private final ArrayList<Goal> commonGoals;
+    private final Goal[] commonGoals;
     private final CommonGoal0 commonGoal0;
     //endregion
 
@@ -42,10 +42,7 @@ public class Game{
         for(String user: usernames) players.put(user, new Player(user));
 
         CommonGoalFactory factory = new CommonGoalFactory();
-        //commonGoals = new Goal[2];
-        //commonGoals = factory.makeCommonGoal(); //sets the common goals of the game
-        commonGoals = new ArrayList<>();
-        commonGoals.add(new CommonGoal10());
+        commonGoals = factory.makeCommonGoal();
 
 
         commonGoal0 = new CommonGoal0();
@@ -145,8 +142,8 @@ public class Game{
      */
     public void scoreCommonGoal(String username){
         Player p = players.get(username);
-        p.addScore(commonGoals.get(0).checkGoal(p.getBookshelf()));
-
+        p.addScore(commonGoals[0].checkGoal(p.getBookshelf()));
+        p.addScore(commonGoals[1].checkGoal(p.getBookshelf()));
     }
 
     /**

@@ -1,12 +1,15 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.entities.Card;
+import it.polimi.ingsw.entities.goals.CommonGoal;
+import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.util.Cell;
 import it.polimi.ingsw.view.UserInterface;
+import it.polimi.ingsw.view.VirtualModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,16 +21,13 @@ public class CLI implements Runnable, UserInterface {
     //region ATTRIBUTES
     private final Scanner scanner;
     private final ClientController controller;
-    private BoardCell[][] board;
-    private Cell[][] bookshelf;
-    private int[][] selection;
+    private final VirtualModel virtualModel;
     //endregion
 
     public CLI(Client client) {
         scanner = new Scanner(System.in);
         controller = new ClientController(this, client);
-        bookshelf = new Cell[6][5];
-        for(int i=0; i<6;i++) for(int j=0; j<5; j++) bookshelf[i][j] = new Cell();
+        virtualModel = new VirtualModel();
     }
 
     @Override
@@ -45,22 +45,35 @@ public class CLI implements Runnable, UserInterface {
 
                 //Card selection command eg: "select (x;y),(x;y),(x,y)"
                 case "select" -> {
-                    String[] coordinate = splitted[1].split(",");
-                    int[][] coordinates = new int[coordinate.length][2];
-                    for(int i=0; i< coordinate.length; i++){
-                        coordinates[i] = parseCoordinates(coordinate[i]);
+                    String[] strCoordinates = splitted[1].split(",");
+                    int[][] coordinates = new int[strCoordinates.length][2];
+                    boolean validFormat = false;
+                    for(int i=0; i< strCoordinates.length; i++) {
+                        if(!checkFormat(strCoordinates[i].trim())){
+                            System.out.println(CliUtil.makeErrorMessage("coordinates in incorrect format!"));
+                            validFormat = false;
+                            break;
+                        }
+                        else coordinates[i] = parseCoordinates(strCoordinates[i].trim());
+                        validFormat = true;
                     }
-                    selection = coordinates;
-                    controller.sendSelection(coordinates);
+                    if(validFormat) {
+                        virtualModel.select(coordinates);
+                        controller.sendSelection(coordinates);
+                    }
                 }
 
                 //Card insertion command (bookshelf column n) eg: "insert n"
                 case "insert" -> {
                     int column;
                     try {
+                        if(!virtualModel.isSelectionUpdated()) {
+                            System.out.println(CliUtil.makeErrorMessage("ttt"));
+                            continue;
+                        }
                         column = Integer.parseInt(splitted[1]);
                         ArrayList<Card> cards = new ArrayList<>();
-                        for (int[] ints : selection) cards.add(board[ints[0]][ints[1]].getCard());
+                        for (int[] ints : virtualModel.getSelection()) cards.add(virtualModel.getBoard()[ints[0]][ints[1]].getCard());
                         controller.sendInsertion(cards, column);
                     }
                     catch (NumberFormatException e){
@@ -90,8 +103,11 @@ public class CLI implements Runnable, UserInterface {
         }
 
     }
+    
+    private boolean checkFormat(String str){ return str.matches("\\(\\d+;\\d+\\)"); }
 
     //region PRIVATE METHODS
+
     /**
      * Prompts the creation of either a lobby creation command or a lobby access request based on the user input
      */
@@ -109,8 +125,14 @@ public class CLI implements Runnable, UserInterface {
         }
         else if(choice == 1){
             System.out.println("Enter lobby id:");
-            int id = Integer.parseInt(scanner.nextLine()); //TODO: mettere controllo se intero
-            controller.joinLobby(username, id);
+            try {
+                int id = Integer.parseInt(scanner.nextLine()); //TODO: mettere controllo se intero
+                controller.joinLobby(username, id);
+            }
+            catch (NumberFormatException e) {
+                System.out.println(CliUtil.makeErrorMessage("Valore non corretto."));
+                connection();
+            }
         }
     }
 
@@ -154,19 +176,19 @@ public class CLI implements Runnable, UserInterface {
             System.out.println("[1] Join existing lobby");
             selection = scanner.nextLine();
             if(!selection.equals("0") && !selection.equals("1")) System.out.println(CliUtil.makeErrorMessage("Enter valid number."));
-        }while (selection.equals("0") && selection.equals("1"));
+        }while (!selection.equals("0") && !selection.equals("1"));
         return selection;
     }
 
     private void showBookshelf() {
         System.out.println(CliUtil.makeTitle("Bookshelf"));
-        System.out.println(CliUtil.makeBookshelf(CliUtil.bookshelfConverter(bookshelf)));
+        System.out.println(CliUtil.makeBookshelf(CliUtil.bookshelfConverter(virtualModel.getBookshelf())));
         System.out.println(CliUtil.makeLegend());
     }
 
     private void showBoard() {
         System.out.println(CliUtil.makeTitle("Livingroom"));
-        System.out.println(CliUtil.makeBoard(CliUtil.boardConverter(board)));
+        System.out.println(CliUtil.makeBoard(CliUtil.boardConverter(virtualModel.getBoard())));
         System.out.println(CliUtil.makeLegend());
     }
     //endregion
@@ -174,27 +196,13 @@ public class CLI implements Runnable, UserInterface {
     //region USER INTERFACE
     @Override
     public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
-        System.out.println("Lista dei players connessi:");
+        System.out.println("Lista dei players connessi:"); //TODO: tradurre
         System.out.println(CliUtil.makePlayersList(playerUsernames));
     }
 
     @Override
     public void showSuccessfulConnection(int lobbyId) {
-        System.out.println("Connessione alla loby riuscita con successo! Lobby id: " + lobbyId);
-    }
-
-    @Override
-    public void showConfirmation(MessageType type) {
-        switch (type){
-            case START_GAME_RESPONSE -> System.out.println(CliUtil.makeConfirmationMessage("Now in game!"));
-            case SELECTION_RESPONSE -> {
-                String sel = Arrays.toString(selection);
-                System.out.println(CliUtil.makeConfirmationMessage("Selezione valida!"));
-            }
-            case INSERTION_RESPONSE -> {
-                System.out.println(CliUtil.makeConfirmationMessage("Inserimento avvenuto con successo!"));
-            }
-        }
+        System.out.println("Connessione alla loby riuscita con successo! Lobby id: " + lobbyId); //TODO: tradurre
     }
 
     @Override
@@ -202,36 +210,18 @@ public class CLI implements Runnable, UserInterface {
         System.out.println(CliUtil.makeErrorMessage(content));
     }
 
-    @Override
-    public void refreshBoard(int[][] coordinates) {
-        for (int[] coordinate : coordinates) {
-            int row = coordinate[0];
-            int column = coordinate[1];
-            board[row][column].setCellEmpty();
-        }
-        showBoard();
-    }
-
-    @Override
-    public void requestCardSelection() {
-
-    }
-
-    @Override
-    public void requestCardInsertion() {
-
-    }
     //endregion
 
     //region VIEW
     @Override
     public void showRemovedCards(int[][] coordinates) {
-
+        virtualModel.refreshBoard(coordinates);
+        showBoard();
     }
 
     @Override
     public void showRefilledBoard(BoardCell[][] boardCells) {
-        this.board = boardCells;
+        virtualModel.setBoard(boardCells);
         showBoard();
     }
 
@@ -242,22 +232,33 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void showScoreboard(HashMap<String, Integer> scoreboard) {
-
+        System.out.println(CliUtil.makeTitle("Scoreboard"));
     }
 
     @Override
-    public void sendResponse(boolean response, MessageType responseType) {
-
+    public void sendResponse(boolean response, MessageType responseType, String content) {
+        if(response) System.out.println(CliUtil.makeConfirmationMessage(content));
+        else System.out.println(CliUtil.makeErrorMessage(content));
     }
 
     @Override
     public void sendInsertionResponse(Cell[][] bookshelf, boolean response) {
-        this.bookshelf = bookshelf;
-        showBookshelf();
+        virtualModel.setBookshelf(bookshelf);
+
+        if(response){
+            System.out.println(CliUtil.makeConfirmationMessage("Inserimento avvenuto con successo!")); //TODO: tradurre
+            showBookshelf();
+        }
+        else System.out.println(CliUtil.makeErrorMessage("Errore durante l'inserimento nella bookshelf!"));
     }
 
     @Override
-    public void sendNotYourTurn() {
+    public void sendNotYourTurn(String content) {
+        System.out.println(CliUtil.makeErrorMessage(content));
+    }
+
+    @Override
+    public void sendStartGameResponse(boolean response, CommonGoal[] commonGoals, PrivateGoal privateGoal, String content) {
 
     }
     //endregion

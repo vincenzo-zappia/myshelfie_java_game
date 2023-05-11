@@ -45,31 +45,24 @@ public class ClientController implements Observer {
         switch (message.getType()){
             case LOBBY_CREATION_RESPONSE -> {
                 LobbyCreationResponse newLobby = (LobbyCreationResponse) message;
-                view.showSuccessfulConnection(newLobby.getLobbyId());
+                if (newLobby.isSuccessful()) {
+                    this.lobbyId = newLobby.getLobbyId();
+                    view.showSuccessfulConnection(lobbyId);
+                }
+                else {}
             }
-            case LOBBY_ACCESS_RESPONSE -> {
-                LobbyAccessResponse access = (LobbyAccessResponse) message;
-                view.showSuccessfulConnection(lobbyId);
+            case LOBBY_ACCESS_RESPONSE, START_GAME_RESPONSE, SELECTION_RESPONSE -> {
+                ResponseMessage response = (ResponseMessage) message;
+                view.sendResponse(response.getResponse(), response.getType(), response.getContent());
             }
             case NEW_CONNECTION_UPDATE -> {
                 NewConnectionUpdate connectionMessage = (NewConnectionUpdate) message;
                 view.refreshConnectedPlayers(connectionMessage.getUsernameList());
             }
-            case START_GAME_RESPONSE -> {
-                view.showConfirmation(MessageType.START_GAME_RESPONSE);
-            }
-            case CURRENT_PLAYER_UPDATE -> {
-                view.showCurrentPlayer(message.getContent());
-            }
-            case SELECTION_RESPONSE -> {
-                ResponseMessage response = (ResponseMessage) message;
-                if(response.getResponse()) view.showConfirmation(MessageType.SELECTION_RESPONSE);
-            }
+            case CURRENT_PLAYER_UPDATE -> view.showCurrentPlayer(message.getContent());
             case INSERTION_RESPONSE -> {
                 InsertionResponseMessage response = (InsertionResponseMessage) message;
-                System.out.println("INFO: " + response.getBookshelf().length + " " + response.getBookshelf()[0].length);
-                System.out.println("INFO "+ Arrays.toString(response.getBookshelf()[5]));
-                if(response.getResponse()) view.sendInsertionResponse(response.getBookshelf(), true);
+                view.sendInsertionResponse(response.getBookshelf(), response.getResponse());
             }
             case BOARD_REFILL_UPDATE -> {
                 BoardRefillUpdate boardUpdate = (BoardRefillUpdate) message;
@@ -81,9 +74,9 @@ public class ClientController implements Observer {
             }
             case CARD_REMOVE_UPDATE -> {
                 CardRemoveUpdate remove = (CardRemoveUpdate) message;
-                view.refreshBoard(remove.getCoordinates());
+                view.showRemovedCards(remove.getCoordinates());
             }
-
+            case NOT_YOUR_TURN -> view.sendNotYourTurn(message.getContent());
         }
     }
     //endregion

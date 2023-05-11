@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Defines all the methods used by the user interface (CLI/GUI) to take input from keyboard and call the methods in
  * ClientController that generate the respective message to send to the Server
- *
+ * <p>
  * Contains the methods that the VirtualView doesn't need to implement
  */
 public interface UserInterface extends View {
@@ -16,21 +16,7 @@ public interface UserInterface extends View {
 
     void showSuccessfulConnection(int lobbyId);
 
-    void showConfirmation(MessageType type);
-
     void showError(String content);
 
-    void refreshBoard(int[][] coordinates);
-
-    /**
-     * The client interface asks the player to select the cards
-     */
-    void requestCardSelection();
-
-    /**
-     * The client interface asks the player to choose the order of the cards to insert into his
-     * bookshelf and the column where to insert them
-     */
-    void requestCardInsertion();
 
 }

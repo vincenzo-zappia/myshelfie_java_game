@@ -1,5 +1,6 @@
 package it.polimi.ingsw.mechanics;
 
+import it.polimi.ingsw.entities.goals.CommonGoal;
 import it.polimi.ingsw.entities.goals.Goal;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;

@@ -53,7 +53,7 @@ public class GameController {
         //Gestione logica turni
         if (!turnManager.getCurrentPlayer().equals(message.getUsername())) {
             System.out.println("INFO: player " + message.getUsername() + " non di turno");
-            viewHashMap.get(message.getUsername()).sendNotYourTurn(); //Invio riscontro negativo al client
+            viewHashMap.get(message.getUsername()).sendNotYourTurn("Is not your turn!"); //Invio riscontro negativo al client
             return;
         }
 
@@ -93,10 +93,9 @@ public class GameController {
     public synchronized void cardSelection(SelectionRequest message){
 
         if(game.isSelectable(message.getCoordinates())) {
-            game.removeCardFromBoard(message.getCoordinates()); //Removal of the selected cards form the game board
 
             //Invio riscontro positivo al client (questo abilita lato client a effettuare inserzione)
-            viewHashMap.get(message.getUsername()).sendResponse(true, MessageType.SELECTION_RESPONSE);
+            viewHashMap.get(message.getUsername()).sendResponse(true, MessageType.SELECTION_RESPONSE, "Selezione valida!"); //TODO: tradurre
 
             //Saving the coordinate of the removed cards to send them in broadcast at the end of the turn
             coordinates = message.getCoordinates();
@@ -105,7 +104,7 @@ public class GameController {
         }
 
         //Invio riscontro negativo al client
-        else viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.SELECTION_RESPONSE);
+        else viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.SELECTION_RESPONSE, "Selezione non valida!"); //TODO: tradurre
     }
 
     /**
@@ -118,16 +117,18 @@ public class GameController {
             //cards insertion in player's bookshelf
             //if statement can be simplified, not sure if it's correct with message's code
             if(game.addCardToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards()) && canInsert){
-            System.out.println("INFO: Carte inserite nella colonna " + message.getSelectedColumn());
-                //Invio riscontro positivo al client
-                viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), true);
+                game.removeCardFromBoard(coordinates); //Removal of the selected cards form the game board
+                System.out.println("INFO: Carte inserite nella colonna " + message.getSelectedColumn());
+
+                viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), true); //Invio riscontro positivo
                 System.out.println("INFO: carta inserita "+ game.getPlayerBookshelf(turnManager.getCurrentPlayer())[5][0].getCard().getType().toString());
+                endTurn();
             }
 
             //TODO: Richiedere colonna valida
             else viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), false); //invia riscontro negativo
 
-            endTurn();
+
 
         } catch (AddCardException e) {
             //Invio riscontro negativo al client
@@ -143,6 +144,8 @@ public class GameController {
      */
     private void endTurn(){
         //TODO: è possibile che le stesse coordinate vengano inviate due volte
+        canInsert=false;
+
         //Invio a tutti i client la posizonie delle carete da rimuovere
         broadcastMessage(MessageType.CARD_REMOVE_UPDATE, (Object) coordinates);
 

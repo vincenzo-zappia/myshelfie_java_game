@@ -4,7 +4,9 @@ import it.polimi.ingsw.mechanics.Game;
 import it.polimi.ingsw.mechanics.GameController;
 import it.polimi.ingsw.mechanics.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.server2client.ErrorMessage;
+import it.polimi.ingsw.network.messages.server2client.ResponseMessage;
 import it.polimi.ingsw.network.messages.server2client.StartGameResponse;
 
 import java.util.ArrayList;
@@ -15,8 +17,8 @@ public class Lobby {
     //region ATTRIBUTES
     private final int lobbyId;
     private final Server server;
-    private ArrayList<String> playerUsernames;
-    private HashMap<String, NetworkPlayer> networkMap;
+    private final ArrayList<String> playerUsernames;
+    private final HashMap<String, NetworkPlayer> networkMap;
     private boolean inGame;
     private GameController gameController;
     //endregion
@@ -87,9 +89,10 @@ public class Lobby {
         HashMap<String, VirtualView> viewHashMap = new HashMap<>();
         for (NetworkPlayer netPlayer: networkMap.values()) viewHashMap.put(netPlayer.getUsername(), netPlayer.getVirtualView());
 
-        gameController = new GameController(new Game(playerUsernames), viewHashMap);
+        Game g = new Game(playerUsernames);
+        gameController = new GameController(g, viewHashMap);
         inGame = true;
-        sendLobbyMessage(new StartGameResponse());
+        //sendLobbyMessage(new StartGameResponse(true, g.get)); todo: importante, dove metterlo?
     }
 
     /**

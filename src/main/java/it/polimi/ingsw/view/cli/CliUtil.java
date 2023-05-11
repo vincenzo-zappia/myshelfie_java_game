@@ -167,7 +167,7 @@ public class CliUtil {
         String line2 = ColorCode.ORANGE.getCode() + AsciiTool.DOT.getSymbol() + "G: Game\t\t" + ColorCode.BLUE.getCode() + AsciiTool.DOT.getSymbol() + "F: Frames\n";
         String line3 = ColorCode.L_BLUE.getCode() + AsciiTool.DOT.getSymbol() + "T: Trophies\t" + ColorCode.MAGENTA.getCode() + AsciiTool.DOT.getSymbol() + "P: Plants\n";
 
-        return line3 + line2 + line1;
+        return line3 + line2 + line1 + ColorCode.DEFAULT.getCode();
     }
 
 
