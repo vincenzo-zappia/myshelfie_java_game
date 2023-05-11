@@ -1,12 +1,11 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.entities.goals.CommonGoal;
+import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.util.Cell;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -57,5 +56,5 @@ public interface View {
      */
     void sendNotYourTurn(String content);
 
-    void sendStartGameResponse(boolean response, CommonGoal[] commonGoals, PrivateGoal privateGoal, String content);
+    void sendGoals(Goal[] commonGoals, PrivateGoal privateGoal);
 }

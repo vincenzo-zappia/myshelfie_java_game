@@ -1,19 +1,16 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.entities.goals.CommonGoal;
+import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.util.Cell;
-
-import java.util.Collection;
-import java.util.HashMap;
 
 public class VirtualModel {
 
     //region ATTRIBUTES
     private BoardCell[][] board;
     private Cell[][] bookshelf;
-    private CommonGoal[] commonGoals;
+    private Goal[] commonGoals;
     private PrivateGoal privateGoal;
     private int[][] selection;
     private boolean selectionUpdated;
@@ -32,7 +29,7 @@ public class VirtualModel {
     //endregion
 
     //region GETTER AND SETTER
-    public void select(int[][] coordinates){
+    public void select(int[][] coordinates) {
         this.selection = coordinates;
         selectionUpdated = true;
     }
@@ -58,11 +55,11 @@ public class VirtualModel {
         return bookshelf;
     }
 
-    public void setCommonGoals(CommonGoal[] commonGoals) {
+    public void setCommonGoals(Goal[] commonGoals) {
         this.commonGoals = commonGoals;
     }
 
-    public CommonGoal[] getCommonGoals() {
+    public Goal[] getCommonGoals() {
         return commonGoals;
     }
 

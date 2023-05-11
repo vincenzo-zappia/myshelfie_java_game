@@ -8,19 +8,15 @@
 package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Board;
-import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.entities.goals.CommonGoal0;
-import it.polimi.ingsw.entities.goals.CommonGoal1;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.util.BoardCell;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import it.polimi.ingsw.entities.goals.*;
 import it.polimi.ingsw.util.Cell;
 
 public class Game{
@@ -179,8 +175,14 @@ public class Game{
     public ArrayList<Player> getPlayers(){
         return new ArrayList<>(players.values());
     }
+    public Player getPlayer(String username){
+        return players.get(username);
+    }
     public Board getBoard(){
         return board;
+    }
+    public Goal[] getCommonGoals(){
+        return commonGoals;
     }
     //endregion
 

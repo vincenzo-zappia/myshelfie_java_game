@@ -6,9 +6,10 @@ import it.polimi.ingsw.exceptions.CellGetCardException;
 import it.polimi.ingsw.util.ToolXML;
 import it.polimi.ingsw.util.SpecialCell;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class PrivateGoal implements Goal{
+public class PrivateGoal implements Goal, Serializable {
     private static HashMap<Integer, Integer> scores;
     private final SpecialCell[] specialCells;
 

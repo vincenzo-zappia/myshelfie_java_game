@@ -39,6 +39,7 @@ public class GameController {
         this.viewHashMap = viewHashMap;
         broadcastMessage(MessageType.CURRENT_PLAYER_UPDATE);
         broadcastMessage(MessageType.BOARD_REFILL_UPDATE);
+        broadcastMessage(MessageType.GOALS_DETAILS);
         canInsert = false;
     }
     //endregion
@@ -78,6 +79,7 @@ public class GameController {
                 case CARD_REMOVE_UPDATE -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
                 case CURRENT_PLAYER_UPDATE -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
                 case SCOREBOARD -> viewHashMap.get(username).showScoreboard((HashMap<String, Integer>) payload[0]);
+                case GOALS_DETAILS -> viewHashMap.get(username).sendGoals(game.getCommonGoals(), game.getPlayer(username).getPrivateGoal());
             }
         }
     }

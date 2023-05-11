@@ -3,9 +3,10 @@ package it.polimi.ingsw.entities.goals;
 import it.polimi.ingsw.util.CardType;
 import it.polimi.ingsw.util.Cell;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
-public abstract class CommonGoal {
+public abstract class CommonGoal implements Serializable {
 
     //region ATTRIBUTES
     private int score;

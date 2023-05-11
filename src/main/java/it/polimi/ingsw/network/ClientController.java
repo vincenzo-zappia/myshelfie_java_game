@@ -77,6 +77,10 @@ public class ClientController implements Observer {
                 view.showRemovedCards(remove.getCoordinates());
             }
             case NOT_YOUR_TURN -> view.sendNotYourTurn(message.getContent());
+            case GOALS_DETAILS -> {
+                GoalsMessage goalsMessage = (GoalsMessage) message;
+                view.sendGoals(goalsMessage.getCommonGoals(), goalsMessage.getPrivateGoal());
+            }
         }
     }
     //endregion

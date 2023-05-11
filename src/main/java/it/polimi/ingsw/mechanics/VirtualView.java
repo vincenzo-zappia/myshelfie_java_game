@@ -1,6 +1,7 @@
 package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.goals.CommonGoal;
+import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.ClientHandler;
 import it.polimi.ingsw.network.messages.*;
@@ -62,7 +63,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void sendStartGameResponse(boolean response, CommonGoal[] commonGoals, PrivateGoal privateGoal, String content) {
-
+    public void sendGoals(Goal[] commonGoals, PrivateGoal privateGoal) {
+        clientHandler.sendMessage(new GoalsMessage(commonGoals, privateGoal));
     }
+
 }

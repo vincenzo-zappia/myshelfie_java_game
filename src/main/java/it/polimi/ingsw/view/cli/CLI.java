@@ -9,6 +9,7 @@ import it.polimi.ingsw.network.ClientController;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.util.ToolXML;
 import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.VirtualModel;
 
@@ -34,7 +35,6 @@ public class CLI implements Runnable, UserInterface {
     @Override
     public void run() {
         //TODO: Stampa a schermo titolo di gioco da metodo di CliUtils
-
         connection(); //Creation or joining of a lobby and starting the game (initialization of all the data structures)
 
         //While loop to read the user keyboard input (until the game ends)
@@ -88,7 +88,7 @@ public class CLI implements Runnable, UserInterface {
                         case "board" -> showBoard();
                         case "bookshelf" -> showBookshelf();
                         case "commongoals" -> showCommonGoals();
-                        case "privategoal" -> {}
+                        case "privategoal" -> showPrivateGoal();
 
                         default -> System.out.println(CliUtil.makeErrorMessage("Error")); //TOTO: cambiare il messaggio
                     }
@@ -109,6 +109,10 @@ public class CLI implements Runnable, UserInterface {
         Goal[] goals = virtualModel.getCommonGoals();
 
 
+    }
+
+    private void showPrivateGoal() {
+        PrivateGoal privateGoal = virtualModel.getPrivateGoal();
     }
 
     private boolean checkFormat(String str){ return str.matches("\\(\\d+;\\d+\\)"); }
@@ -265,9 +269,11 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void sendStartGameResponse(boolean response, CommonGoal[] commonGoals, PrivateGoal privateGoal, String content) {
-
+    public void sendGoals(Goal[] commonGoals, PrivateGoal privateGoal) {
+        virtualModel.setCommonGoals(commonGoals);
+        virtualModel.setPrivateGoal(privateGoal);
     }
+
     //endregion
 
 }
