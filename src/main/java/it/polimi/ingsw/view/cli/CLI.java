@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.goals.CommonGoal;
+import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
@@ -39,7 +40,7 @@ public class CLI implements Runnable, UserInterface {
         //While loop to read the user keyboard input (until the game ends)
         while(true){
             String read = scanner.nextLine();
-            String[] splitted = read.split(" ");
+            String[] splitted = read.split(" ", 2);
 
             switch (splitted[0]){
 
@@ -86,7 +87,7 @@ public class CLI implements Runnable, UserInterface {
                     switch (splitted[1]){
                         case "board" -> showBoard();
                         case "bookshelf" -> showBookshelf();
-                        case "commongoals" -> {}
+                        case "commongoals" -> showCommonGoals();
                         case "privategoal" -> {}
 
                         default -> System.out.println(CliUtil.makeErrorMessage("Error")); //TOTO: cambiare il messaggio
@@ -103,7 +104,13 @@ public class CLI implements Runnable, UserInterface {
         }
 
     }
-    
+
+    private void showCommonGoals(){
+        Goal[] goals = virtualModel.getCommonGoals();
+
+
+    }
+
     private boolean checkFormat(String str){ return str.matches("\\(\\d+;\\d+\\)"); }
 
     //region PRIVATE METHODS
