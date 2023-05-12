@@ -117,7 +117,6 @@ public class GameController {
     public synchronized void cardInsertion(InsertionRequest message){
         try {
             //cards insertion in player's bookshelf
-            //if statement can be simplified, not sure if it's correct with message's code
             if(game.addCardToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards()) && canInsert){
                 game.removeCardFromBoard(coordinates); //Removal of the selected cards form the game board
                 System.out.println("INFO: Carte inserite nella colonna " + message.getSelectedColumn());

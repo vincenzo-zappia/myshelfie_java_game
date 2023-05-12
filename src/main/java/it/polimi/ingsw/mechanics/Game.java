@@ -106,8 +106,6 @@ public class Game{
      * @throws AddCardException if column are already full
      */
     public boolean addCardToBookshelf(String playerUsername, int column, ArrayList<Card> cards) {
-        //now the method check if the arraylist contains a player with username == playerUsername
-        //TODO: controlli da spostare sul controller e rendere il metodo void
         if(column <0 || column>=5) return false;
         if(!players.get(playerUsername).getBookshelf().getCell(cards.size(), column).isCellEmpty()) return false;
 

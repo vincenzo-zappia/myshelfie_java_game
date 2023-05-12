@@ -24,6 +24,15 @@ class GameTest {
     }
 
     @Test
+    void orderByScore(){
+        game.getPlayers().get(0).addScore(300);
+        game.getPlayers().get(1).addScore(139);
+        game.getPlayers().get(2).addScore(1000);
+        game.getPlayers().get(3).addScore(890);
+        //
+    }
+
+    @Test
     void isSelectable() {
         int[][] coordinates = new int[][]{{0, 3}, {0, 4}};
         assertTrue(game.isSelectable(coordinates));
