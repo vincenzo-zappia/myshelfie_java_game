@@ -10,12 +10,6 @@ package it.polimi.ingsw.entities.goals;
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.util.CardType;
 
-
-/*
- * Four groups each containing at least 4 tiles of the same types (not necessarily in the depicted shape).
- * The tiles of one group can be different from those of another group.
- */
-
 public class CommonGoal3 extends CommonGoal implements Goal{
 
     public CommonGoal3() {

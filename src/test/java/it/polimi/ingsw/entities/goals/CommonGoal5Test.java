@@ -23,7 +23,7 @@ class CommonGoal5Test {
     @Test
     void checkGoal1() {
         try {
-            for(int i=0; i<3; i++) {
+            for(int i=0; i<1; i++) {
                 bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
                 bookshelf.addCard(i, new Card("img.png", CardType.CATS));
                 bookshelf.addCard(i, new Card("img.png", CardType.BOOKS));
