@@ -51,7 +51,7 @@ public class CLI implements Runnable, UserInterface {
                     boolean validFormat = false;
                     for(int i=0; i< strCoordinates.length; i++) {
                         if(!checkFormat(strCoordinates[i].trim())){
-                            System.out.println(CliUtil.makeErrorMessage("coordinates in incorrect format!"));
+                            System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
                             validFormat = false;
                             break;
                         }
@@ -67,9 +67,11 @@ public class CLI implements Runnable, UserInterface {
                 //Card insertion command (bookshelf column n) eg: "insert n"
                 case "insert" -> {
                     int column;
+
+                    //Checking if the player has first made his selection
                     try {
                         if(!virtualModel.isSelectionUpdated()) {
-                            System.out.println(CliUtil.makeErrorMessage("ttt"));
+                            System.out.println(CliUtil.makeErrorMessage("First select your cards!"));
                             continue;
                         }
                         column = Integer.parseInt(splitted[1]);
@@ -78,7 +80,7 @@ public class CLI implements Runnable, UserInterface {
                         controller.sendInsertion(cards, column);
                     }
                     catch (NumberFormatException e){
-                        System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
+                        System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
                     }
                 }
 
@@ -90,16 +92,16 @@ public class CLI implements Runnable, UserInterface {
                         case "commongoals" -> showCommonGoals();
                         case "privategoal" -> showPrivateGoal();
 
-                        default -> System.out.println(CliUtil.makeErrorMessage("Error")); //TOTO: cambiare il messaggio
+                        default -> System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
                     }
                 }
 
                 //Help command for syntax aid
                 case "help" -> {
-                    System.out.println("lista comandi");
+                    System.out.println("Command list:");
                 }
 
-                default -> System.out.println(CliUtil.makeErrorMessage("Comando non corretto, scrivi help per la lista comandi")); //TODO: tradurre
+                default -> System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
             }
         }
 
@@ -128,7 +130,7 @@ public class CLI implements Runnable, UserInterface {
                 controller.joinLobby(username, id);
             }
             catch (NumberFormatException e) {
-                System.out.println(CliUtil.makeErrorMessage("Valore non corretto."));
+                System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
                 connection();
             }
         }
@@ -229,7 +231,7 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void showSuccessfulConnection(int lobbyId) {
-        System.out.println("Connessione alla loby riuscita con successo! Lobby id: " + lobbyId); //TODO: tradurre
+        System.out.println("Lobby connection successful! \nLobby ID: " + lobbyId);
     }
 
     @Override

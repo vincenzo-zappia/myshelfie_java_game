@@ -7,8 +7,8 @@ import java.util.Random;
 public class CommonGoalFactory {
 
     /**
-     * return an istance of a CommonGoal using integer parameter
-     * @param goal_id integer value to decide which CommonGoal return
+     * Returns an instance of a CommonGoal using an integer parameter
+     * @param goal_id integer value that decides which CommonGoal to return
      * @return the chosen CommonGoal
      */
     private Goal goalFactory(int goal_id){
@@ -28,7 +28,7 @@ public class CommonGoalFactory {
     }
 
     /**
-     * method to decide the two CommonGoal of a game
+     * Randomly picks the two common goals of the game
      * @return array of two CommonGoal
      */
     public Goal[] makeCommonGoal(){  //goal_id: intero che corrisponde alla cifra finale sul nome dei CommonGoalX
@@ -40,7 +40,6 @@ public class CommonGoalFactory {
         for(int i =0; i < 2; i++){
             tmp = x.nextInt(13);
             if (sentinel != tmp)result[i]=goalFactory(tmp);
-            System.out.println("INFO: il problema sta nel CG " + tmp);
             sentinel=tmp;
         }
         return result;

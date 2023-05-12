@@ -94,17 +94,27 @@ public class ClientHandler implements Runnable{
         switch (msg.getType()){
             case JOIN_LOBBY_REQUEST -> {
                 JoinLobbyRequest joinLobbyRequest = (JoinLobbyRequest) msg;
+
+                //Checks if the selected lobby exists
                 if (server.existsLobby(joinLobbyRequest.getLobbyId())) this.lobby = server.getLobby(joinLobbyRequest.getLobbyId());
+
+                //Joining the selected lobby
                 lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this));
-                sendMessage(new ResponseMessage(MessageType.LOBBY_ACCESS_RESPONSE, true, "Connessione alla loby riuscita con successo!"));
-                System.out.println("INFO: Messaggio di conferma creazione inviato.");
+                sendMessage(new ResponseMessage(MessageType.LOBBY_ACCESS_RESPONSE, true, "Lobby connection successful!"));
+
+                //Sends to all the players the updated lobby with all the usernames
                 lobby.sendLobbyMessage(new NewConnectionUpdate(lobby.getPlayerUsernames()));
             }
             case CREATE_LOBBY_REQUEST -> {
+
+                //Creating a new lobby
                 this.lobby = server.createLobby();
+
+                //Joining the newly created lobby
                 lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this));
                 sendMessage(new LobbyCreationResponse(lobby.getLobbyId(), true));
-                System.out.println("INFO: Messaggio di conferma creazione inviato.");
+
+                //Initialization of the game
                 startGameHandler();
             }
             default -> {
@@ -120,6 +130,7 @@ public class ClientHandler implements Runnable{
      */
     private void startGameHandler() {
         Message msg = receiveMessage();
+
         if (msg.getType() == MessageType.START_GAME_REQUEST){
             lobby.startGame();
         }

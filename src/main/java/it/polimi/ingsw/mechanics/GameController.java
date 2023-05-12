@@ -94,6 +94,12 @@ public class GameController {
      */
     public synchronized void cardSelection(SelectionRequest message){
 
+        //Checking if the player has already made a selection
+        if(canInsert){
+            viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.SELECTION_RESPONSE, "Selection already made!");
+            return;
+        }
+
         //Checking if the cards selected are actually selectable
         if(game.isSelectable(message.getCoordinates())) {
 
@@ -108,7 +114,7 @@ public class GameController {
         }
 
         //Invio riscontro negativo al client
-        else viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.SELECTION_RESPONSE, "Invalid selection! Please retry: ");
+        else viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.SELECTION_RESPONSE, "Invalid selection! Please retry.");
     }
 
     /**

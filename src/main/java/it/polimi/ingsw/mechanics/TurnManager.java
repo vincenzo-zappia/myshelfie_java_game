@@ -12,16 +12,13 @@ public class TurnManager {
     private final ArrayList<String> playerUsernames;
     private String currentPlayer;
     private boolean endGame;
-    //private turnPhase currentPhase;
     //endregion
-
-    //enum turnPhase {START, SELECTION, INSERTION, END};
 
     //region CONSTRUCTOR
     public TurnManager(ArrayList<String> playerUsernames){
         this.playerUsernames = playerUsernames;
         this.currentPlayer = playerUsernames.get(0);
-        System.out.println(currentPlayer);
+        System.out.println("INFO: Current player is: " + currentPlayer);
         endGame = false;
     }
     //endregion
@@ -29,25 +26,25 @@ public class TurnManager {
     //region METHODS
 
     /**
-     * Method that sets the current player according to the rules of the game. It circularly iterates
-     * through the players. If the endgame phase started it stops at the last username which corresponds
+     * Sets the current player according to the rules of the game. It circularly iterates
+     * through the players. If the endgame phase has started it stops at the last username which corresponds
      * to the player to the right of the sofa.
      */
     public boolean nextTurn(){
         int currentPlayerIndex = playerUsernames.indexOf(currentPlayer);
 
-        //circular iteration of turns
+        //Checks if an iteration has ended, if so, and the endgame has not yet started, it starts back from the couch
         if(currentPlayerIndex + 1 < playerUsernames.size()) currentPlayerIndex += 1;
         else if(!endGame) currentPlayerIndex = 0;
         else return false;
         currentPlayer = playerUsernames.get(currentPlayerIndex);
-        System.out.println("INFO: Di turno adesso: " + currentPlayer);
+        System.out.println("INFO: Current player is: " + currentPlayer);
         return true;
     }
 
     /**
-     * Method that starts the endGame: the iteration of the player is set to stop to the last username which
-     * corresponds to the player to the right of the sofa.
+     * Starts the endGame: the iteration of the player is set to stop to the last username which
+     * corresponds to the player to the right of the couch.
      */
     public void startEndGame(){
         endGame = true;

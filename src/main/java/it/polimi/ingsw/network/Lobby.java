@@ -41,14 +41,15 @@ public class Lobby {
      */
     public void joinLobby(NetworkPlayer netPlayer){
         Message response;
-        //se il gioco sta andando non faccio entrare il player
+
+        //Checking if the selected lobby is already running a game
         if(inGame) {
             response = new ErrorMessage("Game already started!");
             netPlayer.getClientHandler().sendMessage(response);
             return;
         }
 
-        //se si è raggiunto il numero massimo di giocatori non faccio entrare il player
+        //Checking if the lobby is full
         if(playerUsernames.size()>=4){
             response = new ErrorMessage("Lobby is full!");
             netPlayer.getClientHandler().sendMessage(response);
@@ -58,21 +59,27 @@ public class Lobby {
 
         String username = netPlayer.getUsername();
         assert (username != null);
+
+        //TODO: Username deve essere univoco nel server e non solo nella lobby
+        //Checks if the username of the player is already taken
         if(playerUsernames.contains(username)){
             response = new ErrorMessage("Username already taken!");
             netPlayer.getClientHandler().sendMessage(response);
             return;
         }
 
-
-        //Aggiunta effettiva del player
+        //Adding the player to the lobby
         playerUsernames.add(username);
         VirtualView view = new VirtualView(netPlayer.getClientHandler());
         netPlayer.setVirtualView(view);
         networkMap.put(username, netPlayer);
     }
 
-    //TODO: nuovo metodo da vedere se mantenere
+    //TODO: Decidere se mantenere il metodo
+    /**
+     * Broadcasts a message to all the players in the lobby (same as broadcast() in GameController)
+     * @param message message to send
+     */
     public void sendLobbyMessage(Message message){
         for(NetworkPlayer player: networkMap.values()){
             player.getClientHandler().sendMessage(message);
@@ -84,6 +91,8 @@ public class Lobby {
      * officially started.
      */
     public void startGame(){
+
+        //Checking if the number of the players is legal before initializing the game
         assert (playerUsernames.size()>1 && playerUsernames.size()<=4);
 
         HashMap<String, VirtualView> viewHashMap = new HashMap<>();

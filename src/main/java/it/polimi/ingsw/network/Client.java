@@ -45,6 +45,7 @@ public class Client extends Subject implements Runnable{
     @Override
     public void run() {
         while(!Thread.currentThread().isInterrupted()){
+
             //Actual management of the received message relatively to the state of Client
             notifyObserver(receiveMessage());
         }
