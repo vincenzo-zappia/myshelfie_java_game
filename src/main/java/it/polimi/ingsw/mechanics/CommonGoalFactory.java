@@ -38,7 +38,7 @@ public class CommonGoalFactory {
         Goal[] result = new Goal[2];
 
         for(int i =0; i < 2; i++){
-            tmp = x.nextInt(13);
+            tmp = x.nextInt(12)+1 ;
             if (sentinel != tmp)result[i]=goalFactory(tmp);
             sentinel=tmp;
         }
