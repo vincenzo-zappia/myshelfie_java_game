@@ -201,7 +201,8 @@ public class GameController {
         game.scorePrivateGoal();
 
         //Creating the scoreboard
-        HashMap<String, Integer> scoreboard = game.orderByScore();
+        HashMap<Integer, String> scoreboard = game.orderByScore();
+
 
         //Broadcasting the scoreboard to all the players
         broadcastMessage(MessageType.SCOREBOARD, (Object) scoreboard);
