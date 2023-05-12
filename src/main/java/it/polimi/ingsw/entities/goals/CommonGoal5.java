@@ -1,7 +1,6 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.exceptions.CellGetCardException;
 
 /*
  * Three columns each formed by 6 tiles of maximum three different types.
@@ -17,24 +16,42 @@ public class CommonGoal5 extends CommonGoal implements Goal{
 
     @Override
     public int checkGoal(Bookshelf bs) {
-        int tmp;
-        int cntr=0;
-
-        try {
-            for(int i = 0; i < 5; i++){
-                tmp=0;
-                for(int j = 0; j < 6; j++){
-                    if(!bs.getCell(j,i).isCellEmpty() && !bs.getCell(0, i).getCard().sameType(bs.getCell(j,i).getCard())){
-                        tmp++;
-                    }
-                }
-                if(tmp<=3)cntr++;
-            }
-        } catch (CellGetCardException e) {
-            throw new RuntimeException(e);
-        }
-
-        if(cntr>=3) return getScore();
+        if (findColumns(bs.getMatrixColors())) return getScore();
         return 0;
+    }
+
+    public boolean findColumns(int[][] m) {
+        int counter = 0;
+
+        for (int j = 0; j < m[0].length; j++) {
+            int[] diff = new int[m.length];  //array of column
+            int tmp = 0;
+
+            for (int[] ints : m) {
+                int n = ints[j];
+                if (!isInColumn(diff, n)) {
+                    diff[tmp] = n;
+                    tmp++;
+
+                    if (tmp > 3) break;
+                }
+            }
+            if (tmp <= 3) {
+                counter++;
+                if (counter >= 3) return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @param v array of int numbers in a single column
+     * @param n
+     * @return
+     */
+    private boolean isInColumn(int[] v, int n) {
+        for (int j : v) if (j == n && j != UNAVAILABLE) return true;
+        return false;
     }
 }
