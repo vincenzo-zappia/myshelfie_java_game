@@ -48,6 +48,11 @@ public interface View {
      */
     void sendResponse(boolean response, MessageType responseType, String content);
 
+    /**
+     * Gives feedback to the player about his insertion command
+     * @param bookshelf updated bookshelf in case the insertion was successful, no changes otherwise
+     * @param response if the insertion was successful
+     */
     void sendInsertionResponse(Cell[][] bookshelf, boolean response);
 
     /**
@@ -56,5 +61,11 @@ public interface View {
      */
     void sendNotYourTurn(String content);
 
+    /**
+     * Sends to a player his private goal and the common goals of the game
+     * @param commonGoals common goals of the game
+     * @param privateGoal player-specific goal
+     */
     void sendGoals(Goal[] commonGoals, PrivateGoal privateGoal);
+
 }

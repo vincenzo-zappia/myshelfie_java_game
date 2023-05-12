@@ -33,46 +33,35 @@ public class VirtualModel {
         this.selection = coordinates;
         selectionUpdated = true;
     }
-
     public int[][] getSelection() {
         selectionUpdated = false;
         return selection;
     }
-
     public void setBoard(BoardCell[][] newBoard) {
         this.board = newBoard;
     }
-
     public BoardCell[][] getBoard() {
         return board;
     }
-
     public void setBookshelf(Cell[][] newBookshelf) {
         this.bookshelf = newBookshelf;
     }
-
     public Cell[][] getBookshelf() {
         return bookshelf;
     }
-
     public void setCommonGoals(Goal[] commonGoals) {
         this.commonGoals = commonGoals;
     }
-
     public Goal[] getCommonGoals() {
         return commonGoals;
     }
-
     public void setPrivateGoal(PrivateGoal privateGoal) {
         this.privateGoal = privateGoal;
     }
-
     public PrivateGoal getPrivateGoal() {
         return privateGoal;
     }
     //endregion
-
-
 
     public void refreshBoard(int[][] coordinates) {
         for (int[] coordinate : coordinates) {
@@ -82,8 +71,8 @@ public class VirtualModel {
         }
     }
 
-
     public boolean isSelectionUpdated() {
         return selectionUpdated;
     }
+
 }

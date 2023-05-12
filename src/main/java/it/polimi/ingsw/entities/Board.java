@@ -34,7 +34,7 @@ public class Board {
     }
 
     /**
-     * method that activates the board cells that do NOT depend on the number of players (basic board)
+     * Activates the board cells that do NOT depend on the number of players (basic board)
      */
     private void initBoard(){
         for(int i = 3; i<=4;i++)matrix[1][i].setCellActive();
@@ -49,7 +49,7 @@ public class Board {
     }
 
     /**
-     * method that activates the additional board cells that depend on the number of players
+     * Activates the additional board cells that depend on the number of players
      * @param x number of players
      */
     private void initBoard(int x){
@@ -76,7 +76,7 @@ public class Board {
     }
 
     /**
-     * method that fills the board. It's called in two occasions:
+     * Fills the board. It's called in two occasions:
      *  1) when the board is created
      *  2) when a player cannot select more than 1 or 2 cards
      */
@@ -95,12 +95,28 @@ public class Board {
     //endregion
 
     //region METHODS
+    /**
+     * Checks if a single card is selectable
+     * @param x row of the card
+     * @param y column of the card
+     * @return if the card is selectable
+     */
+    public boolean selectableCard(int x, int y){
+        if(matrix[x][y].isCellActive() && !matrix[x][y].isCellEmpty()){
+            if((y < 8) && (matrix[x][y+1].isCellEmpty() || !matrix[x][y+1].isCellActive())) return true;
+            if((x > 0) && (matrix[x-1][y].isCellEmpty() || !matrix[x-1][y].isCellActive())) return true;
+            if((x < 8) && (matrix[x+1][y].isCellEmpty() || !matrix[x+1][y].isCellActive())) return true;
+            if((y > 0) && (matrix[x][y-1].isCellEmpty() || !matrix[x][y-1].isCellActive())) return true;
+            return false;
+        }
+        return false;
+    }
 
     /**
-     * take a card from the table and return the card
-     * @param row of the chosen card
-     * @param column of the chosen card
-     * @return card chosen by player
+     * Removes a card from the board
+     * @param row of the card
+     * @param column of the card
+     * @return removed card
      */
     public Card removeCard(int row, int column){
         Card card;
@@ -114,7 +130,7 @@ public class Board {
     }
 
     /**
-     * override of method toString() of class Object
+     * Override of the method toString() of the Object class
      * @return the created string
      */
     public String toString(){
@@ -141,24 +157,6 @@ public class Board {
         }
         return ret.toString();
     }
-
-    /**
-     * check if a single card is selectable
-     * @param x card's row
-     * @param y card's column
-     * @return true if the card is selectable (by player)
-     */
-    public boolean selectableCard(int x, int y){
-        if(matrix[x][y].isCellActive() && !matrix[x][y].isCellEmpty()){
-            if((y < 8) && (matrix[x][y+1].isCellEmpty() || !matrix[x][y+1].isCellActive()))return true;
-            if((x > 0) && (matrix[x-1][y].isCellEmpty() || !matrix[x-1][y].isCellActive()))return true;
-            if((x < 8) && (matrix[x+1][y].isCellEmpty() || !matrix[x+1][y].isCellActive()))return true;
-            if((y > 0) && (matrix[x][y-1].isCellEmpty() || !matrix[x][y-1].isCellActive()))return true;
-            return false;
-        }
-        return false;
-    }
-
     //endregion
 
     //region GETTER AND SETTER

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.client2server.CreateLobbyRequest;
 import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
 import it.polimi.ingsw.network.messages.client2server.JoinLobbyRequest;
@@ -13,7 +12,6 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.UserInterface;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 //TODO: Per l'impacchettamento messaggi serve implementare un nuovo tipo di Observer che cambia i parametri di implementazione update
 public class ClientController implements Observer {
@@ -61,7 +59,7 @@ public class ClientController implements Observer {
             }
             case CURRENT_PLAYER_UPDATE -> view.showCurrentPlayer(message.getContent());
             case INSERTION_RESPONSE -> {
-                InsertionResponseMessage response = (InsertionResponseMessage) message;
+                InsertionResponse response = (InsertionResponse) message;
                 view.sendInsertionResponse(response.getBookshelf(), response.getResponse());
             }
             case BOARD_REFILL_UPDATE -> {
@@ -72,8 +70,8 @@ public class ClientController implements Observer {
                 ErrorMessage error = (ErrorMessage) message;
                 view.showError(error.getContent());
             }
-            case CARD_REMOVE_UPDATE -> {
-                CardRemoveUpdate remove = (CardRemoveUpdate) message;
+            case CARDS_REMOVE_UPDATE -> {
+                CardsRemoveUpdate remove = (CardsRemoveUpdate) message;
                 view.showRemovedCards(remove.getCoordinates());
             }
             case NOT_YOUR_TURN -> view.sendNotYourTurn(message.getContent());

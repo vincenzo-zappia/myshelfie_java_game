@@ -6,10 +6,10 @@ import it.polimi.ingsw.network.messages.MessageType;
 /**
  * ordina ai client di eliminare le carte selezionate (server -> client)
  */
-public class CardRemoveUpdate extends Message {
+public class CardsRemoveUpdate extends Message {
     private final int[][] coordinates;
-    public CardRemoveUpdate(int[][] coordinates) {
-        super("server", MessageType.CARD_REMOVE_UPDATE);
+    public CardsRemoveUpdate(int[][] coordinates) {
+        super("server", MessageType.CARDS_REMOVE_UPDATE);
         this.coordinates = coordinates;
     }
 

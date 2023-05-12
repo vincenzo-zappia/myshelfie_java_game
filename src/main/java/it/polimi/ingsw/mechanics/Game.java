@@ -12,7 +12,6 @@ import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.entities.goals.CommonGoal0;
 import it.polimi.ingsw.entities.goals.Goal;
-import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.util.BoardCell;
 
 import java.util.ArrayList;
@@ -46,11 +45,6 @@ public class Game{
     //endregion
 
     //region METHODS
-
-    public Cell[][] getPlayerBookshelf(String username){
-        return players.get(username).getBookshelf().getMatrix();
-    }
-
     /**
      * Checks if the selected cards are actually selectable
      * @param coord coordinates of the selected cards
@@ -91,25 +85,36 @@ public class Game{
      * @param coordinates of the cards selected to be removed
      * @return the removed cards
      */
-    public ArrayList<Card> removeCardFromBoard(int[][] coordinates){
+    public ArrayList<Card> removeCardsFromBoard(int[][] coordinates){
         ArrayList<Card> removedCards = new ArrayList<>();
         for (int[] coordinate : coordinates) removedCards.add(board.removeCard(coordinate[0], coordinate[1]));
-        System.out.println("INFO: Cards removed!");
+        System.out.println("INFO: Cards removed.");
         return removedCards;
     }
 
+    //TODO: Estrarre la validità dell'inserzione dal metodo di inserzione come per la selezione?
     /**
      * Inserts each selected card in order into the player's bookshelf
-     * @param playerUsername player who performs the move
-     * @param column into which insert the cards selected by the player
+     * @param playerUsername player who makes the move
+     * @param column into which the cards selected by the player are inserted
      * @param cards selected and arranged by the player in the desired order
-     * @throws AddCardException if column are already full
      */
-    public boolean addCardToBookshelf(String playerUsername, int column, ArrayList<Card> cards) {
-        if(column <0 || column>=5) return false;
-        if(!players.get(playerUsername).getBookshelf().getCell(cards.size(), column).isCellEmpty()) return false;
+    public boolean addCardsToBookshelf(String playerUsername, int column, ArrayList<Card> cards) {
+        //Checking if the selected row is an existing one
+        if(column <0 || column>=5){
+            System.out.println("INFO: Cards not inserted.");
+            return false;
+        }
 
+        //Checking if the selected column has enough space for the number of cards selected
+        if(!players.get(playerUsername).getBookshelf().getCell(cards.size(), column).isCellEmpty()){
+            System.out.println("INFO: Cards not inserted.");
+            return false;
+        }
+
+        //Card insertion
         for(Card c : cards) players.get(playerUsername).addCardToBookshelf(column, c);
+        System.out.println("INFO: Cards inserted.");
         return true;
     }
 
@@ -150,23 +155,26 @@ public class Game{
         }
     }
 
+    //TODO: Implementare l'ordinamento dei player (ora li resistuisce non ordinati)
     /**
-     * Method that orders players by increasing point
-     * @return the ordered list of players
+     * Arranges the players by score
+     * @return ordered hashmap (username, score)
      */
     public HashMap<String, Integer> orderByScore(){
         HashMap<String, Integer> ordered = new HashMap<>();
         for(String username : players.keySet()) ordered.put(username, players.get(username).getScore());
 
-        //TODO: Effettivamente ordinarli
         return ordered;
     }
 
-    //metodo forwarding
+    /**
+     * Checks is the bookshelf of a given player is full (forwarding method)
+     * @param username player whose bookshelf to check
+     * @return if the bookshelf of the player is full
+     */
     public boolean isPlayerBookshelfFull(String username){
         return players.get(username).isBookshelfFull();
     }
-
     //endregion
 
     //region GETTER AND SETTER
@@ -175,6 +183,9 @@ public class Game{
     }
     public Player getPlayer(String username){
         return players.get(username);
+    }
+    public Cell[][] getPlayerBookshelf(String username){
+        return players.get(username).getBookshelf().getMatrix();
     }
     public Board getBoard(){
         return board;

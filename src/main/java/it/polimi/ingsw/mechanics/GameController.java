@@ -1,7 +1,6 @@
 
 package it.polimi.ingsw.mechanics;
 
-import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
 import it.polimi.ingsw.network.messages.Message;
@@ -17,19 +16,18 @@ import java.util.HashMap;
 public class GameController {
 
     //region NETWORK ATTRIBUTES
-
     //attributi verso la parte del modello
     private final Game game;
     private final TurnManager turnManager;
-    private boolean canInsert;
 
     //attributi verso la parte di networking
     private final HashMap<String, VirtualView> viewHashMap;
     //endregion
 
-    //region LOCAL ATTRIBUTES
-    //TODO: Vedere se si riesce a rimuovere l'attributo
-    private int[][] coordinates; //Turn coordinates temporarily saved as attributes to send them as message
+    //TODO: Vedere se si riesce a renderli locali
+    //region LOGIC ATTRIBUTES
+    private int[][] coordinates; //Turn-specific board coordinates temporarily saved as attributes to be sent as message
+    private boolean canInsert; //Turn phase management
     //endregion
 
     //region CONSTRUCTOR
@@ -37,14 +35,19 @@ public class GameController {
         turnManager = new TurnManager(new ArrayList<>(viewHashMap.keySet()));
         this.game = game;
         this.viewHashMap = viewHashMap;
+
+        //Sending to each player initial game details: first player to make a move, board status, the game common
+        //goals and their specific private goal
         broadcastMessage(MessageType.CURRENT_PLAYER_UPDATE);
         broadcastMessage(MessageType.BOARD_REFILL_UPDATE);
         broadcastMessage(MessageType.GOALS_DETAILS);
+
+        //The game starts in the selection phase
         canInsert = false;
     }
     //endregion
 
-    //Every method is involved in the reception of a message, calling the specific action associated with the message and the generation of a response
+    //Each method receives a message, calls for the specific action requested by the message and generates a response
     //region METHODS
     /**
      * Method that handles the received generic Message by checking its actual type and calls the wanted method
@@ -76,7 +79,7 @@ public class GameController {
         for(String username : viewHashMap.keySet()) {
             switch (type) {
                 case BOARD_REFILL_UPDATE -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getMatrix());
-                case CARD_REMOVE_UPDATE -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
+                case CARDS_REMOVE_UPDATE -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
                 case CURRENT_PLAYER_UPDATE -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
                 case SCOREBOARD -> viewHashMap.get(username).showScoreboard((HashMap<String, Integer>) payload[0]);
                 case GOALS_DETAILS -> viewHashMap.get(username).sendGoals(game.getCommonGoals(), game.getPlayer(username).getPrivateGoal());
@@ -84,29 +87,28 @@ public class GameController {
         }
     }
 
-    //TODO: Metodo startTurn() che chiama view.askCardSelection()
-
-    //TODO: cardSelection() non invia più riscontro positivo ma chiama view.askCardInsertion()
     /**
-     * Extracts the coordinates from the message checking the validity of the selection and calls the game command
-     * @param message message sent by the client with the coordinates of the cards selected to be put
-     *                into the player's Bookshelf
+     * Extracts the coordinates of the selected cards from the message and checks its validity (does not call the method
+     * to remove them from the board)
+     * @param message message sent by the client with the coordinates of the selected cards
      */
     public synchronized void cardSelection(SelectionRequest message){
 
+        //Checking if the cards selected are actually selectable
         if(game.isSelectable(message.getCoordinates())) {
 
             //Invio riscontro positivo al client (questo abilita lato client a effettuare inserzione)
-            viewHashMap.get(message.getUsername()).sendResponse(true, MessageType.SELECTION_RESPONSE, "Selezione valida!"); //TODO: tradurre
+            viewHashMap.get(message.getUsername()).sendResponse(true, MessageType.SELECTION_RESPONSE, "Valid selection!");
 
-            //Saving the coordinate of the removed cards to send them in broadcast at the end of the turn
+            //Saving the coordinates of the removed cards in order to broadcast them at the end of the turn
             coordinates = message.getCoordinates();
 
-            canInsert=true;
+            //Turn phase management
+            canInsert = true;
         }
 
         //Invio riscontro negativo al client
-        else viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.SELECTION_RESPONSE, "Selezione non valida!"); //TODO: tradurre
+        else viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.SELECTION_RESPONSE, "Invalid selection! Please retry: ");
     }
 
     /**
@@ -116,61 +118,82 @@ public class GameController {
      */
     public synchronized void cardInsertion(InsertionRequest message){
         try {
-            //cards insertion in player's bookshelf
-            if(game.addCardToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards()) && canInsert){
-                game.removeCardFromBoard(coordinates); //Removal of the selected cards form the game board
-                System.out.println("INFO: Carte inserite nella colonna " + message.getSelectedColumn());
+            //Checking if the column selected for the insertion is valid, if so the cards are inserted by the same method
+            if(game.addCardsToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards()) && canInsert){
 
-                viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), true); //Invio riscontro positivo
-                System.out.println("INFO: carta inserita "+ game.getPlayerBookshelf(turnManager.getCurrentPlayer())[5][0].getCard().getType().toString());
+                //Removal of the previously selected cards from the game board
+                game.removeCardsFromBoard(coordinates);
+                System.out.println("INFO: Cards inserted in column " + message.getSelectedColumn());
+
+                //Sending positive feedback to the player with the updated bookshelf
+                viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), true);
+                System.out.println("INFO: Inserted cards "+ game.getPlayerBookshelf(turnManager.getCurrentPlayer())[5][0].getCard().getType().toString());
+
+                //End turn housekeeping routine
                 endTurn();
             }
 
             //TODO: Richiedere colonna valida
-            else viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), false); //invia riscontro negativo
-
-
+            //Sending negative feedback to the player with the bookshelf without changes
+            else {
+                viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), false);
+                System.out.println("INFO: Cards not inserted.");
+            }
 
         } catch (AddCardException e) {
             //Invio riscontro negativo al client
             viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), false);
             throw new RuntimeException(e);
-        }
+        } //TODO: Rimuovere perché non c'è più l'eccezione?
     }
 
+    //TODO: è possibile che le stesse coordinate vengano inviate due volte, gestire
     /**
      * Method that performs end turn housekeeping routines: checking if a common goal was achieved,
      * checking if the player's Bookshelf got full (and if so starting the endgame) and checking if
      * the condition for the actual end of the game is reached.
      */
     private void endTurn(){
-        //TODO: è possibile che le stesse coordinate vengano inviate due volte
-        canInsert=false;
+        //Turn phase management
+        canInsert = false;
 
-        //Invio a tutti i client la posizonie delle carete da rimuovere
-        broadcastMessage(MessageType.CARD_REMOVE_UPDATE, (Object) coordinates);
+        //Broadcasting to all the players the coordinates of the cards removed in the last turn
+        broadcastMessage(MessageType.CARDS_REMOVE_UPDATE, (Object) coordinates);
 
-        //invio aggiornamento board a tutti i player nel caso in cui la board venga riempita
-        if(game.checkRefill()) broadcastMessage(MessageType.BOARD_REFILL_UPDATE);
+        //Checking if the boards has to be refilled. If so, broadcasting the updated board to all the players
+        if(game.checkRefill()){
+            broadcastMessage(MessageType.BOARD_REFILL_UPDATE);
+            System.out.println("INFO: Board refilled.");
+        }
 
-        //Check if the current player has achieved anyone of the common goals
+        //Checking if the current player has achieved anyone of the common goals
         game.scoreCommonGoal(turnManager.getCurrentPlayer());
 
-        //Check if the current player's bookshelf is full
-        if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer())) turnManager.startEndGame();
+        //Checking if the bookshelf of the current player got full
+        if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer())){
+            turnManager.startEndGame();
+            System.out.println("INFO: Endgame started.");
+        }
 
-        //Nella chiamata di nextTurn() avviene effettivamente il cambiamento del turno del giocatore (nel caso non sia l'ultimo)
+        //Checking if the current player was the last one who had to play a turn, if so, starting the endgame, otherwise
+        //calling for the next player
         if(!turnManager.nextTurn()) findWinner();
 
+        //Broadcasting the username of the next player who plays a turn
         broadcastMessage(MessageType.CURRENT_PLAYER_UPDATE);
     }
 
     /**
-     * Method that creates the final scoreboard, scoring the player's private goals.
+     * Scores the private goal for every player and creates the final scoreboard announcing the winner
      */
     public void findWinner(){
+        //Scoring each individual private goal
         game.scorePrivateGoal();
+
+        //Creating the scoreboard
         HashMap<String, Integer> scoreboard = game.orderByScore();
+
+        //Broadcasting the scoreboard to all the players
         broadcastMessage(MessageType.SCOREBOARD, (Object) scoreboard);
     }
     //endregion

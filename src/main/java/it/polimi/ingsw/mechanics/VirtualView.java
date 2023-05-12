@@ -1,6 +1,5 @@
 package it.polimi.ingsw.mechanics;
 
-import it.polimi.ingsw.entities.goals.CommonGoal;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.ClientHandler;
@@ -30,7 +29,7 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void showRemovedCards(int[][] coordinates){
-        clientHandler.sendMessage(new CardRemoveUpdate(coordinates));
+        clientHandler.sendMessage(new CardsRemoveUpdate(coordinates));
     }
 
     @Override
@@ -54,7 +53,7 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void sendInsertionResponse(Cell[][] bookshelf, boolean response) {
-        clientHandler.sendMessage(new InsertionResponseMessage(bookshelf, response));
+        clientHandler.sendMessage(new InsertionResponse(bookshelf, response));
     }
 
     @Override

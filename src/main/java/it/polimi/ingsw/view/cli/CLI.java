@@ -105,20 +105,7 @@ public class CLI implements Runnable, UserInterface {
 
     }
 
-    private void showCommonGoals(){
-        Goal[] goals = virtualModel.getCommonGoals();
-
-
-    }
-
-    private void showPrivateGoal() {
-        PrivateGoal privateGoal = virtualModel.getPrivateGoal();
-    }
-
-    private boolean checkFormat(String str){ return str.matches("\\(\\d+;\\d+\\)"); }
-
     //region PRIVATE METHODS
-
     /**
      * Prompts the creation of either a lobby creation command or a lobby access request based on the user input
      */
@@ -191,17 +178,46 @@ public class CLI implements Runnable, UserInterface {
         return selection;
     }
 
+    /**
+     * Prints the bookshelf of the player on screen
+     */
     private void showBookshelf() {
         System.out.println(CliUtil.makeTitle("Bookshelf"));
         System.out.println(CliUtil.makeBookshelf(CliUtil.bookshelfConverter(virtualModel.getBookshelf())));
         System.out.println(CliUtil.makeLegend());
     }
 
+    /**
+     * Prints the board on screen
+     */
     private void showBoard() {
         System.out.println(CliUtil.makeTitle("Livingroom"));
         System.out.println(CliUtil.makeBoard(CliUtil.boardConverter(virtualModel.getBoard())));
         System.out.println(CliUtil.makeLegend());
     }
+
+    /**
+     * Prints the details of the two game common goals on screen
+     */
+    private void showCommonGoals(){
+        Goal[] goals = virtualModel.getCommonGoals();
+
+
+    }
+
+    /**
+     * Prints the details of the private goal of the player on screen
+     */
+    private void showPrivateGoal() {
+        PrivateGoal privateGoal = virtualModel.getPrivateGoal();
+    }
+
+    /**
+     *
+     * @param str
+     * @return
+     */
+    private boolean checkFormat(String str){ return str.matches("\\(\\d+;\\d+\\)"); }
     //endregion
 
     //region USER INTERFACE
@@ -273,7 +289,6 @@ public class CLI implements Runnable, UserInterface {
         virtualModel.setCommonGoals(commonGoals);
         virtualModel.setPrivateGoal(privateGoal);
     }
-
     //endregion
 
 }
