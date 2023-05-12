@@ -155,17 +155,29 @@ public class Game{
         }
     }
 
-    //TODO: Implementare l'ordinamento dei player (ora li resistuisce non ordinati)
     /**
      * Arranges the players by score
      * @return ordered hashmap (username, score)
      */
-    public HashMap<String, Integer> orderByScore(){
-        HashMap<String, Integer> ordered = new HashMap<>();
-        for(String username : players.keySet()) ordered.put(username, players.get(username).getScore());
+    public HashMap<Integer, String> orderByScore(){
+        HashMap<Integer, String> ordered = new HashMap<>();
+
+        Player[] p = getPlayers().toArray(new Player[players.size()]);
+
+        for(int i = 0; i < p.length-1; i++){
+            for(int j = 1; j<p.length; j++){
+                if(p[i].getScore() < p[j].getScore()){
+                    Player tmp = p[j];
+                    p[j] = p[i];
+                    p[i] = tmp;
+                }
+            }
+        }
+        for(int i = 0; i<p.length; i++)ordered.put(i+1, p[i].getUsername());
 
         return ordered;
     }
+
 
     /**
      * Checks is the bookshelf of a given player is full (forwarding method)
