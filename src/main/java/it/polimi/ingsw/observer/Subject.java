@@ -4,12 +4,14 @@ import it.polimi.ingsw.network.messages.Message;
 
 import java.util.ArrayList;
 
-//Subject maintains a list of its observers and notifies them of any state changes
+/**
+ * A subject maintains a list of its observers and notifies them of any state changes
+ */
 public abstract class Subject {
     private ArrayList<Observer> observers = new ArrayList<>();
 
     /**
-     * adds observer to the list
+     * Adds observer to the list
      * @param o observer to add
      */
     public void register(Observer o) {
@@ -17,15 +19,14 @@ public abstract class Subject {
     }
 
     /**
-     * removes observer from the list
+     * Removes observer from the list
      */
     public void unregister(Observer o) {
         observers.remove(o);
     }
 
-    //TODO: Capire che parametro far prendere per far passarevalori impacchetto messaggio CLI -> ClientActionManager
     /**
-     * notifies all observers in the list
+     * Notifies all observers in the list
      * @param message object with the updated information
      */
     public void notifyObserver(Message message) {

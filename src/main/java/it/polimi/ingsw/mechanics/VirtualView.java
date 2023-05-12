@@ -48,7 +48,12 @@ public class VirtualView implements View, Observer {
     }
     @Override
     public void sendResponse(boolean response, MessageType responseType, String content) {
-        clientHandler.sendMessage(new ResponseMessage(responseType, response, content));
+        clientHandler.sendMessage(new BooleanResponse(responseType, response, content));
+    }
+
+    @Override
+    public void sendSelectionResponse(int[][] coordinates) {
+        clientHandler.sendMessage(new CoordinatesCheckMessage(coordinates));
     }
 
     @Override
@@ -58,7 +63,7 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void sendNotYourTurn(String content) {
-        clientHandler.sendMessage(new ResponseMessage(MessageType.NOT_YOUR_TURN, false, content));
+        clientHandler.sendMessage(new BooleanResponse(MessageType.NOT_YOUR_TURN, false, content));
     }
 
     @Override

@@ -29,7 +29,7 @@ public class VirtualModel {
     //endregion
 
     //region GETTER AND SETTER
-    public void select(int[][] coordinates) {
+    public void setSelection(int[][] coordinates) {
         this.selection = coordinates;
         selectionUpdated = true;
     }

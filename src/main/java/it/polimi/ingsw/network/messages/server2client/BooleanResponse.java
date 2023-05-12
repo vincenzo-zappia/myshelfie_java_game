@@ -6,9 +6,9 @@ import it.polimi.ingsw.network.messages.MessageType;
 /**
  * Classe che gestisce tutti i tipi di risposta che necessitano di un attributo booleano
  */
-public class ResponseMessage extends Message {
+public class BooleanResponse extends Message {
     private final boolean response;
-    public ResponseMessage(MessageType type, boolean response, String content) {
+    public BooleanResponse(MessageType type, boolean response, String content) {
         super("server", type);
         this.response = response;
         setContent(content);

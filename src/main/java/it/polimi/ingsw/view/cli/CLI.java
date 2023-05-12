@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.entities.goals.CommonGoal;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.Client;
@@ -9,12 +8,10 @@ import it.polimi.ingsw.network.ClientController;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.util.Cell;
-import it.polimi.ingsw.util.ToolXML;
 import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.VirtualModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -59,8 +56,8 @@ public class CLI implements Runnable, UserInterface {
                         validFormat = true;
                     }
                     if(validFormat) {
-                        virtualModel.select(coordinates);
                         controller.sendSelection(coordinates);
+                        //TODO: Tolto il settaggio delle coordinate del VirtualModel, ora se ne occupa sendSelectionResponse(), decidere se mantenere
                     }
                 }
 
@@ -225,13 +222,14 @@ public class CLI implements Runnable, UserInterface {
     //region USER INTERFACE
     @Override
     public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
-        System.out.println("Lista dei players connessi:"); //TODO: tradurre
+        System.out.println("Connected players: ");
         System.out.println(CliUtil.makePlayersList(playerUsernames));
     }
 
     @Override
     public void showSuccessfulConnection(int lobbyId) {
         System.out.println("Lobby connection successful! \nLobby ID: " + lobbyId);
+        //TODO: Prompt al capo lobby di scrivere start per far partire il gioco
     }
 
     @Override
@@ -271,14 +269,19 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
+    public void sendSelectionResponse(int[][] coordinates){
+        virtualModel.setSelection(coordinates);
+    }
+
+    @Override
     public void sendInsertionResponse(Cell[][] bookshelf, boolean response) {
         virtualModel.setBookshelf(bookshelf);
 
         if(response){
-            System.out.println(CliUtil.makeConfirmationMessage("Inserimento avvenuto con successo!")); //TODO: tradurre
+            System.out.println(CliUtil.makeConfirmationMessage("Insertion successful!"));
             showBookshelf();
         }
-        else System.out.println(CliUtil.makeErrorMessage("Errore durante l'inserimento nella bookshelf!"));
+        else System.out.println(CliUtil.makeErrorMessage("Invalid column! \nChoose another!"));
     }
 
     @Override

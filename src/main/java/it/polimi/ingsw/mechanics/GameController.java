@@ -106,6 +106,10 @@ public class GameController {
             //Invio riscontro positivo al client (questo abilita lato client a effettuare inserzione)
             viewHashMap.get(message.getUsername()).sendResponse(true, MessageType.SELECTION_RESPONSE, "Valid selection!");
 
+            //TODO: Per il momento il server invia indietro le coordinate validate, se non vogliamo il via-vai trovare altro modo
+            //Sending back the checked coordinates to the player
+            viewHashMap.get(message.getUsername()).sendSelectionResponse(message.getCoordinates());
+
             //Saving the coordinates of the removed cards in order to broadcast them at the end of the turn
             coordinates = message.getCoordinates();
 

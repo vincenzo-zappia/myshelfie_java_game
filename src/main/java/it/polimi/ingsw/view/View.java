@@ -49,6 +49,12 @@ public interface View {
     void sendResponse(boolean response, MessageType responseType, String content);
 
     /**
+     * Sends back the selected coordinates if the selection is valid
+     * @param coordinates coordinates selected by the player
+     */
+    void sendSelectionResponse(int[][] coordinates);
+
+    /**
      * Gives feedback to the player about his insertion command
      * @param bookshelf updated bookshelf in case the insertion was successful, no changes otherwise
      * @param response if the insertion was successful

@@ -50,12 +50,16 @@ public class ClientController implements Observer {
                 else {}
             }
             case LOBBY_ACCESS_RESPONSE, START_GAME_RESPONSE, SELECTION_RESPONSE -> {
-                ResponseMessage response = (ResponseMessage) message;
+                BooleanResponse response = (BooleanResponse) message;
                 view.sendResponse(response.getResponse(), response.getType(), response.getContent());
             }
             case NEW_CONNECTION_UPDATE -> {
                 NewConnectionUpdate connectionMessage = (NewConnectionUpdate) message;
                 view.refreshConnectedPlayers(connectionMessage.getUsernameList());
+            }
+            case COORDINATES_CHECK -> {
+                CoordinatesCheckMessage response = (CoordinatesCheckMessage) message;
+                view.sendSelectionResponse(response.getCoordinates());
             }
             case CURRENT_PLAYER_UPDATE -> view.showCurrentPlayer(message.getContent());
             case INSERTION_RESPONSE -> {

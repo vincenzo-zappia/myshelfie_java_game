@@ -1,7 +1,5 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.network.messages.MessageType;
-
 import java.util.ArrayList;
 
 /**
