@@ -13,7 +13,7 @@ public class VirtualModel {
     private Goal[] commonGoals;
     private PrivateGoal privateGoal;
     private int[][] coordinates;
-    private boolean selectionMade;
+    private boolean selection;
     //endregion
 
     //region CONSTRUCTOR
@@ -34,11 +34,11 @@ public class VirtualModel {
     public int[][] getCoordinates() {
         return coordinates;
     }
-    public void setSelectionMade(boolean bool){
-        selectionMade = bool;
+    public void setSelection(boolean bool){
+        selection = bool;
     }
-    public boolean isSelectionMade() {
-        return selectionMade;
+    public boolean isSelection() {
+        return selection;
     }
     public void setBoard(BoardCell[][] newBoard) {
         this.board = newBoard;

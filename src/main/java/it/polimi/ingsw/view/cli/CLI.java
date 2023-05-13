@@ -45,7 +45,7 @@ public class CLI implements Runnable, UserInterface {
 
                     //TODO: Ridondante, c'è lo stesso check in GameController ma si risparmia tempo
                     //Checking if the player has already made a selection
-                    if(virtualModel.isSelectionMade()) {
+                    if(virtualModel.isSelection()) {
                         System.out.println(CliUtil.makeErrorMessage("Selection already made!"));
                         continue;
                     }
@@ -77,7 +77,7 @@ public class CLI implements Runnable, UserInterface {
                     try {
                         //TODO: Ridondante, c'è lo stesso check in GameController ma si risparmia tempo
                         //Checking if the player has first made a selection
-                        if(!virtualModel.isSelectionMade()) {
+                        if(!virtualModel.isSelection()) {
                             System.out.println(CliUtil.makeErrorMessage("First select your cards!"));
                             continue;
                         }
@@ -271,7 +271,7 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void sendCheckedCoordinates(int[][] coordinates){
-        virtualModel.setSelectionMade(true);
+        virtualModel.setSelection(true);
         virtualModel.setCoordinates(coordinates);
     }
 
@@ -283,7 +283,7 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void showUpdatedBookshelf(Cell[][] bookshelf) {
-        virtualModel.setSelectionMade(false);
+        virtualModel.setSelection(false);
         virtualModel.setBookshelf(bookshelf);
         showBookshelf();
     }
