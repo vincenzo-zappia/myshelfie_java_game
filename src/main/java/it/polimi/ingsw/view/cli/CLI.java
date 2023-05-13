@@ -118,7 +118,7 @@ public class CLI implements Runnable, UserInterface {
                 default -> System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
             }
         }
-        CliUtil.makeTitle("Game Over!");
+        System.out.println(CliUtil.makeTitle("Game Over!"));
 
     }
 
