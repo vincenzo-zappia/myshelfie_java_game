@@ -43,7 +43,12 @@ public class CLI implements Runnable, UserInterface {
                 //Card selection command eg: "select (x;y),(x;y),(x,y)"
                 case "select" -> {
 
-                    //TODO: Check con getSelectionMade()? Risulterebbe ridondante come in insert
+                    //TODO: Ridondante, c'è lo stesso check in GameController ma si risparmia tempo
+                    //Checking if the player has already made a selection
+                    if(virtualModel.isSelectionMade()) {
+                        System.out.println(CliUtil.makeErrorMessage("Selection already made!"));
+                        continue;
+                    }
 
                     //Parsing of the input command
                     String[] strCoordinates = splitted[1].split(",");
@@ -71,7 +76,7 @@ public class CLI implements Runnable, UserInterface {
 
                     try {
                         //TODO: Ridondante, c'è lo stesso check in GameController ma si risparmia tempo
-                        //Checking if the player has first made his selection
+                        //Checking if the player has first made a selection
                         if(!virtualModel.isSelectionMade()) {
                             System.out.println(CliUtil.makeErrorMessage("First select your cards!"));
                             continue;

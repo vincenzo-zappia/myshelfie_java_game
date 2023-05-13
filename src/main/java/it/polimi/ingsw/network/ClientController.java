@@ -41,8 +41,8 @@ public class ClientController implements Observer {
     public void update(Message message){
 
         switch (message.getType()){
-            case LOBBY_CREATION_RESPONSE -> {
-                LobbyCreationResponse newLobby = (LobbyCreationResponse) message;
+            case CREATED_LOBBY -> {
+                LobbyCreationMessage newLobby = (LobbyCreationMessage) message;
                 if (newLobby.isSuccessful()) {
                     this.lobbyId = newLobby.getLobbyId();
                     view.showSuccessfulConnection(lobbyId);
@@ -53,30 +53,30 @@ public class ClientController implements Observer {
                 GenericResponse response = (GenericResponse) message;
                 view.sendGenericResponse(response.getResponse(), response.getContent());
             }
-            case NEW_CONNECTION_UPDATE -> {
-                NewConnectionUpdate connectionMessage = (NewConnectionUpdate) message;
+            case NEW_CONNECTION -> {
+                UsernameListMessage connectionMessage = (UsernameListMessage) message;
                 view.refreshConnectedPlayers(connectionMessage.getUsernameList());
             }
-            case CURRENT_PLAYER_UPDATE -> view.showCurrentPlayer(message.getContent());
+            case CURRENT_PLAYER -> view.showCurrentPlayer(message.getContent());
             case COORDINATES_CHECK -> {
-                CoordinatesCheckMessage response = (CoordinatesCheckMessage) message;
-                view.sendCheckedCoordinates(response.getCoordinates());
+                CoordinatesMessage checkedCoordinates = (CoordinatesMessage) message;
+                view.sendCheckedCoordinates(checkedCoordinates.getCoordinates());
             }
             case BOOKSHELF_UPDATE -> {
-                BookshelfUpdateMessage response = (BookshelfUpdateMessage) message;
-                view.sendUpdatedBookshelf(response.getBookshelf());
+                BookshelfMessage updatedBookshelf = (BookshelfMessage) message;
+                view.sendUpdatedBookshelf(updatedBookshelf.getBookshelf());
             }
-            case BOARD_REFILL -> {
-                BoardRefillMessage boardUpdate = (BoardRefillMessage) message;
+            case REFILLED_BOARD -> {
+                BoardMessage boardUpdate = (BoardMessage) message;
                 view.showRefilledBoard(boardUpdate.getBoardCells());
             }
             case ERROR_MESSAGE -> {
                 ErrorMessage error = (ErrorMessage) message;
                 view.showError(error.getContent());
             }
-            case CARDS_REMOVE_UPDATE -> {
-                CardsRemoveUpdate remove = (CardsRemoveUpdate) message;
-                view.showRemovedCards(remove.getCoordinates());
+            case REMOVED_CARDS -> {
+                CoordinatesMessage removedCards = (CoordinatesMessage) message;
+                view.showRemovedCards(removedCards.getCoordinates());
             }
             case GOALS_DETAILS -> {
                 GoalsMessage goalsMessage = (GoalsMessage) message;

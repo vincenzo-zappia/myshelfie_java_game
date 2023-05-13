@@ -24,9 +24,8 @@ public class GameController {
     private final HashMap<String, VirtualView> viewHashMap;
     //endregion
 
-    //TODO: Vedere se si riesce a renderli locali
     //region LOGIC ATTRIBUTES
-    private int[][] coordinates; //Turn-specific board coordinates temporarily saved as attributes to be sent as message
+    private int[][] coordinates; //Turn-specific board coordinates temporarily saved as attributes to be sent as message //TODO: Vedere se si riesce a renderlo locale
     private boolean canInsert; //Turn phase management
     //endregion
 
@@ -38,8 +37,8 @@ public class GameController {
 
         //Sending to each player initial game details: first player to make a move, board status, the game common
         //goals and their specific private goal
-        broadcastMessage(MessageType.CURRENT_PLAYER_UPDATE);
-        broadcastMessage(MessageType.BOARD_REFILL);
+        broadcastMessage(MessageType.CURRENT_PLAYER);
+        broadcastMessage(MessageType.REFILLED_BOARD);
         broadcastMessage(MessageType.GOALS_DETAILS);
 
         //The game starts in the selection phase
@@ -80,9 +79,9 @@ public class GameController {
     public void broadcastMessage(MessageType type, Object... payload){
         for(String username : viewHashMap.keySet()) {
             switch (type) {
-                case BOARD_REFILL -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getMatrix());
-                case CARDS_REMOVE_UPDATE -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
-                case CURRENT_PLAYER_UPDATE -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
+                case REFILLED_BOARD -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getMatrix());
+                case REMOVED_CARDS -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
+                case CURRENT_PLAYER -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
                 case SCOREBOARD -> viewHashMap.get(username).showScoreboard((HashMap<String, Integer>) payload[0]);
                 case GOALS_DETAILS -> viewHashMap.get(username).sendGoals(game.getCommonGoals(), game.getPlayer(username).getPrivateGoal());
             }
@@ -148,13 +147,12 @@ public class GameController {
 
                 //Removal of the previously selected cards from the game board
                 game.removeCardsFromBoard(coordinates);
-                System.out.println("INFO: Cards removed.");
-                System.out.println("INFO: Cards inserted in column " + message.getSelectedColumn());
+                System.out.println("INFO: Cards removed from the board and inserted in " + turnManager.getCurrentPlayer() + "'s bookshelf in column " + message.getSelectedColumn());
+                //System.out.println("INFO: Inserted cards "+ game.getPlayerBookshelf(turnManager.getCurrentPlayer())[5][0].getCard().getType().toString()); //TODO: Revisionare log
 
                 //Sending positive feedback to the player with the updated bookshelf
                 viewHashMap.get(message.getUsername()).sendGenericResponse(true, "Insertion successful!" );
                 viewHashMap.get(message.getUsername()).sendUpdatedBookshelf(game.getPlayerBookshelf(turnManager.getCurrentPlayer())); //TODO: Debug: Una volta mi è capitato che non andasse oltre questo comando
-                System.out.println("INFO: Inserted cards "+ game.getPlayerBookshelf(turnManager.getCurrentPlayer())[5][0].getCard().getType().toString());
 
                 //End turn housekeeping routine
                 endTurn();
@@ -167,7 +165,8 @@ public class GameController {
             }
 
         } catch (AddCardException e) {
-            //Invio riscontro negativo al client
+
+            //Sending negative feedback to the player
             viewHashMap.get(message.getUsername()).sendGenericResponse(false, "Boh, qualcosa sull'inserzione."); //TODO: Specificare tipo di problema
             throw new RuntimeException(e);
         }
@@ -182,11 +181,11 @@ public class GameController {
     private void endTurn(){
 
         //Broadcasting to all the players the coordinates of the cards removed in the last turn
-        broadcastMessage(MessageType.CARDS_REMOVE_UPDATE, (Object) coordinates);
+        broadcastMessage(MessageType.REMOVED_CARDS, (Object) coordinates);
 
         //Checking if the boards has to be refilled. If so, broadcasting the updated board to all the players
         if(game.checkRefill()){
-            broadcastMessage(MessageType.BOARD_REFILL);
+            broadcastMessage(MessageType.REFILLED_BOARD);
             System.out.println("INFO: Board refilled.");
         }
 
@@ -204,7 +203,7 @@ public class GameController {
         if(!turnManager.nextTurn()) findWinner();
         else{
             //Broadcasting the username of the next player who plays a turn
-            broadcastMessage(MessageType.CURRENT_PLAYER_UPDATE);
+            broadcastMessage(MessageType.CURRENT_PLAYER);
 
             //TODO: Rilevante a fine gioco?
             //Turn phase management
@@ -221,7 +220,6 @@ public class GameController {
 
         //Creating the scoreboard (sort algorithm in client)
         HashMap<String, Integer> scoreboard = game.getScoreboard();
-
 
         //Broadcasting the scoreboard to all the players
         broadcastMessage(MessageType.SCOREBOARD, (Object) scoreboard);

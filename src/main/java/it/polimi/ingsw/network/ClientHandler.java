@@ -103,7 +103,7 @@ public class ClientHandler implements Runnable{
                 sendMessage(new GenericResponse(true, "Lobby connection successful!"));
 
                 //Sends to all the players the updated lobby with all the usernames
-                lobby.sendLobbyMessage(new NewConnectionUpdate(lobby.getPlayerUsernames()));
+                lobby.sendLobbyMessage(new UsernameListMessage(lobby.getPlayerUsernames()));
             }
             case CREATE_LOBBY_REQUEST -> {
 
@@ -112,7 +112,7 @@ public class ClientHandler implements Runnable{
 
                 //Joining the newly created lobby
                 lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this));
-                sendMessage(new LobbyCreationResponse(lobby.getLobbyId(), true));
+                sendMessage(new LobbyCreationMessage(lobby.getLobbyId(), true));
 
                 //Initialization of the game
                 startGameHandler();

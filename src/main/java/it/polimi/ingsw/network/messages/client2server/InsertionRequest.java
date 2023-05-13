@@ -6,6 +6,9 @@ import it.polimi.ingsw.network.messages.MessageType;
 
 import java.util.ArrayList;
 
+/**
+ * Request sent by the player to insert the selected cards
+ */
 public class InsertionRequest extends Message {
     private final ArrayList<Card> selectedCards;
     private final int selectedColumn;
@@ -16,7 +19,6 @@ public class InsertionRequest extends Message {
         this.selectedColumn = selectedColumn;
     }
 
-
     public ArrayList<Card> getSelectedCards() {
         return selectedCards;
     }
@@ -24,4 +26,5 @@ public class InsertionRequest extends Message {
     public int getSelectedColumn() {
         return selectedColumn;
     }
+
 }

@@ -4,10 +4,11 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 
 /**
- * Classe che gestisce tutti i tipi di risposta che necessitano di un attributo booleano
+ * Message that contains a generic feedback, either true or false, with its description
  */
 public class GenericResponse extends Message {
     private final boolean response;
+
     public GenericResponse(boolean response, String content) {
         super("server", MessageType.GENERIC_RESPONSE);
         this.response = response;
@@ -17,4 +18,5 @@ public class GenericResponse extends Message {
     public boolean getResponse() {
         return response;
     }
+
 }

@@ -4,10 +4,13 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.Cell;
 
-public class BookshelfUpdateMessage extends Message {
+/**
+ * Message containing the bookshelf updated after an insertion
+ */
+public class BookshelfMessage extends Message {
     private final Cell[][] bookshelf;
 
-    public BookshelfUpdateMessage(Cell[][] bookshelf) {
+    public BookshelfMessage(Cell[][] bookshelf) {
         super("server", MessageType.BOOKSHELF_UPDATE);
         this.bookshelf = bookshelf;
     }

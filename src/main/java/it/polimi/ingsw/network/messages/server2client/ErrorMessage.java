@@ -4,7 +4,7 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 
 /**
- * Generic message on par with ResponseMessage used to pass specific error content
+ * Specific message containing the description of the error occurred
  */
 public class ErrorMessage extends Message {
 

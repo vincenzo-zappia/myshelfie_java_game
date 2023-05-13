@@ -29,17 +29,17 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void showRemovedCards(int[][] coordinates){
-        clientHandler.sendMessage(new CardsRemoveUpdate(coordinates));
+        clientHandler.sendMessage(new CoordinatesMessage(coordinates, MessageType.REMOVED_CARDS));
     }
 
     @Override
     public void showRefilledBoard(BoardCell[][] boardCells) {
-        clientHandler.sendMessage(new BoardRefillMessage(boardCells));
+        clientHandler.sendMessage(new BoardMessage(boardCells));
     }
 
     @Override
     public void showCurrentPlayer(String currentPlayer) {
-        clientHandler.sendMessage(new GenericMessage(MessageType.CURRENT_PLAYER_UPDATE, currentPlayer));
+        clientHandler.sendMessage(new GenericMessage(MessageType.CURRENT_PLAYER, currentPlayer));
     }
 
     @Override
@@ -53,12 +53,12 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void sendCheckedCoordinates(int[][] coordinates) {
-        clientHandler.sendMessage(new CoordinatesCheckMessage(coordinates));
+        clientHandler.sendMessage(new CoordinatesMessage(coordinates, MessageType.COORDINATES_CHECK));
     }
 
     @Override
     public void sendUpdatedBookshelf(Cell[][] bookshelf) {
-        clientHandler.sendMessage(new BookshelfUpdateMessage(bookshelf));
+        clientHandler.sendMessage(new BookshelfMessage(bookshelf));
     }
 
     @Override

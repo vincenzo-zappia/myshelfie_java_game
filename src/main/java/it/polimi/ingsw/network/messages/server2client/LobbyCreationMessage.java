@@ -3,11 +3,16 @@ package it.polimi.ingsw.network.messages.server2client;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 
-public class LobbyCreationResponse extends Message {
+//TODO: Separare il booleano dal lobby ID?
+/**
+ * Message containing the ID of a newly created lobby
+ */
+public class LobbyCreationMessage extends Message {
     private final int lobbyId;
     private final boolean successful;
-    public LobbyCreationResponse(int lobbyId, boolean successful) {
-        super("server", MessageType.LOBBY_CREATION_RESPONSE);
+
+    public LobbyCreationMessage(int lobbyId, boolean successful) {
+        super("server", MessageType.CREATED_LOBBY);
         this.lobbyId = lobbyId;
         this.successful = successful;
     }
@@ -19,4 +24,5 @@ public class LobbyCreationResponse extends Message {
     public boolean isSuccessful() {
         return successful;
     }
+
 }
