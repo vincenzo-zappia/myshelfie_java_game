@@ -160,7 +160,6 @@ public class Game{
         return scoreboard;
     }
 
-
     /**
      * Checks is the bookshelf of a given player is full (forwarding method)
      * @param username player whose bookshelf to check

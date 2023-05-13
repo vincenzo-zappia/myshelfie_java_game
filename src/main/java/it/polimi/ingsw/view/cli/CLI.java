@@ -34,7 +34,7 @@ public class CLI implements Runnable, UserInterface {
         connection(); //Creation or joining of a lobby and starting the game (initialization of all the data structures)
 
         //While loop to read the user keyboard input (until the game ends)
-        while(true){
+        while(!virtualModel.getEnd()){
             String read = scanner.nextLine();
             String[] splitted = read.split(" ", 2);
 
@@ -118,6 +118,7 @@ public class CLI implements Runnable, UserInterface {
                 default -> System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
             }
         }
+        CliUtil.makeTitle("Game Over!");
 
     }
 
@@ -304,6 +305,9 @@ public class CLI implements Runnable, UserInterface {
     public void showScoreboard(HashMap<String, Integer> scoreboard) {
         System.out.println(CliUtil.makeTitle("Scoreboard"));
         //TODO: Stampare a schermo la classifica finale in ordine decrescente di punteggio
+
+        virtualModel.setEnd();
+
     }
     //endregion
 

@@ -14,6 +14,7 @@ public class VirtualModel {
     private PrivateGoal privateGoal;
     private int[][] coordinates;
     private boolean selection;
+    private boolean end;
     //endregion
 
     //region CONSTRUCTOR
@@ -24,6 +25,10 @@ public class VirtualModel {
         //Bookshelf initialization
         bookshelf = new Cell[6][5];
         for(int i=0; i<6;i++) for(int j=0; j<5; j++) bookshelf[i][j] = new Cell();
+
+        selection = false;
+        end = false;
+
     }
     //endregion
 
@@ -63,6 +68,12 @@ public class VirtualModel {
     }
     public PrivateGoal getPrivateGoal() {
         return privateGoal;
+    }
+    public void setEnd(){
+        end = true;
+    }
+    public boolean getEnd(){
+        return end;
     }
     //endregion
 
