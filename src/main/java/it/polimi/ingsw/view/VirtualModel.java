@@ -37,7 +37,7 @@ public class VirtualModel {
     public void setSelectionMade(boolean bool){
         selectionMade = bool;
     }
-    public boolean getSelectionMade(){
+    public boolean isSelectionMade() {
         return selectionMade;
     }
     public void setBoard(BoardCell[][] newBoard) {
@@ -72,10 +72,6 @@ public class VirtualModel {
             int column = coordinate[1];
             board[row][column].setCellEmpty();
         }
-    }
-
-    public boolean isSelectionMade() {
-        return selectionMade;
     }
 
 }
