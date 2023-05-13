@@ -202,12 +202,14 @@ public class GameController {
         //Checking if the current player was the last one who had to play a turn, if so, starting the endgame, otherwise
         //calling for the next player
         if(!turnManager.nextTurn()) findWinner();
+        else{
+            //Broadcasting the username of the next player who plays a turn
+            broadcastMessage(MessageType.CURRENT_PLAYER_UPDATE);
 
-        //Broadcasting the username of the next player who plays a turn
-        broadcastMessage(MessageType.CURRENT_PLAYER_UPDATE);
-
-        //Turn phase management
-        canInsert = false;
+            //TODO: Rilevante a fine gioco?
+            //Turn phase management
+            canInsert = false;
+        }
     }
 
     /**
