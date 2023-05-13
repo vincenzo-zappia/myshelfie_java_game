@@ -42,6 +42,8 @@ public class CLI implements Runnable, UserInterface {
 
                 //Card selection command eg: "select (x;y),(x;y),(x,y)"
                 case "select" -> {
+                    
+                    //TODO: Check con getSelectionMade()? Risulterebbe ridondante come in insert
 
                     //Parsing of the input command
                     String[] strCoordinates = splitted[1].split(",");
