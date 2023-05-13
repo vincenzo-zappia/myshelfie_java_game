@@ -156,26 +156,14 @@ public class Game{
     }
 
     /**
-     * Arranges the players by score
-     * @return ordered hashmap (username, score)
+     * make a scoreboard of usernames and scores of each user (NOT ORDERED)
+     * @return scoreboard hashmap (username, score)
      */
-    public HashMap<Integer, String> orderByScore(){
-        HashMap<Integer, String> ordered = new HashMap<>();
-
-        Player[] p = getPlayers().toArray(new Player[players.size()]);
-
-        for(int i = 0; i < p.length-1; i++){
-            for(int j = 1; j<p.length; j++){
-                if(p[i].getScore() < p[j].getScore()){
-                    Player tmp = p[j];
-                    p[j] = p[i];
-                    p[i] = tmp;
-                }
-            }
-        }
-        for(int i = 0; i<p.length; i++)ordered.put(i+1, p[i].getUsername());
-
-        return ordered;
+    public HashMap<String, Integer> getScoreboard(){
+        HashMap<String, Integer> scoreboard = new HashMap<>();
+        for(String username: players.keySet())
+            scoreboard.put(players.get(username).getUsername(), players.get(username).getScore());
+        return scoreboard;
     }
 
 

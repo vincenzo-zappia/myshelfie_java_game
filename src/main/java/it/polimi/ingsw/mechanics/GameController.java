@@ -200,8 +200,8 @@ public class GameController {
         //Scoring each individual private goal
         game.scorePrivateGoal();
 
-        //Creating the scoreboard
-        HashMap<Integer, String> scoreboard = game.orderByScore();
+        //Creating the scoreboard (sort algorithm in client)
+        HashMap<String, Integer> scoreboard = game.getScoreboard();
 
 
         //Broadcasting the scoreboard to all the players

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.mechanics;
 
-import it.polimi.ingsw.entities.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,26 +18,29 @@ class GameTest {
         tmp.add("Gemitaiz");
         tmp.add("Francesco");
         tmp.add("MassimoTroisi");
-        tmp.add("NotoriusBig");
+        tmp.add("NotoriousBig");
 
         game = new Game(tmp);
     }
 
     @Test
-    void orderByScore(){
-        game.getPlayers().get(0).addScore(300);
-        game.getPlayers().get(1).addScore(139);
-        game.getPlayers().get(2).addScore(1000);
-        game.getPlayers().get(3).addScore(890);
+    void getScoreboard(){
+        game.getPlayers().get(0).addScore(60);
+        game.getPlayers().get(1).addScore(31);
+        game.getPlayers().get(2).addScore(100);
+        game.getPlayers().get(3).addScore(95);
 
-        HashMap<Integer, String> res = game.orderByScore();
+        for(int i = 0; i< 4;i++) System.out.println(game.getPlayers().get(i).getUsername() + " " + game.getPlayers().get(i).getScore());
 
-       // for(int i = 0; i< 4;i++) System.out.println(game.getPlayers().get(i).getUsername());
+        HashMap<String, Integer> res = game.getScoreboard();
 
-        assertEquals(res.get(1), "MassimoTroisi");
-        assertEquals(res.get(2), "NotoriusBig");
-        assertEquals(res.get(3), "Gemitaiz");
-        assertEquals(res.get(4), "Francesco");
+        System.out.println(res);
+
+        assertEquals(res.get("MassimoTroisi"), 100);
+        assertEquals(res.get("Gemitaiz"), 95);
+        assertEquals(res.get("Francesco"), 60);
+        assertEquals(res.get("NotoriousBig"), 31);
+
     }
 
     @Test
