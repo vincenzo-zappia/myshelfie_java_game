@@ -14,16 +14,11 @@ import java.util.HashMap;
 public interface View {
 
     /**
-     * Sends the coordinates of the cards successfully removed by the current player
-     * @param coordinates coordinates of the removed cards
+     * Gives feedback to the client about his last command
+     * @param response if command was successful/valid (needed by CLI/GUI to differentiate between positive and
+     *                 negative feedback
      */
-    void showRemovedCards(int[][] coordinates);
-
-    /**
-     * Sends the newly refilled board after the calling of the fillBoard() method
-     * @param boardCells refilled board
-     */
-    void showRefilledBoard(BoardCell[][] boardCells);
+    void sendGenericResponse(boolean response, String content);
 
     /**
      * Shows the username of the current player
@@ -32,35 +27,40 @@ public interface View {
     void showCurrentPlayer(String currentPlayer);
 
     /**
-     * Updates all the players with the scoreboard at the end of the game
-     * @param scoreboard endgame scoreboard ordered by points
-     */
-    void showScoreboard(HashMap<String, Integer> scoreboard);
-
-    /**
-     * Gives feedback to the client about his last command
-     * @param response if command was successful/valid (needed by CLI/GUI to differentiate between positive and
-     *                 negative feedback
-     */
-    void sendGenericResponse(boolean response, String content);
-
-    /**
      * Sends back the selected coordinates if the selection is valid
      * @param coordinates coordinates selected by the player
      */
     void sendCheckedCoordinates(int[][] coordinates);
 
     /**
+     * Sends the coordinates of the cards successfully removed by the current player
+     * @param coordinates coordinates of the removed cards
+     */
+    void showRemovedCards(int[][] coordinates);
+
+    /**
      * Sends the updated bookshelf to the player after the insertion
      * @param bookshelf updated bookshelf
      */
-    void sendUpdatedBookshelf(Cell[][] bookshelf);
+    void showUpdatedBookshelf(Cell[][] bookshelf);
+
+    /**
+     * Sends the newly refilled board after the calling of the fillBoard() method
+     * @param boardCells refilled board
+     */
+    void showRefilledBoard(BoardCell[][] boardCells);
 
     /**
      * Sends to a player his private goal and the common goals of the game
      * @param commonGoals common goals of the game
      * @param privateGoal player-specific goal
      */
-    void sendGoals(Goal[] commonGoals, PrivateGoal privateGoal);
+    void showGoalsDetails(Goal[] commonGoals, PrivateGoal privateGoal);
+
+    /**
+     * Updates all the players with the scoreboard at the end of the game
+     * @param scoreboard endgame scoreboard ordered by points
+     */
+    void showScoreboard(HashMap<String, Integer> scoreboard);
 
 }

@@ -254,20 +254,13 @@ public class CLI implements Runnable, UserInterface {
     public void showError(String content) {
         System.out.println(CliUtil.makeErrorMessage(content));
     }
-
     //endregion
 
     //region VIEW
     @Override
-    public void showRemovedCards(int[][] coordinates) {
-        virtualModel.refreshBoard(coordinates);
-        showBoard();
-    }
-
-    @Override
-    public void showRefilledBoard(BoardCell[][] boardCells) {
-        virtualModel.setBoard(boardCells);
-        showBoard();
+    public void sendGenericResponse(boolean response, String content) {
+        if(response) System.out.println(CliUtil.makeConfirmationMessage(content));
+        else System.out.println(CliUtil.makeErrorMessage(content));
     }
 
     @Override
@@ -277,34 +270,40 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void showScoreboard(HashMap<String, Integer> scoreboard) {
-        System.out.println(CliUtil.makeTitle("Scoreboard"));
-        //TODO: Stampare a schermo la classifica finale in ordine decrescente di punteggio
-    }
-
-    @Override
-    public void sendGenericResponse(boolean response, String content) {
-        if(response) System.out.println(CliUtil.makeConfirmationMessage(content));
-        else System.out.println(CliUtil.makeErrorMessage(content));
-    }
-
-    @Override
     public void sendCheckedCoordinates(int[][] coordinates){
         virtualModel.setSelectionMade(true);
         virtualModel.setCoordinates(coordinates);
     }
 
     @Override
-    public void sendUpdatedBookshelf(Cell[][] bookshelf) {
+    public void showRemovedCards(int[][] coordinates) {
+        virtualModel.refreshBoard(coordinates);
+        showBoard();
+    }
+
+    @Override
+    public void showUpdatedBookshelf(Cell[][] bookshelf) {
         virtualModel.setSelectionMade(false);
         virtualModel.setBookshelf(bookshelf);
         showBookshelf();
     }
 
     @Override
-    public void sendGoals(Goal[] commonGoals, PrivateGoal privateGoal) {
+    public void showRefilledBoard(BoardCell[][] boardCells) {
+        virtualModel.setBoard(boardCells);
+        showBoard();
+    }
+
+    @Override
+    public void showGoalsDetails(Goal[] commonGoals, PrivateGoal privateGoal) {
         virtualModel.setCommonGoals(commonGoals);
         virtualModel.setPrivateGoal(privateGoal);
+    }
+
+    @Override
+    public void showScoreboard(HashMap<String, Integer> scoreboard) {
+        System.out.println(CliUtil.makeTitle("Scoreboard"));
+        //TODO: Stampare a schermo la classifica finale in ordine decrescente di punteggio
     }
     //endregion
 

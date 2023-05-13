@@ -13,7 +13,10 @@ import it.polimi.ingsw.view.UserInterface;
 
 import java.util.ArrayList;
 
-//TODO: Per l'impacchettamento messaggi serve implementare un nuovo tipo di Observer che cambia i parametri di implementazione update
+/**
+ * Manages the messages received from the server by calling the methods of the user interface.
+ * Creates and sends messages to the server from the user interface.
+ */
 public class ClientController implements Observer {
     //region ATTRIBUTES
     private final UserInterface view; //either CLI or GUI for the packing of messages User interface -> Server
@@ -32,15 +35,21 @@ public class ClientController implements Observer {
     //endregion
 
     //region SERVER2CLIENT
-    //TODO: Le chiamate dei metodi astratti della view che prendono parametri diversi da Message avverrà con message.getX()
     /**
      * Manages the reception of the messages from Client (therefore Server) and outputs them to CLI/GUI by calling View methods
      * @param message message received from Client
      */
     @Override
     public void update(Message message){
-
         switch (message.getType()){
+            case GENERIC_RESPONSE -> {
+                GenericResponse response = (GenericResponse) message;
+                view.sendGenericResponse(response.getResponse(), response.getContent());
+            }
+            case ERROR_MESSAGE -> {
+                ErrorMessage error = (ErrorMessage) message;
+                view.showError(error.getContent());
+            }
             case CREATED_LOBBY -> {
                 LobbyCreationMessage newLobby = (LobbyCreationMessage) message;
                 if (newLobby.isSuccessful()) {
@@ -49,38 +58,34 @@ public class ClientController implements Observer {
                 }
                 else {}
             }
-            case GENERIC_RESPONSE -> {
-                GenericResponse response = (GenericResponse) message;
-                view.sendGenericResponse(response.getResponse(), response.getContent());
-            }
             case NEW_CONNECTION -> {
                 UsernameListMessage connectionMessage = (UsernameListMessage) message;
                 view.refreshConnectedPlayers(connectionMessage.getUsernameList());
             }
             case CURRENT_PLAYER -> view.showCurrentPlayer(message.getContent());
-            case COORDINATES_CHECK -> {
+            case CHECKED_COORDINATES -> {
                 CoordinatesMessage checkedCoordinates = (CoordinatesMessage) message;
                 view.sendCheckedCoordinates(checkedCoordinates.getCoordinates());
-            }
-            case BOOKSHELF_UPDATE -> {
-                BookshelfMessage updatedBookshelf = (BookshelfMessage) message;
-                view.sendUpdatedBookshelf(updatedBookshelf.getBookshelf());
-            }
-            case REFILLED_BOARD -> {
-                BoardMessage boardUpdate = (BoardMessage) message;
-                view.showRefilledBoard(boardUpdate.getBoardCells());
-            }
-            case ERROR_MESSAGE -> {
-                ErrorMessage error = (ErrorMessage) message;
-                view.showError(error.getContent());
             }
             case REMOVED_CARDS -> {
                 CoordinatesMessage removedCards = (CoordinatesMessage) message;
                 view.showRemovedCards(removedCards.getCoordinates());
             }
+            case UPDATED_BOOKSHELF -> {
+                BookshelfMessage updatedBookshelf = (BookshelfMessage) message;
+                view.showUpdatedBookshelf(updatedBookshelf.getBookshelf());
+            }
+            case REFILLED_BOARD -> {
+                BoardMessage boardUpdate = (BoardMessage) message;
+                view.showRefilledBoard(boardUpdate.getBoardCells());
+            }
             case GOALS_DETAILS -> {
                 GoalsMessage goalsMessage = (GoalsMessage) message;
-                view.sendGoals(goalsMessage.getCommonGoals(), goalsMessage.getPrivateGoal());
+                view.showGoalsDetails(goalsMessage.getCommonGoals(), goalsMessage.getPrivateGoal());
+            }
+            case SCOREBOARD -> {
+                ScoreboardMessage scoreboard = (ScoreboardMessage) message;
+                view.showScoreboard(scoreboard.getScoreboard());
             }
         }
     }
@@ -125,8 +130,6 @@ public class ClientController implements Observer {
         SelectionRequest selectionRequest = new SelectionRequest(username, coordinates);
         client.sendMessage(selectionRequest);
     }
-
-    //TODO: Metodi impacchettamento messaggi. Outsource con creazione di interfaccia parallela a Observer con diversi tipi di implementazione del metodo update o locale?
 
     /**
      * Creates a Message out of the ordered cards and the column for their insertion chosen by the user and sends them to the server

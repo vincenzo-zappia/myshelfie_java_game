@@ -83,7 +83,7 @@ public class GameController {
                 case REMOVED_CARDS -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
                 case CURRENT_PLAYER -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
                 case SCOREBOARD -> viewHashMap.get(username).showScoreboard((HashMap<String, Integer>) payload[0]);
-                case GOALS_DETAILS -> viewHashMap.get(username).sendGoals(game.getCommonGoals(), game.getPlayer(username).getPrivateGoal());
+                case GOALS_DETAILS -> viewHashMap.get(username).showGoalsDetails(game.getCommonGoals(), game.getPlayer(username).getPrivateGoal());
             }
         }
     }
@@ -152,7 +152,7 @@ public class GameController {
 
                 //Sending positive feedback to the player with the updated bookshelf
                 viewHashMap.get(message.getUsername()).sendGenericResponse(true, "Insertion successful!" );
-                viewHashMap.get(message.getUsername()).sendUpdatedBookshelf(game.getPlayerBookshelf(turnManager.getCurrentPlayer())); //TODO: Debug: Una volta mi è capitato che non andasse oltre questo comando
+                viewHashMap.get(message.getUsername()).showUpdatedBookshelf(game.getPlayerBookshelf(turnManager.getCurrentPlayer())); //TODO: Debug: Una volta mi è capitato che non andasse oltre questo comando
 
                 //End turn housekeeping routine
                 endTurn();

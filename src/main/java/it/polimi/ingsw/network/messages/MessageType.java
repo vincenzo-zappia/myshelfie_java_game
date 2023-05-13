@@ -3,8 +3,8 @@ package it.polimi.ingsw.network.messages;
 public enum MessageType {
 
     //region CLIENT2SERVER
-    JOIN_LOBBY_REQUEST,
     CREATE_LOBBY_REQUEST,
+    JOIN_LOBBY_REQUEST,
     START_GAME_REQUEST,
     SELECTION_REQUEST,
     INSERTION_REQUEST,
@@ -16,13 +16,12 @@ public enum MessageType {
     CREATED_LOBBY,
     NEW_CONNECTION,
     CURRENT_PLAYER,
-    COORDINATES_CHECK,
+    CHECKED_COORDINATES,
     REMOVED_CARDS,
-    BOOKSHELF_UPDATE,
+    UPDATED_BOOKSHELF,
     REFILLED_BOARD,
     GOALS_DETAILS,
     SCOREBOARD,
-    END_GAME;
     //endregion
 
 }

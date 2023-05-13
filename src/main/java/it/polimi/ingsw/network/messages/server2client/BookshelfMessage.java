@@ -11,7 +11,7 @@ public class BookshelfMessage extends Message {
     private final Cell[][] bookshelf;
 
     public BookshelfMessage(Cell[][] bookshelf) {
-        super("server", MessageType.BOOKSHELF_UPDATE);
+        super("server", MessageType.UPDATED_BOOKSHELF);
         this.bookshelf = bookshelf;
     }
 
