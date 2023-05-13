@@ -34,7 +34,7 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void showRefilledBoard(BoardCell[][] boardCells) {
-        clientHandler.sendMessage(new BoardRefillUpdate(boardCells));
+        clientHandler.sendMessage(new BoardRefillMessage(boardCells));
     }
 
     @Override
@@ -47,23 +47,18 @@ public class VirtualView implements View, Observer {
         clientHandler.sendMessage(new ScoreboardMessage(scoreboard));
     }
     @Override
-    public void sendResponse(boolean response, MessageType responseType, String content) {
-        clientHandler.sendMessage(new BooleanResponse(responseType, response, content));
+    public void sendGenericResponse(boolean response, String content) {
+        clientHandler.sendMessage(new GenericResponse(response, content));
     }
 
     @Override
-    public void sendSelectionResponse(int[][] coordinates) {
+    public void sendCheckedCoordinates(int[][] coordinates) {
         clientHandler.sendMessage(new CoordinatesCheckMessage(coordinates));
     }
 
     @Override
-    public void sendInsertionResponse(Cell[][] bookshelf, boolean response) {
-        clientHandler.sendMessage(new InsertionResponse(bookshelf, response));
-    }
-
-    @Override
-    public void sendNotYourTurn(String content) {
-        clientHandler.sendMessage(new BooleanResponse(MessageType.NOT_YOUR_TURN, false, content));
+    public void sendUpdatedBookshelf(Cell[][] bookshelf) {
+        clientHandler.sendMessage(new BookshelfUpdateMessage(bookshelf));
     }
 
     @Override

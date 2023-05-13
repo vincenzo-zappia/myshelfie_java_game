@@ -12,30 +12,33 @@ public class VirtualModel {
     private Cell[][] bookshelf;
     private Goal[] commonGoals;
     private PrivateGoal privateGoal;
-    private int[][] selection;
-    private boolean selectionUpdated;
+    private int[][] coordinates;
+    private boolean selectionMade;
     //endregion
 
     //region CONSTRUCTOR
     public VirtualModel(){
-        //inizialize board
+        //Board initialization
         board = new BoardCell[9][9];
 
-
-        //inizialize bookshelf
+        //Bookshelf initialization
         bookshelf = new Cell[6][5];
         for(int i=0; i<6;i++) for(int j=0; j<5; j++) bookshelf[i][j] = new Cell();
     }
     //endregion
 
     //region GETTER AND SETTER
-    public void setSelection(int[][] coordinates) {
-        this.selection = coordinates;
-        selectionUpdated = true;
+    public void setCoordinates(int[][] coordinates) {
+        this.coordinates = coordinates;
     }
-    public int[][] getSelection() {
-        selectionUpdated = false;
-        return selection;
+    public int[][] getCoordinates() {
+        return coordinates;
+    }
+    public void setSelectionMade(boolean bool){
+        selectionMade = bool;
+    }
+    public boolean getSelectionMade(){
+        return selectionMade;
     }
     public void setBoard(BoardCell[][] newBoard) {
         this.board = newBoard;
@@ -71,8 +74,8 @@ public class VirtualModel {
         }
     }
 
-    public boolean isSelectionUpdated() {
-        return selectionUpdated;
+    public boolean isSelectionMade() {
+        return selectionMade;
     }
 
 }

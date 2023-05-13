@@ -5,7 +5,6 @@ import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
-import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.util.Cell;
 import it.polimi.ingsw.view.UserInterface;
@@ -43,10 +42,14 @@ public class CLI implements Runnable, UserInterface {
 
                 //Card selection command eg: "select (x;y),(x;y),(x,y)"
                 case "select" -> {
+
+                    //Parsing of the input command
                     String[] strCoordinates = splitted[1].split(",");
                     int[][] coordinates = new int[strCoordinates.length][2];
+
+                    //Checking command syntax
                     boolean validFormat = false;
-                    for(int i=0; i< strCoordinates.length; i++) {
+                    for(int i=0; i < strCoordinates.length; i++) {
                         if(!checkFormat(strCoordinates[i].trim())){
                             System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
                             validFormat = false;
@@ -55,25 +58,31 @@ public class CLI implements Runnable, UserInterface {
                         else coordinates[i] = parseCoordinates(strCoordinates[i].trim());
                         validFormat = true;
                     }
-                    if(validFormat) {
-                        controller.sendSelection(coordinates);
-                        //TODO: Tolto il settaggio delle coordinate del VirtualModel, ora se ne occupa sendSelectionResponse(), decidere se mantenere
-                    }
+
+                    //Sending the selection to the server only if the syntax is correct
+                    if(validFormat) controller.sendSelection(coordinates);
                 }
 
                 //Card insertion command (bookshelf column n) eg: "insert n"
                 case "insert" -> {
                     int column;
 
-                    //Checking if the player has first made his selection
                     try {
-                        if(!virtualModel.isSelectionUpdated()) {
+                        //TODO: Ridondante, c'è lo stesso check in GameController ma si risparmia tempo
+                        //Checking if the player has first made his selection
+                        if(!virtualModel.isSelectionMade()) {
                             System.out.println(CliUtil.makeErrorMessage("First select your cards!"));
                             continue;
                         }
+
+                        //Parsing the input command (chosen column)
                         column = Integer.parseInt(splitted[1]);
+
+                        //Extracting the selected cards from the checked coordinates saved in VirtualModel
                         ArrayList<Card> cards = new ArrayList<>();
-                        for (int[] ints : virtualModel.getSelection()) cards.add(virtualModel.getBoard()[ints[0]][ints[1]].getCard());
+                        for (int[] ints : virtualModel.getCoordinates()) cards.add(virtualModel.getBoard()[ints[0]][ints[1]].getCard());
+
+                        //Sending the insertion to the server only if the player has already selected his cards
                         controller.sendInsertion(cards, column);
                     }
                     catch (NumberFormatException e){
@@ -81,7 +90,7 @@ public class CLI implements Runnable, UserInterface {
                     }
                 }
 
-                //Show command to prompt the printing of either the board or the bookshelf of the player
+                //Show command to prompt the printing of game entities or details
                 case "show" -> {
                     switch (splitted[1]){
                         case "board" -> showBoard();
@@ -228,7 +237,7 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void showSuccessfulConnection(int lobbyId) {
-        System.out.println("Lobby connection successful! \nLobby ID: " + lobbyId);
+        System.out.println(CliUtil.makeConfirmationMessage("Lobby connection successful! \nLobby ID: " + lobbyId));
         //TODO: Prompt al capo lobby di scrivere start per far partire il gioco
     }
 
@@ -254,39 +263,33 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void showCurrentPlayer(String currentPlayer){
+        //TODO: Formattare carino CliUtil
         System.out.println("Current player: " + currentPlayer);
     }
 
     @Override
     public void showScoreboard(HashMap<String, Integer> scoreboard) {
         System.out.println(CliUtil.makeTitle("Scoreboard"));
+        //TODO: Stampare a schermo la classifica finale in ordine decrescente di punteggio
     }
 
     @Override
-    public void sendResponse(boolean response, MessageType responseType, String content) {
+    public void sendGenericResponse(boolean response, String content) {
         if(response) System.out.println(CliUtil.makeConfirmationMessage(content));
         else System.out.println(CliUtil.makeErrorMessage(content));
     }
 
     @Override
-    public void sendSelectionResponse(int[][] coordinates){
-        virtualModel.setSelection(coordinates);
+    public void sendCheckedCoordinates(int[][] coordinates){
+        virtualModel.setSelectionMade(true);
+        virtualModel.setCoordinates(coordinates);
     }
 
     @Override
-    public void sendInsertionResponse(Cell[][] bookshelf, boolean response) {
+    public void sendUpdatedBookshelf(Cell[][] bookshelf) {
+        virtualModel.setSelectionMade(false);
         virtualModel.setBookshelf(bookshelf);
-
-        if(response){
-            System.out.println(CliUtil.makeConfirmationMessage("Insertion successful!"));
-            showBookshelf();
-        }
-        else System.out.println(CliUtil.makeErrorMessage("Invalid column! \nChoose another!"));
-    }
-
-    @Override
-    public void sendNotYourTurn(String content) {
-        System.out.println(CliUtil.makeErrorMessage(content));
+        showBookshelf();
     }
 
     @Override

@@ -49,25 +49,25 @@ public class ClientController implements Observer {
                 }
                 else {}
             }
-            case LOBBY_ACCESS_RESPONSE, START_GAME_RESPONSE, SELECTION_RESPONSE -> {
-                BooleanResponse response = (BooleanResponse) message;
-                view.sendResponse(response.getResponse(), response.getType(), response.getContent());
+            case GENERIC_RESPONSE -> {
+                GenericResponse response = (GenericResponse) message;
+                view.sendGenericResponse(response.getResponse(), response.getContent());
             }
             case NEW_CONNECTION_UPDATE -> {
                 NewConnectionUpdate connectionMessage = (NewConnectionUpdate) message;
                 view.refreshConnectedPlayers(connectionMessage.getUsernameList());
             }
+            case CURRENT_PLAYER_UPDATE -> view.showCurrentPlayer(message.getContent());
             case COORDINATES_CHECK -> {
                 CoordinatesCheckMessage response = (CoordinatesCheckMessage) message;
-                view.sendSelectionResponse(response.getCoordinates());
+                view.sendCheckedCoordinates(response.getCoordinates());
             }
-            case CURRENT_PLAYER_UPDATE -> view.showCurrentPlayer(message.getContent());
-            case INSERTION_RESPONSE -> {
-                InsertionResponse response = (InsertionResponse) message;
-                view.sendInsertionResponse(response.getBookshelf(), response.getResponse());
+            case BOOKSHELF_UPDATE -> {
+                BookshelfUpdateMessage response = (BookshelfUpdateMessage) message;
+                view.sendUpdatedBookshelf(response.getBookshelf());
             }
-            case BOARD_REFILL_UPDATE -> {
-                BoardRefillUpdate boardUpdate = (BoardRefillUpdate) message;
+            case BOARD_REFILL -> {
+                BoardRefillMessage boardUpdate = (BoardRefillMessage) message;
                 view.showRefilledBoard(boardUpdate.getBoardCells());
             }
             case ERROR_MESSAGE -> {
@@ -78,7 +78,6 @@ public class ClientController implements Observer {
                 CardsRemoveUpdate remove = (CardsRemoveUpdate) message;
                 view.showRemovedCards(remove.getCoordinates());
             }
-            case NOT_YOUR_TURN -> view.sendNotYourTurn(message.getContent());
             case GOALS_DETAILS -> {
                 GoalsMessage goalsMessage = (GoalsMessage) message;
                 view.sendGoals(goalsMessage.getCommonGoals(), goalsMessage.getPrivateGoal());

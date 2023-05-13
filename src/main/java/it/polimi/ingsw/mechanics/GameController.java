@@ -39,7 +39,7 @@ public class GameController {
         //Sending to each player initial game details: first player to make a move, board status, the game common
         //goals and their specific private goal
         broadcastMessage(MessageType.CURRENT_PLAYER_UPDATE);
-        broadcastMessage(MessageType.BOARD_REFILL_UPDATE);
+        broadcastMessage(MessageType.BOARD_REFILL);
         broadcastMessage(MessageType.GOALS_DETAILS);
 
         //The game starts in the selection phase
@@ -54,13 +54,15 @@ public class GameController {
      * @param message received message
      */
     public synchronized void messageHandler(Message message){
-        //Gestione logica turni
+
+        //Checking if it's the turn of the player who sent the message
         if (!turnManager.getCurrentPlayer().equals(message.getUsername())) {
-            System.out.println("INFO: player " + message.getUsername() + " non di turno");
-            viewHashMap.get(message.getUsername()).sendNotYourTurn("Is not your turn!"); //Invio riscontro negativo al client
+            viewHashMap.get(message.getUsername()).sendGenericResponse(false, "It's not your turn!");
+            System.out.println("INFO: Not " + message.getUsername() + "'s turn.");
             return;
         }
 
+        //Management of the received command by message type only if it's the player's turn
         switch (message.getType()){
             case SELECTION_REQUEST -> cardSelection((SelectionRequest) message);
             case INSERTION_REQUEST -> cardInsertion((InsertionRequest) message);
@@ -78,7 +80,7 @@ public class GameController {
     public void broadcastMessage(MessageType type, Object... payload){
         for(String username : viewHashMap.keySet()) {
             switch (type) {
-                case BOARD_REFILL_UPDATE -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getMatrix());
+                case BOARD_REFILL -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getMatrix());
                 case CARDS_REMOVE_UPDATE -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
                 case CURRENT_PLAYER_UPDATE -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
                 case SCOREBOARD -> viewHashMap.get(username).showScoreboard((HashMap<String, Integer>) payload[0]);
@@ -96,29 +98,33 @@ public class GameController {
 
         //Checking if the player has already made a selection
         if(canInsert){
-            viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.SELECTION_RESPONSE, "Selection already made!");
+            viewHashMap.get(message.getUsername()).sendGenericResponse(false, "Selection already made!");
+            System.out.println("The player has already made his selection.");
             return;
         }
 
         //Checking if the cards selected are actually selectable
-        if(game.isSelectable(message.getCoordinates())) {
+        if(game.canSelect(message.getCoordinates())) {
 
-            //Invio riscontro positivo al client (questo abilita lato client a effettuare inserzione)
-            viewHashMap.get(message.getUsername()).sendResponse(true, MessageType.SELECTION_RESPONSE, "Valid selection!");
-
-            //TODO: Per il momento il server invia indietro le coordinate validate, se non vogliamo il via-vai trovare altro modo
-            //Sending back the checked coordinates to the player
-            viewHashMap.get(message.getUsername()).sendSelectionResponse(message.getCoordinates());
+            //TODO: Via-vai di coordinate, se si vuole confinare l'aggiornamento delle coordinate di VirtualModel solo al lato client trovare alternativa
+            //Sending positive feedback to the player with the checked coordinates
+            viewHashMap.get(message.getUsername()).sendGenericResponse(true, "Valid selection!");
+            viewHashMap.get(message.getUsername()).sendCheckedCoordinates(message.getCoordinates());
+            System.out.println("INFO: Selection made.");
 
             //Saving the coordinates of the removed cards in order to broadcast them at the end of the turn
             coordinates = message.getCoordinates();
 
-            //Turn phase management
+            //Turn phase management: the player is now allowed to insert the selected cards into his bookshelf
             canInsert = true;
         }
 
-        //Invio riscontro negativo al client
-        else viewHashMap.get(message.getUsername()).sendResponse(false, MessageType.SELECTION_RESPONSE, "Invalid selection! Please retry.");
+        //TODO: Debuggare: non arriva mai a questo else nel caso in cui la selezione non sia legale
+        //Sending negative feedback to the player
+        else{
+            viewHashMap.get(message.getUsername()).sendGenericResponse(false, "Invalid selection! Please retry.");
+            System.out.println("INFO: Selection not made.");
+        }
     }
 
     /**
@@ -128,33 +134,43 @@ public class GameController {
      */
     public synchronized void cardInsertion(InsertionRequest message){
         try {
+
+            //TODO: Non dovrebbe mai arrivarci perché c'è boolean lato client, rimuovere quello in cli?
+            //Checking if the player has first made a selection
+            if(!canInsert){
+                viewHashMap.get(message.getUsername()).sendGenericResponse(false, "First select your cards!" );
+                System.out.println("INFO: The player has to make the selection before the insertion.");
+                return;
+            }
+
             //Checking if the column selected for the insertion is valid, if so the cards are inserted by the same method
-            if(game.addCardsToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards()) && canInsert){
+            if(game.addCardsToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards())){
 
                 //Removal of the previously selected cards from the game board
                 game.removeCardsFromBoard(coordinates);
+                System.out.println("INFO: Cards removed.");
                 System.out.println("INFO: Cards inserted in column " + message.getSelectedColumn());
 
                 //Sending positive feedback to the player with the updated bookshelf
-                viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), true);
+                viewHashMap.get(message.getUsername()).sendGenericResponse(true, "Insertion successful!" );
+                viewHashMap.get(message.getUsername()).sendUpdatedBookshelf(game.getPlayerBookshelf(turnManager.getCurrentPlayer())); //TODO: Debug: Una volta mi è capitato che non andasse oltre questo comando
                 System.out.println("INFO: Inserted cards "+ game.getPlayerBookshelf(turnManager.getCurrentPlayer())[5][0].getCard().getType().toString());
 
                 //End turn housekeeping routine
                 endTurn();
             }
 
-            //TODO: Richiedere colonna valida
             //Sending negative feedback to the player with the bookshelf without changes
             else {
-                viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), false);
+                viewHashMap.get(message.getUsername()).sendGenericResponse(false, "Invalid column! Please select another." );
                 System.out.println("INFO: Cards not inserted.");
             }
 
         } catch (AddCardException e) {
             //Invio riscontro negativo al client
-            viewHashMap.get(message.getUsername()).sendInsertionResponse(game.getPlayerBookshelf(turnManager.getCurrentPlayer()), false);
+            viewHashMap.get(message.getUsername()).sendGenericResponse(false, "Boh, qualcosa sull'inserzione."); //TODO: Specificare tipo di problema
             throw new RuntimeException(e);
-        } //TODO: Rimuovere perché non c'è più l'eccezione?
+        }
     }
 
     //TODO: è possibile che le stesse coordinate vengano inviate due volte, gestire
@@ -164,15 +180,13 @@ public class GameController {
      * the condition for the actual end of the game is reached.
      */
     private void endTurn(){
-        //Turn phase management
-        canInsert = false;
 
         //Broadcasting to all the players the coordinates of the cards removed in the last turn
         broadcastMessage(MessageType.CARDS_REMOVE_UPDATE, (Object) coordinates);
 
         //Checking if the boards has to be refilled. If so, broadcasting the updated board to all the players
         if(game.checkRefill()){
-            broadcastMessage(MessageType.BOARD_REFILL_UPDATE);
+            broadcastMessage(MessageType.BOARD_REFILL);
             System.out.println("INFO: Board refilled.");
         }
 
@@ -191,6 +205,9 @@ public class GameController {
 
         //Broadcasting the username of the next player who plays a turn
         broadcastMessage(MessageType.CURRENT_PLAYER_UPDATE);
+
+        //Turn phase management
+        canInsert = false;
     }
 
     /**

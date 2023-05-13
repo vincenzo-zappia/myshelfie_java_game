@@ -46,13 +46,13 @@ class GameTest {
     @Test
     void isSelectable() {
         int[][] coordinates = new int[][]{{0, 3}, {0, 4}};
-        assertTrue(game.isSelectable(coordinates));
+        assertTrue(game.canSelect(coordinates));
 
         coordinates = new int[][]{{3, 8}, {4, 8}};
-        assertTrue(game.isSelectable(coordinates));
+        assertTrue(game.canSelect(coordinates));
 
         coordinates = new int[][]{{4, 5}, {4, 6}, {4, 7}};
-        assertFalse(game.isSelectable(coordinates));
+        assertFalse(game.canSelect(coordinates));
     }
 
     @Test

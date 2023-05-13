@@ -4,9 +4,8 @@ import it.polimi.ingsw.mechanics.Game;
 import it.polimi.ingsw.mechanics.GameController;
 import it.polimi.ingsw.mechanics.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.server2client.ErrorMessage;
-import it.polimi.ingsw.network.messages.server2client.BooleanResponse;
+import it.polimi.ingsw.network.messages.server2client.GenericResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,7 +98,7 @@ public class Lobby {
 
         gameController = new GameController(new Game(playerUsernames), viewHashMap);
         inGame = true;
-        sendLobbyMessage(new BooleanResponse(MessageType.START_GAME_RESPONSE, true,  "Now in game!"));
+        sendLobbyMessage(new GenericResponse(true,  "Now in game!"));
     }
 
     /**

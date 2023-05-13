@@ -2,7 +2,6 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
-import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.util.Cell;
 
@@ -14,15 +13,12 @@ import java.util.HashMap;
  */
 public interface View {
 
-    //TODO: Creazione di un metodo per ogni oggetto specifico da inviare
-
     /**
      * Sends the coordinates of the cards successfully removed by the current player
      * @param coordinates coordinates of the removed cards
      */
     void showRemovedCards(int[][] coordinates);
 
-    //TODO: Con che tipo di struttura dati viene fatta vedere l'informazione rilevante di Board alla CLI/GUI?
     /**
      * Sends the newly refilled board after the calling of the fillBoard() method
      * @param boardCells refilled board
@@ -43,29 +39,22 @@ public interface View {
 
     /**
      * Gives feedback to the client about his last command
-     * @param response if command was successful/valid
-     * @param responseType type of the command
+     * @param response if command was successful/valid (needed by CLI/GUI to differentiate between positive and
+     *                 negative feedback
      */
-    void sendResponse(boolean response, MessageType responseType, String content);
+    void sendGenericResponse(boolean response, String content);
 
     /**
      * Sends back the selected coordinates if the selection is valid
      * @param coordinates coordinates selected by the player
      */
-    void sendSelectionResponse(int[][] coordinates);
+    void sendCheckedCoordinates(int[][] coordinates);
 
     /**
-     * Gives feedback to the player about his insertion command
-     * @param bookshelf updated bookshelf in case the insertion was successful, no changes otherwise
-     * @param response if the insertion was successful
+     * Sends the updated bookshelf to the player after the insertion
+     * @param bookshelf updated bookshelf
      */
-    void sendInsertionResponse(Cell[][] bookshelf, boolean response);
-
-    /**
-     * Gives a generic negative feedback to any type of command sent by the player that is not playing
-     * the current turn
-     */
-    void sendNotYourTurn(String content);
+    void sendUpdatedBookshelf(Cell[][] bookshelf);
 
     /**
      * Sends to a player his private goal and the common goals of the game

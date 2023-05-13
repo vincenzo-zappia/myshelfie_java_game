@@ -50,7 +50,7 @@ public class Game{
      * @param coord coordinates of the selected cards
      * @return true if the cards are selectable, false otherwise
      */
-    public boolean isSelectable(int[][] coord){
+    public boolean canSelect(int[][] coord){
 
         if(coord.length==3 && (coord[0][0] == coord[1][0]+1 && coord[1][0] == coord[2][0]+1 || coord[0][1] == coord[1][1]+1 && coord[1][1] == coord[2][1]+1) )
         {
@@ -88,7 +88,6 @@ public class Game{
     public ArrayList<Card> removeCardsFromBoard(int[][] coordinates){
         ArrayList<Card> removedCards = new ArrayList<>();
         for (int[] coordinate : coordinates) removedCards.add(board.removeCard(coordinate[0], coordinate[1]));
-        System.out.println("INFO: Cards removed.");
         return removedCards;
     }
 
@@ -101,20 +100,13 @@ public class Game{
      */
     public boolean addCardsToBookshelf(String playerUsername, int column, ArrayList<Card> cards) {
         //Checking if the selected row is an existing one
-        if(column <0 || column>=5){
-            System.out.println("INFO: Cards not inserted.");
-            return false;
-        }
+        if(column < 0 || column >= 5) return false;
 
         //Checking if the selected column has enough space for the number of cards selected
-        if(!players.get(playerUsername).getBookshelf().getCell(cards.size(), column).isCellEmpty()){
-            System.out.println("INFO: Cards not inserted.");
-            return false;
-        }
+        if(!players.get(playerUsername).getBookshelf().getCell(cards.size(), column).isCellEmpty()) return false;
 
         //Card insertion
         for(Card c : cards) players.get(playerUsername).addCardToBookshelf(column, c);
-        System.out.println("INFO: Cards inserted.");
         return true;
     }
 
