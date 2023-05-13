@@ -17,13 +17,11 @@ import java.util.concurrent.Executors;
 
 public class Server {
     //region ATTRIBUTES
-    private final int port;
     private ServerSocket serverSocket;
     private HashMap<Integer, Lobby> lobbyMap;
     //endregion
 
     public Server(int port) {
-        this.port = port;
         try {
             serverSocket = new ServerSocket(port);
             lobbyMap = new HashMap<>();

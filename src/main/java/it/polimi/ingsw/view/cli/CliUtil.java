@@ -268,7 +268,7 @@ public class CliUtil {
     }
 
     public static String makeCommandList() {
-        return String.join(" ", ToolXML.getCommandList());
+        return String.join("\n", ToolXML.getCommandList());
     }
     //endregion
 
