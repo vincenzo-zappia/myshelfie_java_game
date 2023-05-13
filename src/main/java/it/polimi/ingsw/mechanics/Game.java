@@ -103,7 +103,7 @@ public class Game{
         if(column < 0 || column >= 5) return false;
 
         //Checking if the selected column has enough space for the number of cards selected
-        if(!players.get(playerUsername).getBookshelf().getCell(cards.size(), column).isCellEmpty()) return false;
+        if(!players.get(playerUsername).getBookshelf().getCell(cards.size() - 1, column).isCellEmpty()) return false; //TODO: -1 o no -1?
 
         //Card insertion
         for(Card c : cards) players.get(playerUsername).addCardToBookshelf(column, c);
@@ -133,7 +133,9 @@ public class Game{
      */
     public void scoreCommonGoal(String username){
         Player p = players.get(username);
+        System.out.println(commonGoals[0].getClass().toString());
         p.addScore(commonGoals[0].checkGoal(p.getBookshelf()));
+        System.out.println(commonGoals[1].getClass().toString());
         p.addScore(commonGoals[1].checkGoal(p.getBookshelf()));
     }
 

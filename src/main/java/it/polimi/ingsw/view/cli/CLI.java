@@ -105,6 +105,7 @@ public class CLI implements Runnable, UserInterface {
                 //Help command for syntax aid
                 case "help" -> {
                     System.out.println("Command list:");
+                    System.out.println(CliUtil.makeCommandList());
                 }
 
                 default -> System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
@@ -221,9 +222,9 @@ public class CLI implements Runnable, UserInterface {
     }
 
     /**
-     *
-     * @param str
-     * @return
+     * Checks if a String is of the format: (x;y), where x and y are two int
+     * @param str The String to check
+     * @return true if and only if the String is in the correct format.
      */
     private boolean checkFormat(String str){ return str.matches("\\(\\d+;\\d+\\)"); }
     //endregion
@@ -233,6 +234,7 @@ public class CLI implements Runnable, UserInterface {
     public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
         System.out.println("Connected players: ");
         System.out.println(CliUtil.makePlayersList(playerUsernames));
+        System.out.println("Type start to start the game.");
     }
 
     @Override
