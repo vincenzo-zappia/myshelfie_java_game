@@ -36,6 +36,10 @@ public class CLI implements Runnable, UserInterface {
         //While loop to read the user keyboard input (until the game ends)
         while(!virtualModel.getEnd()){
             String read = scanner.nextLine();
+            if (!read.contains(" ")){
+                System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
+                continue;
+            }
             String[] splitted = read.split(" ", 2);
 
             switch (splitted[0]){
@@ -50,8 +54,7 @@ public class CLI implements Runnable, UserInterface {
                         System.out.println(CliUtil.makeErrorMessage("Selection already made!"));
                         continue;
                     }
-
-                     */
+                    */
 
                     //Parsing of the input command
                     String[] strCoordinates = splitted[1].split(",");
@@ -78,15 +81,14 @@ public class CLI implements Runnable, UserInterface {
                     int column;
 
                     try {
+
                         /*
                         //TODO: Ridondante, c'è lo stesso check in GameController ma si risparmia tempo (controllo con e senza debuggando)
                         //Checking if the player has first made a selection
                         if(!virtualModel.isSelection()) {
                             System.out.println(CliUtil.makeErrorMessage("First select your cards!"));
                             continue;
-                        }
-
-                         */
+                        }*/
 
                         //Parsing the input command (chosen column)
                         column = Integer.parseInt(splitted[1]);
