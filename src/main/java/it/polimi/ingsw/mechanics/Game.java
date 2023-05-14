@@ -64,21 +64,22 @@ public class Game{
         //Checking if any of the coordinates exceeds the board dimensions
         for(int[] i : coord) for(int j : i) if(j < 0 || j > 8) return false;
 
-        if(coord.length>1){
-            for(int i = 0; i< coord.length-1; i++){
-                if(coord[i][0] == coord[i+1][0]){
-                    if(coord[i][1] < coord[i+1][1]){
-                        int tmp = coord[i+1][1];
-                        coord[i+1][1] = coord[i][1];
+        //Ordering the selected cards to allow for a discontinuous selection
+        if(coord.length > 1){
+            for(int i = 0; i < coord.length - 1; i++){
+                if(coord[i][0] == coord[i +1 ][0]){
+                    if(coord[i][1] < coord[i + 1][1]){
+                        int tmp = coord[i + 1][1];
+                        coord[i + 1][1] = coord[i][1];
                         coord[i][1] = tmp;
                     }
-                }else if(coord[i][1] == coord[i+1][1]){
-                    if(coord[i][0] < coord[i+1][0]){
-                        int tmp = coord[i+1][0];
-                        coord[i+1][0] = coord[i][0];
+                } else if(coord[i][1] == coord[i + 1][1]){
+                    if(coord[i][0] < coord[i + 1][0]){
+                        int tmp = coord[i + 1][0];
+                        coord[i + 1][0] = coord[i][0];
                         coord[i][0] = tmp;
                     }
-                }else return false;
+                } else return false;
             }
         }
 
@@ -87,8 +88,8 @@ public class Game{
                 || coord[0][1] == coord[1][1]+1 && coord[1][1] == coord[2][1]+1))            //card1.x = card2.x = card3.x
         {
             int cntr = 0;
-            for(int i = 0; i < 3; i++)if(board.selectableCard(coord[i][0], coord[i][1]))cntr++;
-            if(cntr==3)return true;
+            for(int i = 0; i < 3; i++) if(board.selectableCard(coord[i][0], coord[i][1])) cntr++;
+            if(cntr==3) return true;
         }
 
         //Checking if the selection of 2 cards is either in a row or a column

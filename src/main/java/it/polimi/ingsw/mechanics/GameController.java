@@ -146,7 +146,7 @@ public class GameController {
             //TODO: Check se le carte inviate dal client corrispondano a quelle estratte dalle coordinate?
 
             //Checking if the column selected for the insertion is valid, if so the cards are inserted by the same method
-            if(game.canInsert(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards().size())){
+            if(game.canInsert(turnManager.getCurrentPlayer(), message.getSelectedColumn(), coordinates.length)){
 
                 //TODO: Capire come confinare a lato server l'estrazione delle carte da inserire
                 //Removal of the previously selected cards from the game board
@@ -154,7 +154,7 @@ public class GameController {
                 System.out.println("INFO: Cards removed from the board and inserted in " + turnManager.getCurrentPlayer() + "'s bookshelf in column " + message.getSelectedColumn());
 
                 //Insertion of the cards (updating the bookshelf of the player)
-                game.addCardsToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards());
+                game.addCardsToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), cards);
 
                 //Sending positive feedback to the player with the updated bookshelf
                 viewHashMap.get(message.getUsername()).sendGenericResponse(true, "Insertion successful!" );

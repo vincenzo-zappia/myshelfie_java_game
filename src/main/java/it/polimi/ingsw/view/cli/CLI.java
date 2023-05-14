@@ -43,12 +43,15 @@ public class CLI implements Runnable, UserInterface {
                 //Card selection command eg: "select (x;y),(x;y),(x,y)"
                 case "select" -> {
 
+                    /*
                     //TODO: Ridondante, c'è lo stesso check in GameController ma si risparmia tempo
                     //Checking if the player has already made a selection
                     if(virtualModel.isSelection()) {
                         System.out.println(CliUtil.makeErrorMessage("Selection already made!"));
                         continue;
                     }
+
+                     */
 
                     //Parsing of the input command
                     String[] strCoordinates = splitted[1].split(",");
@@ -75,6 +78,7 @@ public class CLI implements Runnable, UserInterface {
                     int column;
 
                     try {
+                        /*
                         //TODO: Ridondante, c'è lo stesso check in GameController ma si risparmia tempo (controllo con e senza debuggando)
                         //Checking if the player has first made a selection
                         if(!virtualModel.isSelection()) {
@@ -82,16 +86,21 @@ public class CLI implements Runnable, UserInterface {
                             continue;
                         }
 
+                         */
+
                         //Parsing the input command (chosen column)
                         column = Integer.parseInt(splitted[1]);
 
+                        /*
                         //TODO: Capire come confinare a lato server l'estrazione delle carte da inserire
                         //Extracting the selected cards from the checked coordinates saved in VirtualModel
                         ArrayList<Card> cards = new ArrayList<>();
                         for (int[] ints : virtualModel.getCoordinates()) cards.add(virtualModel.getBoard()[ints[0]][ints[1]].getCard());
 
+                         */
+
                         //Sending the insertion to the server only if the player has already selected his cards
-                        controller.sendInsertion(cards, column);
+                        controller.sendInsertion(column);
                     }
                     catch (NumberFormatException e){
                         System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));

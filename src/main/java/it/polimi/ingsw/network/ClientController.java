@@ -136,8 +136,8 @@ public class ClientController implements Observer {
      * @param selected ordered cards previously selected by the user
      * @param column where the selected cards will be inserted
      */
-    public void sendInsertion(ArrayList<Card> selected, int column){
-        Message insert = new InsertionRequest(this.username, selected, column);
+    public void sendInsertion(int column){
+        Message insert = new InsertionRequest(this.username, column);
         client.sendMessage(insert);
     }
     //endregion
