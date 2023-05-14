@@ -52,6 +52,9 @@ public class Game{
      */
     public boolean canSelect(int[][] coord){
 
+        //Checking if any of the coordinates exceeds the board dimensions
+        for(int[] i : coord) for(int j : i) if(j < 0 || j > 8) return false;
+
         if(coord.length==3 && (coord[0][0] == coord[1][0]+1 && coord[1][0] == coord[2][0]+1 || coord[0][1] == coord[1][1]+1 && coord[1][1] == coord[2][1]+1) )
         {
             int cntr = 0;
@@ -91,23 +94,31 @@ public class Game{
         return removedCards;
     }
 
-    //TODO: Estrarre la validità dell'inserzione dal metodo di inserzione come per la selezione?
+    /**
+     * Checks if the insertion can actually be made
+     * @param playerUsername of the player whose bookshelf to perform the insertion
+     * @param column where the player wants to insert his cards
+     * @param cardNumber number of cards to insert into the column
+     * @return if the insertion is valid
+     */
+    public boolean canInsert(String playerUsername, int column, int cardNumber){
+        //Checking if the selected row is an existing one
+        if(column < 0 || column >= 5) return false;
+
+        //Checking if the selected column has enough space for the number of cards selected
+        return players.get(playerUsername).getBookshelf().getCell(cardNumber - 1, column).isCellEmpty();
+
+    }
+
+    //TODO: Metodo forwarding, revisionare
     /**
      * Inserts each selected card in order into the player's bookshelf
      * @param playerUsername player who makes the move
      * @param column into which the cards selected by the player are inserted
      * @param cards selected and arranged by the player in the desired order
      */
-    public boolean addCardsToBookshelf(String playerUsername, int column, ArrayList<Card> cards) {
-        //Checking if the selected row is an existing one
-        if(column < 0 || column >= 5) return false;
-
-        //Checking if the selected column has enough space for the number of cards selected
-        if(!players.get(playerUsername).getBookshelf().getCell(cards.size() - 1, column).isCellEmpty()) return false; //TODO: -1 o no -1?
-
-        //Card insertion
+    public void addCardsToBookshelf(String playerUsername, int column, ArrayList<Card> cards) {
         for(Card c : cards) players.get(playerUsername).addCardToBookshelf(column, c);
-        return true;
     }
 
     /**

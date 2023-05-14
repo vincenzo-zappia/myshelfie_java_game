@@ -75,7 +75,7 @@ public class CLI implements Runnable, UserInterface {
                     int column;
 
                     try {
-                        //TODO: Ridondante, c'è lo stesso check in GameController ma si risparmia tempo
+                        //TODO: Ridondante, c'è lo stesso check in GameController ma si risparmia tempo (controllo con e senza debuggando)
                         //Checking if the player has first made a selection
                         if(!virtualModel.isSelection()) {
                             System.out.println(CliUtil.makeErrorMessage("First select your cards!"));
@@ -85,6 +85,7 @@ public class CLI implements Runnable, UserInterface {
                         //Parsing the input command (chosen column)
                         column = Integer.parseInt(splitted[1]);
 
+                        //TODO: Capire come confinare a lato server l'estrazione delle carte da inserire
                         //Extracting the selected cards from the checked coordinates saved in VirtualModel
                         ArrayList<Card> cards = new ArrayList<>();
                         for (int[] ints : virtualModel.getCoordinates()) cards.add(virtualModel.getBoard()[ints[0]][ints[1]].getCard());

@@ -73,7 +73,6 @@ public class Lobby {
         networkMap.put(username, netPlayer);
     }
 
-    //TODO: Decidere se mantenere il metodo
     /**
      * Broadcasts a message to all the players in the lobby (same as broadcast() in GameController)
      * @param message message to send
@@ -99,6 +98,7 @@ public class Lobby {
         gameController = new GameController(new Game(playerUsernames), viewHashMap);
         inGame = true;
         sendLobbyMessage(new GenericResponse(true,  "Now in game!"));
+
     }
 
     /**

@@ -1,6 +1,7 @@
 
 package it.polimi.ingsw.mechanics;
 
+import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
 import it.polimi.ingsw.network.messages.Message;
@@ -26,6 +27,7 @@ public class GameController {
 
     //region LOGIC ATTRIBUTES
     private int[][] coordinates; //Turn-specific board coordinates temporarily saved as attributes to be sent as message //TODO: Vedere se si riesce a renderlo locale
+    private ArrayList<Card> cards = new ArrayList<>();
     private boolean canInsert; //Turn phase management
     //endregion
 
@@ -105,7 +107,6 @@ public class GameController {
         //Checking if the cards selected are actually selectable
         if(game.canSelect(message.getCoordinates())) {
 
-            //TODO: Via-vai di coordinate, se si vuole confinare l'aggiornamento delle coordinate di VirtualModel solo al lato client trovare alternativa
             //Sending positive feedback to the player with the checked coordinates
             viewHashMap.get(message.getUsername()).sendGenericResponse(true, "Valid selection!");
             viewHashMap.get(message.getUsername()).sendCheckedCoordinates(message.getCoordinates());
@@ -142,13 +143,18 @@ public class GameController {
                 return;
             }
 
-            //Checking if the column selected for the insertion is valid, if so the cards are inserted by the same method
-            if(game.addCardsToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards())){
+            //TODO: Check se le carte inviate dal client corrispondano a quelle estratte dalle coordinate?
 
+            //Checking if the column selected for the insertion is valid, if so the cards are inserted by the same method
+            if(game.canInsert(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards().size())){
+
+                //TODO: Capire come confinare a lato server l'estrazione delle carte da inserire
                 //Removal of the previously selected cards from the game board
-                game.removeCardsFromBoard(coordinates);
+                cards = game.removeCardsFromBoard(coordinates);
                 System.out.println("INFO: Cards removed from the board and inserted in " + turnManager.getCurrentPlayer() + "'s bookshelf in column " + message.getSelectedColumn());
-                //System.out.println("INFO: Inserted cards "+ game.getPlayerBookshelf(turnManager.getCurrentPlayer())[5][0].getCard().getType().toString()); //TODO: Revisionare log
+
+                //Insertion of the cards (updating the bookshelf of the player)
+                game.addCardsToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), message.getSelectedCards());
 
                 //Sending positive feedback to the player with the updated bookshelf
                 viewHashMap.get(message.getUsername()).sendGenericResponse(true, "Insertion successful!" );

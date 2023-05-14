@@ -40,6 +40,7 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    //TODO: Implementare safe disconnect
     public void run(){
         initializeLobbyConnection();
 
