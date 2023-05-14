@@ -102,12 +102,31 @@ public class Board {
      * @return if the card is selectable
      */
     public boolean selectableCard(int x, int y){
+        /*
         if(matrix[x][y].isCellActive() && !matrix[x][y].isCellEmpty()){
             if((y < 8) && (matrix[x][y+1].isCellEmpty() || !matrix[x][y+1].isCellActive())) return true;
             if((x > 0) && (matrix[x-1][y].isCellEmpty() || !matrix[x-1][y].isCellActive())) return true;
             if((x < 8) && (matrix[x+1][y].isCellEmpty() || !matrix[x+1][y].isCellActive())) return true;
             if((y > 0) && (matrix[x][y-1].isCellEmpty() || !matrix[x][y-1].isCellActive())) return true;
             return false;
+        }
+        return false;
+         */
+
+        if (matrix[x][y].isCellActive() && !matrix[x][y].isCellEmpty()) {
+            // Controllo dei lati
+            if (x > 0 && matrix[x - 1][y].isCellEmpty() || !matrix[x - 1][y].isCellActive()) {
+                 return true;
+            }
+            if (x < 8 && matrix[x + 1][y].isCellEmpty() || !matrix[x + 1][y].isCellActive()) {
+                 return true;
+            }
+            if (y > 0 && matrix[x][y - 1].isCellEmpty() || !matrix[x][y - 1].isCellActive()) {
+                 return true;
+            }
+            if (y < 8 && matrix[x][y + 1].isCellEmpty() || !matrix[x][y + 1].isCellActive()) {
+                 return true;
+            }
         }
         return false;
     }

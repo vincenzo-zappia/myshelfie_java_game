@@ -1,6 +1,7 @@
 package it.polimi.ingsw.entities;
 
 import it.polimi.ingsw.entities.Board;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -269,6 +270,12 @@ class BoardTest {
         assertFalse(board.getMatrix()[5][7].isCellEmpty());
         assertFalse(board.getMatrix()[7][3].isCellEmpty());
         assertFalse(board.getMatrix()[8][4].isCellEmpty());
+    }
+
+    @Test
+    void isSelectableTest(){
+        board = new Board(2);
+        assertTrue(board.selectableCard(5,1));
     }
 
 }
