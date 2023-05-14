@@ -11,8 +11,7 @@ import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.Player;
-import it.polimi.ingsw.entities.goals.CommonGoal0;
-import it.polimi.ingsw.entities.goals.Goal;
+import it.polimi.ingsw.entities.goals.*;
 import it.polimi.ingsw.util.BoardCell;
 
 import java.util.ArrayList;
@@ -40,8 +39,6 @@ public class Game{
 
         CommonGoalFactory factory = new CommonGoalFactory();
         commonGoals = factory.makeCommonGoal();
-
-
         commonGoal0 = new CommonGoal0();
     }
     //endregion

@@ -148,34 +148,7 @@ public class Board {
         return card;
     }
 
-    /**
-     * Override of the method toString() of the Object class
-     * @return the created string
-     */
-    public String toString(){
-        StringBuilder ret = new StringBuilder();
-        try {
-            for (int i = 0; i < 9; i++){
-                for (int j=0;j < 9; j++){
-                    BoardCell selCell = matrix[i][j];
-                    if(selCell.isCellActive() && !(selCell.isCellEmpty())){  //check if the cell is active and contains a card
-                        ret.append("C(")
-                                .append(i)
-                                .append(";")
-                                .append(j)
-                                .append("): \n\t Img: ")
-                                .append(selCell.getCard().getImgPath())
-                                .append("\n\t Color: ")
-                                .append(selCell.getCard().getType())
-                                .append("\n");
-                    }
-                }
-            }
-        } catch (CellGetCardException e) {     //see method Cell.getCard()
-            throw new RuntimeException(e);
-        }
-        return ret.toString();
-    }
+
     //endregion
 
     //region GETTER AND SETTER

@@ -90,7 +90,6 @@ public class Bookshelf {
                 try {
                     if(!getCell(i,j).isCellEmpty()) x[i][j] = getCell(i,j).getCard().getType().ordinal(); //save the value in matrix x[][]
                     else x[i][j] = Goal.UNAVAILABLE; //if a cell is empty, use the value UNAVAILABLE(104) to detect in the int matrix
-                    System.out.println("[" + i + "][" + j + "]");
                 } catch (CellGetCardException e) {
                     throw new RuntimeException(e);
                 }
