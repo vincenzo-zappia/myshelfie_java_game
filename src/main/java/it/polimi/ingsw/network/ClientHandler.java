@@ -96,12 +96,15 @@ public class ClientHandler implements Runnable{
             case JOIN_LOBBY_REQUEST -> {
                 JoinLobbyRequest joinLobbyRequest = (JoinLobbyRequest) msg;
 
-                //Checks if the selected lobby exists
+                //Checking if the selected lobby exists
                 if (server.existsLobby(joinLobbyRequest.getLobbyId())) this.lobby = server.getLobby(joinLobbyRequest.getLobbyId());
+                else {
+                    sendMessage(new GenericResponse(false, "This lobby doesn't exist!"));
+                    initializeLobbyConnection();
+                }
 
                 //Joining the selected lobby
-                lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this));
-                sendMessage(new GenericResponse(true, "Lobby connection successful!"));
+                if(lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this))) sendMessage(new GenericResponse(true, "Lobby connection successful!"));
 
                 //Sends to all the players the updated lobby with all the usernames
                 lobby.sendLobbyMessage(new UsernameListMessage(lobby.getPlayerUsernames()));

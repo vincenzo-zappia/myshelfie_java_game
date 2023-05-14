@@ -37,21 +37,21 @@ public class Lobby {
      * Method used by clients to enter a lobby
      * @param netPlayer player that request access to lobby
      */
-    public void joinLobby(NetworkPlayer netPlayer){
+    public boolean joinLobby(NetworkPlayer netPlayer){
         Message response;
 
         //Checking if the selected lobby is already running a game
         if(inGame) {
             response = new ErrorMessage("Game already started!");
             netPlayer.getClientHandler().sendMessage(response);
-            return;
+            return false;
         }
 
         //Checking if the lobby is full
         if(playerUsernames.size()>=4){
             response = new ErrorMessage("Lobby is full!");
             netPlayer.getClientHandler().sendMessage(response);
-            return;
+            return false;
         }
 
 
@@ -63,7 +63,7 @@ public class Lobby {
         if(playerUsernames.contains(username)){
             response = new ErrorMessage("Username already taken!");
             netPlayer.getClientHandler().sendMessage(response);
-            return;
+            return false;
         }
 
         //Adding the player to the lobby
@@ -71,6 +71,7 @@ public class Lobby {
         VirtualView view = new VirtualView(netPlayer.getClientHandler());
         netPlayer.setVirtualView(view);
         networkMap.put(username, netPlayer);
+        return true;
     }
 
     /**
