@@ -55,18 +55,31 @@ public class Game{
         //Checking if any of the coordinates exceeds the board dimensions
         for(int[] i : coord) for(int j : i) if(j < 0 || j > 8) return false;
 
-        if(coord.length==3 && (coord[0][0] == coord[1][0]+1 && coord[1][0] == coord[2][0]+1 || coord[0][1] == coord[1][1]+1 && coord[1][1] == coord[2][1]+1) )
+        //TODO: ordinamento carte
+
+        //coord[x][y] = row
+        //coord[x][y+1] = column
+
+        if(coord.length==3 && (coord[0][0] == coord[1][0]+1 && coord[1][0] == coord[2][0]+1  //card1.x = card2.x-1 = card3.x-2
+                && coord[0][1] == coord[1][1] && coord[1][1] == coord[2][1]                  //card1.y = card2.y = card3.y
+                || coord[0][1] == coord[1][1]+1 && coord[1][1] == coord[2][1]+1              //card1.y = card2.y-1 = card3.y-2
+                && coord[0][0] == coord[1][0] && coord[1][0] == coord[2][0]))                //card1.x = card2.x = card3.x
         {
             int cntr = 0;
             for(int i = 0; i < 3; i++)if(board.selectableCard(coord[i][0], coord[i][1]))cntr++;
             if(cntr==3)return true;
         }
-        if(coord.length==2 && (coord[0][0] == coord[1][0]+1 || coord[0][1] == coord[1][1]+1) )
+        if(coord.length==2 && (coord[0][0] == coord[1][0]+1         //card1.x = card2.x-1
+                && coord[0][1] == coord[1][1]                       //card1.y = card2.y
+                || coord[0][1] == coord[1][1]+1                     //card1.y = card2.y-1
+                && coord[0][0] == coord[1][0]))                     //card1.x = card2.x
         {
             int cntr = 0;
             for(int i = 0; i < 2; i++)if(board.selectableCard(coord[i][0], coord[i][1]))cntr++;
             if(cntr==2)return true;
         }
+
+        /*
         if(coord.length==3 && (coord[0][0] == coord[1][0]-1 && coord[1][0] == coord[2][0]-1 || coord[0][1] == coord[1][1]-1 && coord[1][1] == coord[2][1]-1) )
         {
             int cntr = 0;
@@ -79,6 +92,8 @@ public class Game{
             for(int i = 0; i < 2; i++)if(board.selectableCard(coord[i][0], coord[i][1]))cntr++;
             if(cntr==2)return true;
         }
+        */
+
         if(coord.length==1)return board.selectableCard(coord[0][0], coord[0][1]);
         return false;
     }
