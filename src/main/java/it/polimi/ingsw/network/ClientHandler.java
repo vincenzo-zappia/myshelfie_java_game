@@ -105,6 +105,7 @@ public class ClientHandler implements Runnable{
 
                 //Joining the selected lobby
                 if(lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this))) sendMessage(new GenericResponse(true, "Lobby connection successful!"));
+                else initializeLobbyConnection();
 
                 //Sends to all the players the updated lobby with all the usernames
                 lobby.sendLobbyMessage(new UsernameListMessage(lobby.getPlayerUsernames()));
