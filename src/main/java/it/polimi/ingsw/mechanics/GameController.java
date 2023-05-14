@@ -105,7 +105,7 @@ public class GameController {
         }
 
         //Checking if the cards selected are actually selectable
-        if(game.canSelect(message.getCoordinates())) {
+        if(game.canSelect(message.getUsername(), message.getCoordinates())) {
 
             //Sending positive feedback to the player with the checked coordinates
             viewHashMap.get(message.getUsername()).sendGenericResponse(true, "Valid selection!");

@@ -8,12 +8,14 @@
 package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Board;
+import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.entities.goals.CommonGoal0;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.util.BoardCell;
 
+import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.HashMap;
 import it.polimi.ingsw.util.Cell;
@@ -44,22 +46,27 @@ public class Game{
     }
     //endregion
 
+    //TODO: Per ogni errore specificare il tipo attraverso il valore di un'enumerazinoe di errori
     //region METHODS
     /**
      * Checks if the selected cards are actually selectable
-     * @param coord coordinates of the selected cards
+     * @param coord coordinates of the selected cards:
+     *              coord[x][0] = row
+     *              coord[x][1] = column
      * @return true if the cards are selectable, false otherwise
      */
-    public boolean canSelect(int[][] coord){
+    public boolean canSelect(String playerUsername, int[][] coord){
+
+        //Checking if the player has selected more cards than he can insert into his bookshelf
+        Bookshelf bookshelf = players.get(playerUsername).getBookshelf();
+        for(int i = 0; i < 5; i++) if(6 - bookshelf.cardsInColumn(i) < coord.length) return false;
 
         //Checking if any of the coordinates exceeds the board dimensions
         for(int[] i : coord) for(int j : i) if(j < 0 || j > 8) return false;
 
         //TODO: ordinamento carte
 
-        //coord[x][y] = row
-        //coord[x][y+1] = column
-
+        //Checking if the selection of 3 cards is either in a row or a column
         if(coord.length==3 && (coord[0][0] == coord[1][0]+1 && coord[1][0] == coord[2][0]+1  //card1.x = card2.x-1 = card3.x-2
                 && coord[0][1] == coord[1][1] && coord[1][1] == coord[2][1]                  //card1.y = card2.y = card3.y
                 || coord[0][1] == coord[1][1]+1 && coord[1][1] == coord[2][1]+1              //card1.y = card2.y-1 = card3.y-2
@@ -69,6 +76,8 @@ public class Game{
             for(int i = 0; i < 3; i++)if(board.selectableCard(coord[i][0], coord[i][1]))cntr++;
             if(cntr==3)return true;
         }
+
+        //Checking if the selection of 2 cards is either in a row or a column
         if(coord.length==2 && (coord[0][0] == coord[1][0]+1         //card1.x = card2.x-1
                 && coord[0][1] == coord[1][1]                       //card1.y = card2.y
                 || coord[0][1] == coord[1][1]+1                     //card1.y = card2.y-1
@@ -94,7 +103,8 @@ public class Game{
         }
         */
 
-        if(coord.length==1)return board.selectableCard(coord[0][0], coord[0][1]);
+        //Checking if a single card is selectable
+        if(coord.length == 1) return board.selectableCard(coord[0][0], coord[0][1]);
         return false;
     }
 

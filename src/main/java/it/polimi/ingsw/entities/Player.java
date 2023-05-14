@@ -20,7 +20,6 @@ public class Player implements Comparable<Player> {
     private Bookshelf bookshelf;
     //endregion
 
-
     //region CONSTRUCTOR
     public Player(String username){
         this.username=username;

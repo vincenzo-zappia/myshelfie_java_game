@@ -13,6 +13,9 @@ import it.polimi.ingsw.util.CardType;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Container with all the cards of the game
+ */
 public class Bag {
 
     //region ATTRIBUTES
@@ -43,16 +46,18 @@ public class Bag {
 
     //region METHODS
 
+    //TODO: Vedere come gestire il riempimento a bag quasi vuota
+
     /**
-     * check if the bag is empty
-     * @return true if bag empty, false in the other case
+     * Checks if the bag is empty
+     * @return if the bag is empty
      */
     public boolean isBagEmpty(){
         return bag.size() == 0;
     }
 
     /**
-     * Draw one card from the bag
+     * Draws a random card from the bag
      * @return the last card in the bag
      * @throws NoMoreCardsException
      */
