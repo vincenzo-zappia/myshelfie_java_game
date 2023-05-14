@@ -117,7 +117,7 @@ public class ClientHandler implements Runnable{
                  */
                 if(lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this))){
                     sendMessage(new GenericResponse(true, "Join successful!"));
-                    sendMessage(new GenericMessage(MessageType.JOINED_LOBBY, ""));
+                    sendMessage(new GenericMessage(MessageType.JOINED_LOBBY, "")); //TODO: Pulire se si può
                 }
                 else initializeLobbyConnection();
 

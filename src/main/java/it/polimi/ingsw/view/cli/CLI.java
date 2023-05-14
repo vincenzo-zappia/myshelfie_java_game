@@ -33,7 +33,9 @@ public class CLI implements Runnable, UserInterface {
     @Override
     public void run() {
         //TODO: Stampa a schermo titolo di gioco da metodo di CliUtils
-        connection(); //Creation or joining of a lobby and starting the game (initialization of all the data structures)
+
+        //Creation or joining of a lobby and starting the game
+        connection();
 
         //While loop to read the user keyboard input (until the game ends)
         while(!virtualModel.getEnd()){
@@ -142,10 +144,11 @@ public class CLI implements Runnable, UserInterface {
      */
     private void connection(){
 
+        //TODO: Ovviare al fatto che non si sa quando la flag venga effettivamente cambiata e quindi si esce dal loop (ora vengono chiamate le due request)
         //While loop that manages the correct creation or joining of a lobby
         while(!inGame) {
 
-            //TODO: Specificare la soluzinoe all'eventuale errore che non ha permesso di creare/joinare la lobby
+            //TODO: Specificare la soluzione all'eventuale errore che non ha permesso di creare/joinare la lobby
             String lobbyResp = requestLobby();
             String username = requestUsername();
 
