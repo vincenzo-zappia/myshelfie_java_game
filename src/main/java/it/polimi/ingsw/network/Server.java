@@ -41,8 +41,7 @@ public class Server {
 
     //region METHODS
     /**
-     * Networking methods to start the connections
-     * between server and clients
+     * Starts the connection between server and client
      */
     public void startConnection() {
         ExecutorService executor = Executors.newCachedThreadPool();
@@ -66,9 +65,9 @@ public class Server {
     }
 
     /**
-     * Check that the lobby hashmap contains a certain ID
+     * Checks that the lobby hashmap contains a certain ID
      * @param lobbyId that needs to be checked
-     * @return true if map contains the ID
+     * @return if the map contains the ID
      */
     public boolean existsLobby(int lobbyId){
         return lobbyMap.containsKey(lobbyId);
@@ -79,15 +78,26 @@ public class Server {
     }
 
     /**
-     * Create lobby as requested by player
+     * Creates a lobby as requested by player
      * @return the new initialized lobby
      */
     public Lobby createLobby(){
-        int id = lobbyMap.size()+1;
+
+        //Selection of the id of the lobby to create
+        int id;
+
+        //If it's the first lobby to be created its id is chosen to be '1' ...
+        if(lobbyMap.size() == 0) id = 1;
+
+        //... otherwise the new id is set to be the id of the last created lobby plus one
+        else id = (int) lobbyMap.keySet().toArray()[lobbyMap.size() - 1] + 1;
+
+        //Creation of the actual lobby with the previously selected id
         Lobby lobby = new Lobby(this, id);
         lobbyMap.put(id, lobby);
         System.out.println("INFO: Lobby created.");
         return lobby;
+
     }
 
     /**
