@@ -139,29 +139,32 @@ public class CLI implements Runnable, UserInterface {
      * Prompts the creation of either a lobby creation command or a lobby access request based on the user input
      */
     private void connection(){
-        int choice = Integer.parseInt(requestLobby());
+        String lobbyResp = requestLobby();
         String username = requestUsername();
 
-        if(choice == 0){
-            controller.createLobby(username);
-            String read;
-            do{
-                read = scanner.nextLine();
-            }while(!read.equals("start"));
-            controller.startGame();
-        }
-        else if(choice == 1){
-            System.out.println("Enter lobby id:");
-            try {
-                int id = Integer.parseInt(scanner.nextLine()); //TODO: mettere controllo se intero
-                controller.joinLobby(username, id);
+        switch (lobbyResp) {
+            case "0" -> {
+                controller.createLobby(username);
+                String read;
+                do {
+                    read = scanner.nextLine();
+                } while (!read.equals("start"));
+                controller.startGame();
             }
-            catch (NumberFormatException e) {
-                System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
-                connection();
+
+            case "1" -> {
+                System.out.println("Enter lobby id:");
+                try {
+                    int id = Integer.parseInt(scanner.nextLine());
+                    controller.joinLobby(username, id);
+                } catch (NumberFormatException e) {
+                    System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
+                    connection();
+                }
             }
         }
     }
+
 
     /**
      * Makes card coordinates (two int array) out of the user keyboard input
@@ -266,6 +269,7 @@ public class CLI implements Runnable, UserInterface {
     @Override
     public void showError(String content) {
         System.out.println(CliUtil.makeErrorMessage(content));
+        connection();
     }
     //endregion
 
