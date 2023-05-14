@@ -99,7 +99,7 @@ public class ClientHandler implements Runnable{
                 //Checking if the selected lobby exists
                 if (server.existsLobby(joinLobbyRequest.getLobbyId())) this.lobby = server.getLobby(joinLobbyRequest.getLobbyId());
                 else {
-                    sendMessage(new GenericResponse(false, "This lobby doesn't exist!"));
+                    sendMessage(new ErrorMessage( "This lobby doesn't exist!"));
                     initializeLobbyConnection();
                 }
 
