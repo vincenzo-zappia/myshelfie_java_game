@@ -20,12 +20,14 @@ public class CLI implements Runnable, UserInterface {
     private final Scanner scanner;
     private final ClientController controller;
     private final VirtualModel virtualModel;
+    private boolean inGame;
     //endregion
 
     public CLI(Client client) {
         scanner = new Scanner(System.in);
         controller = new ClientController(this, client);
         virtualModel = new VirtualModel();
+        inGame = false;
     }
 
     @Override
@@ -139,30 +141,41 @@ public class CLI implements Runnable, UserInterface {
      * Prompts the creation of either a lobby creation command or a lobby access request based on the user input
      */
     private void connection(){
-        String lobbyResp = requestLobby();
-        String username = requestUsername();
 
-        switch (lobbyResp) {
-            case "0" -> {
-                controller.createLobby(username);
-                String read;
-                do {
-                    read = scanner.nextLine();
-                } while (!read.equals("start"));
-                controller.startGame();
-            }
+        //While loop that manages the correct creation or joining of a lobby
+        while(!inGame) {
 
-            case "1" -> {
-                System.out.println("Enter lobby id:");
-                try {
-                    int id = Integer.parseInt(scanner.nextLine());
-                    controller.joinLobby(username, id);
-                } catch (NumberFormatException e) {
-                    System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
-                    connection();
+            //TODO: Specificare la soluzinoe all'eventuale errore che non ha permesso di creare/joinare la lobby
+            String lobbyResp = requestLobby();
+            String username = requestUsername();
+
+            switch (lobbyResp) {
+                //Creation of a new lobby
+                case "0" -> {
+                    //Sending a lobby creation request
+                    controller.createLobby(username);
+
+                    //Waiting for the lobby master to type "start"
+                    String read;
+                    do {
+                        read = scanner.nextLine();
+                    } while (!read.equals("start"));
+                    controller.startGame();
+                }
+
+                //Joining an existing lobby
+                case "1" -> {
+                    System.out.println("Enter lobby ID:");
+                    try {
+                        int id = Integer.parseInt(scanner.nextLine());
+                        controller.joinLobby(username, id);
+                    } catch (NumberFormatException e) {
+                        System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
+                    }
                 }
             }
         }
+
     }
 
 
@@ -261,16 +274,12 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void showSuccessfulConnection(int lobbyId) {
-        System.out.println(CliUtil.makeConfirmationMessage("Lobby connection successful! \nLobby ID: " + lobbyId));
+    public void showSuccessfulConnection() {
+        inGame = true;
+
         //TODO: Prompt al capo lobby di scrivere start per far partire il gioco
     }
 
-    @Override
-    public void showError(String content) {
-        System.out.println(CliUtil.makeErrorMessage(content));
-        connection();
-    }
     //endregion
 
     //region VIEW

@@ -10,11 +10,7 @@ import java.util.ArrayList;
  */
 public interface UserInterface extends View {
 
-    void refreshConnectedPlayers(ArrayList<String> playeUsernames);
+    void refreshConnectedPlayers(ArrayList<String> playerUsernames);
 
-    void showSuccessfulConnection(int lobbyId);
-
-    void showError(String content);
-
-
+    void showSuccessfulConnection();
 }

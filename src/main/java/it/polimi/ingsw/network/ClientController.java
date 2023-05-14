@@ -1,6 +1,5 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.network.messages.client2server.CreateLobbyRequest;
 import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
 import it.polimi.ingsw.network.messages.client2server.JoinLobbyRequest;
@@ -11,8 +10,6 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.UserInterface;
 
-import java.util.ArrayList;
-
 /**
  * Manages the messages received from the server by calling the methods of the user interface.
  * Creates and sends messages to the server from the user interface.
@@ -20,7 +17,7 @@ import java.util.ArrayList;
 public class ClientController implements Observer {
     //region ATTRIBUTES
     private final UserInterface view; //either CLI or GUI for the packing of messages User interface -> Server
-    private Client client; //for the unpacking of messages Server -> User interface
+    private final Client client; //for the unpacking of messages Server -> User interface
     private String username;
     private int lobbyId;
     //endregion
@@ -46,17 +43,16 @@ public class ClientController implements Observer {
                 GenericResponse response = (GenericResponse) message;
                 view.sendGenericResponse(response.getResponse(), response.getContent());
             }
-            case ERROR_MESSAGE -> {
-                ErrorMessage error = (ErrorMessage) message;
-                view.showError(error.getContent());
-            }
             case CREATED_LOBBY -> {
-                LobbyCreationMessage newLobby = (LobbyCreationMessage) message;
-                if (newLobby.isSuccessful()) {
-                    this.lobbyId = newLobby.getLobbyId();
-                    view.showSuccessfulConnection(lobbyId);
-                }
-                else {}
+                LobbyIDMessage newLobby = (LobbyIDMessage) message;
+
+                //Setting of the ID of the newly created lobby
+                this.lobbyId = newLobby.getLobbyId();
+
+                view.showSuccessfulConnection();
+            }
+            case JOINED_LOBBY -> {
+                view.showSuccessfulConnection();
             }
             case NEW_CONNECTION -> {
                 UsernameListMessage connectionMessage = (UsernameListMessage) message;
@@ -99,6 +95,7 @@ public class ClientController implements Observer {
     public void createLobby(String username){
         Message create = new CreateLobbyRequest(username);
         this.username = username;
+
         client.sendMessage(create);
     }
 
@@ -111,6 +108,7 @@ public class ClientController implements Observer {
         Message join = new JoinLobbyRequest(username, lobbyId);
         this.lobbyId = lobbyId;
         this.username = username;
+
         client.sendMessage(join);
     }
 
@@ -133,7 +131,6 @@ public class ClientController implements Observer {
 
     /**
      * Creates a Message out of the ordered cards and the column for their insertion chosen by the user and sends them to the server
-     * @param selected ordered cards previously selected by the user
      * @param column where the selected cards will be inserted
      */
     public void sendInsertion(int column){

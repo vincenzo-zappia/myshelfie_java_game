@@ -42,8 +42,14 @@ public class ClientHandler implements Runnable{
 
     //TODO: Implementare safe disconnect
     public void run(){
+
+        /*
+         * The first message that the server can receive from the client is a connection message that prompts the server
+         * to either create a new lobby or add the client to an existing one
+         */
         initializeLobbyConnection();
 
+        //Forwarding of all the possible commands sent by the player to GameController after the game is started
         try {
             while(!Thread.currentThread().isInterrupted()){
                 Message msg = (Message) objIn.readObject();
@@ -87,29 +93,40 @@ public class ClientHandler implements Runnable{
     }
 
     /**
-     *
+     * //TODO: Univocità del tipo del primo messaggio che un client può inviare
      */
     private void initializeLobbyConnection() {
         Message msg = receiveMessage();
 
         switch (msg.getType()){
+
+            //Checking if the player can join the selected lobby
             case JOIN_LOBBY_REQUEST -> {
                 JoinLobbyRequest joinLobbyRequest = (JoinLobbyRequest) msg;
 
                 //Checking if the selected lobby exists
                 if (server.existsLobby(joinLobbyRequest.getLobbyId())) this.lobby = server.getLobby(joinLobbyRequest.getLobbyId());
                 else {
-                    sendMessage(new ErrorMessage( "This lobby doesn't exist!"));
+                    sendMessage(new GenericResponse(false, "This lobby doesn't exist!"));
                     initializeLobbyConnection();
                 }
 
-                //Joining the selected lobby
-                if(lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this))) sendMessage(new GenericResponse(true, "Lobby connection successful!"));
+                /*
+                 * Checking if the username chosen by the player is already taken, if the lobby has reached max capacity
+                 * and if the game is already started
+                 */
+                if(lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this))){
+                    sendMessage(new GenericResponse(true, "Join successful!"));
+                    sendMessage(new GenericMessage(MessageType.JOINED_LOBBY, ""));
+                }
                 else initializeLobbyConnection();
 
-                //Sends to all the players the updated lobby with all the usernames
+                //Sends to all the players the username list with the newly connected one
                 lobby.sendLobbyMessage(new UsernameListMessage(lobby.getPlayerUsernames()));
+
             }
+
+            //Creation of a new lobby
             case CREATE_LOBBY_REQUEST -> {
 
                 //Creating a new lobby
@@ -117,11 +134,13 @@ public class ClientHandler implements Runnable{
 
                 //Joining the newly created lobby
                 lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this));
-                sendMessage(new LobbyCreationMessage(lobby.getLobbyId(), true));
+                sendMessage(new GenericResponse(true, "Lobby creation successful!\nLobby ID: " + lobby.getLobbyId()));
+                sendMessage(new LobbyIDMessage(lobby.getLobbyId()));
 
                 //Initialization of the game
                 startGameHandler();
             }
+
             default -> {
                 //TODO: generare eccezione?
             }

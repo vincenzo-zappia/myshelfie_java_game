@@ -10,16 +10,26 @@ import static java.lang.System.exit;
 public class Main {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
+
         System.out.println("Select user interface:");
-        System.out.println("[0] CLI");
+        System.out.println("[0] CLI \n[1] GUI");
         String selezione = in.nextLine();
+
         Client client = new Client("10.0.0.4", 2023);
         CLI cli = new CLI(client);
+
+        //Selection of the CLI as the user interface
         if (selezione.equals("0")) new Thread(cli).start();
+
+        //Selection of the GUI as the user interface
+        else if (selezione.equals("1")) System.out.println("GUI"); //TODO: Parte GUI
+
+        //Shitting off if the selection doesn't match
         else{
             System.out.println("Incorrect selection!");
             exit(0);
         }
+
     }
 
     //questo metodo dovrebbe servire per verificare la porta e l'ip

@@ -42,14 +42,14 @@ public class Lobby {
 
         //Checking if the selected lobby is already running a game
         if(inGame) {
-            response = new ErrorMessage("Game already started!");
+            response = new GenericResponse(false, "Game already started!");
             netPlayer.getClientHandler().sendMessage(response);
             return false;
         }
 
         //Checking if the lobby is full
         if(playerUsernames.size()>=4){
-            response = new ErrorMessage("Lobby is full!");
+            response = new GenericResponse(false, "Lobby is full!");
             netPlayer.getClientHandler().sendMessage(response);
             return false;
         }
@@ -61,7 +61,7 @@ public class Lobby {
         //TODO: Username deve essere univoco nel server e non solo nella lobby
         //Checks if the username of the player is already taken
         if(playerUsernames.contains(username)){
-            response = new ErrorMessage("Username already taken!");
+            response = new GenericResponse(false, "Username already taken!");
             netPlayer.getClientHandler().sendMessage(response);
             return false;
         }
