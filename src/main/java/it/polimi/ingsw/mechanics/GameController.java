@@ -108,8 +108,8 @@ public class GameController {
         if(game.canSelect(message.getUsername(), message.getCoordinates())) {
 
             //Sending positive feedback to the player with the checked coordinates
-            viewHashMap.get(message.getUsername()).sendGenericResponse(true, "Valid selection!");
             viewHashMap.get(message.getUsername()).sendCheckedCoordinates(message.getCoordinates());
+            viewHashMap.get(message.getUsername()).sendGenericResponse(true, "Valid selection!");
             System.out.println("INFO: Selection made.");
 
             //Saving the coordinates of the removed cards in order to broadcast them at the end of the turn
@@ -135,7 +135,6 @@ public class GameController {
     public synchronized void cardInsertion(InsertionRequest message){
         try {
 
-            //TODO: Non dovrebbe mai arrivarci perché c'è boolean lato client, rimuovere quello in cli?
             //Checking if the player has first made a selection
             if(!canInsert){
                 viewHashMap.get(message.getUsername()).sendGenericResponse(false, "First select your cards!" );
@@ -148,7 +147,6 @@ public class GameController {
             //Checking if the column selected for the insertion is valid, if so the cards are inserted by the same method
             if(game.canInsert(turnManager.getCurrentPlayer(), message.getSelectedColumn(), coordinates.length)){
 
-                //TODO: Capire come confinare a lato server l'estrazione delle carte da inserire
                 //Removal of the previously selected cards from the game board
                 cards = game.removeCardsFromBoard(coordinates);
                 System.out.println("INFO: Cards removed from the board and inserted in " + turnManager.getCurrentPlayer() + "'s bookshelf in column " + message.getSelectedColumn());
@@ -157,8 +155,8 @@ public class GameController {
                 game.addCardsToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), cards);
 
                 //Sending positive feedback to the player with the updated bookshelf
-                viewHashMap.get(message.getUsername()).sendGenericResponse(true, "Insertion successful!" );
                 viewHashMap.get(message.getUsername()).showUpdatedBookshelf(game.getPlayerBookshelf(turnManager.getCurrentPlayer())); //TODO: Debug: Una volta mi è capitato che non andasse oltre questo comando
+                viewHashMap.get(message.getUsername()).sendGenericResponse(true, "Insertion successful!" );
 
                 //End turn housekeeping routine
                 endTurn();

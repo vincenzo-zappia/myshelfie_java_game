@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import java.util.ArrayList;
 
+//TODO: Vedere se si riesce a rimuovere (ora serve a standardizzare l'invio di messaggi che arrivano da Lobby: livello superiore a GameController)
 /**
  * Defines all the methods used by the user interface (CLI/GUI) to take input from keyboard and call the methods in
  * ClientController that generate the respective message to send to the Server
@@ -10,7 +11,20 @@ import java.util.ArrayList;
  */
 public interface UserInterface extends View {
 
+    /**
+     * Confirms the username choice and allows the player to either create or join a lobby
+     */
+    void confirmUsername();
+
+    /**
+     * Displays the list of the usernames of the players connected to the lobby at that point in time
+     * @param playerUsernames list of player usernames
+     */
     void refreshConnectedPlayers(ArrayList<String> playerUsernames);
 
-    void showSuccessfulConnection();
+    /**
+     * Checks the flag that allows the user interface to start taking game commands from the player
+     */
+    void checkInGame();
+
 }

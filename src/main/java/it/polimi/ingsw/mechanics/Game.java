@@ -60,9 +60,14 @@ public class Game{
         //Checking if the player has selected more cards than he can insert into his bookshelf
         Bookshelf bookshelf = players.get(playerUsername).getBookshelf();
 
-        boolean sentinel=false;
-        for(int i = 0; i < 5; i++) if(6 - bookshelf.cardsInColumn(i) >= coord.length)sentinel=true;
+        boolean sentinel = false;
+        for(int i = 0; i < 5; i++) if(6 - bookshelf.cardsInColumn(i) >= coord.length){
+            sentinel = true;
+            break;
+        }
+        if (!sentinel) return false;
 
+        //TODO: Rimuovere if capsula
         if(sentinel) {
             //Checking if any of the coordinates exceeds the board dimensions
             for (int[] i : coord) for (int j : i) if (j < 0 || j > 8) return false;

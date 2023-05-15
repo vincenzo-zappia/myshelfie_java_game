@@ -19,6 +19,7 @@ public class Server {
     //region ATTRIBUTES
     private ServerSocket serverSocket;
     private HashMap<Integer, Lobby> lobbyMap;
+    private ArrayList<String> usernameList;
     //endregion
 
     public Server(int port) {
@@ -29,6 +30,8 @@ public class Server {
         } catch (IOException e) {
             System.err.println("Error:" + e.getMessage());
         }
+
+        usernameList = new ArrayList<>();
     }
 
     //region MAIN
@@ -46,35 +49,25 @@ public class Server {
     public void startConnection() {
         ExecutorService executor = Executors.newCachedThreadPool();
 
-        //connection acceptance loop
+        //While loop to wait for and accept incoming connections
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
-                System.out.println("INFO: Tentativo di connessione...");
-                executor.submit(new ClientHandler(this, socket)); //thread creation
+                System.out.println("INFO: Trying to connect...");
+
+                //Creating a thread for the management of the communication with connected client
+                executor.submit(new ClientHandler(this, socket));
             } catch (IOException ex) {
                 break;
             }
         }
         executor.shutdown();
+
         try {
             serverSocket.close();
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
         }
-    }
-
-    /**
-     * Checks that the lobby hashmap contains a certain ID
-     * @param lobbyId that needs to be checked
-     * @return if the map contains the ID
-     */
-    public boolean existsLobby(int lobbyId){
-        return lobbyMap.containsKey(lobbyId);
-    }
-
-    public Lobby getLobby(int lobbyId){
-        return lobbyMap.get(lobbyId);
     }
 
     /**
@@ -106,6 +99,30 @@ public class Server {
      */
     public void removeLobby(int lobbyId){
         lobbyMap.remove(lobbyId);
+    }
+
+    /**
+     * Checks that the lobby hashmap contains a certain ID
+     * @param lobbyId that needs to be checked
+     * @return if the map contains the ID
+     */
+    public boolean existsLobby(int lobbyId){
+        return lobbyMap.containsKey(lobbyId);
+    }
+
+    /**
+     * Checks if the chosen username is already taken, if not, adds it to the list of usernames
+     * @param username to check
+     * @return if the username is added
+     */
+    public boolean addUsername(String username){
+        for(String user : usernameList) if(user.equals(username)) return false;
+        usernameList.add(username);
+        return true;
+    }
+
+    public Lobby getLobby(int lobbyId){
+        return lobbyMap.get(lobbyId);
     }
     //endregion
 }

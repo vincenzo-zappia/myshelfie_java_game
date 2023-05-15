@@ -7,16 +7,15 @@ import it.polimi.ingsw.network.messages.MessageType;
  * Message containing the ID of a newly created lobby
  */
 public class LobbyIDMessage extends Message {
-    private final int lobbyId;
+    private final int lobbyID;
 
-    public LobbyIDMessage(int lobbyId) {
-        super("server", MessageType.CREATED_LOBBY);
-        this.lobbyId = lobbyId;
+    public LobbyIDMessage(int lobbyID) {
+        super("server", MessageType.LOBBY_ID);
+        this.lobbyID = lobbyID;
     }
 
-    public int getLobbyId() {
-        return lobbyId;
+    public int getLobbyID() {
+        return lobbyID;
     }
-
 
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.client2server.CreateLobbyRequest;
 import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
 import it.polimi.ingsw.network.messages.client2server.JoinLobbyRequest;
@@ -43,16 +44,21 @@ public class ClientController implements Observer {
                 GenericResponse response = (GenericResponse) message;
                 view.sendGenericResponse(response.getResponse(), response.getContent());
             }
-            case CREATED_LOBBY -> {
-                LobbyIDMessage newLobby = (LobbyIDMessage) message;
+            case CHECKED_USERNAME -> {
+                GenericMessage checkedUsername = (GenericMessage) message;
 
-                //Setting of the ID of the newly created lobby
-                this.lobbyId = newLobby.getLobbyId();
+                //Setting the username of the player
+                this.username = message.getContent();
 
-                view.showSuccessfulConnection();
+                view.confirmUsername();
             }
-            case JOINED_LOBBY -> {
-                view.showSuccessfulConnection();
+            case LOBBY_ID -> {
+                LobbyIDMessage joinedLobby = (LobbyIDMessage) message;
+
+                //Setting of the ID of the newly created or joined lobby
+                this.lobbyId = joinedLobby.getLobbyID();
+
+                view.checkInGame();
             }
             case NEW_CONNECTION -> {
                 UsernameListMessage connectionMessage = (UsernameListMessage) message;
@@ -88,14 +94,17 @@ public class ClientController implements Observer {
     //endregion
 
     //region CLIENT2SERVER
+    public void checkUsername(String username){
+        Message message = new GenericMessage(MessageType.USERNAME_REQUEST, username);
+        client.sendMessage(message);
+    }
+
     /**
      * Creates and sends the Message that prompts the server to create a new lobby
      * @param username of the player who creates the lobby (he will be the couch aka the game master)(?)
      */
     public void createLobby(String username){
         Message create = new CreateLobbyRequest(username);
-        this.username = username;
-
         client.sendMessage(create);
     }
 
@@ -106,9 +115,6 @@ public class ClientController implements Observer {
      */
     public void joinLobby(String username, int lobbyId){
         Message join = new JoinLobbyRequest(username, lobbyId);
-        this.lobbyId = lobbyId;
-        this.username = username;
-
         client.sendMessage(join);
     }
 

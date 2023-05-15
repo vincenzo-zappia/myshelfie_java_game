@@ -20,6 +20,7 @@ public class CLI implements Runnable, UserInterface {
     private final Scanner scanner;
     private final ClientController controller;
     private final VirtualModel virtualModel;
+    private boolean usernameCheck;
     private boolean inGame;
     //endregion
 
@@ -34,7 +35,7 @@ public class CLI implements Runnable, UserInterface {
     public void run() {
         //TODO: Stampa a schermo titolo di gioco da metodo di CliUtils
 
-        //Creation or joining of a lobby and starting the game
+        //Creating or joining of a lobby and starting the game
         connection();
 
         //While loop to read the user keyboard input (until the game ends)
@@ -138,21 +139,27 @@ public class CLI implements Runnable, UserInterface {
 
     }
 
-    //region PRIVATE METHODS
     /**
      * Prompts the creation of either a lobby creation command or a lobby access request based on the user input
      */
     private void connection(){
 
-        //TODO: Ovviare al fatto che non si sa quando la flag venga effettivamente cambiata e quindi si esce dal loop (ora vengono chiamate le due request)
+        //TODO: Problema: viene comunque stampato il prompt per una nuova selezione anche se la precedente è valida
+        //TODO: Mascherare il problema non stampando niente a schermo?
+        //Asking the player for his username and sending it to server to check for its availability
+        String username;
+        do{
+            username = requestUsername();
+            controller.checkUsername(username);
+        }while (!usernameCheck);
+
+        //TODO: Problema: viene comunque stampato il prompt per una nuova selezione anche se la precedente è valida
         //While loop that manages the correct creation or joining of a lobby
-        while(!inGame) {
+        String selection;
+        do{
+            selection = requestLobby();
+            switch (selection) {
 
-            //TODO: Specificare la soluzione all'eventuale errore che non ha permesso di creare/joinare la lobby
-            String lobbyResp = requestLobby();
-            String username = requestUsername();
-
-            switch (lobbyResp) {
                 //Creation of a new lobby
                 case "0" -> {
                     //Sending a lobby creation request
@@ -176,29 +183,15 @@ public class CLI implements Runnable, UserInterface {
                         System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
                     }
                 }
+
             }
-        }
+        }while (!inGame);
 
     }
 
-
+    //region SHOW
     /**
-     * Makes card coordinates (two int array) out of the user keyboard input
-     * @param input user keyboard input for coordinates eg: "(x;y)"
-     * @return actual card coordinates (two int array)
-     */
-    private int[] parseCoordinates(String input) {
-        String[] parts = input.substring(1, input.length() - 1).split(";");
-
-        int[] result = new int[2];
-        result[0] = Integer.parseInt(parts[0].trim());
-        result[1] = Integer.parseInt(parts[1].trim());
-
-        return result;
-    }
-
-    /**
-     * The client interface asks the player his username
+     * Asks the player his username
      */
     private String requestUsername() {
         String username;
@@ -208,21 +201,26 @@ public class CLI implements Runnable, UserInterface {
             if (username.replace(" ", "").equals("")) System.out.println(CliUtil.makeErrorMessage("Enter valid username:"));
         }while(username.replace(" ", "").equals(""));
 
+        //TODO: Spostare la gestione dello username qui anziché connection?
+
         return username;
     }
 
     /**
-     * The client interface asks the player if he wants to create a new lobby and, if he doesn't,
-     * the ID of the lobby he wants to join
+     * Asks the player if he wants to create a new lobby or join an existing one
      */
     private String requestLobby() {
+
+        //Taking the input and checking its syntax
         String selection;
         do {
-            System.out.println("[0] Create new lobby");
-            System.out.println("[1] Join existing lobby");
+            System.out.println("[0] Create new lobby\n[1] Join existing lobby");
             selection = scanner.nextLine();
             if(!selection.equals("0") && !selection.equals("1")) System.out.println(CliUtil.makeErrorMessage("Enter valid number."));
         }while (!selection.equals("0") && !selection.equals("1"));
+
+        //TODO: Gestire qua la creazione/join di una lobby anziché in connection?
+
         return selection;
     }
 
@@ -259,6 +257,23 @@ public class CLI implements Runnable, UserInterface {
     private void showPrivateGoal() {
         PrivateGoal privateGoal = virtualModel.getPrivateGoal();
     }
+    //endregion
+
+    //region SYNTAX
+    /**
+     * Makes card coordinates (two int array) out of the user keyboard input
+     * @param input user keyboard input for coordinates eg: "(x;y)"
+     * @return actual card coordinates (two int array)
+     */
+    private int[] parseCoordinates(String input) {
+        String[] parts = input.substring(1, input.length() - 1).split(";");
+
+        int[] result = new int[2];
+        result[0] = Integer.parseInt(parts[0].trim());
+        result[1] = Integer.parseInt(parts[1].trim());
+
+        return result;
+    }
 
     /**
      * Checks if a String is of the format: (x;y), where x and y are two int
@@ -270,19 +285,20 @@ public class CLI implements Runnable, UserInterface {
 
     //region USER INTERFACE
     @Override
-    public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
-        System.out.println("Connected players: ");
-        System.out.println(CliUtil.makePlayersList(playerUsernames));
-        System.out.println("Type start to start the game.");
+    public void confirmUsername() {
+        usernameCheck = true;
     }
 
     @Override
-    public void showSuccessfulConnection() {
-        inGame = true;
-
-        //TODO: Prompt al capo lobby di scrivere start per far partire il gioco
+    public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
+        System.out.println("Connected players: ");
+        System.out.println(CliUtil.makePlayersList(playerUsernames));
     }
 
+    @Override
+    public void checkInGame() {
+        inGame = true;
+    }
     //endregion
 
     //region VIEW
