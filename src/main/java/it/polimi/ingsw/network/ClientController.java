@@ -44,21 +44,17 @@ public class ClientController implements Observer {
                 GenericResponse response = (GenericResponse) message;
                 view.sendGenericResponse(response.getResponse(), response.getContent());
             }
-            case CHECKED_USERNAME -> {
-                GenericMessage checkedUsername = (GenericMessage) message;
-
-                //Setting the username of the player
-                this.username = message.getContent();
-
-                view.confirmUsername();
-            }
             case LOBBY_ID -> {
                 LobbyIDMessage joinedLobby = (LobbyIDMessage) message;
 
                 //Setting of the ID of the newly created or joined lobby
                 this.lobbyId = joinedLobby.getLobbyID();
 
-                view.checkInGame();
+            }
+            case ACCESS_RESPONSE -> {
+                SpecificResponse response = (SpecificResponse) message;
+
+                view.showAccessResponse(response.getResponse(), response.getContent());
             }
             case NEW_CONNECTION -> {
                 UsernameListMessage connectionMessage = (UsernameListMessage) message;
@@ -94,10 +90,6 @@ public class ClientController implements Observer {
     //endregion
 
     //region CLIENT2SERVER
-    public void checkUsername(String username){
-        Message message = new GenericMessage(MessageType.USERNAME_REQUEST, username);
-        client.sendMessage(message);
-    }
 
     /**
      * Creates and sends the Message that prompts the server to create a new lobby

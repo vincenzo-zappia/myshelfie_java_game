@@ -25,8 +25,8 @@ public class ClientHandler implements Runnable{
     private final Socket socket;
     private final Server server;
     private Lobby lobby;
-    private ObjectOutputStream objOut;
-    private ObjectInputStream objIn;
+    private final ObjectOutputStream objOut;
+    private final ObjectInputStream objIn;
     //endregion
 
     public ClientHandler(Server server, Socket socket) {
@@ -43,7 +43,6 @@ public class ClientHandler implements Runnable{
 
     public void run(){
         //First message that the server can receive is a username check //TODO: Revisionare commento
-        checkUsername();
         /*
          * The first message that the server can receive from the client is a connection message that prompts the server
          * to either create a new lobby or add the client to an existing one //TODO: Revisionare commento
@@ -82,28 +81,19 @@ public class ClientHandler implements Runnable{
     /**
      * Checks if the username chosen by the player is available to take
      */
-    public void checkUsername(){
-        Message message = receiveOneMessage();
 
-        if (message.getType() == MessageType.USERNAME_REQUEST){
-            if(server.addUsername(message.getContent())) {
-                sendMessage(new GenericMessage(MessageType.CHECKED_USERNAME, message.getContent())); //TODO: Rispedisce indietro lo username
-                sendMessage(new GenericResponse(true, "Username available!"));
-            } else {
-                sendMessage(new GenericResponse(false, "Username unavailable, choose another!"));
-                checkUsername();
-            }
-        } else {
-            sendMessage(new GenericResponse(false, "Ma c'ah faia deh?!")); //TODO: Non dovrebbe mai arrivarci perché la CLI non consete di generare altri tipi di messaggi
-            checkUsername();
-        }
-    }
 
     /**
      * Either creates a new lobby or checks if the player can join the selected existing one
      */
     private void joinLobbyHandler() {
         Message message = receiveOneMessage();
+
+        //Username check //todo: revisionare commento
+        if(!server.existsUsername(message.getUsername())){
+            sendMessage(new SpecificResponse(false, "Username unavailable, choose another!", MessageType.ACCESS_RESPONSE));
+            joinLobbyHandler();
+        }
 
         switch(message.getType()){
 
@@ -119,7 +109,7 @@ public class ClientHandler implements Runnable{
                 sendMessage(new LobbyIDMessage(lobby.getLobbyID()));
 
                 //Initialization of the game
-                sendMessage(new GenericResponse(true, "Type *start* when you want to start the game!"));
+                //sendMessage(new GenericResponse(true, "Type *start* when you want to start the game!"));
                 startGameHandler();
             }
 
@@ -130,7 +120,7 @@ public class ClientHandler implements Runnable{
                 //Checking if the selected lobby exists
                 if(server.existsLobby(joinLobbyRequest.getLobbyId())) this.lobby = server.getLobby(joinLobbyRequest.getLobbyId());
                 else {
-                    sendMessage(new GenericResponse(false, "This lobby doesn't exist!\n[Select another [1] or create a new one [0]!"));
+                    sendMessage(new SpecificResponse(false, "This lobby doesn't exist!", MessageType.ACCESS_RESPONSE));
                     joinLobbyHandler();
                 }
 
@@ -140,7 +130,7 @@ public class ClientHandler implements Runnable{
                  */
                 if(lobby.joinLobby(new NetworkPlayer(message.getUsername(), this))){ //TODO: Crea comunque netplayer, non creare prima del check?
                     sendMessage(new LobbyIDMessage(lobby.getLobbyID()));
-                    sendMessage(new GenericResponse(true, "Join successful!"));
+                    sendMessage(new SpecificResponse(true, "Join successful!", MessageType.ACCESS_RESPONSE));
                 }
                 else joinLobbyHandler();
 
@@ -167,7 +157,7 @@ public class ClientHandler implements Runnable{
             lobby.startGame();
         }
         else {
-            sendMessage(new GenericResponse(false, "The game has to start first!"));
+            sendMessage(new SpecificResponse(false, "The game has to start first!", MessageType.ACCESS_RESPONSE));
         }
     }
 

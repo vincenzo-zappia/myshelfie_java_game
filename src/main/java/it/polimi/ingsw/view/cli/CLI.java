@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.cli;
 
-import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.Client;
@@ -17,31 +16,30 @@ import java.util.Scanner;
 public class CLI implements Runnable, UserInterface {
 
     //region ATTRIBUTES
-    private final Scanner scanner;
+    private  Scanner scanner;
     private final ClientController controller;
     private final VirtualModel virtualModel;
-    private boolean usernameCheck;
-    private boolean inGame;
+
     //endregion
 
     public CLI(Client client) {
         scanner = new Scanner(System.in);
         controller = new ClientController(this, client);
         virtualModel = new VirtualModel();
-        usernameCheck = false;
-        inGame = false;
     }
 
     @Override
     public void run() {
-        //TODO: Stampa a schermo titolo di gioco da metodo di CliUtils
-
         //Creating or joining of a lobby and starting the game
         connection();
+    }
 
+    private void startGame(){
+        //scanner = new Scanner(System.in);
         //While loop to read the user keyboard input (until the game ends)
         while(!virtualModel.getEnd()){
             String read = scanner.nextLine();
+
             if (!read.contains(" ")){
                 System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
                 continue;
@@ -137,7 +135,6 @@ public class CLI implements Runnable, UserInterface {
             }
         }
         System.out.println(CliUtil.makeTitle("Game Over!"));
-
     }
 
     /**
@@ -148,46 +145,40 @@ public class CLI implements Runnable, UserInterface {
         //TODO: Problema: viene comunque stampato il prompt per una nuova selezione anche se la precedente è valida
         //TODO: Mascherare il problema non stampando niente a schermo?
         //Asking the player for his username and sending it to server to check for its availability
-        String username;
-        do{
-            username = requestUsername();
-            controller.checkUsername(username);
-        }while (!usernameCheck);
+        String selection = requestLobby();
+        String username = requestUsername();
 
-        //TODO: Problema: viene comunque stampato il prompt per una nuova selezione anche se la precedente è valida
-        //While loop that manages the correct creation or joining of a lobby
-        String selection;
-        do{
-            selection = requestLobby();
-            switch (selection) {
+        switch (selection) {
 
-                //Creation of a new lobby
-                case "0" -> {
-                    //Sending a lobby creation request
-                    controller.createLobby(username);
+            //Creation of a new lobby
+            case "0" -> {
+                //Sending a lobby creation request
+                controller.createLobby(username);
 
-                    //Waiting for the lobby master to type "start"
-                    String read;
-                    do {
-                        read = scanner.nextLine();
-                    } while (!read.equals("start"));
-                    controller.startGame();
+                //Waiting for the lobby master to type "start"
+                String read;
+                do {
+                    read = scanner.nextLine();
                 }
+                while (!read.equals("start"));
 
-                //Joining an existing lobby
-                case "1" -> {
-                    System.out.println("Enter lobby ID:");
-                    try {
-                        int id = Integer.parseInt(scanner.nextLine());
-                        controller.joinLobby(username, id);
-                    } catch (NumberFormatException e) {
-                        System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
-                    }
-                }
-
+                controller.startGame();
             }
-        }while (!inGame);
 
+            //Joining an existing lobby
+            case "1" -> {
+                System.out.println("Enter lobby ID:");
+                try {
+                    int id = Integer.parseInt(scanner.nextLine());
+                    controller.joinLobby(username, id);
+                }
+                catch (NumberFormatException e) {
+                        System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
+                        connection();
+                }
+            }
+
+        }
     }
 
     //region SHOW
@@ -285,10 +276,6 @@ public class CLI implements Runnable, UserInterface {
     //endregion
 
     //region USER INTERFACE
-    @Override
-    public void confirmUsername() {
-        usernameCheck = true;
-    }
 
     @Override
     public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
@@ -297,8 +284,15 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void checkInGame() {
-        inGame = true;
+    public void showAccessResponse(boolean response, String content) {
+        if (response) {
+            System.out.println(CliUtil.makeConfirmationMessage(content));
+            startGame();
+        }
+        else {
+            System.out.println(CliUtil.makeErrorMessage(content));
+            connection();
+        }
     }
     //endregion
 
@@ -354,6 +348,8 @@ public class CLI implements Runnable, UserInterface {
         virtualModel.setEnd();
 
     }
+
+
     //endregion
 
 }

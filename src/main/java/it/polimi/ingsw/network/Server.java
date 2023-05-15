@@ -19,7 +19,7 @@ public class Server {
     //region ATTRIBUTES
     private ServerSocket serverSocket;
     private HashMap<Integer, Lobby> lobbyMap;
-    private ArrayList<String> usernameList;
+    private final ArrayList<String> usernameList;
     //endregion
 
     public Server(int port) {
@@ -115,9 +115,12 @@ public class Server {
      * @param username to check
      * @return if the username is added
      */
-    public boolean addUsername(String username){
-        for(String user : usernameList) if(user.equals(username)) return false;
+    public void addUsername(String username){
         usernameList.add(username);
+    }
+
+    public boolean existsUsername(String username) {
+        for(String user : usernameList) if(user.equals(username)) return false;
         return true;
     }
 

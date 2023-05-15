@@ -14,7 +14,6 @@ public interface UserInterface extends View {
     /**
      * Confirms the username choice and allows the player to either create or join a lobby
      */
-    void confirmUsername();
 
     /**
      * Displays the list of the usernames of the players connected to the lobby at that point in time
@@ -25,6 +24,6 @@ public interface UserInterface extends View {
     /**
      * Checks the flag that allows the user interface to start taking game commands from the player
      */
-    void checkInGame();
 
+    void showAccessResponse(boolean response, String content);
 }
