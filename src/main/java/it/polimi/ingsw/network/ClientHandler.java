@@ -42,10 +42,11 @@ public class ClientHandler implements Runnable{
     }
 
     public void run(){
-
+        //First message that the server can receive is a username check //TODO: Revisionare commento
+        checkUsername();
         /*
          * The first message that the server can receive from the client is a connection message that prompts the server
-         * to either create a new lobby or add the client to an existing one
+         * to either create a new lobby or add the client to an existing one //TODO: Revisionare commento
          */
         joinLobbyHandler();
 
@@ -88,8 +89,14 @@ public class ClientHandler implements Runnable{
             if(server.addUsername(message.getContent())) {
                 sendMessage(new GenericMessage(MessageType.CHECKED_USERNAME, message.getContent())); //TODO: Rispedisce indietro lo username
                 sendMessage(new GenericResponse(true, "Username available!"));
-            } else sendMessage(new GenericResponse(false, "Username unavailable, choose another!"));
-        } else sendMessage(new GenericResponse(false, "Ma c'ah faia deh?!")); //TODO: Non dovrebbe mai arrivarci perché la CLI non consete di generare altri tipi di messaggi
+            } else {
+                sendMessage(new GenericResponse(false, "Username unavailable, choose another!"));
+                checkUsername();
+            }
+        } else {
+            sendMessage(new GenericResponse(false, "Ma c'ah faia deh?!")); //TODO: Non dovrebbe mai arrivarci perché la CLI non consete di generare altri tipi di messaggi
+            checkUsername();
+        }
     }
 
     /**

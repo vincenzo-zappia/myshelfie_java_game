@@ -28,6 +28,7 @@ public class CLI implements Runnable, UserInterface {
         scanner = new Scanner(System.in);
         controller = new ClientController(this, client);
         virtualModel = new VirtualModel();
+        usernameCheck = false;
         inGame = false;
     }
 
