@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,29 +17,30 @@ class GameTest {
     @BeforeEach
     void setUp(){
         ArrayList<String> tmp = new ArrayList<>();
-        tmp.add("Gemitaiz");
-        tmp.add("Francesco");
-        tmp.add("MassimoTroisi");
-        tmp.add("NotoriusBig");
+        tmp.add("G1");
+        tmp.add("G2");
+        tmp.add("G3");
+        tmp.add("G4");
 
         game = new Game(tmp);
     }
 
     @Test
     void orderByScore(){
-        game.getPlayers().get(0).addScore(300);
-        game.getPlayers().get(1).addScore(139);
-        game.getPlayers().get(2).addScore(1000);
-        game.getPlayers().get(3).addScore(890);
+        game.getPlayer("G1").addScore(10);
+        game.getPlayer("G2").addScore(133);
+        game.getPlayer("G3").addScore(9);
+        game.getPlayer("G4").addScore(901);
 
-        HashMap<Integer, String> res = game.orderByScore();
+        TreeMap<String, Integer> res = game.orderByScore();
 
        // for(int i = 0; i< 4;i++) System.out.println(game.getPlayers().get(i).getUsername());
+        System.out.println(res);
 
-        assertEquals(res.get(1), "MassimoTroisi");
-        assertEquals(res.get(2), "NotoriusBig");
-        assertEquals(res.get(3), "Gemitaiz");
-        assertEquals(res.get(4), "Francesco");
+        assertEquals(res.get("G1"), 10);
+        assertEquals(res.get("G2"), 133);
+        assertEquals(res.get("G3"), 9);
+        assertEquals(res.get("G4"), 901);
     }
 
     @Test

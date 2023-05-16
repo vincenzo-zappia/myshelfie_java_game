@@ -15,7 +15,10 @@ import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.util.BoardCell;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.TreeMap;
+
 import it.polimi.ingsw.util.Cell;
 
 public class Game{
@@ -157,25 +160,25 @@ public class Game{
 
     /**
      * Arranges the players by score
-     * @return ordered hashmap (username, score)
+     * @return ordered TreeMap (username, score)
      */
-    public HashMap<Integer, String> orderByScore(){
-        HashMap<Integer, String> ordered = new HashMap<>();
+    public TreeMap<String, Integer> orderByScore(){
+        HashMap<String, Integer> hashmap = new HashMap<>();
 
-        Player[] p = getPlayers().toArray(new Player[players.size()]);
+        //for cycle to fill has
+        for(String username: players.keySet())hashmap.put(username, getPlayer(username).getScore());
 
-        for(int i = 0; i < p.length-1; i++){
-            for(int j = 1; j<p.length; j++){
-                if(p[i].getScore() < p[j].getScore()){
-                    Player tmp = p[j];
-                    p[j] = p[i];
-                    p[i] = tmp;
-                }
-            }
-        }
-        for(int i = 0; i<p.length; i++)ordered.put(i+1, p[i].getUsername());
+        //makes a custom comparator to sort by descending order
+        Comparator<String> comparator = (score1, score2) -> {
+            //order based on players's score
+            return hashmap.get(score2).compareTo(hashmap.get(score1));
+        };
 
-        return ordered;
+        //treemap using personalized comparator (see upper lines)
+        TreeMap<String, Integer> treeMap = new TreeMap<>(comparator);
+
+        treeMap.putAll(hashmap);
+        return treeMap;
     }
 
 
