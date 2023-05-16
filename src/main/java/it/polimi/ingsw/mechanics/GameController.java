@@ -1,6 +1,7 @@
 
 package it.polimi.ingsw.mechanics;
 
+import com.sun.source.tree.Tree;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
@@ -10,6 +11,7 @@ import it.polimi.ingsw.network.messages.client2server.SelectionRequest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  * Calls the VirtualView to sent messages to the Client. Receives messages from the Clients and defines the relative behavior of the Game.
@@ -223,7 +225,7 @@ public class GameController {
         game.scorePrivateGoal();
 
         //Creating the scoreboard (sort algorithm in client)
-        HashMap<String, Integer> scoreboard = game.getScoreboard();
+        TreeMap<String, Integer> scoreboard = game.orderByScore();
 
         //Broadcasting the scoreboard to all the players
         broadcastMessage(MessageType.SCOREBOARD, (Object) scoreboard);
