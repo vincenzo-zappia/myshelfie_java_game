@@ -16,16 +16,17 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * Controller that manages the reception and the sending of messages between the server and a specific client
+ */
 public class ClientHandler implements Runnable{
 
     //region ATTRIBUTES
     private final Socket socket;
     private final Server server;
     private Lobby lobby;
-
-    //ObjectXStream because Server and Client will only exchange serialized Objects between themselves
-    private ObjectOutputStream objOut;
-    private ObjectInputStream objIn;
+    private final ObjectOutputStream objOut;
+    private final ObjectInputStream objIn;
     //endregion
 
     public ClientHandler(Server server, Socket socket) {
@@ -41,12 +42,19 @@ public class ClientHandler implements Runnable{
     }
 
     public void run(){
-        initializeLobbyConnection();
+        //First message that the server can receive is a username check //TODO: Revisionare commento
+        /*
+         * The first message that the server can receive from the client is a connection message that prompts the server
+         * to either create a new lobby or add the client to an existing one //TODO: Revisionare commento
+         */
+        joinLobbyHandler();
 
+        //Forwarding all the possible commands sent by the player to GameController after the game has started
         try {
+            //While loop to wait the reception of messages
             while(!Thread.currentThread().isInterrupted()){
                 Message msg = (Message) objIn.readObject();
-                if(msg != null) lobby.sendToController(msg);
+                if(msg != null) lobby.sendToGame(msg);
             }
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -54,27 +62,12 @@ public class ClientHandler implements Runnable{
 
     }
 
-    /**
-     *
-     * @return
-     */
-    private Message receiveMessage(/*boolean... conditions*/){
-        boolean res = false;
-        Message msg = null;
-        try {
-            while(!res){
-                msg = (Message) objIn.readObject();
-                res = msg!=null;
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return msg;
-    }
+    //TODO: Implementare safe disconnect
+    //region METHODS
 
     /**
-     * Invia i messaggi attraverso TCP/IP a/ai client
-     * @param message rappresenta il messaggio da inviare
+     * Sends a message from the server to the client (TCP/IP)
+     * @param message sent message
      */
     public void sendMessage(Message message){
         try {
@@ -86,39 +79,68 @@ public class ClientHandler implements Runnable{
     }
 
     /**
-     *
+     * Checks if the username chosen by the player is available to take
      */
-    private void initializeLobbyConnection() {
-        Message msg = receiveMessage();
 
-        switch (msg.getType()){
-            case JOIN_LOBBY_REQUEST -> {
-                JoinLobbyRequest joinLobbyRequest = (JoinLobbyRequest) msg;
 
-                //Checks if the selected lobby exists
-                if (server.existsLobby(joinLobbyRequest.getLobbyId())) this.lobby = server.getLobby(joinLobbyRequest.getLobbyId());
+    /**
+     * Either creates a new lobby or checks if the player can join the selected existing one
+     */
+    private void joinLobbyHandler() {
+        Message message = receiveOneMessage();
 
-                //Joining the selected lobby
-                lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this));
-                sendMessage(new BooleanResponse(MessageType.LOBBY_ACCESS_RESPONSE, true, "Lobby connection successful!"));
+        //Username check //todo: revisionare commento
+        if(!server.existsUsername(message.getUsername())){
+            sendMessage(new SpecificResponse(false, "Username unavailable, choose another!", MessageType.ACCESS_RESPONSE));
+            joinLobbyHandler();
+        }
 
-                //Sends to all the players the updated lobby with all the usernames
-                lobby.sendLobbyMessage(new NewConnectionUpdate(lobby.getPlayerUsernames()));
-            }
+        switch(message.getType()){
+
+            //Creation of a new lobby
             case CREATE_LOBBY_REQUEST -> {
 
                 //Creating a new lobby
                 this.lobby = server.createLobby();
 
                 //Joining the newly created lobby
-                lobby.joinLobby(new NetworkPlayer(msg.getUsername(), this));
-                sendMessage(new LobbyCreationResponse(lobby.getLobbyId(), true));
+                lobby.joinLobby(new NetworkPlayer(message.getUsername(), this));
+                sendMessage(new GenericResponse(true, "Creation successful!\nLobby ID: " + lobby.getLobbyID()));
+                sendMessage(new LobbyIDMessage(lobby.getLobbyID()));
 
                 //Initialization of the game
+                //sendMessage(new GenericResponse(true, "Type *start* when you want to start the game!"));
                 startGameHandler();
             }
+
+            //Checking if the player can join the selected lobby
+            case JOIN_LOBBY_REQUEST -> {
+                JoinLobbyRequest joinLobbyRequest = (JoinLobbyRequest) message;
+
+                //Checking if the selected lobby exists
+                if(server.existsLobby(joinLobbyRequest.getLobbyId())) this.lobby = server.getLobby(joinLobbyRequest.getLobbyId());
+                else {
+                    sendMessage(new SpecificResponse(false, "This lobby doesn't exist!", MessageType.ACCESS_RESPONSE));
+                    joinLobbyHandler();
+                }
+
+                /*
+                 * Checking if the username chosen by the player is already taken, if the lobby has reached max capacity
+                 * and if the game has already started, if not, joining the lobby
+                 */
+                if(lobby.joinLobby(new NetworkPlayer(message.getUsername(), this))){ //TODO: Crea comunque netplayer, non creare prima del check?
+                    sendMessage(new LobbyIDMessage(lobby.getLobbyID()));
+                    sendMessage(new SpecificResponse(true, "Join successful!", MessageType.ACCESS_RESPONSE));
+                }
+                else joinLobbyHandler();
+
+                //Sending to all the players the updated username list with the new entry
+                lobby.lobbyBroadcastMessage(new UsernameListMessage(lobby.getUsernameList()));
+
+            }
+
             default -> {
-                //TODO: generare eccezione?
+                sendMessage(new GenericResponse(false, "Invalid command!"));
             }
         }
 
@@ -129,16 +151,33 @@ public class ClientHandler implements Runnable{
      * (initialization of all the data structures needed for the game to work)
      */
     private void startGameHandler() {
-        Message msg = receiveMessage();
+        Message message = receiveOneMessage();
 
-        if (msg.getType() == MessageType.START_GAME_REQUEST){
+        if (message.getType() == MessageType.START_GAME_REQUEST){
             lobby.startGame();
         }
         else {
-            sendMessage(new ErrorMessage("received " + msg.getType() + " instead of START_GAME message"));
+            sendMessage(new SpecificResponse(false, "The game has to start first!", MessageType.ACCESS_RESPONSE));
         }
     }
 
-
+    /**
+     * Algorithm for the reception of one message
+     * @return the message received
+     */
+    private Message receiveOneMessage(){
+        boolean received = false;
+        Message message = null;
+        try {
+            while(!received){
+                message = (Message) objIn.readObject();
+                received = message != null;
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return message;
+    }
+    //endregion
 
 }

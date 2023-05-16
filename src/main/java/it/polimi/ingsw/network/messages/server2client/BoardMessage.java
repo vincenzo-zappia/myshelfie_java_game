@@ -4,10 +4,14 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.BoardCell;
 
-public class BoardRefillUpdate extends Message {
+/**
+ * Message containing the board updated after a tile refill
+ */
+public class BoardMessage extends Message {
     private final BoardCell[][] boardCells;
-    public BoardRefillUpdate(BoardCell[][] boardCells) {
-        super("server", MessageType.BOARD_REFILL_UPDATE);
+
+    public BoardMessage(BoardCell[][] boardCells) {
+        super("server", MessageType.REFILLED_BOARD);
         this.boardCells = boardCells;
     }
 

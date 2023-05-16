@@ -30,7 +30,7 @@ public abstract class CommonGoal implements Serializable {
 
     protected static boolean sameTypes(Cell[] list) {
         for(int i=0; i< list.length-1; i++){
-            if (!(list[i]==list[i+1])) return false;
+            if (list[i].getCard().getType() != list[i+1].getCard().getType()) return false;
         }
         return true;
     }

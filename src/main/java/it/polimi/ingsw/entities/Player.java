@@ -9,17 +9,15 @@ package it.polimi.ingsw.entities;
 
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 
-import java.io.Serializable;
 
 public class Player implements Comparable<Player> {
 
     //region ATTRIBUTES
-    private String username;
+    private final String username;
     private int score;
     private PrivateGoal privateGoal;
-    private Bookshelf bookshelf;
+    private final Bookshelf bookshelf;
     //endregion
-
 
     //region CONSTRUCTOR
     public Player(String username){
@@ -76,11 +74,6 @@ public class Player implements Comparable<Player> {
         return username;
     }
     public int getScore(){return score;}
-
-    @Override
-    public String toString(){
-        return "\n\tUsername: " + username + "\n\tScore: " + score;
-    }
 
     //endregion
 

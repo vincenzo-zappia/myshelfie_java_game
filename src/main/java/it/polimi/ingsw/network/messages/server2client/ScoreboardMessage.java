@@ -5,6 +5,9 @@ import it.polimi.ingsw.network.messages.MessageType;
 
 import java.util.HashMap;
 
+/**
+ * Message containing the final scoreboard of the game
+ */
 public class ScoreboardMessage extends Message {
     private final HashMap<String, Integer> scoreboard;
 
@@ -12,4 +15,9 @@ public class ScoreboardMessage extends Message {
         super("server", MessageType.SCOREBOARD);
         this.scoreboard = scoreboard;
     }
+
+    public HashMap<String, Integer> getScoreboard(){
+        return scoreboard;
+    }
+
 }

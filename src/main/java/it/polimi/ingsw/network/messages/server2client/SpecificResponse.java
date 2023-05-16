@@ -4,11 +4,12 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 
 /**
- * Classe che gestisce tutti i tipi di risposta che necessitano di un attributo booleano
+ * Message that contains a specific feedback, either true or false, with its description
  */
-public class BooleanResponse extends Message {
+public class SpecificResponse extends Message {
     private final boolean response;
-    public BooleanResponse(MessageType type, boolean response, String content) {
+
+    public SpecificResponse(boolean response, String content, MessageType type) {
         super("server", type);
         this.response = response;
         setContent(content);
@@ -17,4 +18,5 @@ public class BooleanResponse extends Message {
     public boolean getResponse() {
         return response;
     }
+
 }

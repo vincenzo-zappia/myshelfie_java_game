@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.cli;
 
-import it.polimi.ingsw.entities.Board;
 import it.polimi.ingsw.util.BoardCell;
 import it.polimi.ingsw.util.CardType;
 import it.polimi.ingsw.util.Cell;
@@ -50,6 +49,7 @@ enum AsciiTool {
     USER("\u1F464");
 
     private final String symbol;
+
     AsciiTool(String symbol){
         this.symbol = symbol;
     }
@@ -57,12 +57,12 @@ enum AsciiTool {
     public String getSymbol() {
         return symbol;
     }
+
 }
 
 public class CliUtil {
 
-    //region CONVERSION METHOD
-
+    //region CONVERSION METHODS
     private static char getTypeCharacter(CardType type) {
 
         switch (type) {
@@ -127,11 +127,9 @@ public class CliUtil {
         }
         return result;
     }
-
     //endregion
 
-    //region UTILITY METHOD
-
+    //region UTILITY METHODS
     private static String getRowContent(char[] row) {
         StringBuilder rowContent = new StringBuilder();
         rowContent.append(AsciiTool.L_CONTENT.getSymbol());
@@ -158,10 +156,9 @@ public class CliUtil {
         length--;
         return AsciiTool.LB_CORNER.getSymbol() + AsciiTool.BT.getSymbol().repeat(length) + AsciiTool.RB_CORNER.getSymbol();
     }
-
     //endregion
 
-    //region MAKE METHOD
+    //region MAKE METHODS
     public static String makeLegend() {
         String line1 = ColorCode.GREEN.getCode() + AsciiTool.DOT.getSymbol() + "C: Cat\t\t" + ColorCode.WHITE.getCode() + AsciiTool.DOT.getSymbol() + "B: Books\n";
         String line2 = ColorCode.ORANGE.getCode() + AsciiTool.DOT.getSymbol() + "G: Game\t\t" + ColorCode.BLUE.getCode() + AsciiTool.DOT.getSymbol() + "F: Frames\n";
@@ -268,7 +265,7 @@ public class CliUtil {
     }
 
     public static String makeCommandList() {
-        return String.join(" ", ToolXML.getCommandList());
+        return String.join("\n", ToolXML.getCommandList());
     }
     //endregion
 

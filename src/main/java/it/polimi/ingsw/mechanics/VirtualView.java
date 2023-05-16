@@ -13,7 +13,7 @@ import it.polimi.ingsw.view.View;
 import java.util.HashMap;
 
 /**
- * Class that manages the creation of messages server -> client. Used by Lobby, GameController
+ * Class that manages the creation of messages from server to client. Used by Lobby, GameController
  */
 public class VirtualView implements View, Observer {
     private final ClientHandler clientHandler;
@@ -27,48 +27,46 @@ public class VirtualView implements View, Observer {
         clientHandler.sendMessage(message);
     }
 
+    //region VIEW
     @Override
-    public void showRemovedCards(int[][] coordinates){
-        clientHandler.sendMessage(new CardsRemoveUpdate(coordinates));
-    }
-
-    @Override
-    public void showRefilledBoard(BoardCell[][] boardCells) {
-        clientHandler.sendMessage(new BoardRefillUpdate(boardCells));
+    public void sendGenericResponse(boolean response, String content) {
+        clientHandler.sendMessage(new GenericResponse(response, content));
     }
 
     @Override
     public void showCurrentPlayer(String currentPlayer) {
-        clientHandler.sendMessage(new GenericMessage(MessageType.CURRENT_PLAYER_UPDATE, currentPlayer));
+        clientHandler.sendMessage(new GenericMessage(MessageType.CURRENT_PLAYER, currentPlayer));
+    }
+
+    @Override
+    public void sendCheckedCoordinates(int[][] coordinates) {
+        clientHandler.sendMessage(new CoordinatesMessage(coordinates, MessageType.CHECKED_COORDINATES));
+    }
+
+    @Override
+    public void showRemovedCards(int[][] coordinates){
+        clientHandler.sendMessage(new CoordinatesMessage(coordinates, MessageType.REMOVED_CARDS));
+    }
+
+    @Override
+    public void showUpdatedBookshelf(Cell[][] bookshelf) {
+        clientHandler.sendMessage(new BookshelfMessage(bookshelf));
+    }
+
+    @Override
+    public void showRefilledBoard(BoardCell[][] boardCells) {
+        clientHandler.sendMessage(new BoardMessage(boardCells));
+    }
+
+    @Override
+    public void showGoalsDetails(Goal[] commonGoals, PrivateGoal privateGoal) {
+        clientHandler.sendMessage(new GoalsMessage(commonGoals, privateGoal));
     }
 
     @Override
     public void showScoreboard(HashMap<String, Integer> scoreboard){
         clientHandler.sendMessage(new ScoreboardMessage(scoreboard));
     }
-    @Override
-    public void sendResponse(boolean response, MessageType responseType, String content) {
-        clientHandler.sendMessage(new BooleanResponse(responseType, response, content));
-    }
-
-    @Override
-    public void sendSelectionResponse(int[][] coordinates) {
-        clientHandler.sendMessage(new CoordinatesCheckMessage(coordinates));
-    }
-
-    @Override
-    public void sendInsertionResponse(Cell[][] bookshelf, boolean response) {
-        clientHandler.sendMessage(new InsertionResponse(bookshelf, response));
-    }
-
-    @Override
-    public void sendNotYourTurn(String content) {
-        clientHandler.sendMessage(new BooleanResponse(MessageType.NOT_YOUR_TURN, false, content));
-    }
-
-    @Override
-    public void sendGoals(Goal[] commonGoals, PrivateGoal privateGoal) {
-        clientHandler.sendMessage(new GoalsMessage(commonGoals, privateGoal));
-    }
+    //endregion
 
 }

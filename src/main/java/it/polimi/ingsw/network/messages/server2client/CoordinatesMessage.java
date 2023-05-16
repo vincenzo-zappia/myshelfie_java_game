@@ -4,12 +4,13 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 
 /**
- * ordina ai client di eliminare le carte selezionate (server -> client)
+ * Message containing the coordinates of cards that were either checked or removed from the board
  */
-public class CardsRemoveUpdate extends Message {
+public class CoordinatesMessage extends Message {
     private final int[][] coordinates;
-    public CardsRemoveUpdate(int[][] coordinates) {
-        super("server", MessageType.CARDS_REMOVE_UPDATE);
+
+    public CoordinatesMessage(int[][] coordinates, MessageType type) {
+        super("server", type);
         this.coordinates = coordinates;
     }
 

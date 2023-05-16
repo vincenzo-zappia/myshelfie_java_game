@@ -4,20 +4,19 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.util.Cell;
 
-public class InsertionResponse extends Message {
+/**
+ * Message containing the bookshelf updated after an insertion
+ */
+public class BookshelfMessage extends Message {
     private final Cell[][] bookshelf;
-    private final boolean response;
-    public InsertionResponse(Cell[][] bookshelf, boolean response) {
-        super("server", MessageType.INSERTION_RESPONSE);
+
+    public BookshelfMessage(Cell[][] bookshelf) {
+        super("server", MessageType.UPDATED_BOOKSHELF);
         this.bookshelf = bookshelf;
-        this.response = response;
     }
 
     public Cell[][] getBookshelf() {
         return bookshelf;
     }
 
-    public boolean getResponse() {
-        return response;
-    }
 }

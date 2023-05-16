@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.entities.Card;
+import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.client2server.CreateLobbyRequest;
 import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
 import it.polimi.ingsw.network.messages.client2server.JoinLobbyRequest;
@@ -11,13 +11,14 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.UserInterface;
 
-import java.util.ArrayList;
-
-//TODO: Per l'impacchettamento messaggi serve implementare un nuovo tipo di Observer che cambia i parametri di implementazione update
+/**
+ * Manages the messages received from the server by calling the methods of the user interface.
+ * Creates and sends messages to the server from the user interface.
+ */
 public class ClientController implements Observer {
     //region ATTRIBUTES
     private final UserInterface view; //either CLI or GUI for the packing of messages User interface -> Server
-    private Client client; //for the unpacking of messages Server -> User interface
+    private final Client client; //for the unpacking of messages Server -> User interface
     private String username;
     private int lobbyId;
     //endregion
@@ -32,69 +33,70 @@ public class ClientController implements Observer {
     //endregion
 
     //region SERVER2CLIENT
-    //TODO: Le chiamate dei metodi astratti della view che prendono parametri diversi da Message avverrà con message.getX()
     /**
      * Manages the reception of the messages from Client (therefore Server) and outputs them to CLI/GUI by calling View methods
      * @param message message received from Client
      */
     @Override
     public void update(Message message){
-
         switch (message.getType()){
-            case LOBBY_CREATION_RESPONSE -> {
-                LobbyCreationResponse newLobby = (LobbyCreationResponse) message;
-                if (newLobby.isSuccessful()) {
-                    this.lobbyId = newLobby.getLobbyId();
-                    view.showSuccessfulConnection(lobbyId);
-                }
-                else {}
+            case GENERIC_RESPONSE -> {
+                GenericResponse response = (GenericResponse) message;
+                view.sendGenericResponse(response.getResponse(), response.getContent());
             }
-            case LOBBY_ACCESS_RESPONSE, START_GAME_RESPONSE, SELECTION_RESPONSE -> {
-                BooleanResponse response = (BooleanResponse) message;
-                view.sendResponse(response.getResponse(), response.getType(), response.getContent());
+            case LOBBY_ID -> {
+                LobbyIDMessage joinedLobby = (LobbyIDMessage) message;
+
+                //Setting of the ID of the newly created or joined lobby
+                this.lobbyId = joinedLobby.getLobbyID();
+
             }
-            case NEW_CONNECTION_UPDATE -> {
-                NewConnectionUpdate connectionMessage = (NewConnectionUpdate) message;
+            case ACCESS_RESPONSE -> {
+                SpecificResponse response = (SpecificResponse) message;
+
+                view.showAccessResponse(response.getResponse(), response.getContent());
+            }
+            case NEW_CONNECTION -> {
+                UsernameListMessage connectionMessage = (UsernameListMessage) message;
                 view.refreshConnectedPlayers(connectionMessage.getUsernameList());
             }
-            case COORDINATES_CHECK -> {
-                CoordinatesCheckMessage response = (CoordinatesCheckMessage) message;
-                view.sendSelectionResponse(response.getCoordinates());
+            case CURRENT_PLAYER -> view.showCurrentPlayer(message.getContent());
+            case CHECKED_COORDINATES -> {
+                CoordinatesMessage checkedCoordinates = (CoordinatesMessage) message;
+                view.sendCheckedCoordinates(checkedCoordinates.getCoordinates());
             }
-            case CURRENT_PLAYER_UPDATE -> view.showCurrentPlayer(message.getContent());
-            case INSERTION_RESPONSE -> {
-                InsertionResponse response = (InsertionResponse) message;
-                view.sendInsertionResponse(response.getBookshelf(), response.getResponse());
+            case REMOVED_CARDS -> {
+                CoordinatesMessage removedCards = (CoordinatesMessage) message;
+                view.showRemovedCards(removedCards.getCoordinates());
             }
-            case BOARD_REFILL_UPDATE -> {
-                BoardRefillUpdate boardUpdate = (BoardRefillUpdate) message;
+            case UPDATED_BOOKSHELF -> {
+                BookshelfMessage updatedBookshelf = (BookshelfMessage) message;
+                view.showUpdatedBookshelf(updatedBookshelf.getBookshelf());
+            }
+            case REFILLED_BOARD -> {
+                BoardMessage boardUpdate = (BoardMessage) message;
                 view.showRefilledBoard(boardUpdate.getBoardCells());
             }
-            case ERROR_MESSAGE -> {
-                ErrorMessage error = (ErrorMessage) message;
-                view.showError(error.getContent());
-            }
-            case CARDS_REMOVE_UPDATE -> {
-                CardsRemoveUpdate remove = (CardsRemoveUpdate) message;
-                view.showRemovedCards(remove.getCoordinates());
-            }
-            case NOT_YOUR_TURN -> view.sendNotYourTurn(message.getContent());
             case GOALS_DETAILS -> {
                 GoalsMessage goalsMessage = (GoalsMessage) message;
-                view.sendGoals(goalsMessage.getCommonGoals(), goalsMessage.getPrivateGoal());
+                view.showGoalsDetails(goalsMessage.getCommonGoals(), goalsMessage.getPrivateGoal());
+            }
+            case SCOREBOARD -> {
+                ScoreboardMessage scoreboard = (ScoreboardMessage) message;
+                view.showScoreboard(scoreboard.getScoreboard());
             }
         }
     }
     //endregion
 
     //region CLIENT2SERVER
+
     /**
      * Creates and sends the Message that prompts the server to create a new lobby
      * @param username of the player who creates the lobby (he will be the couch aka the game master)(?)
      */
     public void createLobby(String username){
         Message create = new CreateLobbyRequest(username);
-        this.username = username;
         client.sendMessage(create);
     }
 
@@ -105,8 +107,6 @@ public class ClientController implements Observer {
      */
     public void joinLobby(String username, int lobbyId){
         Message join = new JoinLobbyRequest(username, lobbyId);
-        this.lobbyId = lobbyId;
-        this.username = username;
         client.sendMessage(join);
     }
 
@@ -127,15 +127,12 @@ public class ClientController implements Observer {
         client.sendMessage(selectionRequest);
     }
 
-    //TODO: Metodi impacchettamento messaggi. Outsource con creazione di interfaccia parallela a Observer con diversi tipi di implementazione del metodo update o locale?
-
     /**
      * Creates a Message out of the ordered cards and the column for their insertion chosen by the user and sends them to the server
-     * @param selected ordered cards previously selected by the user
      * @param column where the selected cards will be inserted
      */
-    public void sendInsertion(ArrayList<Card> selected, int column){
-        Message insert = new InsertionRequest(this.username, selected, column);
+    public void sendInsertion(int column){
+        Message insert = new InsertionRequest(this.username, column);
         client.sendMessage(insert);
     }
     //endregion
