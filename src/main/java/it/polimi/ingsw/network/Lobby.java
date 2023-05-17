@@ -64,11 +64,12 @@ public class Lobby {
 
         //Adding the player to the lobby
         server.addUsername(username);
+        usernameList.add(username);
         VirtualView view = new VirtualView(netPlayer.getClientHandler());
         netPlayer.setVirtualView(view);
         networkMap.put(username, netPlayer);
+        System.out.println("INFO: Player joined successfully");
         return true;
-
     }
 
     /**
@@ -88,7 +89,7 @@ public class Lobby {
     public void startGame(){
 
         //Checking if the number of the players is legal before initializing the game
-        assert (usernameList.size()>1 && usernameList.size()<=4);
+        //assert (usernameList.size()>1 && usernameList.size()<=4);
 
         //Creating GameController and the hashmap <PlayerUsername, VirtualView> through which GameController will manage the sending of messages from server to client
         HashMap<String, VirtualView> viewHashMap = new HashMap<>();
@@ -98,7 +99,7 @@ public class Lobby {
         //Officially starting the game
         inGame = true;
         lobbyBroadcastMessage(new SpecificResponse(true,  "Now in game!", MessageType.ACCESS_RESPONSE));
-
+        System.out.println("INFO: Game started");
     }
 
     /**

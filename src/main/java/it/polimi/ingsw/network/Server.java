@@ -16,12 +16,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
+
     //region ATTRIBUTES
     private ServerSocket serverSocket;
     private HashMap<Integer, Lobby> lobbyMap;
     private final ArrayList<String> usernameList;
     //endregion
 
+    //region CONSTRUCTOR
     public Server(int port) {
         try {
             serverSocket = new ServerSocket(port);
@@ -33,6 +35,7 @@ public class Server {
 
         usernameList = new ArrayList<>();
     }
+    //endregion
 
     //region MAIN
     public static void main(String[] args) {
@@ -74,7 +77,7 @@ public class Server {
      * Creates a lobby as requested by player
      * @return the new initialized lobby
      */
-    public Lobby createLobby(){
+    public Lobby createLobby() {
 
         //Selection of the id of the lobby to create
         int id;

@@ -41,7 +41,7 @@ public class ClientHandler implements Runnable{
         }
     }
 
-    public void run(){
+    public void run() {
         //First message that the server can receive is a username check //TODO: Revisionare commento
         /*
          * The first message that the server can receive from the client is a connection message that prompts the server
@@ -49,17 +49,21 @@ public class ClientHandler implements Runnable{
          */
         joinLobbyHandler();
 
+        System.out.println("INFO: Game phase started");
         //Forwarding all the possible commands sent by the player to GameController after the game has started
         try {
             //While loop to wait the reception of messages
             while(!Thread.currentThread().isInterrupted()){
                 Message msg = (Message) objIn.readObject();
+                System.out.println("INFO: Message received");
                 if(msg != null) lobby.sendToGame(msg);
             }
+            System.out.println("INFO: thread interrupted");
         } catch (IOException | ClassNotFoundException e) {
+            System.out.println("INFO: ex");
             throw new RuntimeException(e);
-        }
 
+        }
     }
 
     //TODO: Implementare safe disconnect
@@ -78,15 +82,13 @@ public class ClientHandler implements Runnable{
         }
     }
 
-    /**
-     * Checks if the username chosen by the player is available to take
-     */
-
 
     /**
      * Either creates a new lobby or checks if the player can join the selected existing one
      */
     private void joinLobbyHandler() {
+        System.out.println("INFO: Connection phase started");
+
         Message message = receiveOneMessage();
 
         //Username check //todo: revisionare commento
@@ -151,6 +153,7 @@ public class ClientHandler implements Runnable{
      * (initialization of all the data structures needed for the game to work)
      */
     private void startGameHandler() {
+        System.out.println("INFO: Waiting START message");
         Message message = receiveOneMessage();
 
         if (message.getType() == MessageType.START_GAME_REQUEST){

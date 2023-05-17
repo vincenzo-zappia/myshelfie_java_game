@@ -16,9 +16,10 @@ import java.util.Scanner;
 public class CLI implements Runnable, UserInterface {
 
     //region ATTRIBUTES
-    private  Scanner scanner;
+    private Scanner scanner;
     private final ClientController controller;
     private final VirtualModel virtualModel;
+    private boolean inGame;
 
     //endregion
 
@@ -26,18 +27,21 @@ public class CLI implements Runnable, UserInterface {
         scanner = new Scanner(System.in);
         controller = new ClientController(this, client);
         virtualModel = new VirtualModel();
+        inGame = false;
     }
 
     @Override
     public void run() {
         //Creating or joining of a lobby and starting the game
-        connection();
+        if (!inGame) connection();
+        else startGame();
     }
 
-    private void startGame(){
-        //scanner = new Scanner(System.in);
+    private void startGame() {
+        scanner = new Scanner(System.in);
+
         //While loop to read the user keyboard input (until the game ends)
-        while(!virtualModel.getEnd()){
+        while(true){
             String read = scanner.nextLine();
 
             if (!read.contains(" ")){
@@ -84,8 +88,6 @@ public class CLI implements Runnable, UserInterface {
                 case "insert" -> {
                     int column;
 
-                    try {
-
                         /*
                         //TODO: Ridondante, c'è lo stesso check in GameController ma si risparmia tempo (controllo con e senza debuggando)
                         //Checking if the player has first made a selection
@@ -94,16 +96,9 @@ public class CLI implements Runnable, UserInterface {
                             continue;
                         }*/
 
+                    try {
                         //Parsing the input command (chosen column)
                         column = Integer.parseInt(splitted[1]);
-
-                        /*
-                        //TODO: Capire come confinare a lato server l'estrazione delle carte da inserire
-                        //Extracting the selected cards from the checked coordinates saved in VirtualModel
-                        ArrayList<Card> cards = new ArrayList<>();
-                        for (int[] ints : virtualModel.getCoordinates()) cards.add(virtualModel.getBoard()[ints[0]][ints[1]].getCard());
-
-                         */
 
                         //Sending the insertion to the server only if the player has already selected his cards
                         controller.sendInsertion(column);
@@ -121,7 +116,7 @@ public class CLI implements Runnable, UserInterface {
                         case "commongoals" -> showCommonGoals();
                         case "privategoal" -> showPrivateGoal();
 
-                        default -> System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
+                        //default -> System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
                     }
                 }
 
@@ -134,13 +129,13 @@ public class CLI implements Runnable, UserInterface {
                 default -> System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
             }
         }
-        System.out.println(CliUtil.makeTitle("Game Over!"));
+        //System.out.println(CliUtil.makeTitle("Game Over!"));
     }
 
     /**
      * Prompts the creation of either a lobby creation command or a lobby access request based on the user input
      */
-    private void connection(){
+    private void connection() {
 
         //TODO: Problema: viene comunque stampato il prompt per una nuova selezione anche se la precedente è valida
         //TODO: Mascherare il problema non stampando niente a schermo?
@@ -163,6 +158,9 @@ public class CLI implements Runnable, UserInterface {
                 while (!read.equals("start"));
 
                 controller.startGame();
+
+                inGame = true;
+                new Thread(this).start();
             }
 
             //Joining an existing lobby
@@ -287,11 +285,13 @@ public class CLI implements Runnable, UserInterface {
     public void showAccessResponse(boolean response, String content) {
         if (response) {
             System.out.println(CliUtil.makeConfirmationMessage(content));
-            startGame();
+            inGame = true;
+            new Thread(this).start();
         }
         else {
             System.out.println(CliUtil.makeErrorMessage(content));
-            connection();
+            inGame = false;
+            new Thread(this).start();
         }
     }
     //endregion
@@ -348,7 +348,6 @@ public class CLI implements Runnable, UserInterface {
         virtualModel.setEnd();
 
     }
-
 
     //endregion
 

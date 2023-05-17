@@ -5,6 +5,7 @@ import it.polimi.ingsw.observer.Subject;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * Class that manages only the network functionality of the Client (send and receive message,
@@ -13,9 +14,6 @@ import java.net.Socket;
 public class Client extends Subject implements Runnable{
 
     //region ATTRIBUTES
-    private final String ip;
-    private final int port;
-    private Socket socket;
     private ObjectOutputStream objOut;
     private ObjectInputStream objIn;
 
@@ -25,7 +23,8 @@ public class Client extends Subject implements Runnable{
     public Client(String ip, int port){
 
         try {
-            socket = new Socket(ip, port);
+
+            Socket socket = new Socket(ip, port);
             objOut = new ObjectOutputStream(socket.getOutputStream());
             objIn = new ObjectInputStream(socket.getInputStream());
 
@@ -33,14 +32,11 @@ public class Client extends Subject implements Runnable{
             System.out.println(e.getMessage());
         }
 
-        this.port = port;
-        this.ip = ip;
-
     }
     //endregion
 
     /**
-     * The method receiveMessage() of Client is called in loop by the CLI for the whole duration of the game
+     * The method receiveMessage() of Client is called in loop by the CLI/GUI for the whole duration of the game
      */
     @Override
     public void run() {
@@ -52,6 +48,7 @@ public class Client extends Subject implements Runnable{
     }
 
    public void sendMessage(Message msg){
+
        try {
            objOut.writeObject(msg);
            objOut.reset();

@@ -12,10 +12,6 @@ import java.util.ArrayList;
 public interface UserInterface extends View {
 
     /**
-     * Confirms the username choice and allows the player to either create or join a lobby
-     */
-
-    /**
      * Displays the list of the usernames of the players connected to the lobby at that point in time
      * @param playerUsernames list of player usernames
      */
@@ -24,6 +20,5 @@ public interface UserInterface extends View {
     /**
      * Checks the flag that allows the user interface to start taking game commands from the player
      */
-
     void showAccessResponse(boolean response, String content);
 }

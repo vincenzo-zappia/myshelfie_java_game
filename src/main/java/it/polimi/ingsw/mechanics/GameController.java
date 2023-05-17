@@ -98,6 +98,7 @@ public class GameController {
      * @param message message sent by the client with the coordinates of the selected cards
      */
     public synchronized void cardSelection(SelectionRequest message){
+        System.out.println("INFO: Selection phase started");
 
         //Checking if the player has already made a selection
         if(canInsert){
@@ -135,6 +136,8 @@ public class GameController {
      *                he wants to put them in his bookshelf
      */
     public synchronized void cardInsertion(InsertionRequest message){
+        System.out.println("INFO: Insertion phase started");
+
         try {
 
             //Checking if the player has first made a selection
@@ -178,7 +181,7 @@ public class GameController {
         }
     }
 
-    //TODO: è possibile che le stesse coordinate vengano inviate due volte, gestire
+
     /**
      * Method that performs end turn housekeeping routines: checking if a common goal was achieved,
      * checking if the player's Bookshelf got full (and if so starting the endgame) and checking if

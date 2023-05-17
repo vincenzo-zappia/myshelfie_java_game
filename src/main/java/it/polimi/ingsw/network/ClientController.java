@@ -97,6 +97,7 @@ public class ClientController implements Observer {
      */
     public void createLobby(String username){
         Message create = new CreateLobbyRequest(username);
+        this.username = username;
         client.sendMessage(create);
     }
 
@@ -107,6 +108,7 @@ public class ClientController implements Observer {
      */
     public void joinLobby(String username, int lobbyId){
         Message join = new JoinLobbyRequest(username, lobbyId);
+        this.username = username;
         client.sendMessage(join);
     }
 
@@ -132,7 +134,7 @@ public class ClientController implements Observer {
      * @param column where the selected cards will be inserted
      */
     public void sendInsertion(int column){
-        Message insert = new InsertionRequest(this.username, column);
+        Message insert = new InsertionRequest(username, column);
         client.sendMessage(insert);
     }
     //endregion
