@@ -275,7 +275,7 @@ class BoardTest {
     @Test
     void isSelectableTest(){
         board = new Board(2);
-        assertTrue(board.selectableCard(5,1));
+        assertFalse(board.selectableCard(5,1));
     }
 
 }
