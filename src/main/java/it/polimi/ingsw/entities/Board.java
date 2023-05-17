@@ -113,6 +113,7 @@ public class Board {
         return false;
          */
 
+        if(x<0 || x>8 || y<0 || y>8)return false;
         if (matrix[x][y].isCellActive() && !matrix[x][y].isCellEmpty()) {
             // Controllo dei lati
             if (x > 0 && matrix[x - 1][y].isCellEmpty() || !matrix[x - 1][y].isCellActive()) {

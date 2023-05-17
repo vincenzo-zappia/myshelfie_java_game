@@ -27,7 +27,7 @@ public class Game{
     //region ATTRIBUTES
     private final Board board;
     private final HashMap<String, Player> players;
-    private final Goal[] commonGoals;
+    private Goal[] commonGoals;
     private final CommonGoal0 commonGoal0;
     //endregion
 
@@ -280,6 +280,9 @@ public class Game{
     }
     public Goal[] getCommonGoals(){
         return commonGoals;
+    }
+    public void setCommonGoals(Goal[] x){
+        commonGoals=x;
     }
     //endregion
 

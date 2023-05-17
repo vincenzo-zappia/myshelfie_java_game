@@ -1,5 +1,9 @@
 package it.polimi.ingsw.mechanics;
 
+import it.polimi.ingsw.entities.Card;
+import it.polimi.ingsw.entities.goals.CommonGoal1;
+import it.polimi.ingsw.entities.goals.Goal;
+import it.polimi.ingsw.util.CardType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,15 +46,16 @@ class GameTest {
     }
 
     @Test
-    void isSelectable() {
-        int[][] coordinates = new int[][]{{0, 3}, {0, 4}};
-        assertTrue(game.canSelect("pippo", coordinates));
+    void canSelect() {
+        System.out.println(game.getPlayer("G1").getUsername());
+        int[][] coordinates = new int[][]{{1, 3}};
+        assertTrue(game.canSelect("G2", coordinates));
 
         coordinates = new int[][]{{3, 8}, {4, 8}};
-        assertTrue(game.canSelect("pippo", coordinates));
+        assertTrue(game.canSelect("G2", coordinates));
 
         coordinates = new int[][]{{4, 5}, {4, 6}, {4, 7}};
-        assertFalse(game.canSelect("pippo", coordinates));
+        assertFalse(game.canSelect("G3", coordinates));
     }
 
     @Test
@@ -64,6 +69,18 @@ class GameTest {
 
     @Test
     void scoreCommonGoal() {
+
+        for(int i=0; i<2; i++) {
+            game.getPlayer("G1").getBookshelf().addCard(i, new Card("img.png", CardType.FRAMES));
+            game.getPlayer("G1").getBookshelf().addCard(i, new Card("img.png", CardType.FRAMES));
+            game.getPlayer("G1").getBookshelf().addCard(i, new Card("img.png", CardType.FRAMES));
+            game.getPlayer("G1").getBookshelf().addCard(i, new Card("img.png", CardType.FRAMES));
+        }
+        Goal[] tmp = new Goal[2];
+        tmp[0] = new CommonGoal1();
+        tmp[1] = new CommonGoal1();
+        game.scoreCommonGoal("G1");
+        assertTrue(game.getPlayer("G1").getScore()>0);
     }
 
     @Test
@@ -72,5 +89,6 @@ class GameTest {
 
     @Test
     void isPlayerBookshelfFull() {
+
     }
 }
