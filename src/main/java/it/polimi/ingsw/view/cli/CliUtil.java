@@ -156,6 +156,18 @@ public class CliUtil {
         length--;
         return AsciiTool.LB_CORNER.getSymbol() + AsciiTool.BT.getSymbol().repeat(length) + AsciiTool.RB_CORNER.getSymbol();
     }
+
+    private static String getTopNumeration(){
+        StringBuilder result = new StringBuilder();
+        result.append("     ");
+        for(int i=0; i<9; i++){
+            result.append(i);
+            result.append("     ");
+
+        }
+        result.append("\n");
+        return result.toString();
+    }
     //endregion
 
     //region MAKE METHODS
@@ -170,55 +182,75 @@ public class CliUtil {
     public static String makeBoard(char[][] matrix) {
 
         return ColorCode.GREEN.getCode() +
+                getTopNumeration() +
+                "  " +
                 AsciiTool.SPACES.getSymbol().repeat(3) +
                 getHeader(2) +
+                "0 " +
                 AsciiTool.SPACES.getSymbol().repeat(3) +
                 getRowContent(matrix[0]) +
+                "  " +
                 AsciiTool.SPACES.getSymbol().repeat(3) +
                 AsciiTool.LT.getSymbol() +
                 AsciiTool.CROSS.getSymbol().repeat(2) +
                 AsciiTool.RT_CORNER.getSymbol() +
+                "1 " +
                 AsciiTool.SPACES.getSymbol().repeat(3) +
                 getRowContent(matrix[1]) +
+                "  " +
                 AsciiTool.SPACES.getSymbol().repeat(2) +
                 AsciiTool.LT_CORNER.getSymbol() +
                 AsciiTool.CROSS.getSymbol().repeat(4) +
                 AsciiTool.RT_CORNER.getSymbol() +
+                "2 " +
                 AsciiTool.SPACES.getSymbol().repeat(2) +
                 getRowContent(matrix[2]) +
+                "  " +
                 AsciiTool.SPACES.getSymbol() +
                 AsciiTool.LT_CORNER.getSymbol() +
                 AsciiTool.CROSS.getSymbol().repeat(6) +
                 AsciiTool.T.getSymbol() +
                 AsciiTool.RT_CORNER.getSymbol() +
+                "3 " +
                 AsciiTool.SPACES.getSymbol() +
                 getRowContent(matrix[3]) +
+                "  " +
                 AsciiTool.LT_CORNER.getSymbol() +
                 AsciiTool.CROSS.getSymbol().repeat(8) +
                 AsciiTool.RT.getSymbol() +
+                "4 " +
                 getRowContent(matrix[4]) +
+                "  " +
                 AsciiTool.LT.getSymbol() +
                 AsciiTool.CROSS.getSymbol().repeat(8) +
                 AsciiTool.RB_CORNER.getSymbol() +
+                "5 " +
                 getRowContent(matrix[5]) +
+                "  " +
                 AsciiTool.LB_CORNER.getSymbol() +
                 AsciiTool.BT.getSymbol() +
                 AsciiTool.CROSS.getSymbol().repeat(6) +
                 AsciiTool.RB_CORNER.getSymbol() +
+                "6 " +
                 AsciiTool.SPACES.getSymbol().repeat(2) +
                 getRowContent(matrix[6]) +
+                "  " +
                 AsciiTool.SPACES.getSymbol().repeat(2) +
                 AsciiTool.LB_CORNER.getSymbol() +
                 AsciiTool.CROSS.getSymbol().repeat(4) +
                 AsciiTool.RB_CORNER.getSymbol() +
+                "7 " +
                 AsciiTool.SPACES.getSymbol().repeat(3) +
                 getRowContent(matrix[7]) +
+                "  " +
                 AsciiTool.SPACES.getSymbol().repeat(3) +
                 AsciiTool.LB_CORNER.getSymbol() +
                 AsciiTool.CROSS.getSymbol().repeat(2) +
                 AsciiTool.RT.getSymbol() +
+                "8 " +
                 AsciiTool.SPACES.getSymbol().repeat(4) +
                 getRowContent(matrix[8]) +
+                "  " +
                 AsciiTool.SPACES.getSymbol().repeat(4) +
                 getFooter(2);
     }
