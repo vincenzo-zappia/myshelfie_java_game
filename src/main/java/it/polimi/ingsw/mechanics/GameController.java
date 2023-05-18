@@ -1,7 +1,6 @@
 
 package it.polimi.ingsw.mechanics;
 
-import com.sun.source.tree.Tree;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
