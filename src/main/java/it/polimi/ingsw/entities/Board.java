@@ -95,6 +95,7 @@ public class Board {
     //endregion
 
     //region METHODS
+
     /**
      * Checks if a single card is selectable
      * @param x row of the card

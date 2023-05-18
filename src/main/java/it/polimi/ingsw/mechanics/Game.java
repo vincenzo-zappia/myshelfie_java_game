@@ -175,7 +175,7 @@ public class Game{
      */
     public boolean canInsert(String playerUsername, int column, int cardNumber){
         //Checking if the selected row is an existing one
-        if(column < 0 || column >= 5) return false;
+        if(column < 0 || column >= 5 || cardNumber < 1 || cardNumber > 3) return false;
 
         //Checking if the selected column has enough space for the number of cards selected
         return players.get(playerUsername).getBookshelf().getCell(cardNumber - 1, column).isCellEmpty();

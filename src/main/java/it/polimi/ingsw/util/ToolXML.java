@@ -18,6 +18,7 @@ public class ToolXML {
     private static final ClassLoader classLoader = ToolXML.class.getClassLoader();
     private static final String basePath = classLoader.getResource("").getPath();
     private static final String commandListPath = basePath + "\\config\\CommandList.xml";
+    private static final String privateGoalPath = basePath + "\\config\\PrivateGoals.xml";
     //endregion
 
     //region PRIVATE METHODS
@@ -48,7 +49,7 @@ public class ToolXML {
     //region PRIVATE GOAL
     public static SpecialCell[] getSpecialCells(int id){
         SpecialCell[] specialCell = new SpecialCell[6];
-        File file = new File("");
+        File file = new File(privateGoalPath);
         Element root = getRootDocElement(file);
         NodeList goal = root.getElementsByTagName("Goal");
 
