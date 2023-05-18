@@ -125,6 +125,7 @@ public class CLI implements Runnable, UserInterface {
     private void gameHandler() {
         scanner = new Scanner(System.in);
 
+        //TODO: Implementare stop del loop attraverso chiamata di scoreboard
         //While loop to read the user keyboard input (until the game ends)
         while(true){
             String read = scanner.nextLine();
