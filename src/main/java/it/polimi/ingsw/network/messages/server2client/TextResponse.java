@@ -6,10 +6,10 @@ import it.polimi.ingsw.network.messages.MessageType;
 /**
  * Message that contains a generic feedback, either true or false, with its description
  */
-public class GenericResponse extends Message {
+public class TextResponse extends Message {
     private final boolean response;
 
-    public GenericResponse(boolean response, String content) {
+    public TextResponse(boolean response, String content) {
         super("server", MessageType.GENERIC_RESPONSE);
         this.response = response;
         setContent(content);

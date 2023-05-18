@@ -30,12 +30,12 @@ public class VirtualView implements View, Observer {
     //region VIEW
     @Override
     public void sendGenericResponse(boolean response, String content) {
-        clientHandler.sendMessage(new GenericResponse(response, content));
+        clientHandler.sendMessage(new TextResponse(response, content));
     }
 
     @Override
     public void showCurrentPlayer(String currentPlayer) {
-        clientHandler.sendMessage(new GenericMessage(MessageType.CURRENT_PLAYER, currentPlayer));
+        clientHandler.sendMessage(new GenericMessage(currentPlayer, MessageType.CURRENT_PLAYER));
     }
 
     @Override

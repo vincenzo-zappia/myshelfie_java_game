@@ -1,11 +1,6 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.network.messages.client2server.CreateLobbyRequest;
-import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
-import it.polimi.ingsw.network.messages.client2server.JoinLobbyRequest;
-import it.polimi.ingsw.network.messages.client2server.SelectionRequest;
-import it.polimi.ingsw.network.messages.client2server.StartGameRequest;
+import it.polimi.ingsw.network.messages.client2server.*;
 import it.polimi.ingsw.network.messages.server2client.*;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.observer.Observer;
@@ -20,7 +15,6 @@ public class ClientController implements Observer {
     private final UserInterface view; //either CLI or GUI for the packing of messages User interface -> Server
     private final Client client; //for the unpacking of messages Server -> User interface
     private String username;
-    private int lobbyId;
     //endregion
 
     //region CONSTRUCTOR
@@ -41,23 +35,20 @@ public class ClientController implements Observer {
     public void update(Message message){
         switch (message.getType()){
             case GENERIC_RESPONSE -> {
-                GenericResponse response = (GenericResponse) message;
+                TextResponse response = (TextResponse) message;
                 view.sendGenericResponse(response.getResponse(), response.getContent());
             }
             case CHECKED_USERNAME -> {
                 SpecificResponse response = (SpecificResponse) message;
-                this.username = response.getContent();
-                view.confirmUsername(response.getResponse());
-            }
-            case LOBBY_ID -> {
-                LobbyIDMessage joinedLobby = (LobbyIDMessage) message;
 
-                //Setting of the ID of the newly created or joined lobby
-                this.lobbyId = joinedLobby.getLobbyID();
+                //Linking the verified username to the client
+                this.username = response.getContent();
+
+                view.confirmUsername(response.getResponse());
             }
             case ACCESS_RESPONSE -> {
                 SpecificResponse response = (SpecificResponse) message;
-                view.showAccessResponse(response.getResponse(), response.getContent());
+                view.confirmAccess(response.getResponse());
             }
             case NEW_CONNECTION -> {
                 UsernameListMessage connectionMessage = (UsernameListMessage) message;
@@ -93,10 +84,17 @@ public class ClientController implements Observer {
     //endregion
 
     //region CLIENT2SERVER
+    /**
+     * Creates and sends request to check the availability of a chosen username
+     * @param username to check
+     */
+    public void checkUsername(String username){
+        Message message = new CheckUsernameRequest(username);
+        client.sendMessage(message);
+    }
 
     /**
-     * Creates and sends the Message that prompts the server to create a new lobby
-     * @param username of the player who creates the lobby (he will be the couch aka the game master)(?)
+     * Creates and sends the request to create a new lobby
      */
     public void createLobby(){
         Message create = new CreateLobbyRequest(username);
@@ -104,8 +102,7 @@ public class ClientController implements Observer {
     }
 
     /**
-     * Creates and sends a (Message) user request to join a lobby
-     * @param username of the player who wants to join the lobby
+     * Creates and sends the request to join a lobby
      * @param lobbyId identification number of the lobby that the player wants to join
      */
     public void joinLobby(int lobbyId){
@@ -119,11 +116,6 @@ public class ClientController implements Observer {
     public void startGame(){
         StartGameRequest start = new StartGameRequest(username);
         client.sendMessage(start);
-    }
-
-    public void checkUsername(String username){
-        Message message = new GenericMessage(MessageType.USERNAME_REQUEST, username);
-        client.sendMessage(message);
     }
 
     /**

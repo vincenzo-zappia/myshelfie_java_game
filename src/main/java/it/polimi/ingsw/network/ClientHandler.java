@@ -41,19 +41,17 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    /**
+     * Waits for incoming messages from client to server
+     */
     public void run() {
-        //First message that the server can receive is a username check //TODO: Revisionare commento
+        //Receiving the request to check username availability
+        checkUsernameHandler();
 
-        checkUsername();
-
-        /*
-         * The first message that the server can receive from the client is a connection message that prompts the server
-         * to either create a new lobby or add the client to an existing one //TODO: Revisionare commento
-         */
+        //Receiving the request either to create a lobby or join an existing one
         joinLobbyHandler();
 
-        System.out.println("INFO: Game phase started");
-        //Forwarding all the possible commands sent by the player to GameController after the game has started
+        //Starting to receive all the possible game commands once the game has officially started
         try {
             //While loop to wait the reception of messages
             while(!Thread.currentThread().isInterrupted()){
@@ -61,36 +59,15 @@ public class ClientHandler implements Runnable{
                 System.out.println("INFO: Message received");
                 if(msg != null) lobby.sendToGame(msg);
             }
-
-            System.out.println("INFO: thread interrupted");
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("INFO: ex");
+            System.out.println("INFO: ClientHandler interrupted");
             throw new RuntimeException(e);
 
         }
     }
 
-    private void checkUsername(){
-        Message message = receiveOneMessage();
-
-        if(message.getType() == MessageType.USERNAME_REQUEST){
-            if(!server.existsUsername(message.getContent())) {
-                sendMessage(new SpecificResponse(true, message.getContent(), MessageType.CHECKED_USERNAME));
-                sendMessage(new GenericResponse(true, "Username available!"));
-            }
-            else {
-                sendMessage(new SpecificResponse(false, message.getContent(), MessageType.CHECKED_USERNAME));
-                sendMessage(new GenericResponse(false, "Username unavailable!"));
-                checkUsername();
-            }
-        }
-    }
-
-    //TODO: Implementare safe disconnect
-    //region METHODS
-
     /**
-     * Sends a message from the server to the client (TCP/IP)
+     * Sends a message from server to client (TCP/IP)
      * @param message sent message
      */
     public void sendMessage(Message message){
@@ -102,13 +79,32 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    //TODO: Implementare safe disconnect
+
+    //region METHODS
+    /**
+     * Checks if the username selected by the player is available
+     */
+    private void checkUsernameHandler(){
+        Message message = receiveOneMessage();
+
+        if(message.getType() == MessageType.USERNAME_REQUEST){
+            if(!server.existsUsername(message.getContent())) {
+                sendMessage(new TextResponse(true, "Username available!"));
+                sendMessage(new SpecificResponse(true, message.getContent(), MessageType.CHECKED_USERNAME));
+            }
+            else {
+                sendMessage(new TextResponse(false, "Username unavailable!"));
+                sendMessage(new SpecificResponse(false, MessageType.CHECKED_USERNAME));
+                checkUsernameHandler();
+            }
+        }
+    }
 
     /**
      * Either creates a new lobby or checks if the player can join the selected existing one
      */
     private void joinLobbyHandler() {
-        System.out.println("INFO: Connection phase started");
-
         Message message = receiveOneMessage();
 
         switch(message.getType()){
@@ -119,13 +115,12 @@ public class ClientHandler implements Runnable{
                 //Creating a new lobby
                 this.lobby = server.createLobby();
 
-                //Joining the newly created lobby
+                //Joining the newly created lobby and sending back the lobby ID //TODO: Unico modo di sapere lobby ID
                 lobby.joinLobby(new NetworkPlayer(message.getUsername(), this));
-                sendMessage(new GenericResponse(true, "Creation successful!\nLobby ID: " + lobby.getLobbyID()));
-                sendMessage(new LobbyIDMessage(lobby.getLobbyID()));
+                sendMessage(new TextResponse(true, "Creation successful!\nLobby ID: " + lobby.getLobbyID()));
+                sendMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));
 
                 //Initialization of the game
-                //sendMessage(new GenericResponse(true, "Type *start* when you want to start the game!"));
                 startGameHandler();
             }
 
@@ -136,27 +131,29 @@ public class ClientHandler implements Runnable{
                 //Checking if the selected lobby exists
                 if(server.existsLobby(joinLobbyRequest.getLobbyId())) this.lobby = server.getLobby(joinLobbyRequest.getLobbyId());
                 else {
-                    sendMessage(new SpecificResponse(false, "This lobby doesn't exist!", MessageType.ACCESS_RESPONSE));
+                    sendMessage(new TextResponse(false, "This lobby doesn't exist!"));
+                    sendMessage(new SpecificResponse(false, MessageType.ACCESS_RESPONSE));
                     joinLobbyHandler();
+                    return; //Return to stop the recursion
                 }
 
                 /*
                  * Checking if the username chosen by the player is already taken, if the lobby has reached max capacity
                  * and if the game has already started, if not, joining the lobby
                  */
-                if(lobby.joinLobby(new NetworkPlayer(message.getUsername(), this))){ //TODO: Crea comunque netplayer, non creare prima del check?
-                    sendMessage(new LobbyIDMessage(lobby.getLobbyID()));
-                    sendMessage(new SpecificResponse(true, "Join successful!", MessageType.ACCESS_RESPONSE));
+                if(lobby.joinLobby(new NetworkPlayer(message.getUsername(), this))){
+                    sendMessage(new TextResponse(true, "Join successful!"));
+                    sendMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));
+
+                    //Sending to all the players the updated username list with the new entry
+                    lobby.lobbyBroadcastMessage(new UsernameListMessage(lobby.getUsernameList()));
                 }
                 else joinLobbyHandler();
-
-                //Sending to all the players the updated username list with the new entry
-                lobby.lobbyBroadcastMessage(new UsernameListMessage(lobby.getUsernameList()));
 
             }
 
             default -> {
-                sendMessage(new GenericResponse(false, "Invalid command!"));
+                sendMessage(new TextResponse(false, "Invalid command!"));
             }
         }
 
@@ -167,14 +164,14 @@ public class ClientHandler implements Runnable{
      * (initialization of all the data structures needed for the game to work)
      */
     private void startGameHandler() {
-        System.out.println("INFO: Waiting START message");
         Message message = receiveOneMessage();
 
         if (message.getType() == MessageType.START_GAME_REQUEST){
             lobby.startGame();
         }
         else {
-            sendMessage(new SpecificResponse(false, "The game has to start first!", MessageType.ACCESS_RESPONSE));
+            sendMessage(new TextResponse(false, "The game has to start first!"));
+            startGameHandler();
         }
     }
 
