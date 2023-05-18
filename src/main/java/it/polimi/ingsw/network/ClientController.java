@@ -44,16 +44,19 @@ public class ClientController implements Observer {
                 GenericResponse response = (GenericResponse) message;
                 view.sendGenericResponse(response.getResponse(), response.getContent());
             }
+            case CHECKED_USERNAME -> {
+                SpecificResponse response = (SpecificResponse) message;
+                this.username = response.getContent();
+                view.confirmUsername(response.getResponse());
+            }
             case LOBBY_ID -> {
                 LobbyIDMessage joinedLobby = (LobbyIDMessage) message;
 
                 //Setting of the ID of the newly created or joined lobby
                 this.lobbyId = joinedLobby.getLobbyID();
-
             }
             case ACCESS_RESPONSE -> {
                 SpecificResponse response = (SpecificResponse) message;
-
                 view.showAccessResponse(response.getResponse(), response.getContent());
             }
             case NEW_CONNECTION -> {
@@ -95,9 +98,8 @@ public class ClientController implements Observer {
      * Creates and sends the Message that prompts the server to create a new lobby
      * @param username of the player who creates the lobby (he will be the couch aka the game master)(?)
      */
-    public void createLobby(String username){
+    public void createLobby(){
         Message create = new CreateLobbyRequest(username);
-        this.username = username;
         client.sendMessage(create);
     }
 
@@ -106,9 +108,8 @@ public class ClientController implements Observer {
      * @param username of the player who wants to join the lobby
      * @param lobbyId identification number of the lobby that the player wants to join
      */
-    public void joinLobby(String username, int lobbyId){
+    public void joinLobby(int lobbyId){
         Message join = new JoinLobbyRequest(username, lobbyId);
-        this.username = username;
         client.sendMessage(join);
     }
 
@@ -118,6 +119,11 @@ public class ClientController implements Observer {
     public void startGame(){
         StartGameRequest start = new StartGameRequest(username);
         client.sendMessage(start);
+    }
+
+    public void checkUsername(String username){
+        Message message = new GenericMessage(MessageType.USERNAME_REQUEST, username);
+        client.sendMessage(message);
     }
 
     /**

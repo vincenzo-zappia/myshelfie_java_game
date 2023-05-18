@@ -116,15 +116,14 @@ public class Server {
     /**
      * Checks if the chosen username is already taken, if not, adds it to the list of usernames
      * @param username to check
-     * @return if the username is added
      */
     public void addUsername(String username){
         usernameList.add(username);
     }
 
     public boolean existsUsername(String username) {
-        for(String user : usernameList) if(user.equals(username)) return false;
-        return true;
+        for(String user : usernameList) if(user.equals(username)) return true;
+        return false;
     }
 
     public Lobby getLobby(int lobbyId){

@@ -11,6 +11,7 @@ import it.polimi.ingsw.view.VirtualModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class CLI implements Runnable, UserInterface {
@@ -20,6 +21,10 @@ public class CLI implements Runnable, UserInterface {
     private final ClientController controller;
     private final VirtualModel virtualModel;
     private boolean inGame;
+    private boolean usernameAccepted;
+    private boolean waiting;
+    private Object lock = new Object();
+
 
     //endregion
 
@@ -28,13 +33,15 @@ public class CLI implements Runnable, UserInterface {
         controller = new ClientController(this, client);
         virtualModel = new VirtualModel();
         inGame = false;
+        usernameAccepted = false;
+        waiting = false;
     }
 
     @Override
     public void run() {
         //Creating or joining of a lobby and starting the game
-        if (!inGame) connection();
-        else startGame();
+        connection();
+        startGame();
     }
 
     private void startGame() {
@@ -48,6 +55,7 @@ public class CLI implements Runnable, UserInterface {
                 System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
                 continue;
             }
+
             String[] splitted = read.split(" ", 2);
 
             switch (splitted[0]){
@@ -137,45 +145,64 @@ public class CLI implements Runnable, UserInterface {
      */
     private void connection() {
 
-        //TODO: Problema: viene comunque stampato il prompt per una nuova selezione anche se la precedente è valida
-        //TODO: Mascherare il problema non stampando niente a schermo?
-        //Asking the player for his username and sending it to server to check for its availability
-        String selection = requestLobby();
-        String username = requestUsername();
-
-        switch (selection) {
-
-            //Creation of a new lobby
-            case "0" -> {
-                //Sending a lobby creation request
-                controller.createLobby(username);
-
-                //Waiting for the lobby master to type "start"
-                String read;
-                do {
-                    read = scanner.nextLine();
-                }
-                while (!read.equals("start"));
-
-                controller.startGame();
-
-                inGame = true;
-                new Thread(this).start();
+        //region USERNAME
+        while(!usernameAccepted) {
+            if (!waiting) {
+                String username = requestUsername();
+                controller.checkUsername(username);
+                waiting = true;
             }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        //endregion
+        System.out.println("uscito");
+        waiting = false;
+        inGame = false;
+        //Asking the player for his username and sending it to server to check for its availability
+        while(!inGame) {
+            if (waiting) continue;
 
-            //Joining an existing lobby
-            case "1" -> {
-                System.out.println("Enter lobby ID:");
-                try {
-                    int id = Integer.parseInt(scanner.nextLine());
-                    controller.joinLobby(username, id);
+            String selection = requestLobby();
+
+            switch (selection) {
+
+                //Creation of a new lobby
+                case "0" -> {
+                    //Sending a lobby creation request
+                    controller.createLobby();
+
+                    //Waiting for the lobby master to type "start"
+                    String read;
+
+                    System.out.println("Type *start* when you want to start the game!");
+                    do {
+                        read = scanner.nextLine();
+                    }
+                    while (!read.equals("start"));
+
+                    controller.startGame();
+
+                    inGame = true;
                 }
-                catch (NumberFormatException e) {
+
+                //Joining an existing lobby
+                case "1" -> {
+                    System.out.println("Enter lobby ID:");
+                    try {
+                        int id = Integer.parseInt(scanner.nextLine());
+                        controller.joinLobby(id);
+                    } catch (NumberFormatException e) {
                         System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
                         connection();
+                    }
                 }
-            }
 
+            }
+            waiting = true;
         }
     }
 
@@ -185,13 +212,12 @@ public class CLI implements Runnable, UserInterface {
      */
     private String requestUsername() {
         String username;
+
         do{
             System.out.println("Enter username:");
             username = scanner.nextLine();
             if (username.replace(" ", "").equals("")) System.out.println(CliUtil.makeErrorMessage("Enter valid username:"));
         }while(username.replace(" ", "").equals(""));
-
-        //TODO: Spostare la gestione dello username qui anziché connection?
 
         return username;
     }
@@ -209,7 +235,7 @@ public class CLI implements Runnable, UserInterface {
             if(!selection.equals("0") && !selection.equals("1")) System.out.println(CliUtil.makeErrorMessage("Enter valid number."));
         }while (!selection.equals("0") && !selection.equals("1"));
 
-        //TODO: Gestire qua la creazione/join di una lobby anziché in connection?
+
 
         return selection;
     }
@@ -286,13 +312,17 @@ public class CLI implements Runnable, UserInterface {
         if (response) {
             System.out.println(CliUtil.makeConfirmationMessage(content));
             inGame = true;
-            new Thread(this).start();
         }
         else {
             System.out.println(CliUtil.makeErrorMessage(content));
             inGame = false;
-            new Thread(this).start();
         }
+    }
+
+    @Override
+    public void confirmUsername(boolean response) {
+        if (response) usernameAccepted = true;
+
     }
     //endregion
 

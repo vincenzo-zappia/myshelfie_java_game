@@ -43,6 +43,9 @@ public class ClientHandler implements Runnable{
 
     public void run() {
         //First message that the server can receive is a username check //TODO: Revisionare commento
+
+        checkUsername();
+
         /*
          * The first message that the server can receive from the client is a connection message that prompts the server
          * to either create a new lobby or add the client to an existing one //TODO: Revisionare commento
@@ -58,11 +61,28 @@ public class ClientHandler implements Runnable{
                 System.out.println("INFO: Message received");
                 if(msg != null) lobby.sendToGame(msg);
             }
+
             System.out.println("INFO: thread interrupted");
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("INFO: ex");
             throw new RuntimeException(e);
 
+        }
+    }
+
+    private void checkUsername(){
+        Message message = receiveOneMessage();
+
+        if(message.getType() == MessageType.USERNAME_REQUEST){
+            if(!server.existsUsername(message.getContent())) {
+                sendMessage(new SpecificResponse(true, message.getContent(), MessageType.CHECKED_USERNAME));
+                sendMessage(new GenericResponse(true, "Username available!"));
+            }
+            else {
+                sendMessage(new SpecificResponse(false, message.getContent(), MessageType.CHECKED_USERNAME));
+                sendMessage(new GenericResponse(false, "Username unavailable!"));
+                checkUsername();
+            }
         }
     }
 
@@ -90,12 +110,6 @@ public class ClientHandler implements Runnable{
         System.out.println("INFO: Connection phase started");
 
         Message message = receiveOneMessage();
-
-        //Username check //todo: revisionare commento
-        if(!server.existsUsername(message.getUsername())){
-            sendMessage(new SpecificResponse(false, "Username unavailable, choose another!", MessageType.ACCESS_RESPONSE));
-            joinLobbyHandler();
-        }
 
         switch(message.getType()){
 

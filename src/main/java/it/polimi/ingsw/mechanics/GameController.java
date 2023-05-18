@@ -120,6 +120,7 @@ public class GameController {
 
             //Turn phase management: the player is now allowed to insert the selected cards into his bookshelf
             canInsert = true;
+            System.out.println("INFO: Selection phase ended");
         }
 
         //TODO: Debuggare: non arriva mai a questo else nel caso in cui la selezione non sia legale

@@ -21,4 +21,6 @@ public interface UserInterface extends View {
      * Checks the flag that allows the user interface to start taking game commands from the player
      */
     void showAccessResponse(boolean response, String content);
+
+    void confirmUsername(boolean response);
 }
