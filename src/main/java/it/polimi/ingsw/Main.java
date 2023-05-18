@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.cli.CLI;
+import it.polimi.ingsw.view.gui.GUI;
 
 import java.util.Scanner;
 
@@ -18,13 +19,18 @@ public class Main {
         String selection = in.nextLine();
 
         Client client = new Client("localhost", 2023);
-        CLI cli = new CLI(client);
+
 
         //Selection of the CLI as the user interface
-        if (selection.equals("0")) new Thread(cli).start();
+        if (selection.equals("0")){
+            CLI cli = new CLI(client);
+            new Thread(cli).start();
+        }
 
         //Selection of the GUI as the user interface
-        else if (selection.equals("1")) System.out.println("GUI"); //TODO: Parte GUI
+        else if (selection.equals("1")) {
+            GUI.main(args);
+        }
 
         //Shitting off if the selection doesn't match
         else{
