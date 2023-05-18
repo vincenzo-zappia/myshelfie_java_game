@@ -60,7 +60,6 @@ public class Lobby {
 
         //Adding the player to the lobby
         String username = netPlayer.getUsername();
-        server.addUsername(username);
         usernameList.add(username);
         VirtualView view = new VirtualView(netPlayer.getClientHandler());
         netPlayer.setVirtualView(view);

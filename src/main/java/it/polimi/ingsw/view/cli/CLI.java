@@ -372,7 +372,6 @@ public class CLI implements Runnable, UserInterface {
         //TODO: Stampare a schermo la classifica finale in ordine decrescente di punteggio
 
         virtualModel.setEnd();
-
     }
 
     //endregion

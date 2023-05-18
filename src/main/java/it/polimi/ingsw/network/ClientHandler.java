@@ -90,8 +90,13 @@ public class ClientHandler implements Runnable{
 
         if(message.getType() == MessageType.USERNAME_REQUEST){
             if(!server.existsUsername(message.getContent())) {
+
+                //Sending positive feedback back to the player
                 sendMessage(new TextResponse(true, "Username available!"));
                 sendMessage(new SpecificResponse(true, message.getContent(), MessageType.CHECKED_USERNAME));
+
+                //Adding the username to the server username list
+                server.addUsername(message.getContent());
             }
             else {
                 sendMessage(new TextResponse(false, "Username unavailable!"));
