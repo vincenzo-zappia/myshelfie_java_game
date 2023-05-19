@@ -18,9 +18,9 @@
 
    <TilePane alignment="CENTER" orientation="VERTICAL" prefHeight="462.0" prefWidth="562.0" StackPane.alignment="CENTER">
       <Label fx:id="feedback" text="none" visible="false" />
-      <Label text="Username:" TilePane.alignment="CENTER">
+      <Label text="INSERT USERNAME:" TilePane.alignment="CENTER">
          <font>
-            <Font size="35.0" />
+            <Font name="System Bold" size="24.0" />
          </font>
       </Label>
       <TextField fx:id="textField1" alignment="CENTER" prefHeight="0.0" prefWidth="379.0">

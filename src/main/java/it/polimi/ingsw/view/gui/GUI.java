@@ -43,6 +43,10 @@ public class GUI extends Application {
         stage.setMinHeight(600);
     }
 
+    /**
+     * Changes the scene root to the selected one by loading its fxml
+     * @param filename name of the fxml file
+     */
     public void loadScene(String filename){
         currentLoader = new FXMLLoader(GUI.class.getResource(filename));
         try {
@@ -53,6 +57,10 @@ public class GUI extends Application {
 
     }
 
+    /**
+     * Returns the controller of the current scene
+     * @return controller of the current scene
+     */
     protected GenericScene getController(){
         return currentLoader.getController();
     }

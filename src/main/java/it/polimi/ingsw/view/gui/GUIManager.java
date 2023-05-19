@@ -14,12 +14,8 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 public class GUIManager implements UserInterface {
-
-    //region ATTRIBUTES
     private final GUI gui;
-    private GenericScene controller;
     private String currentScene;
-    //endregion
 
     public GUIManager(GUI gui){
         this.gui = gui;

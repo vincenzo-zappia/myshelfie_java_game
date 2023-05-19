@@ -6,8 +6,12 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
+/**
+ * Controller of the scene where at most four players wait for the lobby master (one of them) to start the game
+ */
 public class LobbyScene extends GenericScene{
 
+    //An object for each player icon and username
     @FXML private Pane pane1;
     @FXML private Pane pane2;
     @FXML private Pane pane3;
@@ -19,7 +23,7 @@ public class LobbyScene extends GenericScene{
 
 
     /**
-     * Sends the start game request to the server after the button click
+     * Sends the request to the server to start the game
      */
     @FXML protected void onStartGameClick(){
         controller.startGame();
@@ -51,6 +55,7 @@ public class LobbyScene extends GenericScene{
             pane4.setVisible(true);
             label4.setText(playerUsernames.get(3));
         }
+
     }
 
 }
