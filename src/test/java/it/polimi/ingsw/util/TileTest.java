@@ -6,38 +6,38 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CellTest {
+class TileTest {
 
-    Cell cell;
+    Tile tile;
     @BeforeEach
     void setUp() {
-        cell = new Cell();
+        tile = new Tile();
     }
 
     @Test
     void getCard() {
         Card x = new Card("img.png", CardType.FRAMES);
-        cell.setCard(x);
-        assertEquals(x, cell.getCard());
+        tile.setCard(x);
+        assertEquals(x, tile.getCard());
     }
 
     @Test
     void setCard() {
         Card x = new Card("img.png", CardType.FRAMES);
-        cell.setCard(x);
-        assertEquals(x, cell.getCard());
+        tile.setCard(x);
+        assertEquals(x, tile.getCard());
     }
 
     @Test
     void setCellEmpty() {
-        cell.setCellEmpty();
-        assertTrue(cell.isCellEmpty());
+        tile.setTileEmpty();
+        assertTrue(tile.isTileEmpty());
     }
 
     @Test
     void isCellEmpty() {
-        assertTrue(cell.isCellEmpty());
-        cell.setCard(new Card("img.png", CardType.FRAMES));
-        assertFalse(cell.isCellEmpty());
+        assertTrue(tile.isTileEmpty());
+        tile.setCard(new Card("img.png", CardType.FRAMES));
+        assertFalse(tile.isTileEmpty());
     }
 }

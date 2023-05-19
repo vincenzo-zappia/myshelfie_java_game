@@ -23,7 +23,7 @@ public class CommonGoal4 extends CommonGoal implements Goal{
     @Override
     public int checkGoal(Bookshelf bs) {
         int tmp=0;
-        int[][] x = bs.getMatrixColors();
+        int[][] x = bs.getBookshelfColors();
 
         for(int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {

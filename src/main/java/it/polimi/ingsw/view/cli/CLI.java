@@ -4,14 +4,13 @@ import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
-import it.polimi.ingsw.util.BoardCell;
-import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.util.BoardTile;
+import it.polimi.ingsw.util.Tile;
 import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.VirtualModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class CLI implements Runnable, UserInterface {
@@ -20,33 +19,112 @@ public class CLI implements Runnable, UserInterface {
     private Scanner scanner;
     private final ClientController controller;
     private final VirtualModel virtualModel;
-    private boolean inGame;
+    private final Object lock;
+
+    //region FLAGS
     private boolean usernameAccepted;
-    private boolean waiting;
-    private Object lock = new Object();
-
-
+    private boolean lobbyJoined;
+    //endregion
     //endregion
 
     public CLI(Client client) {
         scanner = new Scanner(System.in);
         controller = new ClientController(this, client);
         virtualModel = new VirtualModel();
-        inGame = false;
+        lock = new Object();
+
         usernameAccepted = false;
-        waiting = false;
+        lobbyJoined = false;
     }
 
     @Override
     public void run() {
-        //Creating or joining of a lobby and starting the game
-        connection();
-        startGame();
+        connectionHandler();
+        gameHandler();
     }
 
-    private void startGame() {
+    /**
+     * Manages the choosing of a username and either the creation of a new lobby or the joining of an existing one
+     */
+    private void connectionHandler() {
+
+        //Asking the player for his username and sending it to server to check for its availability
+        while(!usernameAccepted) {
+            String username = requestUsername();
+            controller.checkUsername(username);
+
+            //Thread waits until notified
+            synchronized (lock) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        //Asking the player whether to join or create a new lobby and waiting for server feedback
+        while (!lobbyJoined) {
+            String selection = requestLobby();
+            switch (selection) {
+
+                //Creation of a new lobby
+                case "0" -> {
+                    //Sending a lobby creation request
+                    controller.createLobby();
+
+                    //Thread waits until notified
+                    synchronized (lock) {
+                        try {
+                            lock.wait();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                    //Waiting for the lobby master to type "start"
+                    System.out.println("Type *start* when you want to start the game!");
+                    String read;
+                    do {
+                        read = scanner.nextLine();
+                    }
+                    while (!read.equals("start"));
+
+                    //Starting the game
+                    controller.startGame();
+                }
+
+                //Joining an existing lobby
+                case "1" -> {
+                    System.out.println("Enter lobby ID:");
+                    try {
+                        int id = Integer.parseInt(scanner.nextLine());
+                        controller.joinLobby(id);
+                    } catch (NumberFormatException e) {
+                        System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
+                        connectionHandler();
+                    }
+
+                    //Thread waits until notified
+                    synchronized (lock) {
+                        try {
+                            lock.wait();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Manages the sending of player commands to the game
+     */
+    private void gameHandler() {
         scanner = new Scanner(System.in);
 
+        //TODO: Implementare stop del loop attraverso chiamata di scoreboard
         //While loop to read the user keyboard input (until the game ends)
         while(true){
             String read = scanner.nextLine();
@@ -62,15 +140,6 @@ public class CLI implements Runnable, UserInterface {
 
                 //Card selection command eg: "select (x;y),(x;y),(x,y)"
                 case "select" -> {
-
-                    /*
-                    //TODO: Ridondante, c'è lo stesso check in GameController ma si risparmia tempo
-                    //Checking if the player has already made a selection
-                    if(virtualModel.isSelection()) {
-                        System.out.println(CliUtil.makeErrorMessage("Selection already made!"));
-                        continue;
-                    }
-                    */
 
                     //Parsing of the input command
                     String[] strCoordinates = splitted[1].split(",");
@@ -95,14 +164,6 @@ public class CLI implements Runnable, UserInterface {
                 //Card insertion command (bookshelf column n) eg: "insert n"
                 case "insert" -> {
                     int column;
-
-                        /*
-                        //TODO: Ridondante, c'è lo stesso check in GameController ma si risparmia tempo (controllo con e senza debuggando)
-                        //Checking if the player has first made a selection
-                        if(!virtualModel.isSelection()) {
-                            System.out.println(CliUtil.makeErrorMessage("First select your cards!"));
-                            continue;
-                        }*/
 
                     try {
                         //Parsing the input command (chosen column)
@@ -140,73 +201,7 @@ public class CLI implements Runnable, UserInterface {
         //System.out.println(CliUtil.makeTitle("Game Over!"));
     }
 
-    /**
-     * Prompts the creation of either a lobby creation command or a lobby access request based on the user input
-     */
-    private void connection() {
-
-        //region USERNAME
-        while(!usernameAccepted) {
-            if (!waiting) {
-                String username = requestUsername();
-                controller.checkUsername(username);
-                waiting = true;
-            }
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        //endregion
-        System.out.println("uscito");
-        waiting = false;
-        inGame = false;
-        //Asking the player for his username and sending it to server to check for its availability
-        while(!inGame) {
-            if (waiting) continue;
-
-            String selection = requestLobby();
-
-            switch (selection) {
-
-                //Creation of a new lobby
-                case "0" -> {
-                    //Sending a lobby creation request
-                    controller.createLobby();
-
-                    //Waiting for the lobby master to type "start"
-                    String read;
-
-                    System.out.println("Type *start* when you want to start the game!");
-                    do {
-                        read = scanner.nextLine();
-                    }
-                    while (!read.equals("start"));
-
-                    controller.startGame();
-
-                    inGame = true;
-                }
-
-                //Joining an existing lobby
-                case "1" -> {
-                    System.out.println("Enter lobby ID:");
-                    try {
-                        int id = Integer.parseInt(scanner.nextLine());
-                        controller.joinLobby(id);
-                    } catch (NumberFormatException e) {
-                        System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
-                        connection();
-                    }
-                }
-
-            }
-            waiting = true;
-        }
-    }
-
-    //region SHOW
+    //region PRIVATE METHODS
     /**
      * Asks the player his username
      */
@@ -273,9 +268,7 @@ public class CLI implements Runnable, UserInterface {
     private void showPrivateGoal() {
         PrivateGoal privateGoal = virtualModel.getPrivateGoal();
     }
-    //endregion
 
-    //region SYNTAX
     /**
      * Makes card coordinates (two int array) out of the user keyboard input
      * @param input user keyboard input for coordinates eg: "(x;y)"
@@ -300,29 +293,32 @@ public class CLI implements Runnable, UserInterface {
     //endregion
 
     //region USER INTERFACE
+    @Override
+    public void confirmUsername(boolean response) {
+        //Receiving feedback about username availability
+        if (response) usernameAccepted = true;
+
+        //Notifying the waiting thread
+        synchronized (lock) {
+            lock.notify();
+        }
+    }
+
+    @Override
+    public void confirmAccess(boolean response) {
+        //Receiving feedback about lobby creation/join
+        lobbyJoined = response;
+
+        //Notifying the waiting thread
+        synchronized (lock) {
+            lock.notify();
+        }
+    }
 
     @Override
     public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
         System.out.println("Connected players: ");
         System.out.println(CliUtil.makePlayersList(playerUsernames));
-    }
-
-    @Override
-    public void showAccessResponse(boolean response, String content) {
-        if (response) {
-            System.out.println(CliUtil.makeConfirmationMessage(content));
-            inGame = true;
-        }
-        else {
-            System.out.println(CliUtil.makeErrorMessage(content));
-            inGame = false;
-        }
-    }
-
-    @Override
-    public void confirmUsername(boolean response) {
-        if (response) usernameAccepted = true;
-
     }
     //endregion
 
@@ -352,15 +348,15 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void showUpdatedBookshelf(Cell[][] bookshelf) {
+    public void showUpdatedBookshelf(Tile[][] bookshelf) {
         virtualModel.setSelection(false);
         virtualModel.setBookshelf(bookshelf);
         showBookshelf();
     }
 
     @Override
-    public void showRefilledBoard(BoardCell[][] boardCells) {
-        virtualModel.setBoard(boardCells);
+    public void showRefilledBoard(BoardTile[][] boardTiles) {
+        virtualModel.setBoard(boardTiles);
         showBoard();
     }
 
@@ -376,7 +372,6 @@ public class CLI implements Runnable, UserInterface {
         //TODO: Stampare a schermo la classifica finale in ordine decrescente di punteggio
 
         virtualModel.setEnd();
-
     }
 
     //endregion

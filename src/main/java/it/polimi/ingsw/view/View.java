@@ -2,8 +2,8 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
-import it.polimi.ingsw.util.BoardCell;
-import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.util.BoardTile;
+import it.polimi.ingsw.util.Tile;
 
 import java.util.HashMap;
 
@@ -42,13 +42,13 @@ public interface View {
      * Sends the updated bookshelf to the player after the insertion
      * @param bookshelf updated bookshelf
      */
-    void showUpdatedBookshelf(Cell[][] bookshelf);
+    void showUpdatedBookshelf(Tile[][] bookshelf);
 
     /**
      * Sends the newly refilled board after the calling of the fillBoard() method
-     * @param boardCells refilled board
+     * @param boardTiles refilled board
      */
-    void showRefilledBoard(BoardCell[][] boardCells);
+    void showRefilledBoard(BoardTile[][] boardTiles);
 
     /**
      * Sends to a player his private goal and the common goals of the game

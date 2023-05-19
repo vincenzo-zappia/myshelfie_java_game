@@ -10,110 +10,117 @@ package it.polimi.ingsw.entities;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.exceptions.CellGetCardException;
-import it.polimi.ingsw.util.CardType;
-import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.util.Tile;
 
+/**
+ * Bookshelf of a player where the cards picked from the board can be added
+ */
 public class Bookshelf {
+    private final Tile[][] bookshelf;
 
-    //region ATTRIBUTES
-    private final Cell[][] bookshelf;
-    //endregion
-
-    //region CONSTRUCTOR
     public Bookshelf(){
-        bookshelf = new Cell[6][5];
-        for(int i=0; i<6; i++) for(int j=0; j<5; j++) bookshelf[i][j] = new Cell();
+        bookshelf = new Tile[6][5];
+
+        //Initializing every single tile of the bookshelf
+        for(int i = 0; i < 6; i++) for(int j = 0; j < 5; j++) bookshelf[i][j] = new Tile();
     }
-    //endregion
 
     //region METHODS
-
+    //TODO: Vedere il da farsi per l'eccezione
     /**
-     * check if the bookshelf is full
-     * @return false while bookshelf is not full
-     */
-    public boolean checkIfFull(){
-        boolean sentinel = false;
-        for(int i=0; i<6; i++) {
-            for(int j=0; j<5; j++){
-                sentinel = bookshelf[i][j].isCellEmpty();   // if a single cell of bookshelf is empty,
-                if(sentinel) return false;                  // the method immediately return false
-            }
-        }
-        return true;
-    }
-
-
-    /**
-     * method that add card in the bookshelf (by columns)
-     * @param column where player want to insert card
-     * @param card Card to insert
+     * Adds a card to the bookshelf
+     * @param column where to insert the card
+     * @param card to add
      * @throws AddCardException when the column is full
      */
     public void addCard(int column, Card card) throws AddCardException {
         int i = 5;
-        if(!bookshelf[0][column].isCellEmpty()) throw new AddCardException("Colonna piena!");
-        while(!bookshelf[i][column].isCellEmpty() && i>0) i--;
+        if(!bookshelf[0][column].isTileEmpty()) throw new AddCardException("Colonna piena!");
+        while(!bookshelf[i][column].isTileEmpty() && i>0) i--;
         bookshelf[i][column].setCard(card);
     }
 
     /**
-     * count the number of cards in a single column
-     * @param column of the bookshelf
-     * @return number of cards in a column
+     * Checks whether the bookshelf is full
+     * @return if the bookshelf is full
+     */
+    public boolean isBookshelfFull(){
+
+        //Returning false if a single tile is empty
+        boolean sentinel = false;
+        for(int i = 0; i < 6; i++) {
+            for(int j = 0; j < 5; j++){
+                sentinel = bookshelf[i][j].isTileEmpty();
+                if(sentinel) return false;
+            }
+        }
+        return true;
+
+    }
+
+    /**
+     * Counts the number of cards in a column
+     * @param column in which to count the cards
+     * @return number of cards in the column
      */
     public int cardsInColumn(int column) {
-        int i=5, count=0;
-        while (i>=0 && !bookshelf[i][column].isCellEmpty()){
+        int i = 5, count = 0;
+        while (i >= 0 && !bookshelf[i][column].isTileEmpty()){
             i--;
             count++;
         }
         return count;
     }
 
+    /**
+     * Counts the number of cards in a row
+     * @param row in which to count the cards
+     * @return number of cards in the row
+     */
     public int cardsInRow(int row){
-        int i=0;
-        while (i<5 && !bookshelf[row][i].isCellEmpty()) i++;
+        int i = 0;
+        while (i < 5 && !bookshelf[row][i].isTileEmpty()) i++;
         return i;
     }
 
     /**
-     * method that returns a matrix 6x5 of only colours of the cards
-     * @return the matrix itself
+     * Extracts the colors of the cards in the bookshelf
+     * @return 6x5 matrix of color-codifying integers
      */
-    public int[][] getMatrixColors() {
-        int[][] x = new int[6][5];
-
+    public int[][] getBookshelfColors() {
+        int[][] matrix = new int[6][5];
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 5; j++) {
-
                 try {
-                    if(!getCell(i,j).isCellEmpty()) x[i][j] = getCell(i,j).getCard().getType().ordinal(); //save the value in matrix x[][]
-                    else x[i][j] = Goal.UNAVAILABLE; //if a cell is empty, use the value UNAVAILABLE(104) to detect in the int matrix
+                    //Saving the codified value in the matrix
+                    if(!getBookshelfTile(i,j).isTileEmpty()) matrix[i][j] = getBookshelfTile(i,j).getCard().getType().ordinal();
+
+                    //Using the value UNAVAILABLE(104) if a tile has no card in it
+                    else matrix[i][j] = Goal.UNAVAILABLE;
+
                 } catch (CellGetCardException e) {
                     throw new RuntimeException(e);
                 }
             }
         }
-        return x;
+        return matrix;
     }
-
     //endregion
 
     //region GETTER AND SETTER
-    public Cell[][] getMatrix(){
+    public Tile[][] getBookshelf(){
         return bookshelf;
     }
-    public Cell getCell(int row, int column){
+    public Tile getBookshelfTile(int row, int column){
         return bookshelf[row][column];
     }
-    public Cell[] getRow(int row) {
-        return bookshelf[row];
-    }
-    public Cell[] getColumn(int column){
-        Cell[] result = new Cell[6];
-        for(int i=0; i<bookshelf.length; i++) result[i] = bookshelf[i][column];
+    public Tile[] getColumn(int column){
+        Tile[] result = new Tile[6];
+        for(int i = 0; i < bookshelf.length; i++) result[i] = bookshelf[i][column];
         return result;
+    }
+    public Tile[] getRow(int row) {
+        return bookshelf[row];
     }
     //endregion
 

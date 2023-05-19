@@ -5,7 +5,7 @@ import it.polimi.ingsw.mechanics.GameController;
 import it.polimi.ingsw.mechanics.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.network.messages.server2client.GenericResponse;
+import it.polimi.ingsw.network.messages.server2client.TextResponse;
 import it.polimi.ingsw.network.messages.server2client.SpecificResponse;
 
 import java.util.ArrayList;
@@ -37,7 +37,6 @@ public class Lobby {
 
     //region METHODS
 
-    //TODO: Separare check dello username dalla creazione/join di una lobby
     /**
      * Method used by clients to enter a lobby
      * @param netPlayer player that request access to lobby
@@ -47,23 +46,20 @@ public class Lobby {
 
         //Checking if the selected lobby is already running a game
         if(inGame){
-            response = new SpecificResponse(false, "Game already started!", MessageType.ACCESS_RESPONSE);
-            netPlayer.getClientHandler().sendMessage(response);
+            netPlayer.getClientHandler().sendMessage(new TextResponse(false, "Game already started!"));
+            netPlayer.getClientHandler().sendMessage(new SpecificResponse(false, MessageType.ACCESS_RESPONSE));
             return false;
         }
 
         //Checking if the lobby is full
         if(usernameList.size() >= 4){
-            response = new SpecificResponse(false, "Lobby is full!", MessageType.ACCESS_RESPONSE);
-            netPlayer.getClientHandler().sendMessage(response);
+            netPlayer.getClientHandler().sendMessage(new TextResponse(false, "Lobby is full!"));
+            netPlayer.getClientHandler().sendMessage(new SpecificResponse(false, MessageType.ACCESS_RESPONSE));
             return false;
         }
 
-        String username = netPlayer.getUsername();
-        assert(username != null);
-
         //Adding the player to the lobby
-        server.addUsername(username);
+        String username = netPlayer.getUsername();
         usernameList.add(username);
         VirtualView view = new VirtualView(netPlayer.getClientHandler());
         netPlayer.setVirtualView(view);
@@ -98,7 +94,8 @@ public class Lobby {
 
         //Officially starting the game
         inGame = true;
-        lobbyBroadcastMessage(new SpecificResponse(true,  "Now in game!", MessageType.ACCESS_RESPONSE));
+        lobbyBroadcastMessage(new TextResponse(true, "Now in game!"));
+        lobbyBroadcastMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));
         System.out.println("INFO: Game started");
     }
 

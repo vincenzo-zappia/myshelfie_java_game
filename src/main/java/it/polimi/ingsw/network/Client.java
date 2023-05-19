@@ -51,7 +51,7 @@ public class Client extends Subject implements Runnable{
 
        try {
            objOut.writeObject(msg);
-           objOut.reset();
+           objOut.flush();
        } catch (IOException e) {
            throw new RuntimeException(e);
        }

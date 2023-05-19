@@ -25,7 +25,7 @@ public class CommonGoal1 extends CommonGoal implements Goal{
     public int checkGoal(Bookshelf bs) {
         //equal square card
         int tmp=0;
-        int[][] x = bs.getMatrixColors();
+        int[][] x = bs.getBookshelfColors();
 
         for(int i = 0; i < 5 ; i++){  //search from row 0 to row-1
             for(int j = 0; j < 4; j++){ //search from column 0 to column-1

@@ -58,9 +58,9 @@ public class GameController {
     public synchronized void messageHandler(Message message){
 
         //Checking if it's the turn of the player who sent the message
-        if (!turnManager.getCurrentPlayer().equals(message.getUsername())) {
-            viewHashMap.get(message.getUsername()).sendGenericResponse(false, "It's not your turn!");
-            System.out.println("INFO: Not " + message.getUsername() + "'s turn.");
+        if (!turnManager.getCurrentPlayer().equals(message.getSender())) {
+            viewHashMap.get(message.getSender()).sendGenericResponse(false, "It's not your turn!");
+            System.out.println("INFO: Not " + message.getSender() + "'s turn.");
             return;
         }
 
@@ -82,7 +82,7 @@ public class GameController {
     public void broadcastMessage(MessageType type, Object... payload){
         for(String username : viewHashMap.keySet()) {
             switch (type) {
-                case REFILLED_BOARD -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getMatrix());
+                case REFILLED_BOARD -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getBoard());
                 case REMOVED_CARDS -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
                 case CURRENT_PLAYER -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
                 case SCOREBOARD -> viewHashMap.get(username).showScoreboard((HashMap<String, Integer>) payload[0]); //TODO: Debug: non invia il messaggio
@@ -101,17 +101,17 @@ public class GameController {
 
         //Checking if the player has already made a selection
         if(canInsert){
-            viewHashMap.get(message.getUsername()).sendGenericResponse(false, "Selection already made!");
+            viewHashMap.get(message.getSender()).sendGenericResponse(false, "Selection already made!");
             System.out.println("The player has already made his selection.");
             return;
         }
 
         //Checking if the cards selected are actually selectable
-        if(game.canSelect(message.getUsername(), message.getCoordinates())) {
+        if(game.canSelect(message.getSender(), message.getCoordinates())) {
 
             //Sending positive feedback to the player with the checked coordinates
-            viewHashMap.get(message.getUsername()).sendCheckedCoordinates(message.getCoordinates());
-            viewHashMap.get(message.getUsername()).sendGenericResponse(true, "Valid selection!");
+            viewHashMap.get(message.getSender()).sendCheckedCoordinates(message.getCoordinates());
+            viewHashMap.get(message.getSender()).sendGenericResponse(true, "Valid selection!");
             System.out.println("INFO: Selection made.");
 
             //Saving the coordinates of the removed cards in order to broadcast them at the end of the turn
@@ -125,7 +125,7 @@ public class GameController {
         //TODO: Debuggare: non arriva mai a questo else nel caso in cui la selezione non sia legale
         //Sending negative feedback to the player
         else{
-            viewHashMap.get(message.getUsername()).sendGenericResponse(false, "Invalid selection! Please retry.");
+            viewHashMap.get(message.getSender()).sendGenericResponse(false, "Invalid selection! Please retry.");
             System.out.println("INFO: Selection not made.");
         }
     }
@@ -142,7 +142,7 @@ public class GameController {
 
             //Checking if the player has first made a selection
             if(!canInsert){
-                viewHashMap.get(message.getUsername()).sendGenericResponse(false, "First select your cards!" );
+                viewHashMap.get(message.getSender()).sendGenericResponse(false, "First select your cards!" );
                 System.out.println("INFO: The player has to make the selection before the insertion.");
                 return;
             }
@@ -153,15 +153,15 @@ public class GameController {
             if(game.canInsert(turnManager.getCurrentPlayer(), message.getSelectedColumn(), coordinates.length)){
 
                 //Removal of the previously selected cards from the game board
-                cards = game.removeCardsFromBoard(coordinates);
+                cards = game.removeSelectedCards(coordinates);
                 System.out.println("INFO: Cards removed from the board and inserted in " + turnManager.getCurrentPlayer() + "'s bookshelf in column " + message.getSelectedColumn());
 
                 //Insertion of the cards (updating the bookshelf of the player)
                 game.addCardsToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), cards);
 
                 //Sending positive feedback to the player with the updated bookshelf
-                viewHashMap.get(message.getUsername()).showUpdatedBookshelf(game.getPlayerBookshelf(turnManager.getCurrentPlayer())); //TODO: Debug: Una volta mi è capitato che non andasse oltre questo comando
-                viewHashMap.get(message.getUsername()).sendGenericResponse(true, "Insertion successful!" );
+                viewHashMap.get(message.getSender()).showUpdatedBookshelf(game.getPlayerBookshelf(turnManager.getCurrentPlayer())); //TODO: Debug: Una volta mi è capitato che non andasse oltre questo comando
+                viewHashMap.get(message.getSender()).sendGenericResponse(true, "Insertion successful!" );
 
                 //End turn housekeeping routine
                 endTurn();
@@ -169,18 +169,17 @@ public class GameController {
 
             //Sending negative feedback to the player with the bookshelf without changes
             else {
-                viewHashMap.get(message.getUsername()).sendGenericResponse(false, "Invalid column! Please select another." );
+                viewHashMap.get(message.getSender()).sendGenericResponse(false, "Invalid column! Please select another." );
                 System.out.println("INFO: Cards not inserted.");
             }
 
         } catch (AddCardException e) {
 
             //Sending negative feedback to the player
-            viewHashMap.get(message.getUsername()).sendGenericResponse(false, "Boh, qualcosa sull'inserzione."); //TODO: Specificare tipo di problema
+            viewHashMap.get(message.getSender()).sendGenericResponse(false, "Boh, qualcosa sull'inserzione."); //TODO: Specificare tipo di problema
             throw new RuntimeException(e);
         }
     }
-
 
     /**
      * Method that performs end turn housekeeping routines: checking if a common goal was achieved,

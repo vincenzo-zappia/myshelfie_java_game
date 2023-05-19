@@ -6,8 +6,8 @@ import it.polimi.ingsw.network.ClientHandler;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.server2client.*;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.util.BoardCell;
-import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.util.BoardTile;
+import it.polimi.ingsw.util.Tile;
 import it.polimi.ingsw.view.View;
 
 import java.util.HashMap;
@@ -30,12 +30,12 @@ public class VirtualView implements View, Observer {
     //region VIEW
     @Override
     public void sendGenericResponse(boolean response, String content) {
-        clientHandler.sendMessage(new GenericResponse(response, content));
+        clientHandler.sendMessage(new TextResponse(response, content));
     }
 
     @Override
     public void showCurrentPlayer(String currentPlayer) {
-        clientHandler.sendMessage(new GenericMessage(MessageType.CURRENT_PLAYER, currentPlayer));
+        clientHandler.sendMessage(new GenericMessage(currentPlayer, MessageType.CURRENT_PLAYER));
     }
 
     @Override
@@ -49,13 +49,13 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showUpdatedBookshelf(Cell[][] bookshelf) {
+    public void showUpdatedBookshelf(Tile[][] bookshelf) {
         clientHandler.sendMessage(new BookshelfMessage(bookshelf));
     }
 
     @Override
-    public void showRefilledBoard(BoardCell[][] boardCells) {
-        clientHandler.sendMessage(new BoardMessage(boardCells));
+    public void showRefilledBoard(BoardTile[][] boardTiles) {
+        clientHandler.sendMessage(new BoardMessage(boardTiles));
     }
 
     @Override

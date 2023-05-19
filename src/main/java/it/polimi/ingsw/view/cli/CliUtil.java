@@ -1,8 +1,8 @@
 package it.polimi.ingsw.view.cli;
 
-import it.polimi.ingsw.util.BoardCell;
+import it.polimi.ingsw.util.BoardTile;
 import it.polimi.ingsw.util.CardType;
-import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.util.Tile;
 import it.polimi.ingsw.util.ToolXML;
 
 import java.util.ArrayList;
@@ -90,7 +90,7 @@ public class CliUtil {
         }
     }
 
-    public static char[][] boardConverter(BoardCell[][] tmp) {
+    public static char[][] boardConverter(BoardTile[][] tmp) {
 
         char[][] result = new char[][]{
                 {'u', 'u', 'u', ' ', ' ', 'u', 'u', 'u', 'u'},
@@ -106,7 +106,7 @@ public class CliUtil {
 
         for (int i = 0; i<9;i++){
             for(int j = 0; j<9; j++){
-                if(tmp[i][j].isCellActive() && !tmp[i][j].isCellEmpty()){
+                if(tmp[i][j].isTileActive() && !tmp[i][j].isTileEmpty()){
                     result[i][j] = getTypeCharacter(tmp[i][j].getCard().getType());
                 }
             }
@@ -114,12 +114,12 @@ public class CliUtil {
         return result;
     }
 
-    public static char[][] bookshelfConverter(Cell[][] bookshelf) {
+    public static char[][] bookshelfConverter(Tile[][] bookshelf) {
         char[][] result = new char[6][5];
 
         for(int i = 0; i<6; i++){
             for(int j=0; j<5; j++){
-                if (!bookshelf[i][j].isCellEmpty()){
+                if (!bookshelf[i][j].isTileEmpty()){
                     result[i][j] = getTypeCharacter(bookshelf[i][j].getCard().getType());
                 }
                 else result[i][j] = ' ';

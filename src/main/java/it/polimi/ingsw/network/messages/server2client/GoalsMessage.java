@@ -18,12 +18,11 @@ public class GoalsMessage extends Message {
         this.privateGoal = privateGoal;
     }
 
-    public PrivateGoal getPrivateGoal() {
-        return privateGoal;
-    }
-
     public Goal[] getCommonGoals() {
         return commonGoals;
+    }
+    public PrivateGoal getPrivateGoal() {
+        return privateGoal;
     }
 
 }

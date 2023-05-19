@@ -100,7 +100,7 @@ public class Server {
      * Remove specified lobby from the server
      * @param lobbyId to identify the lobby to delete
      */
-    public void removeLobby(int lobbyId){
+    public synchronized void removeLobby(int lobbyId){
         lobbyMap.remove(lobbyId);
     }
 
@@ -109,24 +109,24 @@ public class Server {
      * @param lobbyId that needs to be checked
      * @return if the map contains the ID
      */
-    public boolean existsLobby(int lobbyId){
+    public synchronized boolean existsLobby(int lobbyId){
         return lobbyMap.containsKey(lobbyId);
     }
 
     /**
-     * Checks if the chosen username is already taken, if not, adds it to the list of usernames
+     * Adds the username to the server list
      * @param username to check
      */
-    public void addUsername(String username){
+    public synchronized void addUsername(String username){
         usernameList.add(username);
     }
 
-    public boolean existsUsername(String username) {
+    public synchronized boolean existsUsername(String username) {
         for(String user : usernameList) if(user.equals(username)) return true;
         return false;
     }
 
-    public Lobby getLobby(int lobbyId){
+    public synchronized Lobby getLobby(int lobbyId){
         return lobbyMap.get(lobbyId);
     }
     //endregion

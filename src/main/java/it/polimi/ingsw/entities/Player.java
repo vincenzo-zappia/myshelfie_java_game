@@ -9,27 +9,27 @@ package it.polimi.ingsw.entities;
 
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 
-
+/**
+ * Player of the game with a username and a bookshelf
+ */
 public class Player implements Comparable<Player> {
 
     //region ATTRIBUTES
     private final String username;
+    private final Bookshelf bookshelf;
     private int score;
     private PrivateGoal privateGoal;
-    private final Bookshelf bookshelf;
     //endregion
 
-    //region CONSTRUCTOR
     public Player(String username){
-        this.username=username;
-        score = 0;
+        this.username = username;
         bookshelf = new Bookshelf();
+        score = 0;
     }
-
-    //endregion
 
     //region METHODS
 
+    //TODO: Metodo forwarding
     public void addCardToBookshelf(int column, Card card){
         bookshelf.addCard(column, card);
     }
@@ -40,12 +40,13 @@ public class Player implements Comparable<Player> {
      */
     public void addScore(int points){score+=points;}
 
+    //TODO: Metodo forwarding
     /**
      * check if player's bookshelf is full
      * @return boolean value (true if full)
      */
-    public boolean isBookshelfFull(){
-        return bookshelf.checkIfFull();
+    public boolean isPlayerBookshelfFull(){
+        return bookshelf.isBookshelfFull();
     }
 
     /**
@@ -61,20 +62,19 @@ public class Player implements Comparable<Player> {
     //endregion
 
     //region GETTER AND SETTER
+    public String getUsername(){
+        return username;
+    }
     public Bookshelf getBookshelf(){
         return bookshelf;
+    }
+    public int getScore(){return score;}
+    public void setPrivateGoal(PrivateGoal privateGoal) {
+        this.privateGoal = privateGoal;
     }
     public PrivateGoal getPrivateGoal() {
         return privateGoal;
     }
-    public void setPrivateGoal(PrivateGoal privateGoal) {
-        this.privateGoal = privateGoal;
-    }
-    public String getUsername(){
-        return username;
-    }
-    public int getScore(){return score;}
-
     //endregion
 
 }

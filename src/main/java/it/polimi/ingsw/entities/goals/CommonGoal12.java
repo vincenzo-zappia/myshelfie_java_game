@@ -1,7 +1,7 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.util.Tile;
 
 /*
  * Five columns of increasing or decreasing height.
@@ -19,8 +19,8 @@ public class CommonGoal12 extends CommonGoal implements Goal{
                 "Tiles can be of any type.");
     }
 
-    private boolean firstCheck(Cell[] row){
-        for (Cell cell : row) if (cell.isCellEmpty()) return false;
+    private boolean firstCheck(Tile[] row){
+        for (Tile tile : row) if (tile.isTileEmpty()) return false;
         return true;
     }
 

@@ -12,7 +12,7 @@ import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.entities.goals.*;
-import it.polimi.ingsw.util.BoardCell;
+import it.polimi.ingsw.util.BoardTile;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.util.Tile;
 
 public class Game{
 
@@ -31,35 +31,36 @@ public class Game{
     private final CommonGoal0 commonGoal0;
     //endregion
 
-    //region CONSTRUCTOR
     public Game(ArrayList<String> usernames){
-        board = new Board(usernames.size());
-        board.fillBoard(); //filling of the board with cards
-        players = new HashMap<>();
 
-        //player (game entity) creation
+        //Creating the board and filling it with a first batch of cards
+        board = new Board(usernames.size());
+        board.fillBoard();
+
+        //Creating the players as entities of the game from the lobby username list
+        players = new HashMap<>();
         for(String user: usernames) players.put(user, new Player(user));
 
+        //Randomly picking the common goals of the game
         CommonGoalFactory factory = new CommonGoalFactory();
         commonGoals = factory.makeCommonGoal();
         commonGoal0 = new CommonGoal0();
+
     }
-    //endregion
 
     //TODO: Per ogni errore specificare il tipo attraverso il valore di un'enumerazinoe di errori
     //region METHODS
     /**
-     * Checks if the selected cards are actually selectable
+     * Checks if the selected cards are selectable
      * @param coord coordinates of the selected cards:
      *              coord[x][0] = row
      *              coord[x][1] = column
-     * @return true if the cards are selectable, false otherwise
+     * @return if the selection is valid
      */
     public boolean canSelect(String playerUsername, int[][] coord){
 
         //Checking if the player has selected more cards than he can insert into his bookshelf
         Bookshelf bookshelf = players.get(playerUsername).getBookshelf();
-
         boolean sentinel = false;
         for(int i = 0; i < 5; i++) if(6 - bookshelf.cardsInColumn(i) >= coord.length){
             sentinel = true;
@@ -67,14 +68,15 @@ public class Game{
         }
         if (!sentinel) return false;
 
-        //Checking if any of the coordinates exceeds the board dimensions
+        //Checking if any of the coordinates exceed the board dimensions
         for (int[] i : coord) for (int j : i) if (j < 0 || j > 8) return false;
 
+        //TODO: Rendere progressione cumulabile?
         //Ordering the selected cards to allow for a discontinuous selection
         if (coord.length > 1) {
             int[][] tmp = coord;
             if (isDiagonal(coord)) return false;
-            coord = coordOrder(tmp);
+            coord = sortCoordinates(tmp);
         }
 
         //Checking if the selection of 3 cards is either in a row or a column
@@ -119,78 +121,51 @@ public class Game{
     }
 
     /**
-     * Reorder the coordinates make them usable by canSelect()
-     * @param array coordinate matrix
-     * @return order by descendent x;
-     */
-    private int[][] coordOrder(int[][] array){
-        int[] tmp;
-        if(array.length == 3){
-            if(array[0][0] == array[1][0]){                              //the x's coordinates are fixed
-                tmp = new int[]{array[0][1], array[1][1], array[2][1]};  //y's coordinates are saved into tmp[3]
-                Arrays.sort(tmp);                                        //method of Arrays class to sort array by desc
-                for(int i = 0; i<3;i++){
-                    array[i][1]=tmp[i];                                  //loop to save new ordered coordinates into array
-                }
-            }
-            if(array[0][1] == array[1][1]){                              //same as before, but now the y's coordinates
-                tmp = new int[]{array[0][0], array[1][0], array[2][0]};  //are fixed
-                Arrays.sort(tmp);
-                for(int i = 0; i<3; i++){
-                    array[i][0]=tmp[i];
-                }
-            }
-        }
-        return array;
-    }
-
-    /**
-     * Checks if coordinates of cards selected are diagonally arranged
-     * @param x matrix of the coordinates
-     * @return 'true' if they are not selectable (diagonal)
-     */
-    private boolean isDiagonal(int[][] x){
-        if(x.length==2)return x[0][0] != x[1][0] && x[0][1] != x[1][1]; // check for two cards
-        if(x.length==3)return x[0][0] != x[1][0] && x[0][1] != x[1][1] && x[1][0] != x[2][0] && x[1][1] != x[2][1]; //check for three cards
-        return false;
-    }
-
-    /**
      * Removes at most three cards from the board
-     * @param coordinates of the cards selected to be removed
+     * @param coordinates of the cards to be removed
      * @return the removed cards
      */
-    public ArrayList<Card> removeCardsFromBoard(int[][] coordinates){
+    public ArrayList<Card> removeSelectedCards(int[][] coordinates){
         ArrayList<Card> removedCards = new ArrayList<>();
         for (int[] coordinate : coordinates) removedCards.add(board.removeCard(coordinate[0], coordinate[1]));
         return removedCards;
     }
 
     /**
-     * Checks if the insertion can actually be made
-     * @param playerUsername of the player whose bookshelf to perform the insertion
-     * @param column where the player wants to insert his cards
+     * Checks if the selected cards can be added to the player's bookshelf
+     * @param playerUsername of the player who wants to add the cards
+     * @param column where the player wants to insert the cards
      * @param cardNumber number of cards to insert into the column
      * @return if the insertion is valid
      */
     public boolean canInsert(String playerUsername, int column, int cardNumber){
+
         //Checking if the selected row is an existing one
-        if(column < 0 || column >= 5) return false;
+        if(column < 0 || column >= 5 || cardNumber < 1 || cardNumber > 3) return false;
 
         //Checking if the selected column has enough space for the number of cards selected
-        return players.get(playerUsername).getBookshelf().getCell(cardNumber - 1, column).isCellEmpty();
+        return players.get(playerUsername).getBookshelf().getBookshelfTile(cardNumber - 1, column).isTileEmpty();
 
     }
 
-    //TODO: Metodo forwarding, revisionare
     /**
-     * Inserts each selected card in order into the player's bookshelf
+     * Adds the selected cards into the player's bookshelf
      * @param playerUsername player who makes the move
-     * @param column into which the cards selected by the player are inserted
-     * @param cards selected and arranged by the player in the desired order
+     * @param column where the selected cards are added
+     * @param cards the previously selected cards
      */
     public void addCardsToBookshelf(String playerUsername, int column, ArrayList<Card> cards) {
-        for(Card c : cards) players.get(playerUsername).addCardToBookshelf(column, c);
+        for(Card c : cards) players.get(playerUsername).getBookshelf().addCard(column, c);
+    }
+
+    //TODO: Forwarding method (ma non troppo: mappa username a player entity)
+    /**
+     * Checks is the bookshelf of a given player is full
+     * @param username player whose bookshelf to check
+     * @return if the bookshelf of the player is full
+     */
+    public boolean isPlayerBookshelfFull(String username){
+        return players.get(username).isPlayerBookshelfFull();
     }
 
     /**
@@ -198,12 +173,12 @@ public class Game{
      * @return if every card doesn't have another adjacent card
      */
     public boolean checkRefill(){
-        BoardCell[][] matrix = board.getMatrix();
+        BoardTile[][] matrix = board.getBoard();
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
-                if(!matrix[i][j].isCellActive()) continue;
-                if((!matrix[i][j].isCellEmpty() && !matrix[i + 1][j].isCellEmpty())
-                        || (!matrix[i][j].isCellEmpty() && !matrix[i][j + 1].isCellEmpty())) return false;
+                if(!matrix[i][j].isTileActive()) continue;
+                if((!matrix[i][j].isTileEmpty() && !matrix[i + 1][j].isTileEmpty())
+                        || (!matrix[i][j].isTileEmpty() && !matrix[i][j + 1].isTileEmpty())) return false;
             }
         }
         board.fillBoard();
@@ -223,7 +198,7 @@ public class Game{
     }
 
     /**
-     * For each player checks the progress of the achievement of his private goal and the general common goal 0
+     * Checks the progress of the private goal achievement of every player
      */
     public void scorePrivateGoal(){
         for(Player p : players.values()){
@@ -239,29 +214,63 @@ public class Game{
     public TreeMap<String, Integer> orderByScore(){
         HashMap<String, Integer> hashmap = new HashMap<>();
 
-        //for loop to fill hashmap
+        //For loop to fill hashmap
         for(String username: players.keySet())hashmap.put(username, getPlayer(username).getScore());
 
-        //makes a custom comparator to sort by descending order
-        Comparator<String> comparator = (score1, score2) -> {
-            //order based on players's score
-            return hashmap.get(score2).compareTo(hashmap.get(score1));
-        };
+        //Making a custom comparator to sort the players by descending order by score
+        Comparator<String> comparator = (score1, score2) -> hashmap.get(score2).compareTo(hashmap.get(score1));
 
-        //treemap using personalized comparator (see upper lines)
+        //Creating a treemap using a personalized comparator (see code above)
         TreeMap<String, Integer> treeMap = new TreeMap<>(comparator);
-
         treeMap.putAll(hashmap);
         return treeMap;
     }
+    //endregion
+
+    //region UTIL
+    /**
+     * Rearranges the coordinates to make them usable by canSelect()
+     * @param coordinates to sort
+     * @return coordinates sorted by descending order
+     */
+    private int[][] sortCoordinates(int[][] coordinates){
+        int[] tmp;
+
+        if(coordinates.length == 3){
+            if(coordinates[0][0] == coordinates[1][0]){                              //the x's coordinates are fixed
+                tmp = new int[]{coordinates[0][1], coordinates[1][1], coordinates[2][1]};  //y's coordinates are saved into tmp[3]
+
+                //Sorting the coordinates by descending order and saving them into the array
+                Arrays.sort(tmp);
+                for(int i = 0; i < 3; i++){
+                    coordinates[i][1] = tmp[i];
+                }
+            }
+            if(coordinates[0][1] == coordinates[1][1]){                              //same as before, but now the y's coordinates
+                tmp = new int[]{coordinates[0][0], coordinates[1][0], coordinates[2][0]};  //are fixed
+                Arrays.sort(tmp);
+                for(int i = 0; i < 3; i++){
+                    coordinates[i][0] = tmp[i];
+                }
+            }
+        }
+        return coordinates;
+    }
 
     /**
-     * Checks is the bookshelf of a given player is full (forwarding method)
-     * @param username player whose bookshelf to check
-     * @return if the bookshelf of the player is full
+     * Checks if the selected cards are in a diagonal
+     * @param coordinates of the selected cards
+     * @return if the cards are diagonally arranged
      */
-    public boolean isPlayerBookshelfFull(String username){
-        return players.get(username).isBookshelfFull();
+    private boolean isDiagonal(int[][] coordinates){
+
+        //Checking relatively to the number of cards selected
+        switch (coordinates.length){
+            case 2 -> { return coordinates[0][0] != coordinates[1][0] && coordinates[0][1] != coordinates[1][1]; }
+            case 3 -> { return coordinates[0][0] != coordinates[1][0] && coordinates[0][1] != coordinates[1][1] && coordinates[1][0] != coordinates[2][0] && coordinates[1][1] != coordinates[2][1]; }
+        }
+        return false;
+
     }
     //endregion
 
@@ -272,8 +281,8 @@ public class Game{
     public Player getPlayer(String username){
         return players.get(username);
     }
-    public Cell[][] getPlayerBookshelf(String username){
-        return players.get(username).getBookshelf().getMatrix();
+    public Tile[][] getPlayerBookshelf(String username){
+        return players.get(username).getBookshelf().getBookshelf();
     }
     public Board getBoard(){
         return board;

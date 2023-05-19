@@ -1,9 +1,8 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.exceptions.CellGetCardException;
 import it.polimi.ingsw.util.CardType;
-import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.util.Tile;
 
 /*
  * Five tiles of the same type forming a diagonal.
@@ -26,10 +25,10 @@ public class CommonGoal11 extends CommonGoal implements Goal{
         else if (column == 4) mColumn = -1;
 
 
-            Cell[] list = new Cell[5];
+            Tile[] list = new Tile[5];
             for(int i=0; i<5; i++) {
-                list[i] = b.getCell(row+(i*mRow),column+(i*mColumn));
-                if (list[i].isCellEmpty()) return false;
+                list[i] = b.getBookshelfTile(row+(i*mRow),column+(i*mColumn));
+                if (list[i].isTileEmpty()) return false;
             }
 
         return sameTypes(list);
