@@ -4,8 +4,8 @@ import javafx.fxml.FXML;
 
 public class ConnectionScene extends GenericScene {
     @FXML private void newMatchClick(){
-        controller.createLobby();
         gui.loadScene("lobby.fxml");
+        controller.createLobby();
     }
 
     @FXML private void existingMatchClick(){

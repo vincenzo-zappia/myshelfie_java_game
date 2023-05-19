@@ -1,6 +1,5 @@
 package it.polimi.ingsw.network.messages.server2client;
 
-import com.sun.source.tree.Tree;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 

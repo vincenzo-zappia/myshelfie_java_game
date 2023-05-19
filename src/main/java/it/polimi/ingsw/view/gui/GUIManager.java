@@ -2,16 +2,16 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
+import it.polimi.ingsw.entities.util.BoardTile;
+import it.polimi.ingsw.entities.util.Tile;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
-import it.polimi.ingsw.util.BoardTile;
-import it.polimi.ingsw.util.Tile;
 import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.gui.scenes.*;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public class GUIManager implements UserInterface {
 
@@ -40,7 +40,7 @@ public class GUIManager implements UserInterface {
     @Override
     public void confirmAccess(boolean response) {
         Platform.runLater(() -> {
-            AccessScene accessScene = (AccessScene) gui.getController();
+            //AccessScene accessScene = (AccessScene) gui.getController();
             if(response) gui.loadScene("lobby.fxml");
             //TODO: gestire else (id lobby non esistente)
         });
@@ -93,7 +93,7 @@ public class GUIManager implements UserInterface {
     }
 
     @Override
-    public void showScoreboard(HashMap<String, Integer> scoreboard) {
+    public void showScoreboard(TreeMap<String, Integer> scoreboard) {
 
     }
     //endregion

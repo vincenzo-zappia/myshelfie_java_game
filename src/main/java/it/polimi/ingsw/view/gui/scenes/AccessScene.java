@@ -7,8 +7,19 @@ public class AccessScene extends GenericScene{
 
     @FXML private TextField textField1;
 
-    @FXML private void onStartClick(){
-        controller.startGame();
+    @FXML private void onNextClick(){
+        try {
+            int lobbyId = Integer.parseInt(textField1.getText());
+            controller.joinLobby(lobbyId);
+        }
+        catch (NumberFormatException e){
+            showMessage(false, "Insert a number!"); //todo: reviisonare messaggio
+        }
+
+    }
+
+    @FXML private void onBackClick(){
+        gui.loadScene("connection.fxml");
     }
 
 }
