@@ -1,7 +1,7 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.util.CardType;
-import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.util.Tile;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -18,25 +18,25 @@ public abstract class CommonGoal implements Serializable {
         this.description = description;
     }
 
-    protected static boolean allTypesDifferent(Cell[] list) {
+    protected static boolean allTypesDifferent(Tile[] list) {
         HashSet<CardType> types = new HashSet<>();
 
-        for (Cell c: list) {
+        for (Tile c: list) {
             if (types.contains(c.getCard().getType())) return false;
             else types.add(c.getCard().getType());
         }
         return true;
     }
 
-    protected static boolean sameTypes(Cell[] list) {
+    protected static boolean sameTypes(Tile[] list) {
         for(int i=0; i< list.length-1; i++){
             if (list[i].getCard().getType() != list[i+1].getCard().getType()) return false;
         }
         return true;
     }
 
-    protected static boolean existEmpty(Cell[] list) {
-        for (Cell c: list) if (c.isCellEmpty()) return true;
+    protected static boolean existEmpty(Tile[] list) {
+        for (Tile c: list) if (c.isTileEmpty()) return true;
         return false;
     }
 

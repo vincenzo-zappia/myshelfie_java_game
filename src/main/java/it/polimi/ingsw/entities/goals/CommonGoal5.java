@@ -16,7 +16,7 @@ public class CommonGoal5 extends CommonGoal implements Goal{
 
     @Override
     public int checkGoal(Bookshelf bs) {
-        if (findColumns(bs.getMatrixColors())) return getScore();
+        if (findColumns(bs.getBookshelfColors())) return getScore();
         return 0;
     }
 

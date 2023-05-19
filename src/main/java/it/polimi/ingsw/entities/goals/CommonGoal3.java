@@ -8,7 +8,6 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.util.CardType;
 
 public class CommonGoal3 extends CommonGoal implements Goal{
 
@@ -79,7 +78,7 @@ public class CommonGoal3 extends CommonGoal implements Goal{
     public int checkGoal(Bookshelf bs) {
         int tmp=0;
         int result = 0;
-        int[][] m = bs.getMatrixColors();
+        int[][] m = bs.getBookshelfColors();
 
         do{
             if(searchSeq(m))result++;

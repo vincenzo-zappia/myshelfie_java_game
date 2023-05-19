@@ -9,124 +9,122 @@ package it.polimi.ingsw.entities;
 
 import it.polimi.ingsw.exceptions.CellGetCardException;
 import it.polimi.ingsw.exceptions.NoMoreCardsException;
-import it.polimi.ingsw.util.BoardCell;
+import it.polimi.ingsw.util.BoardTile;
 
-import java.io.Serializable;
-
+/**
+ * Board of the game from where the players can pick the cards to add to their bookshelves
+ */
 public class Board {
-
-    //region ATTRIBUTES
-    private final BoardCell[][] matrix;
+    private final BoardTile[][] board;
     private final Bag bag;
-    //endregion
 
     //region CONSTRUCTOR
     public Board(int playerNum){
-    
-        //initialization of data structure that represents table
-        matrix = new BoardCell[9][9];
-        for(int i = 0; i<9; i++) for(int j=0;j<9;j++) matrix[i][j] = new BoardCell();
+        board = new BoardTile[9][9];
+
+        //Initializing every single tile of the board (even the ones that should not be playable)
+        for(int i = 0; i < 9; i++) for(int j = 0; j < 9; j++) board[i][j] = new BoardTile();
+
+        //Activating every tile of the playable board given the number of participants
         initBoard();
         initBoard(playerNum);
-        //initialization of the bag with all the cards in the game
+
+        //Initialization of the bag with all the cards of the game
         bag = new Bag();
 
     }
 
     /**
-     * Activates the board cells that do NOT depend on the number of players (basic board)
+     * Initializes the basic board by activating the tiles that do not depend on the number of players
      */
     private void initBoard(){
-        for(int i = 3; i<=4;i++)matrix[1][i].setCellActive();
-        for(int i = 3; i<=5;i++)matrix[2][i].setCellActive();
-        for(int i = 4; i<=5;i++)matrix[i][1].setCellActive();
-        for(int i = 3; i<=4;i++)matrix[i][7].setCellActive();
-        for(int row = 3; row<=5;row++){
-            for(int col=2; col<=6; col++)matrix[row][col].setCellActive();
+        for(int i = 3; i <= 4; i++) board[1][i].setTileActive();
+        for(int i = 3; i <= 5; i++) board[2][i].setTileActive();
+        for(int i = 4; i <= 5; i++) board[i][1].setTileActive();
+        for(int i = 3; i <= 4; i++) board[i][7].setTileActive();
+        for(int row = 3; row <= 5; row++){
+            for(int col = 2; col<=6; col++) board[row][col].setTileActive();
         }
-        for(int i = 3; i<=5;i++)matrix[6][i].setCellActive();
-        for(int i = 4; i<=5;i++)matrix[7][i].setCellActive();
+        for(int i = 3; i <= 5; i++) board[6][i].setTileActive();
+        for(int i = 4; i <= 5; i++) board[7][i].setTileActive();
     }
 
     /**
-     * Activates the additional board cells that depend on the number of players
-     * @param x number of players
+     * Activates the additional tiles that depend on the number of players
+     * @param playerNum number of players
      */
-    private void initBoard(int x){
-        if(x >= 3){
-            matrix[0][3].setCellActive();
-            matrix[2][2].setCellActive();
-            matrix[2][6].setCellActive();
-            matrix[3][8].setCellActive();
-            matrix[5][0].setCellActive();
-            matrix[6][2].setCellActive();
-            matrix[6][6].setCellActive();
-            matrix[8][5].setCellActive();
+    private void initBoard(int playerNum){
+        if(playerNum >= 3){
+            board[0][3].setTileActive();
+            board[2][2].setTileActive();
+            board[2][6].setTileActive();
+            board[3][8].setTileActive();
+            board[5][0].setTileActive();
+            board[6][2].setTileActive();
+            board[6][6].setTileActive();
+            board[8][5].setTileActive();
         }
-        if (x == 4) {
-            matrix[0][4].setCellActive();
-            matrix[1][5].setCellActive();
-            matrix[3][1].setCellActive();
-            matrix[4][0].setCellActive();
-            matrix[4][8].setCellActive();
-            matrix[5][7].setCellActive();
-            matrix[7][3].setCellActive();
-            matrix[8][4].setCellActive();
+        if (playerNum == 4) {
+            board[0][4].setTileActive();
+            board[1][5].setTileActive();
+            board[3][1].setTileActive();
+            board[4][0].setTileActive();
+            board[4][8].setTileActive();
+            board[5][7].setTileActive();
+            board[7][3].setTileActive();
+            board[8][4].setTileActive();
         }
     }
 
+    //TODO: Gestire il riempimento a bag quasi vuota (con isBagEmpty() non dovrebbe mai arrivare a lanciare l'eccezione?)
     /**
-     * Fills the board. It's called in two occasions:
-     *  1) when the board is created
-     *  2) when a player cannot select more than 1 or 2 cards
+     * Fills the board either after the creation of a new board or when a player cannot select more than one card
      */
     public void fillBoard(){
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
                 try {
-                    if(matrix[i][j].isCellActive() && matrix[i][j].isCellEmpty() && !bag.isBagEmpty()) matrix[i][j].setCard(bag.drawCard()); //added check if bag is empty
+                    if(board[i][j].isTileActive() && board[i][j].isTileEmpty() && !bag.isBagEmpty()) board[i][j].setCard(bag.drawCard());
                 } catch (NoMoreCardsException e) {
                     throw new RuntimeException(e);
                 }
-                //TODO add a finally branch to manage the exception
             }
         }
     }
     //endregion
 
     //region METHODS
-
     /**
-     * Checks if a single card is selectable
-     * @param x row of the card
-     * @param y column of the card
+     * Checks whether a card is selectable
+     * @param row of the tile to check
+     * @param column of the tile to check
      * @return if the card is selectable
      */
-    public boolean selectableCard(int x, int y){
-        /*
-        if(matrix[x][y].isCellActive() && !matrix[x][y].isCellEmpty()){
-            if((y < 8) && (matrix[x][y+1].isCellEmpty() || !matrix[x][y+1].isCellActive())) return true;
-            if((x > 0) && (matrix[x-1][y].isCellEmpty() || !matrix[x-1][y].isCellActive())) return true;
-            if((x < 8) && (matrix[x+1][y].isCellEmpty() || !matrix[x+1][y].isCellActive())) return true;
-            if((y > 0) && (matrix[x][y-1].isCellEmpty() || !matrix[x][y-1].isCellActive())) return true;
-            return false;
-        }
-        return false;
-         */
+    public boolean selectableCard(int row, int column){
 
-        if(x<0 || x>8 || y<0 || y>8)return false;
-        if (matrix[x][y].isCellActive() && !matrix[x][y].isCellEmpty()) {
-            // Controllo dei lati
-            if (x > 0 && matrix[x - 1][y].isCellEmpty() || !matrix[x - 1][y].isCellActive()) {
+        //Checking if the received tile coordinates exceed the board boundaries
+        if(row < 0 || row > 8 || column < 0 || column > 8) return false;
+
+        //Checking whether the selected tile is already empty or not part of the playable board
+        if (board[row][column].isTileActive() && !board[row][column].isTileEmpty()) {
+
+            //Checking whether... //TODO: Vinello commenta
+            if (row > 0 && board[row - 1][column].isTileEmpty() || !board[row - 1][column].isTileActive()) {
                  return true;
             }
-            if (x < 8 && matrix[x + 1][y].isCellEmpty() || !matrix[x + 1][y].isCellActive()) {
+
+            //Checking whether... //TODO: Vinello commenta
+            if (row < 8 && board[row + 1][column].isTileEmpty() || !board[row + 1][column].isTileActive()) {
                  return true;
             }
-            if (y > 0 && matrix[x][y - 1].isCellEmpty() || !matrix[x][y - 1].isCellActive()) {
+
+            //Checking whether... //TODO: Vinello commenta
+            if (column > 0 && board[row][column - 1].isTileEmpty() || !board[row][column - 1].isTileActive()) {
                  return true;
             }
-            if (y < 8 && matrix[x][y + 1].isCellEmpty() || !matrix[x][y + 1].isCellActive()) {
+
+            //Checking whether... //TODO: Vinello commenta
+            if (column < 8 && board[row][column + 1].isTileEmpty() || !board[row][column + 1].isTileActive()) {
                  return true;
             }
         }
@@ -135,34 +133,36 @@ public class Board {
 
     /**
      * Removes a card from the board
-     * @param row of the card
-     * @param column of the card
-     * @return removed card
+     * @param row of the card tile
+     * @param column of the card tile
+     * @return the removed card
      */
     public Card removeCard(int row, int column){
+
+        //Extracting the actual card from its coordinates
         Card card;
         try {
-            card = matrix[row][column].getCard();
+            card = board[row][column].getCard();
         } catch (CellGetCardException e) {
             throw new RuntimeException(e);
         }
-        matrix[row][column].setCellEmpty();
+
+        //Setting the card tile to empty after the removal
+        board[row][column].setTileEmpty();
         return card;
     }
-
-
     //endregion
 
     //region GETTER AND SETTER
-    public BoardCell[][] getMatrix(){
-        return matrix;
+    public BoardTile[][] getBoard(){
+        return board;
     }
-    public BoardCell getBoardCell (int row, int column){
-        return getMatrix()[row][column];
+    public BoardTile getBoardTile(int row, int column){
+        return getBoard()[row][column];
     }
     public Card getCard(int row, int column){
         try {
-            return getBoardCell(row, column).getCard();
+            return getBoardTile(row, column).getCard();
         } catch (CellGetCardException e) {
             throw new RuntimeException(e);
         }

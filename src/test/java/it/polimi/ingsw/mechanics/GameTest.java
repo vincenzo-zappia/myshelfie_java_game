@@ -4,14 +4,11 @@ import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.goals.CommonGoal1;
 import it.polimi.ingsw.entities.goals.CommonGoal5;
 import it.polimi.ingsw.entities.goals.Goal;
-import it.polimi.ingsw.entities.goals.PrivateGoal;
-import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.util.CardType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -75,7 +72,7 @@ class GameTest {
     @Test
     void removeCardFromBoard() {
         Card x = game.getBoard().getCard(1,3);
-        assertEquals(x, game.removeCardsFromBoard(new int[][]{{1, 3}}).get(0));
+        assertEquals(x, game.removeSelectedCards(new int[][]{{1, 3}}).get(0));
     }
 
     /**
@@ -274,7 +271,7 @@ class GameTest {
             for(int j = 0; j < 9; j++) {
                 x[i][0] = i;
                 x[i][1] = j;
-                game.removeCardsFromBoard(x);
+                game.removeSelectedCards(x);
             }
         }
         assertTrue(game.checkRefill());
@@ -285,7 +282,7 @@ class GameTest {
      */
     @Test
     void checkRefillCaseFalse(){
-        game.removeCardsFromBoard(new int[][]{{1,3}});
+        game.removeSelectedCards(new int[][]{{1,3}});
         assertFalse(game.checkRefill());
     }
 }

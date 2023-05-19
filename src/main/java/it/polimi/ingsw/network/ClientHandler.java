@@ -121,7 +121,7 @@ public class ClientHandler implements Runnable{
                 this.lobby = server.createLobby();
 
                 //Joining the newly created lobby and sending back the lobby ID //TODO: Unico modo di sapere lobby ID
-                lobby.joinLobby(new NetworkPlayer(message.getUsername(), this));
+                lobby.joinLobby(new NetworkPlayer(message.getSender(), this));
                 sendMessage(new TextResponse(true, "Creation successful!\nLobby ID: " + lobby.getLobbyID()));
                 sendMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));
 
@@ -146,7 +146,7 @@ public class ClientHandler implements Runnable{
                  * Checking if the username chosen by the player is already taken, if the lobby has reached max capacity
                  * and if the game has already started, if not, joining the lobby
                  */
-                if(lobby.joinLobby(new NetworkPlayer(message.getUsername(), this))){
+                if(lobby.joinLobby(new NetworkPlayer(message.getSender(), this))){
                     sendMessage(new TextResponse(true, "Join successful!"));
                     sendMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));
 

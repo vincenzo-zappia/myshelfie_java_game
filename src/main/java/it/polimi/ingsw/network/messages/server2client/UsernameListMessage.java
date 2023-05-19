@@ -6,7 +6,7 @@ import it.polimi.ingsw.network.messages.MessageType;
 import java.util.ArrayList;
 
 /**
- * Message containing the updated list of the usernames of the players in a lobby
+ * Message containing the updated username list of the players in a lobby
  */
 public class UsernameListMessage extends Message {
     private final ArrayList<String> usernameList;

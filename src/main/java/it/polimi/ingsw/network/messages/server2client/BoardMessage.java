@@ -2,20 +2,20 @@ package it.polimi.ingsw.network.messages.server2client;
 
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.util.BoardCell;
+import it.polimi.ingsw.util.BoardTile;
 
 /**
  * Message containing the board updated after a tile refill
  */
 public class BoardMessage extends Message {
-    private final BoardCell[][] boardCells;
+    private final BoardTile[][] boardTiles;
 
-    public BoardMessage(BoardCell[][] boardCells) {
+    public BoardMessage(BoardTile[][] boardTiles) {
         super("server", MessageType.REFILLED_BOARD);
-        this.boardCells = boardCells;
+        this.boardTiles = boardTiles;
     }
 
-    public BoardCell[][] getBoardCells() {
-        return boardCells;
+    public BoardTile[][] getBoardCells() {
+        return boardTiles;
     }
 }

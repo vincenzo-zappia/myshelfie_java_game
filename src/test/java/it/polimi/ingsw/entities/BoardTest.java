@@ -1,7 +1,5 @@
 package it.polimi.ingsw.entities;
 
-import it.polimi.ingsw.entities.Board;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,99 +13,99 @@ class BoardTest {
         board = new Board(2);
 
         //assert true that the base board tiles are correctly activated
-        for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[1][i].isCellActive());
-        for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[2][i].isCellActive());
-        for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[i][1].isCellActive());
-        for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[i][7].isCellActive());
-        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertTrue(board.getMatrix()[row][col].isCellActive());
-        for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[6][i].isCellActive());
-        for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[7][i].isCellActive());
+        for(int i = 3; i<=4;i++) assertTrue(board.getBoard()[1][i].isTileActive());
+        for(int i = 3; i<=5;i++) assertTrue(board.getBoard()[2][i].isTileActive());
+        for(int i = 4; i<=5;i++) assertTrue(board.getBoard()[i][1].isTileActive());
+        for(int i = 3; i<=4;i++) assertTrue(board.getBoard()[i][7].isTileActive());
+        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertTrue(board.getBoard()[row][col].isTileActive());
+        for(int i = 3; i<=5;i++) assertTrue(board.getBoard()[6][i].isTileActive());
+        for(int i = 4; i<=5;i++) assertTrue(board.getBoard()[7][i].isTileActive());
 
         //assert false for the tiles that should be active only if the number of player exceeds 3
-        assertFalse(board.getMatrix()[0][3].isCellActive());
-        assertFalse(board.getMatrix()[2][2].isCellActive());
-        assertFalse(board.getMatrix()[2][6].isCellActive());
-        assertFalse(board.getMatrix()[3][8].isCellActive());
-        assertFalse(board.getMatrix()[5][0].isCellActive());
-        assertFalse(board.getMatrix()[6][2].isCellActive());
-        assertFalse(board.getMatrix()[6][6].isCellActive());
-        assertFalse(board.getMatrix()[8][5].isCellActive());
+        assertFalse(board.getBoard()[0][3].isTileActive());
+        assertFalse(board.getBoard()[2][2].isTileActive());
+        assertFalse(board.getBoard()[2][6].isTileActive());
+        assertFalse(board.getBoard()[3][8].isTileActive());
+        assertFalse(board.getBoard()[5][0].isTileActive());
+        assertFalse(board.getBoard()[6][2].isTileActive());
+        assertFalse(board.getBoard()[6][6].isTileActive());
+        assertFalse(board.getBoard()[8][5].isTileActive());
 
         //assert false for the tiles that should be active only if the number of player is 4
-        assertFalse(board.getMatrix()[0][4].isCellActive());
-        assertFalse(board.getMatrix()[1][5].isCellActive());
-        assertFalse(board.getMatrix()[3][1].isCellActive());
-        assertFalse(board.getMatrix()[4][0].isCellActive());
-        assertFalse(board.getMatrix()[4][8].isCellActive());
-        assertFalse(board.getMatrix()[5][7].isCellActive());
-        assertFalse(board.getMatrix()[7][3].isCellActive());
-        assertFalse(board.getMatrix()[8][4].isCellActive());
+        assertFalse(board.getBoard()[0][4].isTileActive());
+        assertFalse(board.getBoard()[1][5].isTileActive());
+        assertFalse(board.getBoard()[3][1].isTileActive());
+        assertFalse(board.getBoard()[4][0].isTileActive());
+        assertFalse(board.getBoard()[4][8].isTileActive());
+        assertFalse(board.getBoard()[5][7].isTileActive());
+        assertFalse(board.getBoard()[7][3].isTileActive());
+        assertFalse(board.getBoard()[8][4].isTileActive());
     }
     @Test
     void threePlayersSetup(){
         board = new Board(3);
 
         //assert true that the base board tiles are correctly activated
-        for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[1][i].isCellActive());
-        for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[2][i].isCellActive());
-        for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[i][1].isCellActive());
-        for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[i][7].isCellActive());
-        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertTrue(board.getMatrix()[row][col].isCellActive());
-        for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[6][i].isCellActive());
-        for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[7][i].isCellActive());
+        for(int i = 3; i<=4;i++) assertTrue(board.getBoard()[1][i].isTileActive());
+        for(int i = 3; i<=5;i++) assertTrue(board.getBoard()[2][i].isTileActive());
+        for(int i = 4; i<=5;i++) assertTrue(board.getBoard()[i][1].isTileActive());
+        for(int i = 3; i<=4;i++) assertTrue(board.getBoard()[i][7].isTileActive());
+        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertTrue(board.getBoard()[row][col].isTileActive());
+        for(int i = 3; i<=5;i++) assertTrue(board.getBoard()[6][i].isTileActive());
+        for(int i = 4; i<=5;i++) assertTrue(board.getBoard()[7][i].isTileActive());
 
         //assert true for the tiles that should be active only if the number of player exceeds 3
-        assertTrue(board.getMatrix()[0][3].isCellActive());
-        assertTrue(board.getMatrix()[2][2].isCellActive());
-        assertTrue(board.getMatrix()[2][6].isCellActive());
-        assertTrue(board.getMatrix()[3][8].isCellActive());
-        assertTrue(board.getMatrix()[5][0].isCellActive());
-        assertTrue(board.getMatrix()[6][2].isCellActive());
-        assertTrue(board.getMatrix()[6][6].isCellActive());
-        assertTrue(board.getMatrix()[8][5].isCellActive());
+        assertTrue(board.getBoard()[0][3].isTileActive());
+        assertTrue(board.getBoard()[2][2].isTileActive());
+        assertTrue(board.getBoard()[2][6].isTileActive());
+        assertTrue(board.getBoard()[3][8].isTileActive());
+        assertTrue(board.getBoard()[5][0].isTileActive());
+        assertTrue(board.getBoard()[6][2].isTileActive());
+        assertTrue(board.getBoard()[6][6].isTileActive());
+        assertTrue(board.getBoard()[8][5].isTileActive());
 
         //assert false for the tiles that should be active only if the number of player is 4
-        assertFalse(board.getMatrix()[0][4].isCellActive());
-        assertFalse(board.getMatrix()[1][5].isCellActive());
-        assertFalse(board.getMatrix()[3][1].isCellActive());
-        assertFalse(board.getMatrix()[4][0].isCellActive());
-        assertFalse(board.getMatrix()[4][8].isCellActive());
-        assertFalse(board.getMatrix()[5][7].isCellActive());
-        assertFalse(board.getMatrix()[7][3].isCellActive());
-        assertFalse(board.getMatrix()[8][4].isCellActive());
+        assertFalse(board.getBoard()[0][4].isTileActive());
+        assertFalse(board.getBoard()[1][5].isTileActive());
+        assertFalse(board.getBoard()[3][1].isTileActive());
+        assertFalse(board.getBoard()[4][0].isTileActive());
+        assertFalse(board.getBoard()[4][8].isTileActive());
+        assertFalse(board.getBoard()[5][7].isTileActive());
+        assertFalse(board.getBoard()[7][3].isTileActive());
+        assertFalse(board.getBoard()[8][4].isTileActive());
     }
     @Test
     void fourPlayersSetup(){
         board = new Board(4);
 
         //assert true that the base board tiles are correctly activated
-        for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[1][i].isCellActive());
-        for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[2][i].isCellActive());
-        for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[i][1].isCellActive());
-        for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[i][7].isCellActive());
-        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertTrue(board.getMatrix()[row][col].isCellActive());
-        for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[6][i].isCellActive());
-        for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[7][i].isCellActive());
+        for(int i = 3; i<=4;i++) assertTrue(board.getBoard()[1][i].isTileActive());
+        for(int i = 3; i<=5;i++) assertTrue(board.getBoard()[2][i].isTileActive());
+        for(int i = 4; i<=5;i++) assertTrue(board.getBoard()[i][1].isTileActive());
+        for(int i = 3; i<=4;i++) assertTrue(board.getBoard()[i][7].isTileActive());
+        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertTrue(board.getBoard()[row][col].isTileActive());
+        for(int i = 3; i<=5;i++) assertTrue(board.getBoard()[6][i].isTileActive());
+        for(int i = 4; i<=5;i++) assertTrue(board.getBoard()[7][i].isTileActive());
 
         //assert true for the tiles that should be active only if the number of player exceeds 3
-        assertTrue(board.getMatrix()[0][3].isCellActive());
-        assertTrue(board.getMatrix()[2][2].isCellActive());
-        assertTrue(board.getMatrix()[2][6].isCellActive());
-        assertTrue(board.getMatrix()[3][8].isCellActive());
-        assertTrue(board.getMatrix()[5][0].isCellActive());
-        assertTrue(board.getMatrix()[6][2].isCellActive());
-        assertTrue(board.getMatrix()[6][6].isCellActive());
-        assertTrue(board.getMatrix()[8][5].isCellActive());
+        assertTrue(board.getBoard()[0][3].isTileActive());
+        assertTrue(board.getBoard()[2][2].isTileActive());
+        assertTrue(board.getBoard()[2][6].isTileActive());
+        assertTrue(board.getBoard()[3][8].isTileActive());
+        assertTrue(board.getBoard()[5][0].isTileActive());
+        assertTrue(board.getBoard()[6][2].isTileActive());
+        assertTrue(board.getBoard()[6][6].isTileActive());
+        assertTrue(board.getBoard()[8][5].isTileActive());
 
         //assert false for the tiles that should be active only if the number of player is 4
-        assertTrue(board.getMatrix()[0][4].isCellActive());
-        assertTrue(board.getMatrix()[1][5].isCellActive());
-        assertTrue(board.getMatrix()[3][1].isCellActive());
-        assertTrue(board.getMatrix()[4][0].isCellActive());
-        assertTrue(board.getMatrix()[4][8].isCellActive());
-        assertTrue(board.getMatrix()[5][7].isCellActive());
-        assertTrue(board.getMatrix()[7][3].isCellActive());
-        assertTrue(board.getMatrix()[8][4].isCellActive());
+        assertTrue(board.getBoard()[0][4].isTileActive());
+        assertTrue(board.getBoard()[1][5].isTileActive());
+        assertTrue(board.getBoard()[3][1].isTileActive());
+        assertTrue(board.getBoard()[4][0].isTileActive());
+        assertTrue(board.getBoard()[4][8].isTileActive());
+        assertTrue(board.getBoard()[5][7].isTileActive());
+        assertTrue(board.getBoard()[7][3].isTileActive());
+        assertTrue(board.getBoard()[8][4].isTileActive());
     }
 
 
@@ -122,18 +120,18 @@ class BoardTest {
         //emptying the board
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
-                if(board.getBoardCell(i, j).isCellActive()) if(!board.getBoardCell(i, j).isCellEmpty()) board.removeCard(i, j);
+                if(board.getBoardTile(i, j).isTileActive()) if(!board.getBoardTile(i, j).isTileEmpty()) board.removeCard(i, j);
             }
         }
 
         //checking if the board was actually emptied
-        for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[1][i].isCellEmpty());
-        for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[2][i].isCellEmpty());
-        for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[i][1].isCellEmpty());
-        for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[i][7].isCellEmpty());
-        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertTrue(board.getMatrix()[row][col].isCellEmpty());
-        for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[6][i].isCellEmpty());
-        for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[7][i].isCellEmpty());
+        for(int i = 3; i<=4;i++) assertTrue(board.getBoard()[1][i].isTileEmpty());
+        for(int i = 3; i<=5;i++) assertTrue(board.getBoard()[2][i].isTileEmpty());
+        for(int i = 4; i<=5;i++) assertTrue(board.getBoard()[i][1].isTileEmpty());
+        for(int i = 3; i<=4;i++) assertTrue(board.getBoard()[i][7].isTileEmpty());
+        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertTrue(board.getBoard()[row][col].isTileEmpty());
+        for(int i = 3; i<=5;i++) assertTrue(board.getBoard()[6][i].isTileEmpty());
+        for(int i = 4; i<=5;i++) assertTrue(board.getBoard()[7][i].isTileEmpty());
     }
     @Test
     void threePlayersBoardIsEmpty(){
@@ -143,26 +141,26 @@ class BoardTest {
         //emptying the board
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
-                if(board.getBoardCell(i, j).isCellActive()) if(!board.getBoardCell(i, j).isCellEmpty()) board.removeCard(i, j);
+                if(board.getBoardTile(i, j).isTileActive()) if(!board.getBoardTile(i, j).isTileEmpty()) board.removeCard(i, j);
             }
         }
 
-        for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[1][i].isCellEmpty());
-        for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[2][i].isCellEmpty());
-        for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[i][1].isCellEmpty());
-        for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[i][7].isCellEmpty());
-        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertTrue(board.getMatrix()[row][col].isCellEmpty());
-        for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[6][i].isCellEmpty());
-        for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[7][i].isCellEmpty());
+        for(int i = 3; i<=4;i++) assertTrue(board.getBoard()[1][i].isTileEmpty());
+        for(int i = 3; i<=5;i++) assertTrue(board.getBoard()[2][i].isTileEmpty());
+        for(int i = 4; i<=5;i++) assertTrue(board.getBoard()[i][1].isTileEmpty());
+        for(int i = 3; i<=4;i++) assertTrue(board.getBoard()[i][7].isTileEmpty());
+        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertTrue(board.getBoard()[row][col].isTileEmpty());
+        for(int i = 3; i<=5;i++) assertTrue(board.getBoard()[6][i].isTileEmpty());
+        for(int i = 4; i<=5;i++) assertTrue(board.getBoard()[7][i].isTileEmpty());
 
-        assertTrue(board.getMatrix()[0][3].isCellEmpty());
-        assertTrue(board.getMatrix()[2][2].isCellEmpty());
-        assertTrue(board.getMatrix()[2][6].isCellEmpty());
-        assertTrue(board.getMatrix()[3][8].isCellEmpty());
-        assertTrue(board.getMatrix()[5][0].isCellEmpty());
-        assertTrue(board.getMatrix()[6][2].isCellEmpty());
-        assertTrue(board.getMatrix()[6][6].isCellEmpty());
-        assertTrue(board.getMatrix()[8][5].isCellEmpty());
+        assertTrue(board.getBoard()[0][3].isTileEmpty());
+        assertTrue(board.getBoard()[2][2].isTileEmpty());
+        assertTrue(board.getBoard()[2][6].isTileEmpty());
+        assertTrue(board.getBoard()[3][8].isTileEmpty());
+        assertTrue(board.getBoard()[5][0].isTileEmpty());
+        assertTrue(board.getBoard()[6][2].isTileEmpty());
+        assertTrue(board.getBoard()[6][6].isTileEmpty());
+        assertTrue(board.getBoard()[8][5].isTileEmpty());
 
     }
 
@@ -174,35 +172,35 @@ class BoardTest {
         //emptying the board
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
-                if(board.getBoardCell(i, j).isCellActive()) if(!board.getBoardCell(i, j).isCellEmpty()) board.removeCard(i, j);
+                if(board.getBoardTile(i, j).isTileActive()) if(!board.getBoardTile(i, j).isTileEmpty()) board.removeCard(i, j);
             }
         }
 
-        for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[1][i].isCellEmpty());
-        for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[2][i].isCellEmpty());
-        for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[i][1].isCellEmpty());
-        for(int i = 3; i<=4;i++) assertTrue(board.getMatrix()[i][7].isCellEmpty());
-        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertTrue(board.getMatrix()[row][col].isCellEmpty());
-        for(int i = 3; i<=5;i++) assertTrue(board.getMatrix()[6][i].isCellEmpty());
-        for(int i = 4; i<=5;i++) assertTrue(board.getMatrix()[7][i].isCellEmpty());
+        for(int i = 3; i<=4;i++) assertTrue(board.getBoard()[1][i].isTileEmpty());
+        for(int i = 3; i<=5;i++) assertTrue(board.getBoard()[2][i].isTileEmpty());
+        for(int i = 4; i<=5;i++) assertTrue(board.getBoard()[i][1].isTileEmpty());
+        for(int i = 3; i<=4;i++) assertTrue(board.getBoard()[i][7].isTileEmpty());
+        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertTrue(board.getBoard()[row][col].isTileEmpty());
+        for(int i = 3; i<=5;i++) assertTrue(board.getBoard()[6][i].isTileEmpty());
+        for(int i = 4; i<=5;i++) assertTrue(board.getBoard()[7][i].isTileEmpty());
 
-        assertTrue(board.getMatrix()[0][3].isCellEmpty());
-        assertTrue(board.getMatrix()[2][2].isCellEmpty());
-        assertTrue(board.getMatrix()[2][6].isCellEmpty());
-        assertTrue(board.getMatrix()[3][8].isCellEmpty());
-        assertTrue(board.getMatrix()[5][0].isCellEmpty());
-        assertTrue(board.getMatrix()[6][2].isCellEmpty());
-        assertTrue(board.getMatrix()[6][6].isCellEmpty());
-        assertTrue(board.getMatrix()[8][5].isCellEmpty());
+        assertTrue(board.getBoard()[0][3].isTileEmpty());
+        assertTrue(board.getBoard()[2][2].isTileEmpty());
+        assertTrue(board.getBoard()[2][6].isTileEmpty());
+        assertTrue(board.getBoard()[3][8].isTileEmpty());
+        assertTrue(board.getBoard()[5][0].isTileEmpty());
+        assertTrue(board.getBoard()[6][2].isTileEmpty());
+        assertTrue(board.getBoard()[6][6].isTileEmpty());
+        assertTrue(board.getBoard()[8][5].isTileEmpty());
 
-        assertTrue(board.getMatrix()[0][4].isCellEmpty());
-        assertTrue(board.getMatrix()[1][5].isCellEmpty());
-        assertTrue(board.getMatrix()[3][1].isCellEmpty());
-        assertTrue(board.getMatrix()[4][0].isCellEmpty());
-        assertTrue(board.getMatrix()[4][8].isCellEmpty());
-        assertTrue(board.getMatrix()[5][7].isCellEmpty());
-        assertTrue(board.getMatrix()[7][3].isCellEmpty());
-        assertTrue(board.getMatrix()[8][4].isCellEmpty());
+        assertTrue(board.getBoard()[0][4].isTileEmpty());
+        assertTrue(board.getBoard()[1][5].isTileEmpty());
+        assertTrue(board.getBoard()[3][1].isTileEmpty());
+        assertTrue(board.getBoard()[4][0].isTileEmpty());
+        assertTrue(board.getBoard()[4][8].isTileEmpty());
+        assertTrue(board.getBoard()[5][7].isTileEmpty());
+        assertTrue(board.getBoard()[7][3].isTileEmpty());
+        assertTrue(board.getBoard()[8][4].isTileEmpty());
 
     }
 
@@ -211,65 +209,65 @@ class BoardTest {
     void twoPlayersBoardIsFull(){
         board = new Board(2);
         board.fillBoard();
-        for(int i = 3; i<=4;i++) assertFalse(board.getMatrix()[1][i].isCellEmpty());
-        for(int i = 3; i<=5;i++) assertFalse(board.getMatrix()[2][i].isCellEmpty());
-        for(int i = 4; i<=5;i++) assertFalse(board.getMatrix()[i][1].isCellEmpty());
-        for(int i = 3; i<=4;i++) assertFalse(board.getMatrix()[i][7].isCellEmpty());
-        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertFalse(board.getMatrix()[row][col].isCellEmpty());
-        for(int i = 3; i<=5;i++) assertFalse(board.getMatrix()[6][i].isCellEmpty());
-        for(int i = 4; i<=5;i++) assertFalse(board.getMatrix()[7][i].isCellEmpty());
+        for(int i = 3; i<=4;i++) assertFalse(board.getBoard()[1][i].isTileEmpty());
+        for(int i = 3; i<=5;i++) assertFalse(board.getBoard()[2][i].isTileEmpty());
+        for(int i = 4; i<=5;i++) assertFalse(board.getBoard()[i][1].isTileEmpty());
+        for(int i = 3; i<=4;i++) assertFalse(board.getBoard()[i][7].isTileEmpty());
+        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertFalse(board.getBoard()[row][col].isTileEmpty());
+        for(int i = 3; i<=5;i++) assertFalse(board.getBoard()[6][i].isTileEmpty());
+        for(int i = 4; i<=5;i++) assertFalse(board.getBoard()[7][i].isTileEmpty());
     }
 
     @Test
     void threePlayersBoardIsFull(){
         board = new Board(3);
         board.fillBoard();
-        for(int i = 3; i<=4;i++) assertFalse(board.getMatrix()[1][i].isCellEmpty());
-        for(int i = 3; i<=5;i++) assertFalse(board.getMatrix()[2][i].isCellEmpty());
-        for(int i = 4; i<=5;i++) assertFalse(board.getMatrix()[i][1].isCellEmpty());
-        for(int i = 3; i<=4;i++) assertFalse(board.getMatrix()[i][7].isCellEmpty());
-        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertFalse(board.getMatrix()[row][col].isCellEmpty());
-        for(int i = 3; i<=5;i++) assertFalse(board.getMatrix()[6][i].isCellEmpty());
-        for(int i = 4; i<=5;i++) assertFalse(board.getMatrix()[7][i].isCellEmpty());
+        for(int i = 3; i<=4;i++) assertFalse(board.getBoard()[1][i].isTileEmpty());
+        for(int i = 3; i<=5;i++) assertFalse(board.getBoard()[2][i].isTileEmpty());
+        for(int i = 4; i<=5;i++) assertFalse(board.getBoard()[i][1].isTileEmpty());
+        for(int i = 3; i<=4;i++) assertFalse(board.getBoard()[i][7].isTileEmpty());
+        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertFalse(board.getBoard()[row][col].isTileEmpty());
+        for(int i = 3; i<=5;i++) assertFalse(board.getBoard()[6][i].isTileEmpty());
+        for(int i = 4; i<=5;i++) assertFalse(board.getBoard()[7][i].isTileEmpty());
 
-        assertFalse(board.getMatrix()[0][3].isCellEmpty());
-        assertFalse(board.getMatrix()[2][2].isCellEmpty());
-        assertFalse(board.getMatrix()[2][6].isCellEmpty());
-        assertFalse(board.getMatrix()[3][8].isCellEmpty());
-        assertFalse(board.getMatrix()[5][0].isCellEmpty());
-        assertFalse(board.getMatrix()[6][2].isCellEmpty());
-        assertFalse(board.getMatrix()[6][6].isCellEmpty());
-        assertFalse(board.getMatrix()[8][5].isCellEmpty());
+        assertFalse(board.getBoard()[0][3].isTileEmpty());
+        assertFalse(board.getBoard()[2][2].isTileEmpty());
+        assertFalse(board.getBoard()[2][6].isTileEmpty());
+        assertFalse(board.getBoard()[3][8].isTileEmpty());
+        assertFalse(board.getBoard()[5][0].isTileEmpty());
+        assertFalse(board.getBoard()[6][2].isTileEmpty());
+        assertFalse(board.getBoard()[6][6].isTileEmpty());
+        assertFalse(board.getBoard()[8][5].isTileEmpty());
     }
     @Test
     void fourPlayersBoardIsFull(){
         board = new Board(4);
         board.fillBoard();
-        for(int i = 3; i<=4;i++) assertFalse(board.getMatrix()[1][i].isCellEmpty());
-        for(int i = 3; i<=5;i++) assertFalse(board.getMatrix()[2][i].isCellEmpty());
-        for(int i = 4; i<=5;i++) assertFalse(board.getMatrix()[i][1].isCellEmpty());
-        for(int i = 3; i<=4;i++) assertFalse(board.getMatrix()[i][7].isCellEmpty());
-        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertFalse(board.getMatrix()[row][col].isCellEmpty());
-        for(int i = 3; i<=5;i++) assertFalse(board.getMatrix()[6][i].isCellEmpty());
-        for(int i = 4; i<=5;i++) assertFalse(board.getMatrix()[7][i].isCellEmpty());
+        for(int i = 3; i<=4;i++) assertFalse(board.getBoard()[1][i].isTileEmpty());
+        for(int i = 3; i<=5;i++) assertFalse(board.getBoard()[2][i].isTileEmpty());
+        for(int i = 4; i<=5;i++) assertFalse(board.getBoard()[i][1].isTileEmpty());
+        for(int i = 3; i<=4;i++) assertFalse(board.getBoard()[i][7].isTileEmpty());
+        for(int row = 3; row<=5;row++) for(int col=2; col<=6; col++) assertFalse(board.getBoard()[row][col].isTileEmpty());
+        for(int i = 3; i<=5;i++) assertFalse(board.getBoard()[6][i].isTileEmpty());
+        for(int i = 4; i<=5;i++) assertFalse(board.getBoard()[7][i].isTileEmpty());
 
-        assertFalse(board.getMatrix()[0][3].isCellEmpty());
-        assertFalse(board.getMatrix()[2][2].isCellEmpty());
-        assertFalse(board.getMatrix()[2][6].isCellEmpty());
-        assertFalse(board.getMatrix()[3][8].isCellEmpty());
-        assertFalse(board.getMatrix()[5][0].isCellEmpty());
-        assertFalse(board.getMatrix()[6][2].isCellEmpty());
-        assertFalse(board.getMatrix()[6][6].isCellEmpty());
-        assertFalse(board.getMatrix()[8][5].isCellEmpty());
+        assertFalse(board.getBoard()[0][3].isTileEmpty());
+        assertFalse(board.getBoard()[2][2].isTileEmpty());
+        assertFalse(board.getBoard()[2][6].isTileEmpty());
+        assertFalse(board.getBoard()[3][8].isTileEmpty());
+        assertFalse(board.getBoard()[5][0].isTileEmpty());
+        assertFalse(board.getBoard()[6][2].isTileEmpty());
+        assertFalse(board.getBoard()[6][6].isTileEmpty());
+        assertFalse(board.getBoard()[8][5].isTileEmpty());
 
-        assertFalse(board.getMatrix()[0][4].isCellEmpty());
-        assertFalse(board.getMatrix()[1][5].isCellEmpty());
-        assertFalse(board.getMatrix()[3][1].isCellEmpty());
-        assertFalse(board.getMatrix()[4][0].isCellEmpty());
-        assertFalse(board.getMatrix()[4][8].isCellEmpty());
-        assertFalse(board.getMatrix()[5][7].isCellEmpty());
-        assertFalse(board.getMatrix()[7][3].isCellEmpty());
-        assertFalse(board.getMatrix()[8][4].isCellEmpty());
+        assertFalse(board.getBoard()[0][4].isTileEmpty());
+        assertFalse(board.getBoard()[1][5].isTileEmpty());
+        assertFalse(board.getBoard()[3][1].isTileEmpty());
+        assertFalse(board.getBoard()[4][0].isTileEmpty());
+        assertFalse(board.getBoard()[4][8].isTileEmpty());
+        assertFalse(board.getBoard()[5][7].isTileEmpty());
+        assertFalse(board.getBoard()[7][3].isTileEmpty());
+        assertFalse(board.getBoard()[8][4].isTileEmpty());
     }
 
     @Test

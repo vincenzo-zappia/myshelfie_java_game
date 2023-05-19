@@ -4,14 +4,14 @@ import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.exceptions.CellGetCardException;
 import it.polimi.ingsw.util.ToolXML;
-import it.polimi.ingsw.util.SpecialCell;
+import it.polimi.ingsw.util.SpatialTile;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
 public class PrivateGoal implements Goal, Serializable {
     private static HashMap<Integer, Integer> scores;
-    private final SpecialCell[] specialCells;
+    private final SpatialTile[] spatialTiles;
 
     private int getScore(int check){
         return scores.get(check);
@@ -30,16 +30,16 @@ public class PrivateGoal implements Goal, Serializable {
         }};
 
 
-        specialCells = ToolXML.getSpecialCells(id);
+        spatialTiles = ToolXML.getSpecialCells(id);
     }
 
     @Override
     public int checkGoal(Bookshelf bookshelf) {
         int checked=0;
-        for (SpecialCell specialCell : specialCells) {
+        for (SpatialTile spatialTile : spatialTiles) {
             try {
-                Card bookshelfCard = bookshelf.getCell(specialCell.getRow(), specialCell.getColumn()).getCard(),
-                        goalCard = specialCell.getCard();
+                Card bookshelfCard = bookshelf.getBookshelfTile(spatialTile.getRow(), spatialTile.getColumn()).getCard(),
+                        goalCard = spatialTile.getCard();
                 if (bookshelfCard.sameType(goalCard)) checked++;
 
             } catch (CellGetCardException e) {

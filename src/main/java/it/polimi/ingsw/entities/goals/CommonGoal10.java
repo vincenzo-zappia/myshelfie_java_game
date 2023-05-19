@@ -1,9 +1,8 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.exceptions.CellGetCardException;
-import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.util.Tile;
 
 /*
  * Five tiles of the same type forming an X.
@@ -17,14 +16,14 @@ public class CommonGoal10 extends CommonGoal implements Goal{
     }
 
     private boolean isX(int row, int column){
-        Cell[] c = new Cell[5];
+        Tile[] c = new Tile[5];
 
         try {
-            c[0] = b.getCell(row, column);
-            c[1] = b.getCell(row, column +2);
-            c[2] = b.getCell(row+1, column+1);
-            c[3] = b.getCell(row+2, column);
-            c[4] = b.getCell(row+2, column+2);
+            c[0] = b.getBookshelfTile(row, column);
+            c[1] = b.getBookshelfTile(row, column +2);
+            c[2] = b.getBookshelfTile(row+1, column+1);
+            c[3] = b.getBookshelfTile(row+2, column);
+            c[4] = b.getBookshelfTile(row+2, column+2);
             if(existEmpty(c)) return false;
         } catch (CellGetCardException e) {
             throw new RuntimeException(e);

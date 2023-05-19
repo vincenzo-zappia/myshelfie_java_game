@@ -11,23 +11,21 @@ import it.polimi.ingsw.util.CardType;
 
 import java.io.Serializable;
 
+/**
+ * Card of the game identified by an image and a color
+ */
 public class Card implements Serializable {
-
-    //region ATTRIBUTES
-    private final String img;
+    private final String imageName;
     private final CardType type;
-    //endregion
 
-    //region CONSTRUCTOR
-    public Card(String imgName, CardType type){
+    public Card(String imageName, CardType type){
+        this.imageName = imageName;
         this.type = type;
-        this.img = imgName;
     }
-    //endregion
 
     //region METHODS
     public String getImgPath() {
-        return "/assets/Cards/" + img;
+        return "/assets/Cards/" + imageName;
     }
     public CardType getType() {
         return type;

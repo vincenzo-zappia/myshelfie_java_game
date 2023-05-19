@@ -2,14 +2,14 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
-import it.polimi.ingsw.util.BoardCell;
-import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.util.BoardTile;
+import it.polimi.ingsw.util.Tile;
 
 public class VirtualModel {
 
     //region ATTRIBUTES
-    private BoardCell[][] board;
-    private Cell[][] bookshelf;
+    private BoardTile[][] board;
+    private Tile[][] bookshelf;
     private Goal[] commonGoals;
     private PrivateGoal privateGoal;
     private int[][] coordinates;
@@ -20,11 +20,11 @@ public class VirtualModel {
     //region CONSTRUCTOR
     public VirtualModel(){
         //Board initialization
-        board = new BoardCell[9][9];
+        board = new BoardTile[9][9];
 
         //Bookshelf initialization
-        bookshelf = new Cell[6][5];
-        for(int i=0; i<6;i++) for(int j=0; j<5; j++) bookshelf[i][j] = new Cell();
+        bookshelf = new Tile[6][5];
+        for(int i=0; i<6;i++) for(int j=0; j<5; j++) bookshelf[i][j] = new Tile();
 
         selection = false;
         end = false;
@@ -45,16 +45,16 @@ public class VirtualModel {
     public boolean isSelection() {
         return selection;
     }
-    public void setBoard(BoardCell[][] newBoard) {
+    public void setBoard(BoardTile[][] newBoard) {
         this.board = newBoard;
     }
-    public BoardCell[][] getBoard() {
+    public BoardTile[][] getBoard() {
         return board;
     }
-    public void setBookshelf(Cell[][] newBookshelf) {
+    public void setBookshelf(Tile[][] newBookshelf) {
         this.bookshelf = newBookshelf;
     }
-    public Cell[][] getBookshelf() {
+    public Tile[][] getBookshelf() {
         return bookshelf;
     }
     public void setCommonGoals(Goal[] commonGoals) {
@@ -81,7 +81,7 @@ public class VirtualModel {
         for (int[] coordinate : coordinates) {
             int row = coordinate[0];
             int column = coordinate[1];
-            board[row][column].setCellEmpty();
+            board[row][column].setTileEmpty();
         }
     }
 

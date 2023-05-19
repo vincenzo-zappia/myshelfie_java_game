@@ -11,34 +11,30 @@ import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.exceptions.CellGetCardException;
 import java.io.Serializable;
 
-public class Cell implements Serializable {
-
-    //region ATTRIBUTES
+/**
+ * Generic tile that can contain a game card
+ */
+public class Tile implements Serializable {
     private Card card;
     private boolean empty;
-    //endregion
 
-    //region CONSTRUCT
-    public Cell(){
+    public Tile(){
         empty=true;
     }
-    //endregion
 
-    //region METHODS
-    public Card getCard() throws CellGetCardException {
-        if(!isCellEmpty()) return card;
-        else return null;
-    }
     public void setCard(Card card) {
         this.card = card;
         empty = false;
     }
-    public void setCellEmpty(){
+    public Card getCard() throws CellGetCardException {
+        if(!isTileEmpty()) return card;
+        else return null;
+    }
+    public void setTileEmpty(){
         empty=true;
     }
-    public boolean isCellEmpty(){
+    public boolean isTileEmpty(){
         return empty /*|| card == null*/;
     }
-    //endregion
 
 }

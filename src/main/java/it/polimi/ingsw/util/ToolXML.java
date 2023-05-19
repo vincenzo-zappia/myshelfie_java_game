@@ -47,8 +47,8 @@ public class ToolXML {
     //endregion
 
     //region PRIVATE GOAL
-    public static SpecialCell[] getSpecialCells(int id){
-        SpecialCell[] specialCell = new SpecialCell[6];
+    public static SpatialTile[] getSpecialCells(int id){
+        SpatialTile[] spatialTile = new SpatialTile[6];
         File file = new File(privateGoalPath);
         Element root = getRootDocElement(file);
         NodeList goal = root.getElementsByTagName("Goal");
@@ -63,11 +63,11 @@ public class ToolXML {
 
                 CardType type = CardType.valueOf(cells.getElementsByTagName("Card").item(i).getTextContent());
 
-                specialCell[i] = new SpecialCell(row, column, type);
+                spatialTile[i] = new SpatialTile(row, column, type);
             }
         }
 
-        return specialCell;
+        return spatialTile;
 
     }
     //endregion

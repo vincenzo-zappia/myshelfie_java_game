@@ -6,44 +6,44 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SpecialCellTest {
-    SpecialCell specialCell;
+class SpatialTileTest {
+    SpatialTile spatialTile;
     @BeforeEach
     void setUp() {
-        specialCell = new SpecialCell(0,0, CardType.FRAMES);
+        spatialTile = new SpatialTile(0,0, CardType.FRAMES);
     }
 
     @Test
     void getCard() {
         Card x = new Card("img.png", CardType.FRAMES);
-        assertTrue(x.sameType(specialCell.getCard()));
+        assertTrue(x.sameType(spatialTile.getCard()));
     }
 
     @Test
     void setCard() {
         Card x = new Card("img.png", CardType.FRAMES);
-        specialCell.setCard(x);
-        assertEquals(x, specialCell.getCard());
+        spatialTile.setCard(x);
+        assertEquals(x, spatialTile.getCard());
     }
 
     @Test
     void setCellEmpty() {
-        specialCell.setCellEmpty();
-        assertTrue(specialCell.isCellEmpty());
+        spatialTile.setTileEmpty();
+        assertTrue(spatialTile.isTileEmpty());
     }
 
     @Test
     void isCellEmpty() {
-        assertFalse(specialCell.isCellEmpty());
+        assertFalse(spatialTile.isTileEmpty());
     }
 
     @Test
     void getColumn() {
-        assertEquals(0, specialCell.getColumn());
+        assertEquals(0, spatialTile.getColumn());
     }
 
     @Test
     void getRow() {
-        assertEquals(0, specialCell.getRow());
+        assertEquals(0, spatialTile.getRow());
     }
 }

@@ -1,26 +1,26 @@
 package it.polimi.ingsw.util;
 
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.util.CardType;
-import it.polimi.ingsw.util.Cell;
 
-public class SpecialCell extends Cell {
-    private int row;
-    private int column;
+/**
+ * Tile that adds its coordinates as attributes to allow for pattern recognition
+ */
+public class SpatialTile extends Tile {
+    private final int row;
+    private final int column;
 
-    public SpecialCell(int row, int column, CardType type) {
+    public SpatialTile(int row, int column, CardType type) {
         super();
         setCard(new Card("img.png", type));
         this.row = row;
         this.column = column;
     }
-
-
+    
     public int getColumn() {
         return column;
     }
-
     public int getRow() {
         return row;
     }
+    
 }

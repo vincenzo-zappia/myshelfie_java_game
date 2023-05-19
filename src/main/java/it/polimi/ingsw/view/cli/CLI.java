@@ -4,15 +4,14 @@ import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
-import it.polimi.ingsw.util.BoardCell;
-import it.polimi.ingsw.util.Cell;
+import it.polimi.ingsw.util.BoardTile;
+import it.polimi.ingsw.util.Tile;
 import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.VirtualModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.concurrent.locks.Lock;
 
 public class CLI implements Runnable, UserInterface {
 
@@ -349,15 +348,15 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void showUpdatedBookshelf(Cell[][] bookshelf) {
+    public void showUpdatedBookshelf(Tile[][] bookshelf) {
         virtualModel.setSelection(false);
         virtualModel.setBookshelf(bookshelf);
         showBookshelf();
     }
 
     @Override
-    public void showRefilledBoard(BoardCell[][] boardCells) {
-        virtualModel.setBoard(boardCells);
+    public void showRefilledBoard(BoardTile[][] boardTiles) {
+        virtualModel.setBoard(boardTiles);
         showBoard();
     }
 

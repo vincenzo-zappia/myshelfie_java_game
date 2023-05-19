@@ -30,6 +30,6 @@ class PlayerTest {
         for(int i = 0; i<5; i++){
             for(int j = 0; j < 6; j++) player.addCardToBookshelf(i, new Card("white1.png", CardType.FRAMES));
         }
-        assertTrue(player.isBookshelfFull());
+        assertTrue(player.isPlayerBookshelfFull());
     }
 }

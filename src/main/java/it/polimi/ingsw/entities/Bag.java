@@ -34,19 +34,25 @@ public class Bag {
     public Bag() {
         bag = new ArrayList<>();
 
-        //for each one of the 6 colors create 22 cards
+        //Creating 22 cards for each one of the 6 colors
         for (int i = 0; i < 6; i++)
             for(int j = 0; j < 22; j++)
                 bag.add(new Card(cardImgName[i][j%3], CardType.values()[i]));
 
-        //method that shuffles the bag
+        //Shuffling the bag so that the order of extraction is random
         Collections.shuffle(bag);
     }
     //endregion
 
     //region METHODS
-
-    //TODO: Vedere come gestire il riempimento a bag quasi vuota
+    /**
+     * Draws a random card from the bag
+     * @return the random card
+     * @throws NoMoreCardsException if there are no more cards in the bag
+     */
+    public Card drawCard() throws NoMoreCardsException{
+        return bag.remove(bag.size() - 1);
+    }
 
     /**
      * Checks if the bag is empty
@@ -54,15 +60,6 @@ public class Bag {
      */
     public boolean isBagEmpty(){
         return bag.size() == 0;
-    }
-
-    /**
-     * Draws a random card from the bag
-     * @return the last card in the bag
-     * @throws NoMoreCardsException
-     */
-    public Card drawCard() throws NoMoreCardsException{
-            return bag.remove(bag.size() - 1);
     }
     //endregion
 

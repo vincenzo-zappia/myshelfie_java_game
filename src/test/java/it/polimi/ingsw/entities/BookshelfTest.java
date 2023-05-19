@@ -1,11 +1,8 @@
 package it.polimi.ingsw.entities;
 
-import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.util.CardType;
 import it.polimi.ingsw.exceptions.AddCardException;
 import it.polimi.ingsw.exceptions.CellGetCardException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,12 +28,12 @@ class BookshelfTest {
 
     @Test
     void checkIfFull(){
-        assertFalse(bookshelf.checkIfFull());
+        assertFalse(bookshelf.isBookshelfFull());
         for(int i = 0; i < 5; i++){
             for(int j = 0; j<6; j++)bookshelf.addCard(i, new Card("white1.png", CardType.values()[4]));
         }
         assertEquals(5, bookshelf.cardsInRow(5));
-        assertTrue(bookshelf.checkIfFull());
+        assertTrue(bookshelf.isBookshelfFull());
     }
 
 }
