@@ -5,5 +5,6 @@ module proj.ingsw.rj {
     requires java.xml;
 
     opens it.polimi.ingsw.view.gui to javafx.fxml;
+    opens it.polimi.ingsw.view.gui.scenes to javafx.fxml;
     exports it.polimi.ingsw.view.gui;
 }

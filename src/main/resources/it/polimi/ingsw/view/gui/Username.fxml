@@ -10,12 +10,12 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/19">
+<AnchorPane prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.UsernameScene">
    <ImageView fitHeight="218.0" fitWidth="603.0" layoutX="502.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../../../../../assets/misc/logo.png" />
    </ImageView>
    <TilePane alignment="CENTER" layoutX="523.0" layoutY="219.0" orientation="VERTICAL" prefHeight="462.0" prefWidth="562.0">
-      <Label text="Nickname:" TilePane.alignment="CENTER">
+      <Label text="Username:" TilePane.alignment="CENTER">
          <font>
             <Font size="35.0" />
          </font>
@@ -26,7 +26,7 @@
          </font>
       </TextField>
       <Separator prefWidth="200.0" />
-      <Button mnemonicParsing="false" prefHeight="52.0" prefWidth="382.0" text="NEXT">
+      <Button mnemonicParsing="false" onAction="#onNextClick" prefHeight="52.0" prefWidth="382.0" text="NEXT">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>

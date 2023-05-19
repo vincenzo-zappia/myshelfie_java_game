@@ -4,6 +4,9 @@ import javafx.fxml.FXML;
 
 public class UsernameScene {
 
-    //@FXML protected
+    @FXML
+    protected void onNextClick() {
+
+    }
 
 }
