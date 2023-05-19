@@ -6,15 +6,17 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.UsernameScene">
-   <ImageView fitHeight="218.0" fitWidth="603.0" layoutX="502.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+<StackPane alignment="TOP_CENTER" prefHeight="600" prefWidth="900" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.UsernameScene">
+
+   <ImageView fitHeight="200.0" fitWidth="603.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../../../../../assets/misc/logo.png" />
    </ImageView>
-   <TilePane alignment="CENTER" layoutX="523.0" layoutY="219.0" orientation="VERTICAL" prefHeight="462.0" prefWidth="562.0">
+
+   <TilePane alignment="CENTER" orientation="VERTICAL" prefHeight="462.0" prefWidth="562.0" StackPane.alignment="CENTER">
       <Label fx:id="feedback" text="none" visible="false" />
       <Label text="Username:" TilePane.alignment="CENTER">
          <font>
@@ -33,4 +35,4 @@
          </font>
       </Button>
    </TilePane>
-</AnchorPane>
+</StackPane>

@@ -11,7 +11,6 @@ import java.io.IOException;
 public class GUI extends Application {
     //TODO: Spostare creazione client nel costruttore di GUI e CLI
 
-    private Stage stage;
     private Scene scene;
     private FXMLLoader currentLoader;
 
@@ -22,14 +21,12 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage stage) {
-        this.stage = stage;
         try{
             //TODO: setup scena iniziale;
             currentLoader = new FXMLLoader(GUI.class.getResource("username.fxml"));
-            Scene scene = new Scene(currentLoader.load(), 300,300);
+            Scene scene = new Scene(currentLoader.load(), 900,600);
             this.scene = scene;
-            stage.setTitle("MyShelfie");
-            stage.setFullScreen(true);
+            startupStage(stage);
             stage.setScene(scene);
             stage.show();
             GUIManager guiManager = new GUIManager(this);
@@ -37,6 +34,13 @@ public class GUI extends Application {
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    private void startupStage(Stage stage){
+        stage.setTitle("MyShelfie");
+        stage.setFullScreen(true);
+        stage.setMinWidth(900);
+        stage.setMinHeight(600);
     }
 
     public void loadScene(String filename){

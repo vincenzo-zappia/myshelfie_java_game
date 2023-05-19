@@ -19,12 +19,11 @@ public class GUIManager implements UserInterface {
     private final GUI gui;
     private GenericScene controller;
     private String currentScene;
-    private final ClientController clientController;
     //endregion
 
     public GUIManager(GUI gui){
         this.gui = gui;
-        clientController = new ClientController(this, new Client("localhost", 2023));
+        ClientController clientController = new ClientController(this, new Client("localhost", 2023));
         GenericScene.setController(clientController);
         GenericScene.setGui(gui);
     }
@@ -40,9 +39,12 @@ public class GUIManager implements UserInterface {
 
     @Override
     public void confirmAccess(boolean response) {
-        AccessScene accessScene = (AccessScene) gui.getController();
-        if(response) gui.loadScene("lobby.fxml");
-        //TODO: gestire else (id lobby non esistente)
+        Platform.runLater(() -> {
+            AccessScene accessScene = (AccessScene) gui.getController();
+            if(response) gui.loadScene("lobby.fxml");
+            //TODO: gestire else (id lobby non esistente)
+        });
+
     }
 
     @Override
