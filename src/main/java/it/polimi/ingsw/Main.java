@@ -32,7 +32,7 @@ public class Main {
             GUI.main(args);
         }
 
-        //Shitting off if the selection doesn't match
+        //Shutting off if the selection doesn't match
         else{
             System.out.println("Incorrect selection!");
             exit(0);

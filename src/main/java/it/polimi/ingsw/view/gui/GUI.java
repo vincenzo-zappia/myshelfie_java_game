@@ -18,7 +18,7 @@ public class GUI extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("second.fxml"));
 
             Scene scene = new Scene(fxmlLoader.load(), 300,300);
-            stage.setTitle("hh");
+            stage.setTitle("MyShelfie");
             stage.setFullScreen(true);
             stage.setScene(scene);
             stage.show();
