@@ -15,7 +15,7 @@ class PlayerTest {
 
     @Test
     void addCardToBookshelf() {
-        player.addCardToBookshelf(0, new Card("white1.png", CardType.FRAMES));
+        player.getBookshelf().addCard(0, new Card("white1.png", CardType.FRAMES));
         assertEquals(CardType.FRAMES, player.getBookshelf().getColumn(0)[5].getCard().getType());
     }
 
@@ -28,8 +28,8 @@ class PlayerTest {
     @Test
     void isBookshelfFull() {
         for(int i = 0; i<5; i++){
-            for(int j = 0; j < 6; j++) player.addCardToBookshelf(i, new Card("white1.png", CardType.FRAMES));
+            for(int j = 0; j < 6; j++) player.getBookshelf().addCard(i, new Card("white1.png", CardType.FRAMES));
         }
-        assertTrue(player.isPlayerBookshelfFull());
+        assertTrue(player.getBookshelf().isBookshelfFull());
     }
 }

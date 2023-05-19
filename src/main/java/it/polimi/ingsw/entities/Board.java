@@ -76,7 +76,7 @@ public class Board {
         }
     }
 
-    //TODO (RISOLTO) Gestire il riempimento a bag quasi vuota (con isBagEmpty() non dovrebbe mai arrivare a lanciare l'eccezione?)
+    //TODO Gestire il riempimento a bag quasi vuota (con isBagEmpty() non dovrebbe mai arrivare a lanciare l'eccezione?)
     //TODO renderlo booleano?
     /**
      * Fills the board either after the creation of a new board or when a player cannot select more than one card
@@ -85,7 +85,6 @@ public class Board {
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
                 try {
-                    if(bag.isBagEmpty()) return; //if empty the method stops immediately (before board's tile check)
                     if(board[i][j].isTileActive() && board[i][j].isTileEmpty() && !bag.isBagEmpty()) board[i][j].setCard(bag.drawCard());
                 } catch (NoMoreCardsException e) {
                     throw new RuntimeException(e);
