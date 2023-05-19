@@ -233,7 +233,7 @@ class GameTest {
     @Test
     void canInsertCaseTrue(){
         assertTrue(game.canInsert("G2", 0, 3));
-        for(int i = 0; i<4; i++)game.getPlayer("G2").addCardToBookshelf(0, new Card("img.png", CardType.FRAMES));
+        for(int i = 0; i<4; i++)game.getPlayer("G2").getBookshelf().addCard(0, new Card("img.png", CardType.FRAMES));
         assertTrue(game.canInsert("G2", 0, 2));
         assertTrue(game.canInsert("G2", 0, 1));
     }
@@ -244,7 +244,7 @@ class GameTest {
     @Test
     void canInsertCaseFalse(){
 
-        for(int i = 0; i<4; i++)game.getPlayer("G2").addCardToBookshelf(0, new Card("img.png", CardType.FRAMES));
+        for(int i = 0; i<4; i++)game.getPlayer("G2").getBookshelf().addCard(0, new Card("img.png", CardType.FRAMES));
         assertFalse(game.canInsert("G2", 0, 3));
 
         for(int i=0; i<5; i++) {

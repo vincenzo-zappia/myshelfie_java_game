@@ -76,7 +76,8 @@ public class Board {
         }
     }
 
-    //TODO: Gestire il riempimento a bag quasi vuota (con isBagEmpty() non dovrebbe mai arrivare a lanciare l'eccezione?)
+    //TODO Gestire il riempimento a bag quasi vuota (con isBagEmpty() non dovrebbe mai arrivare a lanciare l'eccezione?)
+    //TODO renderlo booleano?
     /**
      * Fills the board either after the creation of a new board or when a player cannot select more than one card
      */
@@ -108,25 +109,17 @@ public class Board {
         //Checking whether the selected tile is already empty or not part of the playable board
         if (board[row][column].isTileActive() && !board[row][column].isTileEmpty()) {
 
-            //Checking whether... //TODO: Vinello commenta
-            if (row > 0 && board[row - 1][column].isTileEmpty() || !board[row - 1][column].isTileActive()) {
-                 return true;
-            }
+            //Checking whether tile below actual one is empty or not active
+            if (row > 0 && board[row - 1][column].isTileEmpty() || !board[row - 1][column].isTileActive()) return true;
 
-            //Checking whether... //TODO: Vinello commenta
-            if (row < 8 && board[row + 1][column].isTileEmpty() || !board[row + 1][column].isTileActive()) {
-                 return true;
-            }
+            //Checking whether tile above actual one is empty or not active
+            if (row < 8 && board[row + 1][column].isTileEmpty() || !board[row + 1][column].isTileActive()) return true;
 
-            //Checking whether... //TODO: Vinello commenta
-            if (column > 0 && board[row][column - 1].isTileEmpty() || !board[row][column - 1].isTileActive()) {
-                 return true;
-            }
+            //Checking whether tile on left is empty or not active
+            if (column > 0 && board[row][column - 1].isTileEmpty() || !board[row][column - 1].isTileActive()) return true;
 
-            //Checking whether... //TODO: Vinello commenta
-            if (column < 8 && board[row][column + 1].isTileEmpty() || !board[row][column + 1].isTileActive()) {
-                 return true;
-            }
+            //Checking whether tile on right is empty or not active
+            if (column < 8 && board[row][column + 1].isTileEmpty() || !board[row][column + 1].isTileActive()) return true;
         }
         return false;
     }

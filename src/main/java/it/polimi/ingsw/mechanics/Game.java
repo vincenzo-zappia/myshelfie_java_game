@@ -1,7 +1,7 @@
 /* Author/s: Tirabassi M., Vianello G., Zappia V.
  * Date: 21/03/2023
  * IDE: IntelliJ IDEA
- * Version 0.1
+ * Version 1.0
  * Comments: none
  */
 
@@ -158,14 +158,13 @@ public class Game{
         for(Card c : cards) players.get(playerUsername).getBookshelf().addCard(column, c);
     }
 
-    //TODO: Forwarding method (ma non troppo: mappa username a player entity)
     /**
      * Checks is the bookshelf of a given player is full
      * @param username player whose bookshelf to check
      * @return if the bookshelf of the player is full
      */
     public boolean isPlayerBookshelfFull(String username){
-        return players.get(username).isPlayerBookshelfFull();
+        return players.get(username).getBookshelf().isBookshelfFull();
     }
 
     /**

@@ -28,37 +28,21 @@ public class Player implements Comparable<Player> {
     }
 
     //region METHODS
-
-    //TODO: Metodo forwarding
-    public void addCardToBookshelf(int column, Card card){
-        bookshelf.addCard(column, card);
-    }
-
     /**
-     * add to the player's total score the new points
-     * @param points added by completing common or private goals
+     * Adds points to the player's score
+     * @param points added
      */
     public void addScore(int points){score+=points;}
 
-    //TODO: Metodo forwarding
     /**
-     * check if player's bookshelf is full
-     * @return boolean value (true if full)
-     */
-    public boolean isPlayerBookshelfFull(){
-        return bookshelf.isBookshelfFull();
-    }
-
-    /**
-     * override of method compareTo (cass Object)
-     * @param o the object to be compared.
-     * @return integer used for ordering players
+     * Compares the current player to another by score
+     * @param player to be compared
+     * @return integer codifying the comparison
      */
     @Override
-    public int compareTo(Player o) {
-        return Integer.compare(score, o.getScore());
+    public int compareTo(Player player) {
+        return Integer.compare(score, player.getScore());
     }
-
     //endregion
 
     //region GETTER AND SETTER
