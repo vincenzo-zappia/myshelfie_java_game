@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
+import it.polimi.ingsw.view.gui.scenes.GenericScene;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,6 +15,7 @@ public class GUI extends Application {
 
     private Stage stage;
     private Scene scene;
+    private FXMLLoader currentLoader;
 
     public static void main(String[] args) {
 
@@ -40,13 +42,17 @@ public class GUI extends Application {
     }
 
     protected void loadScene(String filename){
-        FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource(filename));
+        currentLoader = new FXMLLoader(GUI.class.getResource(filename));
         try {
-            scene.setRoot(fxmlLoader.load());
+            scene.setRoot(currentLoader.load());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    protected GenericScene getController(){
+        return currentLoader.getController();
     }
 
 }

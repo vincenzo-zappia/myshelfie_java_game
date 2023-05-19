@@ -7,45 +7,46 @@ import it.polimi.ingsw.network.ClientController;
 import it.polimi.ingsw.util.BoardTile;
 import it.polimi.ingsw.util.Tile;
 import it.polimi.ingsw.view.UserInterface;
-import it.polimi.ingsw.view.gui.scenes.GenericScene;
-import it.polimi.ingsw.view.gui.scenes.LobbyScene;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import it.polimi.ingsw.view.gui.scenes.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GUIManager implements UserInterface {
 
     //region ATTRIBUTES
-    private GUI gui;
+    private final GUI gui;
     private GenericScene controller;
     private String currentScene;
+    private final ClientController clientController;
     //endregion
 
     public GUIManager(GUI gui){
         this.gui = gui;
-        
+        clientController = new ClientController(this, new Client("localhost", 2023));
+        GenericScene.setController(clientController);
     }
 
 
     //region USER INTERFACE
     @Override
     public void confirmUsername(boolean response) {
-
+        UsernameScene usernameScene = (UsernameScene) gui.getController();
+        if(response) gui.loadScene("connection.fxml");
+        //TODO: Gestire else (chiamate metodi di usernameScene)
     }
 
     @Override
     public void confirmAccess(boolean response) {
-
+        AccessScene accessScene = (AccessScene) gui.getController();
+        if(response) gui.loadScene("lobby.fxml");
+        //TODO: gestire else (id lobby non esistente)
     }
 
     @Override
     public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
         //TODO: Check con enum?
-        LobbyScene lobbyScene = (LobbyScene) controller;
+        LobbyScene lobbyScene = (LobbyScene) gui.getController();
         lobbyScene.showRefreshedConnectedPlayers(playerUsernames);
     }
     //endregion
@@ -58,7 +59,8 @@ public class GUIManager implements UserInterface {
 
     @Override
     public void showCurrentPlayer(String currentPlayer) {
-
+        GameScene gameScene = (GameScene) gui.getController();
+        //TODO: Print a schermo current player nella text box notifiche di gioco
     }
 
     @Override
