@@ -4,4 +4,5 @@ import javafx.fxml.FXML;
 
 public class GameScene extends GenericScene{
 
+
 }

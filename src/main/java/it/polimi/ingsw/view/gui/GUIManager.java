@@ -26,6 +26,7 @@ public class GUIManager implements UserInterface {
         this.gui = gui;
         clientController = new ClientController(this, new Client("localhost", 2023));
         GenericScene.setController(clientController);
+        GenericScene.setGui(gui);
     }
 
 

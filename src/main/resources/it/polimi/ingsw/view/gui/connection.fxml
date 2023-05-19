@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.ConnectionScene">
+   <ImageView fitHeight="218.0" fitWidth="603.0" layoutX="502.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../../../../../assets/misc/logo.png" />
+   </ImageView>
+   <TilePane alignment="CENTER" layoutX="519.0" layoutY="219.0" orientation="VERTICAL" prefHeight="462.0" prefWidth="562.0" vgap="15.0">
+      <Button mnemonicParsing="false" onAction="#newMatchClick" prefHeight="100.0" prefWidth="500.0" text="NEW MATCH">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Button>
+      <Button mnemonicParsing="false" onAction="#existingMatchClick" prefHeight="100.0" prefWidth="500.0" text="JOIN AN EXISTING MATCH">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Button>
+   </TilePane>
+</AnchorPane>

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.network.ClientController;
 import it.polimi.ingsw.view.gui.scenes.GenericScene;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -27,8 +25,8 @@ public class GUI extends Application {
         this.stage = stage;
         try{
             //TODO: setup scena iniziale;
-            FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("Username.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 300,300);
+            currentLoader = new FXMLLoader(GUI.class.getResource("username.fxml"));
+            Scene scene = new Scene(currentLoader.load(), 300,300);
             this.scene = scene;
             stage.setTitle("MyShelfie");
             stage.setFullScreen(true);
@@ -41,7 +39,7 @@ public class GUI extends Application {
         }
     }
 
-    protected void loadScene(String filename){
+    public void loadScene(String filename){
         currentLoader = new FXMLLoader(GUI.class.getResource(filename));
         try {
             scene.setRoot(currentLoader.load());
