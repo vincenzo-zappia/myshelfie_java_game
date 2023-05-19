@@ -119,7 +119,11 @@ public class Bookshelf {
         return result;
     }
     public Tile[] getRow(int row) {
-        return bookshelf[row];
+        Tile[] res = new Tile[5];
+        for (int i = 0; i<5; i++){
+            if(bookshelf[row][i] != null)res[i] = bookshelf[row][i];
+        }
+        return res;
     }
     //endregion
 
