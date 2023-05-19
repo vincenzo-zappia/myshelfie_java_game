@@ -9,9 +9,7 @@ import it.polimi.ingsw.entities.util.Tile;
 import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.VirtualModel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class CLI implements Runnable, UserInterface {
 
@@ -366,10 +364,11 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void showScoreboard(HashMap<String, Integer> scoreboard) {
+    public void showScoreboard(TreeMap<String, Integer> scoreboard) {
         System.out.println(CliUtil.makeTitle("Scoreboard"));
-        //TODO: Stampare a schermo la classifica finale in ordine decrescente di punteggio
-
+        for (Map.Entry<String, Integer> entry : scoreboard.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
         virtualModel.setEndGame();
     }
 
