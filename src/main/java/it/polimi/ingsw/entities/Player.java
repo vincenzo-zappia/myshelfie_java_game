@@ -21,6 +21,7 @@ public class Player implements Comparable<Player> {
     private PrivateGoal privateGoal;
     //endregion
 
+    //TODO: Inizializzare private goal
     public Player(String username){
         this.username = username;
         bookshelf = new Bookshelf();

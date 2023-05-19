@@ -6,11 +6,12 @@ import it.polimi.ingsw.network.ClientHandler;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.server2client.*;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.util.BoardTile;
-import it.polimi.ingsw.util.Tile;
+import it.polimi.ingsw.entities.util.BoardTile;
+import it.polimi.ingsw.entities.util.Tile;
 import it.polimi.ingsw.view.View;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  * Class that manages the creation of messages from server to client. Used by Lobby, GameController
@@ -64,7 +65,7 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showScoreboard(HashMap<String, Integer> scoreboard){
+    public void showScoreboard(TreeMap<String, Integer> scoreboard){
         clientHandler.sendMessage(new ScoreboardMessage(scoreboard));
     }
     //endregion

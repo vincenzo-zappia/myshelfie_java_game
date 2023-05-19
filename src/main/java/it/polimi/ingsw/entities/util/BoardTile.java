@@ -5,7 +5,7 @@
  * Comments: none
  */
 
-package it.polimi.ingsw.util;
+package it.polimi.ingsw.entities.util;
 
 /**
  * Tile that adds a boolean attribute to check whether it is a playable one (needed to give the board, a tile matrix, its shape)

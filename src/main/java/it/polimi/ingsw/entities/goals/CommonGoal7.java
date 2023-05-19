@@ -1,7 +1,7 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.exceptions.CellGetCardException;
+import it.polimi.ingsw.exceptions.GetCardException;
 
 /*
  * Four lines each formed by 5 tiles of maximum three different types.
@@ -20,20 +20,17 @@ public class CommonGoal7 extends CommonGoal implements Goal{
         int tmp;
         int cntr=0;
 
-        try {
-            for(int i = 0; i < 6; i++){
-                tmp=0;
-                for(int j = 0; j < 5; j++){
-                    if(!bs.getBookshelfTile(i,j).isTileEmpty() && !bs.getBookshelfTile(i, 0).getCard().sameType(bs.getBookshelfTile(i,j).getCard())){
-                        tmp++;
+        for (int i = 0; i < 6; i++){
+            tmp = 0;
+            if(!existEmpty(bs.getRow(i))){
+                for(int j = 0; j< bs.getRow(i).length-1; j++){
+                    if(!bs.getRow(i)[j].isTileEmpty()){
+                        if(!bs.getRow(i)[j].getCard().sameType(bs.getRow(i)[j+1].getCard()))tmp++;
                     }
                 }
-                if(tmp<=3)cntr++;
+                if(tmp<4)cntr++;
             }
-        } catch (CellGetCardException e) {
-            throw new RuntimeException(e);
         }
-
         if(cntr>=4) return getScore();
         return 0;
     }

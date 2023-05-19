@@ -1,8 +1,8 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.util.CardType;
-import it.polimi.ingsw.util.Tile;
+import it.polimi.ingsw.entities.util.CardType;
+import it.polimi.ingsw.entities.util.Tile;
 
 /*
  * Five tiles of the same type forming a diagonal.

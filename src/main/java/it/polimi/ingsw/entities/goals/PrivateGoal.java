@@ -2,9 +2,9 @@ package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.exceptions.CellGetCardException;
-import it.polimi.ingsw.util.ToolXML;
-import it.polimi.ingsw.util.SpatialTile;
+import it.polimi.ingsw.exceptions.GetCardException;
+import it.polimi.ingsw.mechanics.ToolXML;
+import it.polimi.ingsw.entities.util.SpatialTile;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -42,7 +42,7 @@ public class PrivateGoal implements Goal, Serializable {
                         goalCard = spatialTile.getCard();
                 if (bookshelfCard.sameType(goalCard)) checked++;
 
-            } catch (CellGetCardException e) {
+            } catch (GetCardException e) {
                 throw new RuntimeException(e);
             }
         }

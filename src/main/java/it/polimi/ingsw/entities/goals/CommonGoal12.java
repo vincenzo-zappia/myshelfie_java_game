@@ -1,7 +1,7 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.util.Tile;
+import it.polimi.ingsw.entities.util.Tile;
 
 /*
  * Five columns of increasing or decreasing height.

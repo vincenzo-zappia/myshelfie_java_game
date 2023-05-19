@@ -1,8 +1,8 @@
 package it.polimi.ingsw.entities;
 
-import it.polimi.ingsw.util.CardType;
-import it.polimi.ingsw.exceptions.AddCardException;
-import it.polimi.ingsw.exceptions.CellGetCardException;
+import it.polimi.ingsw.entities.util.CardType;
+import it.polimi.ingsw.exceptions.FullColumnException;
+import it.polimi.ingsw.exceptions.GetCardException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,7 @@ class BookshelfTest {
     }
 
     @Test
-    void cardInsertion() throws CellGetCardException, AddCardException {
+    void cardInsertion() throws GetCardException, FullColumnException {
         Card card = new Card("white1.png", CardType.FRAMES);
 
         //Because the bookshelf is empty the row to check is the last one

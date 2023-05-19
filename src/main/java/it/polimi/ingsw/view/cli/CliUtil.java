@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view.cli;
 
-import it.polimi.ingsw.util.BoardTile;
-import it.polimi.ingsw.util.CardType;
-import it.polimi.ingsw.util.Tile;
-import it.polimi.ingsw.util.ToolXML;
+import it.polimi.ingsw.entities.util.BoardTile;
+import it.polimi.ingsw.entities.util.CardType;
+import it.polimi.ingsw.entities.util.Tile;
+import it.polimi.ingsw.mechanics.ToolXML;
 
 import java.util.ArrayList;
 

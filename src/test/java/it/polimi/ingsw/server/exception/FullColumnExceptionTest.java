@@ -2,13 +2,13 @@ package it.polimi.ingsw.server.exception;
 
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.exceptions.AddCardException;
-import it.polimi.ingsw.util.CardType;
+import it.polimi.ingsw.exceptions.FullColumnException;
+import it.polimi.ingsw.entities.util.CardType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-public class AddCardExceptionTest {
+public class FullColumnExceptionTest {
     private static Bookshelf b;
 
     @BeforeAll
@@ -17,10 +17,10 @@ public class AddCardExceptionTest {
     }
 
     @Test
-    public void test1() throws AddCardException {
+    public void test1() throws FullColumnException {
         for(int i=0; i<6; i++){
             b.addCard(0, new Card("books1.png", CardType.BOOKS));
         }
-        assertThrows(AddCardException.class, () -> b.addCard(0, new Card("books1.png", CardType.BOOKS)));
+        assertThrows(FullColumnException.class, () -> b.addCard(0, new Card("books1.png", CardType.BOOKS)));
     }
 }

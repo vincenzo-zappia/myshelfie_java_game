@@ -1,7 +1,7 @@
 package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.exceptions.AddCardException;
+import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
@@ -26,8 +26,7 @@ public class GameController {
     //endregion
 
     //region LOGIC ATTRIBUTES
-    private int[][] coordinates; //Turn-specific board coordinates temporarily saved as attributes to be sent as message //TODO: Vedere se si riesce a renderlo locale
-    private ArrayList<Card> cards = new ArrayList<>();
+    private int[][] coordinates; //Turn-specific board coordinates temporarily saved as attributes to be sent as message
     private boolean canInsert; //Turn phase management
     //endregion
 
@@ -67,10 +66,8 @@ public class GameController {
         switch (message.getType()){
             case SELECTION_REQUEST -> cardSelection((SelectionRequest) message);
             case INSERTION_REQUEST -> cardInsertion((InsertionRequest) message);
-            default -> {
-                //TODO: generare eccezione?
-            }
         }
+
     }
 
     /**
@@ -84,7 +81,7 @@ public class GameController {
                 case REFILLED_BOARD -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getBoard());
                 case REMOVED_CARDS -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
                 case CURRENT_PLAYER -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
-                case SCOREBOARD -> viewHashMap.get(username).showScoreboard((HashMap<String, Integer>) payload[0]); //TODO: Debug: non invia il messaggio
+                case SCOREBOARD -> viewHashMap.get(username).showScoreboard((TreeMap<String, Integer>) payload[0]); //TODO: Debug: non invia il messaggio
                 case GOALS_DETAILS -> viewHashMap.get(username).showGoalsDetails(game.getCommonGoals(), game.getPlayer(username).getPrivateGoal());
             }
         }
@@ -135,47 +132,36 @@ public class GameController {
     public synchronized void cardInsertion(InsertionRequest message){
         System.out.println("INFO: Insertion phase started");
 
-        try {
-
-            //Checking if the player has first made a selection
-            if(!canInsert){
-                viewHashMap.get(message.getSender()).sendGenericResponse(false, "First select your cards!" );
-                System.out.println("INFO: The player has to make the selection before the insertion.");
-                return;
-            }
-
-            //TODO: Check se le carte inviate dal client corrispondano a quelle estratte dalle coordinate?
-
-            //Checking if the column selected for the insertion is valid, if so the cards are inserted by the same method
-            if(game.canInsert(turnManager.getCurrentPlayer(), message.getSelectedColumn(), coordinates.length)){
-
-                //Removal of the previously selected cards from the game board
-                cards = game.removeSelectedCards(coordinates);
-                System.out.println("INFO: Cards removed from the board and inserted in " + turnManager.getCurrentPlayer() + "'s bookshelf in column " + message.getSelectedColumn());
-
-                //Insertion of the cards (updating the bookshelf of the player)
-                game.addCardsToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), cards);
-
-                //Sending positive feedback to the player with the updated bookshelf
-                viewHashMap.get(message.getSender()).showUpdatedBookshelf(game.getPlayerBookshelf(turnManager.getCurrentPlayer())); //TODO: Debug: Una volta mi è capitato che non andasse oltre questo comando
-                viewHashMap.get(message.getSender()).sendGenericResponse(true, "Insertion successful!" );
-
-                //End turn housekeeping routine
-                endTurn();
-            }
-
-            //Sending negative feedback to the player with the bookshelf without changes
-            else {
-                viewHashMap.get(message.getSender()).sendGenericResponse(false, "Invalid column! Please select another." );
-                System.out.println("INFO: Cards not inserted.");
-            }
-
-        } catch (AddCardException e) {
-
-            //Sending negative feedback to the player
-            viewHashMap.get(message.getSender()).sendGenericResponse(false, "Boh, qualcosa sull'inserzione."); //TODO: Specificare tipo di problema
-            throw new RuntimeException(e);
+        //Checking if the player has first made a selection
+        if(!canInsert){
+            viewHashMap.get(message.getSender()).sendGenericResponse(false, "First select your cards!" );
+            System.out.println("INFO: The player has to make the selection before the insertion.");
+            return;
         }
+
+        //Checking if the column selected for the insertion is valid, if so the cards are inserted by the same method
+        if(game.canInsert(turnManager.getCurrentPlayer(), message.getSelectedColumn(), coordinates.length)){
+
+            //Removal of the previously selected cards from the game board
+            ArrayList<Card> cards = game.removeSelectedCards(coordinates);
+            System.out.println("INFO: Cards removed from the board and inserted in " + turnManager.getCurrentPlayer() + "'s bookshelf in column " + message.getSelectedColumn());
+
+            //Insertion of the cards (updating the bookshelf of the player)
+            game.addCardsToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), cards);
+
+            //Sending positive feedback to the player with the updated bookshelf
+            viewHashMap.get(message.getSender()).showUpdatedBookshelf(game.getPlayerBookshelf(turnManager.getCurrentPlayer()));
+            viewHashMap.get(message.getSender()).sendGenericResponse(true, "Insertion successful!" );
+
+            //End turn housekeeping routine
+            endTurn();
+        }
+        else {
+            //Sending negative feedback to the player with the bookshelf without changes
+            viewHashMap.get(message.getSender()).sendGenericResponse(false, "Invalid column! Please select another." );
+            System.out.println("INFO: Cards not inserted.");
+        }
+
     }
 
     /**
@@ -210,7 +196,6 @@ public class GameController {
             //Broadcasting the username of the next player who plays a turn
             broadcastMessage(MessageType.CURRENT_PLAYER);
 
-            //TODO: Rilevante a fine gioco?
             //Turn phase management
             canInsert = false;
         }

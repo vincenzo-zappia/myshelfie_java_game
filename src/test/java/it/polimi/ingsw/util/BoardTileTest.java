@@ -1,6 +1,8 @@
 package it.polimi.ingsw.util;
 
 import it.polimi.ingsw.entities.Card;
+import it.polimi.ingsw.entities.util.BoardTile;
+import it.polimi.ingsw.entities.util.CardType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -7,9 +7,8 @@
 
 package it.polimi.ingsw.entities;
 
-import it.polimi.ingsw.exceptions.CellGetCardException;
-import it.polimi.ingsw.exceptions.NoMoreCardsException;
-import it.polimi.ingsw.util.BoardTile;
+import it.polimi.ingsw.exceptions.GetCardException;
+import it.polimi.ingsw.entities.util.BoardTile;
 
 /**
  * Board of the game from where the players can pick the cards to add to their bookshelves
@@ -76,21 +75,11 @@ public class Board {
         }
     }
 
-    //TODO Gestire il riempimento a bag quasi vuota (con isBagEmpty() non dovrebbe mai arrivare a lanciare l'eccezione?)
-    //TODO renderlo booleano?
     /**
      * Fills the board either after the creation of a new board or when a player cannot select more than one card
      */
     public void fillBoard(){
-        for(int i = 0; i < 9; i++){
-            for(int j = 0; j < 9; j++){
-                try {
-                    if(board[i][j].isTileActive() && board[i][j].isTileEmpty() && !bag.isBagEmpty()) board[i][j].setCard(bag.drawCard());
-                } catch (NoMoreCardsException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
+        for(int i = 0; i < 9; i++) for(int j = 0; j < 9; j++) if(board[i][j].isTileActive() && board[i][j].isTileEmpty() && !bag.isBagEmpty()) board[i][j].setCard(bag.drawCard());
     }
     //endregion
 
@@ -109,16 +98,16 @@ public class Board {
         //Checking whether the selected tile is already empty or not part of the playable board
         if (board[row][column].isTileActive() && !board[row][column].isTileEmpty()) {
 
-            //Checking whether tile below actual one is empty or not active
+            //Checking whether the tile below the current one is empty or not active
             if (row > 0 && board[row - 1][column].isTileEmpty() || !board[row - 1][column].isTileActive()) return true;
 
-            //Checking whether tile above actual one is empty or not active
+            //Checking whether the tile above the current one is empty or not active
             if (row < 8 && board[row + 1][column].isTileEmpty() || !board[row + 1][column].isTileActive()) return true;
 
-            //Checking whether tile on left is empty or not active
+            //Checking whether the tile on the left is empty or not active
             if (column > 0 && board[row][column - 1].isTileEmpty() || !board[row][column - 1].isTileActive()) return true;
 
-            //Checking whether tile on right is empty or not active
+            //Checking whether the tile on the right is empty or not active
             if (column < 8 && board[row][column + 1].isTileEmpty() || !board[row][column + 1].isTileActive()) return true;
         }
         return false;
@@ -136,7 +125,7 @@ public class Board {
         Card card;
         try {
             card = board[row][column].getCard();
-        } catch (CellGetCardException e) {
+        } catch (GetCardException e) {
             throw new RuntimeException(e);
         }
 
@@ -156,7 +145,7 @@ public class Board {
     public Card getCard(int row, int column){
         try {
             return getBoardTile(row, column).getCard();
-        } catch (CellGetCardException e) {
+        } catch (GetCardException e) {
             throw new RuntimeException(e);
         }
     }

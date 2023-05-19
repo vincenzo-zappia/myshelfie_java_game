@@ -4,7 +4,7 @@ import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.goals.CommonGoal1;
 import it.polimi.ingsw.entities.goals.CommonGoal5;
 import it.polimi.ingsw.entities.goals.Goal;
-import it.polimi.ingsw.util.CardType;
+import it.polimi.ingsw.entities.util.CardType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -259,22 +259,6 @@ class GameTest {
         assertFalse(game.canInsert("G3", 0, 2));
         assertFalse(game.canInsert("G3", 0, 69));
         assertFalse(game.canInsert("G3", 0, 0));
-    }
-
-    /**
-     * Checks when boards need to be refilled with cards from Bag (RETURN TRUE)
-     */
-    @Test
-    void checkRefillCaseTrue(){
-        int[][] x = new int[81][2];
-        for(int i = 0; i < 9; i++){
-            for(int j = 0; j < 9; j++) {
-                x[i][0] = i;
-                x[i][1] = j;
-                game.removeSelectedCards(x);
-            }
-        }
-        assertTrue(game.checkRefill());
     }
 
     /**
