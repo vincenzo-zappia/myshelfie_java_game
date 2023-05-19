@@ -7,9 +7,6 @@
 
 
 <AnchorPane prefHeight="900.0" prefWidth="1600.0">
-   <ImageView fitHeight="196.0" fitWidth="673.0" pickOnBounds="true" preserveRatio="true">
-      <Image url="@../../../../../assets/misc/logo.png"/>
-   </ImageView>
    <ImageView fitHeight="218.0" fitWidth="603.0" layoutX="502.0" layoutY="14.0" pickOnBounds="true"
               preserveRatio="true">
       <Image url="@../../../../../assets/misc/logo.png"/>

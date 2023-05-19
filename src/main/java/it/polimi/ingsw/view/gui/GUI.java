@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.gui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -14,13 +13,13 @@ public class GUI extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         try{
-            FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("first.fxml"));
-            Parent root = fxmlLoader.load();
+            FXMLLoader fxmlLoader = new FXMLLoader(GUI.class.getResource("second.fxml"));
 
-            Scene scene = new Scene(root);
+            Scene scene = new Scene(fxmlLoader.load(), 300,300);
             stage.setTitle("hh");
+            stage.setFullScreen(true);
             stage.setScene(scene);
             stage.show();
         } catch (Exception e){

@@ -1,4 +1,4 @@
-module proj.ingsw.rj45 {
+module proj.ingsw.rj {
     requires javafx.controls;
     requires javafx.graphics;
     requires javafx.fxml;

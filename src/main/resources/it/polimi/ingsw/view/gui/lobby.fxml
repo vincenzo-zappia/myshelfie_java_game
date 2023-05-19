@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Scene?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -9,92 +8,61 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.stage.Stage?>
 
-<Stage fullScreen="true" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-   <scene>
-      <Scene>
-         <root>
-            <AnchorPane prefHeight="900.0" prefWidth="1600.0">
-               <children>
-                  <ImageView fitHeight="218.0" fitWidth="603.0" layoutX="502.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../17_MyShelfie_BGA/Publisher%20material/Title%202000x618px.png" />
-                     </image>
-                  </ImageView>
-                  <TilePane alignment="CENTER" layoutX="295.0" layoutY="340.0" prefHeight="220.0" prefWidth="1011.0">
-                     <children>
-                        <Pane prefHeight="184.0" prefWidth="200.0">
-                           <children>
-                              <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
-                                 <image>
-                                    <Image url="@../../../IngSw-Proj/account_circle_FILL0_wght400_GRAD0_opsz48.png" />
-                                 </image>
-                              </ImageView>
-                              <Label alignment="TOP_CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="32.0" prefWidth="202.0" text="Nickname">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </Pane>
-                        <Pane prefHeight="184.0" prefWidth="200.0">
-                           <children>
-                              <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
-                                 <image>
-                                    <Image url="@../../../IngSw-Proj/account_circle_FILL0_wght400_GRAD0_opsz48.png" />
-                                 </image>
-                              </ImageView>
-                              <Label alignment="TOP_CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="32.0" prefWidth="202.0" text="Nickname">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </Pane>
-                        <Pane prefHeight="184.0" prefWidth="200.0">
-                           <children>
-                              <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
-                                 <image>
-                                    <Image url="@../../../IngSw-Proj/account_circle_FILL0_wght400_GRAD0_opsz48.png" />
-                                 </image>
-                              </ImageView>
-                              <Label alignment="TOP_CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="32.0" prefWidth="202.0" text="Nickname">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </Pane>
-                        <Pane prefHeight="184.0" prefWidth="200.0">
-                           <children>
-                              <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
-                                 <image>
-                                    <Image url="@../../../IngSw-Proj/account_circle_FILL0_wght400_GRAD0_opsz48.png" />
-                                 </image>
-                              </ImageView>
-                              <Label alignment="TOP_CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="32.0" prefWidth="202.0" text="Nickname">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </Pane>
-                     </children>
-                  </TilePane>
-                  <Label alignment="CENTER" layoutX="606.0" layoutY="842.0" prefHeight="44.0" prefWidth="388.0" text="Connected users: 1/4">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <Button layoutX="1420.0" layoutY="808.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="166.0" text="START">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </Button>
-               </children>
-            </AnchorPane>
-         </root>
-      </Scene>
-   </scene>
-</Stage>
+<AnchorPane prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/19">
+   <ImageView fitHeight="218.0" fitWidth="603.0" layoutX="502.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../../../../../assets/misc/logo.png" />
+   </ImageView>
+   <TilePane alignment="CENTER" layoutX="295.0" layoutY="340.0" prefHeight="220.0" prefWidth="1011.0">
+      <Pane prefHeight="184.0" prefWidth="200.0">
+         <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
+            <Image url="@../../../../../assets/misc/user-logo.png" />
+         </ImageView>
+         <Label alignment="TOP_CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="32.0" prefWidth="202.0" text="Nickname">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Label>
+      </Pane>
+      <Pane prefHeight="184.0" prefWidth="200.0">
+         <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
+            <Image url="@../../../../../assets/misc/user-logo.png" />
+         </ImageView>
+         <Label alignment="TOP_CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="32.0" prefWidth="202.0" text="Nickname">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Label>
+      </Pane>
+      <Pane prefHeight="184.0" prefWidth="200.0">
+         <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
+            <Image url="@../../../../../assets/misc/user-logo.png" />
+         </ImageView>
+         <Label alignment="TOP_CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="32.0" prefWidth="202.0" text="Nickname">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Label>
+      </Pane>
+      <Pane prefHeight="184.0" prefWidth="200.0">
+         <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
+            <Image url="@../../../../../assets/misc/user-logo.png" />
+         </ImageView>
+         <Label alignment="TOP_CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="32.0" prefWidth="202.0" text="Nickname">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Label>
+      </Pane>
+   </TilePane>
+   <Label alignment="CENTER" layoutX="606.0" layoutY="842.0" prefHeight="44.0" prefWidth="388.0" text="Connected users: 1/4">
+      <font>
+         <Font size="20.0" />
+      </font>
+   </Label>
+   <Button layoutX="1420.0" layoutY="808.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="166.0" text="START">
+      <font>
+         <Font size="25.0" />
+      </font>
+   </Button>
+</AnchorPane>
