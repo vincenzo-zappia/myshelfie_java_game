@@ -18,7 +18,7 @@ public class Main {
         System.out.println("[0] CLI \n[1] GUI");
         String selection = in.nextLine();
 
-        Client client = new Client("localhost", 2023);
+        Client client = new Client("192.168.1.4", 2023);
 
 
         //Selection of the CLI as the user interface

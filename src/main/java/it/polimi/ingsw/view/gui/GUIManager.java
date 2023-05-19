@@ -2,13 +2,18 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
+import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.ClientController;
 import it.polimi.ingsw.util.BoardTile;
 import it.polimi.ingsw.util.Tile;
 import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.gui.scenes.GenericScene;
 import it.polimi.ingsw.view.gui.scenes.LobbyScene;
-import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,6 +24,11 @@ public class GUIManager implements UserInterface {
     private GenericScene controller;
     private String currentScene;
     //endregion
+
+    public GUIManager(GUI gui){
+        this.gui = gui;
+        
+    }
 
 
     //region USER INTERFACE

@@ -17,16 +17,6 @@ public class LobbyScene extends GenericScene{
     @FXML private Label label3;
     @FXML private Label label4;
 
-    public LobbyScene(){
-
-        //Making all the icons invisible before the players join the lobby
-        pane1.setVisible(false);
-        pane2.setVisible(false);
-        pane3.setVisible(false);
-        pane4.setVisible(false);
-
-    }
-
 
     /**
      * Sends the start game request to the server after the button click

@@ -20,7 +20,7 @@
             <Font size="35.0" />
          </font>
       </Label>
-      <TextField alignment="CENTER" prefHeight="0.0" prefWidth="379.0">
+      <TextField fx:id="textField1" alignment="CENTER" prefHeight="0.0" prefWidth="379.0">
          <font>
             <Font size="15.0" />
          </font>

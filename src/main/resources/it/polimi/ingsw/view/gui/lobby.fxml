@@ -9,12 +9,12 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.text.Font?>
 
-<fx:root prefHeight="900.0" prefWidth="1600.0" type="AnchorPane" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.LobbyScene">
+<AnchorPane prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.LobbyScene">
    <ImageView fitHeight="218.0" fitWidth="603.0" layoutX="502.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../../../../../assets/misc/logo.png" />
    </ImageView>
    <TilePane alignment="CENTER" layoutX="295.0" layoutY="340.0" prefHeight="220.0" prefWidth="1011.0">
-      <Pane fx:id="pane1" prefHeight="184.0" prefWidth="200.0">
+      <Pane fx:id="pane1" prefHeight="184.0" prefWidth="200.0" visible="false">
          <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
             <Image url="@../../../../../assets/misc/user-logo.png" />
          </ImageView>
@@ -24,7 +24,7 @@
             </font>
          </Label>
       </Pane>
-      <Pane fx:id="pane2" prefHeight="184.0" prefWidth="200.0">
+      <Pane fx:id="pane2" prefHeight="184.0" prefWidth="200.0" visible="false">
          <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
             <Image url="@../../../../../assets/misc/user-logo.png" />
          </ImageView>
@@ -34,7 +34,7 @@
             </font>
          </Label>
       </Pane>
-      <Pane fx:id="pane3" prefHeight="184.0" prefWidth="200.0">
+      <Pane fx:id="pane3" prefHeight="184.0" prefWidth="200.0" visible="false">
          <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
             <Image url="@../../../../../assets/misc/user-logo.png" />
          </ImageView>
@@ -44,7 +44,7 @@
             </font>
          </Label>
       </Pane>
-      <Pane fx:id="pane4" prefHeight="184.0" prefWidth="200.0">
+      <Pane fx:id="pane4" prefHeight="184.0" prefWidth="200.0" visible="false">
          <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
             <Image url="@../../../../../assets/misc/user-logo.png" />
          </ImageView>
@@ -65,4 +65,4 @@
          <Font size="25.0" />
       </font>
    </Button>
-</fx:root>
+</AnchorPane>
