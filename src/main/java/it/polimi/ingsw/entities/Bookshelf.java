@@ -8,8 +8,8 @@
 package it.polimi.ingsw.entities;
 
 import it.polimi.ingsw.entities.goals.Goal;
-import it.polimi.ingsw.exceptions.AddCardException;
-import it.polimi.ingsw.exceptions.CellGetCardException;
+import it.polimi.ingsw.exceptions.FullColumnException;
+import it.polimi.ingsw.exceptions.GetCardException;
 import it.polimi.ingsw.util.Tile;
 
 /**
@@ -26,16 +26,15 @@ public class Bookshelf {
     }
 
     //region METHODS
-    //TODO: Vedere il da farsi per l'eccezione
     /**
      * Adds a card to the bookshelf
      * @param column where to insert the card
      * @param card to add
-     * @throws AddCardException when the column is full
+     * @throws FullColumnException when the column is full
      */
-    public void addCard(int column, Card card) throws AddCardException {
+    public void addCard(int column, Card card) throws FullColumnException {
         int i = 5;
-        if(!bookshelf[0][column].isTileEmpty()) throw new AddCardException("Colonna piena!");
+        if(!bookshelf[0][column].isTileEmpty()) throw new FullColumnException();
         while(!bookshelf[i][column].isTileEmpty() && i>0) i--;
         bookshelf[i][column].setCard(card);
     }
@@ -98,7 +97,7 @@ public class Bookshelf {
                     //Using the value UNAVAILABLE(104) if a tile has no card in it
                     else matrix[i][j] = Goal.UNAVAILABLE;
 
-                } catch (CellGetCardException e) {
+                } catch (GetCardException e) {
                     throw new RuntimeException(e);
                 }
             }

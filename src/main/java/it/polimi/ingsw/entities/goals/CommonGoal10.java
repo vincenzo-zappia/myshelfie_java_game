@@ -1,7 +1,7 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.exceptions.CellGetCardException;
+import it.polimi.ingsw.exceptions.GetCardException;
 import it.polimi.ingsw.util.Tile;
 
 /*
@@ -25,7 +25,7 @@ public class CommonGoal10 extends CommonGoal implements Goal{
             c[3] = b.getBookshelfTile(row+2, column);
             c[4] = b.getBookshelfTile(row+2, column+2);
             if(existEmpty(c)) return false;
-        } catch (CellGetCardException e) {
+        } catch (GetCardException e) {
             throw new RuntimeException(e);
         }
 

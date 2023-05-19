@@ -120,7 +120,7 @@ public class ClientHandler implements Runnable{
                 //Creating a new lobby
                 this.lobby = server.createLobby();
 
-                //Joining the newly created lobby and sending back the lobby ID //TODO: Unico modo di sapere lobby ID
+                //Joining the newly created lobby and sending back the lobby ID
                 lobby.joinLobby(new NetworkPlayer(message.getSender(), this));
                 sendMessage(new TextResponse(true, "Creation successful!\nLobby ID: " + lobby.getLobbyID()));
                 sendMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));

@@ -7,7 +7,7 @@
 
 package it.polimi.ingsw.entities;
 
-import it.polimi.ingsw.exceptions.NoMoreCardsException;
+import it.polimi.ingsw.exceptions.EmptyBagException;
 import it.polimi.ingsw.util.CardType;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class Bag {
 
     //region ATTRIBUTES
     private final ArrayList<Card> bag;
-    private final String[][] cardImgName = {
+    private static final String[][] cardImgName = {
             {"frames1.png", "frames2.png", "frames3.png"},
             {"cats1.png", "cats2.png", "cats3.png"},
             {"games1.png", "games2.png", "games3.png"},
@@ -48,9 +48,10 @@ public class Bag {
     /**
      * Draws a random card from the bag
      * @return the random card
-     * @throws NoMoreCardsException if there are no more cards in the bag
+     * @throws EmptyBagException if there are no more cards in the bag
      */
-    public Card drawCard() throws NoMoreCardsException{
+    public Card drawCard() throws EmptyBagException {
+        if (isBagEmpty()) throw new EmptyBagException();
         return bag.remove(bag.size() - 1);
     }
 

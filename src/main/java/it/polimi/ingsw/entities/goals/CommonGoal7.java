@@ -1,7 +1,7 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.exceptions.CellGetCardException;
+import it.polimi.ingsw.exceptions.GetCardException;
 
 /*
  * Four lines each formed by 5 tiles of maximum three different types.
@@ -30,7 +30,7 @@ public class CommonGoal7 extends CommonGoal implements Goal{
                 }
                 if(tmp<=3)cntr++;
             }
-        } catch (CellGetCardException e) {
+        } catch (GetCardException e) {
             throw new RuntimeException(e);
         }
 

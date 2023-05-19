@@ -39,6 +39,7 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void run() {
+        //TODO: CliUtil stampa titolo ascii art
         connectionHandler();
         gameHandler();
     }

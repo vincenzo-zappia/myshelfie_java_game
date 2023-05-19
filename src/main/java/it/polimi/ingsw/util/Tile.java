@@ -8,7 +8,7 @@
 package it.polimi.ingsw.util;
 
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.exceptions.CellGetCardException;
+import it.polimi.ingsw.exceptions.GetCardException;
 import java.io.Serializable;
 
 /**
@@ -26,9 +26,9 @@ public class Tile implements Serializable {
         this.card = card;
         empty = false;
     }
-    public Card getCard() throws CellGetCardException {
-        if(!isTileEmpty()) return card;
-        else return null;
+    public Card getCard() throws GetCardException {
+        if(isTileEmpty()) throw new GetCardException();
+        return card;
     }
     public void setTileEmpty(){
         empty=true;
