@@ -7,8 +7,6 @@ import it.polimi.ingsw.network.messages.MessageType;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-
-//TODO: Finire di implementare catena server -> client scoreboard (cambierà l'attributo struttura dati utilizzato per la scoreboard)
 /**
  * Message containing the final scoreboard of the game
  */

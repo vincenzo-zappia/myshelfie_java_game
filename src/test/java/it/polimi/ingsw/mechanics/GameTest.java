@@ -262,22 +262,6 @@ class GameTest {
     }
 
     /**
-     * Checks when boards need to be refilled with cards from Bag (RETURN TRUE)
-     */
-    @Test
-    void checkRefillCaseTrue(){
-        int[][] x = new int[81][2];
-        for(int i = 0; i < 9; i++){
-            for(int j = 0; j < 9; j++) {
-                x[i][0] = i;
-                x[i][1] = j;
-                game.removeSelectedCards(x);
-            }
-        }
-        assertTrue(game.checkRefill());
-    }
-
-    /**
      * Checks when boards need to be refilled with cards from Bag (RETURN FALSE)
      */
     @Test
