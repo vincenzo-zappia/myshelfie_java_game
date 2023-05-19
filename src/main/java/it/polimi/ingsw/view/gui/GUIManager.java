@@ -5,12 +5,21 @@ import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.util.BoardTile;
 import it.polimi.ingsw.util.Tile;
 import it.polimi.ingsw.view.UserInterface;
+import it.polimi.ingsw.view.gui.scenes.GenericScene;
+import it.polimi.ingsw.view.gui.scenes.LobbyScene;
+import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GUIManager implements UserInterface {
+
+    //region ATTRIBUTES
     private GUI gui;
+    private GenericScene controller;
+    private String currentScene;
+    //endregion
+
 
     //region USER INTERFACE
     @Override
@@ -25,7 +34,9 @@ public class GUIManager implements UserInterface {
 
     @Override
     public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
-
+        //TODO: Check con enum?
+        LobbyScene lobbyScene = (LobbyScene) controller;
+        lobbyScene.showRefreshedConnectedPlayers(playerUsernames);
     }
     //endregion
 

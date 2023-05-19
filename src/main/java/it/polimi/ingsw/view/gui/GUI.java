@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
-//TODO: Spostare creazione client nel costruttore di GUI e CLI
+    //TODO: Spostare creazione client nel costruttore di GUI e CLI
     public static void main(String[] args) {
 
         launch();

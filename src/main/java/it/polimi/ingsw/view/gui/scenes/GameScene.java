@@ -1,4 +1,7 @@
 package it.polimi.ingsw.view.gui.scenes;
 
-public class GameScene {
+import javafx.fxml.FXML;
+
+public class GameScene extends GenericScene{
+
 }
