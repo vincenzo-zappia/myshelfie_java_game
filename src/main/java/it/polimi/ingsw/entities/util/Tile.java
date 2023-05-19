@@ -5,7 +5,7 @@
  * Comments: none
  */
 
-package it.polimi.ingsw.util;
+package it.polimi.ingsw.entities.util;
 
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.exceptions.GetCardException;

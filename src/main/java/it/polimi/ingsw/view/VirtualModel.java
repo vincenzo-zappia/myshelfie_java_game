@@ -2,9 +2,12 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
-import it.polimi.ingsw.util.BoardTile;
-import it.polimi.ingsw.util.Tile;
+import it.polimi.ingsw.entities.util.BoardTile;
+import it.polimi.ingsw.entities.util.Tile;
 
+/**
+ * Client side abstraction of the game entities
+ */
 public class VirtualModel {
 
     //region ATTRIBUTES
@@ -13,11 +16,9 @@ public class VirtualModel {
     private Goal[] commonGoals;
     private PrivateGoal privateGoal;
     private int[][] coordinates;
-    private boolean selection;
-    private boolean end;
+    private boolean endGame;
     //endregion
 
-    //region CONSTRUCTOR
     public VirtualModel(){
         //Board initialization
         board = new BoardTile[9][9];
@@ -26,11 +27,9 @@ public class VirtualModel {
         bookshelf = new Tile[6][5];
         for(int i=0; i<6;i++) for(int j=0; j<5; j++) bookshelf[i][j] = new Tile();
 
-        selection = false;
-        end = false;
+        endGame = false;
 
     }
-    //endregion
 
     //region GETTER AND SETTER
     public void setCoordinates(int[][] coordinates) {
@@ -38,12 +37,6 @@ public class VirtualModel {
     }
     public int[][] getCoordinates() {
         return coordinates;
-    }
-    public void setSelection(boolean bool){
-        selection = bool;
-    }
-    public boolean isSelection() {
-        return selection;
     }
     public void setBoard(BoardTile[][] newBoard) {
         this.board = newBoard;
@@ -69,11 +62,11 @@ public class VirtualModel {
     public PrivateGoal getPrivateGoal() {
         return privateGoal;
     }
-    public void setEnd(){
-        end = true;
+    public void setEndGame(){
+        endGame = true;
     }
-    public boolean getEnd(){
-        return end;
+    public boolean getEndGame(){
+        return endGame;
     }
     //endregion
 

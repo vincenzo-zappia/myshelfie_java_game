@@ -8,7 +8,7 @@
 package it.polimi.ingsw.entities;
 
 import it.polimi.ingsw.exceptions.EmptyBagException;
-import it.polimi.ingsw.util.CardType;
+import it.polimi.ingsw.entities.util.CardType;
 
 import java.util.ArrayList;
 import java.util.Collections;

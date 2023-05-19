@@ -6,8 +6,8 @@ import it.polimi.ingsw.network.ClientHandler;
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.server2client.*;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.util.BoardTile;
-import it.polimi.ingsw.util.Tile;
+import it.polimi.ingsw.entities.util.BoardTile;
+import it.polimi.ingsw.entities.util.Tile;
 import it.polimi.ingsw.view.View;
 
 import java.util.HashMap;

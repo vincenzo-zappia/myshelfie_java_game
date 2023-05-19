@@ -2,7 +2,7 @@ package it.polimi.ingsw.network.messages.server2client;
 
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.util.BoardTile;
+import it.polimi.ingsw.entities.util.BoardTile;
 
 /**
  * Message containing the board updated after a tile refill

@@ -4,7 +4,7 @@ import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.goals.CommonGoal1;
 import it.polimi.ingsw.entities.goals.CommonGoal5;
 import it.polimi.ingsw.entities.goals.Goal;
-import it.polimi.ingsw.util.CardType;
+import it.polimi.ingsw.entities.util.CardType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -2,8 +2,8 @@ package it.polimi.ingsw.server.model.entities;
 
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.mechanics.Game;
-import it.polimi.ingsw.util.CardType;
-import it.polimi.ingsw.util.Tile;
+import it.polimi.ingsw.entities.util.CardType;
+import it.polimi.ingsw.entities.util.Tile;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

@@ -8,7 +8,7 @@
 package it.polimi.ingsw.entities;
 
 import it.polimi.ingsw.exceptions.GetCardException;
-import it.polimi.ingsw.util.BoardTile;
+import it.polimi.ingsw.entities.util.BoardTile;
 
 /**
  * Board of the game from where the players can pick the cards to add to their bookshelves

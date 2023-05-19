@@ -1,5 +1,7 @@
-package it.polimi.ingsw.util;
+package it.polimi.ingsw.mechanics;
 
+import it.polimi.ingsw.entities.util.CardType;
+import it.polimi.ingsw.entities.util.SpatialTile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

@@ -10,7 +10,7 @@ package it.polimi.ingsw.entities;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.exceptions.GetCardException;
-import it.polimi.ingsw.util.Tile;
+import it.polimi.ingsw.entities.util.Tile;
 
 /**
  * Bookshelf of a player where the cards picked from the board can be added

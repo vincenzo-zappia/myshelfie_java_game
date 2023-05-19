@@ -4,8 +4,8 @@ import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
-import it.polimi.ingsw.util.BoardTile;
-import it.polimi.ingsw.util.Tile;
+import it.polimi.ingsw.entities.util.BoardTile;
+import it.polimi.ingsw.entities.util.Tile;
 import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.VirtualModel;
 
@@ -127,7 +127,7 @@ public class CLI implements Runnable, UserInterface {
 
         //TODO: Implementare stop del loop attraverso chiamata di scoreboard
         //While loop to read the user keyboard input (until the game ends)
-        while(true){
+        while(!virtualModel.getEndGame()){
             String read = scanner.nextLine();
 
             if (!read.contains(" ")){
@@ -338,7 +338,6 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void sendCheckedCoordinates(int[][] coordinates){
-        virtualModel.setSelection(true);
         virtualModel.setCoordinates(coordinates);
     }
 
@@ -350,7 +349,6 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void showUpdatedBookshelf(Tile[][] bookshelf) {
-        virtualModel.setSelection(false);
         virtualModel.setBookshelf(bookshelf);
         showBookshelf();
     }
@@ -372,7 +370,7 @@ public class CLI implements Runnable, UserInterface {
         System.out.println(CliUtil.makeTitle("Scoreboard"));
         //TODO: Stampare a schermo la classifica finale in ordine decrescente di punteggio
 
-        virtualModel.setEnd();
+        virtualModel.setEndGame();
     }
 
     //endregion

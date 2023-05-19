@@ -2,8 +2,8 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
-import it.polimi.ingsw.util.BoardTile;
-import it.polimi.ingsw.util.Tile;
+import it.polimi.ingsw.entities.util.BoardTile;
+import it.polimi.ingsw.entities.util.Tile;
 
 import java.util.HashMap;
 

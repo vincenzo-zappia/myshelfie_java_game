@@ -1,6 +1,6 @@
 package it.polimi.ingsw.entities;
 
-import it.polimi.ingsw.util.CardType;
+import it.polimi.ingsw.entities.util.CardType;
 import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.exceptions.GetCardException;
 import org.junit.jupiter.api.BeforeEach;

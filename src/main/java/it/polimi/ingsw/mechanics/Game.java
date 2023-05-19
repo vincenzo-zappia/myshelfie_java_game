@@ -12,7 +12,7 @@ import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.entities.goals.*;
-import it.polimi.ingsw.util.BoardTile;
+import it.polimi.ingsw.entities.util.BoardTile;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-import it.polimi.ingsw.util.Tile;
+import it.polimi.ingsw.entities.util.Tile;
 
 public class Game{
 
