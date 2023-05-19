@@ -1,4 +1,3 @@
-
 package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Card;
@@ -121,10 +120,8 @@ public class GameController {
             canInsert = true;
             System.out.println("INFO: Selection phase ended");
         }
-
-        //TODO: Debuggare: non arriva mai a questo else nel caso in cui la selezione non sia legale
-        //Sending negative feedback to the player
         else{
+            //Sending negative feedback to the player
             viewHashMap.get(message.getSender()).sendGenericResponse(false, "Invalid selection! Please retry.");
             System.out.println("INFO: Selection not made.");
         }

@@ -1,7 +1,7 @@
 /* Author/s: Tirabassi M., Vianello G., Zappia V.
  * Date: 21/03/2023
  * IDE: IntelliJ IDEA
- * Version 0.1
+ * Version 1.0
  * Comments: none
  */
 
