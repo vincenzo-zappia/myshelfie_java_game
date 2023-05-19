@@ -8,6 +8,7 @@ import it.polimi.ingsw.util.BoardTile;
 import it.polimi.ingsw.util.Tile;
 import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.gui.scenes.*;
+import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +55,7 @@ public class GUIManager implements UserInterface {
     //region VIEW
     @Override
     public void sendGenericResponse(boolean response, String content) {
-
+        Platform.runLater(() -> gui.getController().showMessage(response, content));
     }
 
     @Override
