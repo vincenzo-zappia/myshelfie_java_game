@@ -65,6 +65,11 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
+    public void showPrivateGoal(PrivateGoal privateGoal) {
+
+    }
+
+    @Override
     public void showScoreboard(TreeMap<String, Integer> scoreboard){
         clientHandler.sendMessage(new ScoreboardMessage(scoreboard));
     }

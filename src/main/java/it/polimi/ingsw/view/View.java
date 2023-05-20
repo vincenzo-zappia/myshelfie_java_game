@@ -58,6 +58,9 @@ public interface View {
      */
     void showGoalsDetails(Goal[] commonGoals, PrivateGoal privateGoal);
 
+    //TODO: Separa invio common goal e private goal
+    void showPrivateGoal(PrivateGoal privateGoal);
+
     /**
      * Updates all the players with the scoreboard at the end of the game
      * @param scoreboard endgame scoreboard ordered by points

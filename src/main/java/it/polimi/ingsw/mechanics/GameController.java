@@ -1,7 +1,6 @@
 package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
@@ -40,7 +39,7 @@ public class GameController {
         //goals and their specific private goal
         broadcastMessage(MessageType.CURRENT_PLAYER);
         broadcastMessage(MessageType.REFILLED_BOARD);
-        broadcastMessage(MessageType.GOALS_DETAILS);
+        broadcastMessage(MessageType.COMMON_GOAL);
 
         //The game starts in the selection phase
         canInsert = false;
@@ -82,7 +81,8 @@ public class GameController {
                 case REMOVED_CARDS -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
                 case CURRENT_PLAYER -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
                 case SCOREBOARD -> viewHashMap.get(username).showScoreboard((TreeMap<String, Integer>) payload[0]); //TODO: Debug: non invia il messaggio
-                case GOALS_DETAILS -> viewHashMap.get(username).showGoalsDetails(game.getCommonGoals(), game.getPlayer(username).getPrivateGoal());
+                case COMMON_GOAL -> viewHashMap.get(username).showGoalsDetails(game.getCommonGoals(), game.getPlayer(username).getPrivateGoal());
+                //TODO: Separa invio commongoal e privategoal
             }
         }
     }
@@ -182,6 +182,7 @@ public class GameController {
 
         //Checking if the current player has achieved anyone of the common goals
         game.scoreCommonGoal(turnManager.getCurrentPlayer());
+        //TODO: Invia messaggio update score commongoal
 
         //Checking if the bookshelf of the current player got full
         if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer())){

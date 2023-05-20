@@ -13,6 +13,7 @@ public class GUI extends Application {
 
     private Scene scene;
     private FXMLLoader currentLoader;
+    private GenericScene currentController;
 
     public static void main(String[] args) {
 
@@ -54,6 +55,7 @@ public class GUI extends Application {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        this.currentController = currentLoader.getController();
 
     }
 
@@ -62,7 +64,7 @@ public class GUI extends Application {
      * @return controller of the current scene
      */
     protected GenericScene getController(){
-        return currentLoader.getController();
+        return currentController;
     }
 
 }

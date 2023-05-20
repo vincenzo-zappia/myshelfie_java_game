@@ -29,4 +29,10 @@ public interface UserInterface extends View {
      */
     void refreshConnectedPlayers(ArrayList<String> playerUsernames);
 
+    /**
+     * Gives feedback about the start of the game
+     * @param response if the game started
+     */
+    void confirmStartGame(boolean response);
+
 }

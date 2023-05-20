@@ -45,9 +45,23 @@ public class GUIManager implements UserInterface {
 
     @Override
     public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
-        //TODO: Check con enum?
-        LobbyScene lobbyScene = (LobbyScene) gui.getController();
-        lobbyScene.showRefreshedConnectedPlayers(playerUsernames);
+        Platform.runLater(() -> {
+            //TODO: Check con enum?
+            LobbyScene lobbyScene = (LobbyScene) gui.getController();
+            lobbyScene.showRefreshedConnectedPlayers(playerUsernames);
+        });
+
+    }
+
+    @Override
+    public void confirmStartGame(boolean response) {
+        Platform.runLater(() -> {
+            if(response) {
+                gui.loadScene("game.fxml");
+                //GameScene gameScene = (GameScene) gui.getController();
+                //gameScene.initGame();
+            }
+        });
     }
     //endregion
 
@@ -59,32 +73,57 @@ public class GUIManager implements UserInterface {
 
     @Override
     public void showCurrentPlayer(String currentPlayer) {
-        GameScene gameScene = (GameScene) gui.getController();
-        //TODO: Print a schermo current player nella text box notifiche di gioco
+        Platform.runLater(() -> {
+            GameScene gameScene = (GameScene) gui.getController();
+            //TODO: Print a schermo current player nella text box notifiche di gioco
+        });
+
     }
 
     @Override
     public void sendCheckedCoordinates(int[][] coordinates) {
+        Platform.runLater(() -> {
+            GameScene gameScene = (GameScene) gui.getController();
+        });
 
     }
 
     @Override
     public void showRemovedCards(int[][] coordinates) {
+        Platform.runLater(() -> {
+            GameScene gameScene = (GameScene) gui.getController();
+        });
 
     }
 
     @Override
     public void showUpdatedBookshelf(Tile[][] bookshelf) {
+        Platform.runLater(() -> {
+            GameScene gameScene = (GameScene) gui.getController();
+            gameScene.displayBookshelf(bookshelf);
+        });
 
     }
 
     @Override
     public void showRefilledBoard(BoardTile[][] boardTiles) {
+        Platform.runLater(() -> {
+            GameScene gameScene = (GameScene) gui.getController();
+            gameScene.displayBoard(boardTiles);
+        });
 
     }
 
     @Override
     public void showGoalsDetails(Goal[] commonGoals, PrivateGoal privateGoal) {
+        Platform.runLater(() -> {
+            GameScene gameScene = (GameScene) gui.getController();
+        });
+
+    }
+
+    @Override
+    public void showPrivateGoal(PrivateGoal privateGoal) {
 
     }
 

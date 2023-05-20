@@ -12,8 +12,10 @@ public class GoalsMessage extends Message {
     private final Goal[] commonGoals;
     private final PrivateGoal privateGoal;
 
+    //TODO: Separa commongoal e privategoal
+
     public GoalsMessage(Goal[] commonGoals, PrivateGoal privateGoal) {
-        super("server", MessageType.GOALS_DETAILS);
+        super("server", MessageType.COMMON_GOAL);
         this.commonGoals = commonGoals;
         this.privateGoal = privateGoal;
     }
