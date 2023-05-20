@@ -7,18 +7,12 @@
 
 package it.polimi.ingsw.mechanics;
 
-import it.polimi.ingsw.entities.Board;
-import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.entities.Player;
+import it.polimi.ingsw.entities.*;
 import it.polimi.ingsw.entities.goals.*;
 import it.polimi.ingsw.entities.util.BoardTile;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.TreeMap;
+import java.io.Serializable;
+import java.util.*;
 
 import it.polimi.ingsw.entities.util.Tile;
 
@@ -208,9 +202,9 @@ public class Game{
 
     /**
      * Arranges the players by score
-     * @return ordered TreeMap (username, score)
+     * @return ordered SerializableTreeMap (username, score)
      */
-    public TreeMap<String, Integer> orderByScore(){
+    public SerializableTreeMap<String, Integer> orderByScore(){
         HashMap<String, Integer> hashmap = new HashMap<>();
 
         //For loop to fill hashmap
@@ -220,7 +214,7 @@ public class Game{
         Comparator<String> comparator = (score1, score2) -> hashmap.get(score2).compareTo(hashmap.get(score1));
 
         //Creating a treemap using a personalized comparator (see code above)
-        TreeMap<String, Integer> treeMap = new TreeMap<>(comparator);
+        SerializableTreeMap<String, Integer> treeMap = new SerializableTreeMap<>(comparator);
         treeMap.putAll(hashmap);
         return treeMap;
     }

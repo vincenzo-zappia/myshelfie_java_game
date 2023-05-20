@@ -1,12 +1,14 @@
 package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Card;
+import it.polimi.ingsw.entities.SerializableTreeMap;
 import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.client2server.SelectionRequest;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -81,7 +83,7 @@ public class GameController {
                 case REFILLED_BOARD -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getBoard());
                 case REMOVED_CARDS -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
                 case CURRENT_PLAYER -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
-                case SCOREBOARD -> viewHashMap.get(username).showScoreboard((TreeMap<String, Integer>) payload[0]); //TODO: Debug: non invia il messaggio
+                case SCOREBOARD -> viewHashMap.get(username).showScoreboard((SerializableTreeMap<String, Integer>) payload[0]); //TODO: Debug: non invia il messaggio
                 case GOALS_DETAILS -> viewHashMap.get(username).showGoalsDetails(game.getCommonGoals(), game.getPlayer(username).getPrivateGoal());
             }
         }
@@ -191,7 +193,9 @@ public class GameController {
 
         //Checking if the current player was the last one who had to play a turn, if so, starting the endgame, otherwise
         //calling for the next player
-        if(!turnManager.nextTurn()) findWinner();
+        if(!turnManager.nextTurn()) {
+            findWinner();
+        }
         else{
             //Broadcasting the username of the next player who plays a turn
             broadcastMessage(MessageType.CURRENT_PLAYER);
@@ -206,13 +210,16 @@ public class GameController {
      */
     public void findWinner(){
         //Scoring each individual private goal
-        game.scorePrivateGoal();
+
+        //game.scorePrivateGoal();  TODO decommentare e sistemare
 
         //Creating the scoreboard (sort algorithm in client)
-        TreeMap<String, Integer> scoreboard = game.orderByScore();
+        SerializableTreeMap<String, Integer> scoreboard = game.orderByScore();
+
+        System.out.println(scoreboard);
 
         //Broadcasting the scoreboard to all the players
-        broadcastMessage(MessageType.SCOREBOARD, (Object) scoreboard);
+        broadcastMessage(MessageType.SCOREBOARD, scoreboard);
     }
     //endregion
 

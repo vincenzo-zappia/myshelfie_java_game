@@ -9,10 +9,12 @@ package it.polimi.ingsw.entities;
 
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 
+import java.io.Serializable;
+
 /**
  * Player of the game with a username and a bookshelf
  */
-public class Player implements Comparable<Player> {
+public class Player implements Comparable<Player>, Serializable {
 
     //region ATTRIBUTES
     private final String username;
