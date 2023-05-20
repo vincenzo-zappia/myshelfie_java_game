@@ -26,6 +26,8 @@ public class GUI extends Application {
             //TODO: setup scena iniziale;
             currentLoader = new FXMLLoader(GUI.class.getResource("username.fxml"));
             Scene scene = new Scene(currentLoader.load(), 900,600);
+            this.currentController = currentLoader.getController();
+
             this.scene = scene;
             startupStage(stage);
             stage.setScene(scene);
