@@ -105,7 +105,7 @@ public class GameController {
             return;
         }
 
-        int[][] copy = Arrays.copyOf(message.getCoordinates(), message.getCoordinates().length);
+        int[][] copy = Arrays.copyOf(message.getCoordinates(), message.getCoordinates().length); //TODO: Capire perché cambia ordine
 
         //Checking if the cards selected are actually selectable
         if(game.canSelect(message.getSender(), copy)) {

@@ -1,4 +1,5 @@
 package it.polimi.ingsw.view.gui.scenes;
 
-public class WinnerScene {
+public class WinnerScene extends GenericScene{
+
 }
