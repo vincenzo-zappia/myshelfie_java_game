@@ -46,6 +46,10 @@ public class ClientController implements Observer {
 
                 view.confirmUsername(response.getResponse());
             }
+            case CREATION_RESPONSE -> {
+                GenericMessage creationResponse = (GenericMessage) message;
+                view.confirmCreation(creationResponse.getContent());
+            }
             case ACCESS_RESPONSE -> {
                 SpecificResponse response = (SpecificResponse) message;
                 view.confirmAccess(response.getResponse());

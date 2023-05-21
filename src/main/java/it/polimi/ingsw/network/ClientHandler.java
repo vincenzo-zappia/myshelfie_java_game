@@ -122,8 +122,11 @@ public class ClientHandler implements Runnable{
 
                 //Joining the newly created lobby and sending back the lobby ID
                 lobby.joinLobby(new NetworkPlayer(message.getSender(), this));
-                sendMessage(new TextResponse(true, "Creation successful!\nLobby ID: " + lobby.getLobbyID()));
-                sendMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));
+                sendMessage(new TextResponse(true, "Creation successful!"));
+                sendMessage(new GenericMessage("Lobby ID: " + lobby.getLobbyID(), MessageType.CREATION_RESPONSE));
+
+                //Showing the newly created lobby
+                lobby.lobbyBroadcastMessage(new UsernameListMessage(lobby.getUsernameList()));
 
                 //Initialization of the game
                 startGameHandler();

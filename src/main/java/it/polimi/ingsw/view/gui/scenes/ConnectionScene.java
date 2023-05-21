@@ -12,6 +12,8 @@ public class ConnectionScene extends GenericScene {
      */
     @FXML private void onCreateLobbyClick(){
         gui.loadScene("lobby.fxml");
+        LobbyScene lobbyScene = (LobbyScene) gui.getController();
+        lobbyScene.showStart();
         controller.createLobby();
     }
 

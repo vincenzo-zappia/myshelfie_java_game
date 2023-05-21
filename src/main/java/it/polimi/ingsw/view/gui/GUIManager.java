@@ -33,6 +33,16 @@ public class GUIManager implements UserInterface {
     }
 
     @Override
+    public void confirmCreation(String content) {
+        Platform.runLater(() -> {
+            LobbyScene lobbyScene = (LobbyScene) gui.getController();
+            lobbyScene.showStart();
+
+            //TODO: Printa a schermo ID lobby
+        });
+    }
+
+    @Override
     public void confirmAccess(boolean response) {
         Platform.runLater(() -> {
             //AccessScene accessScene = (AccessScene) gui.getController();

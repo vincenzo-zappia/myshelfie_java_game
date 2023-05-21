@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.scenes;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 
@@ -21,12 +22,18 @@ public class LobbyScene extends GenericScene{
     @FXML private Label label3;
     @FXML private Label label4;
 
+    @FXML private Button start;
+
 
     /**
      * Sends the request to the server to start the game
      */
     @FXML protected void onStartGameClick(){
         controller.startGame();
+    }
+
+    public void showStart(){
+        start.setVisible(true);
     }
 
     /**

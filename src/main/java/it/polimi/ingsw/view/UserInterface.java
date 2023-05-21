@@ -17,9 +17,13 @@ public interface UserInterface extends View {
     void confirmUsername(boolean response);
 
     /**
-     * Gives feedback about the creation or joining of a lobby
+     * Gives feedback about the creation of a lobby
+     */
+    void confirmCreation(String content);
+
+    /**
+     * Gives feedback about the joining of a lobby
      * @param response if the player successfully created/joined a lobby
-     * @param content description of the feedback
      */
     void confirmAccess(boolean response);
 

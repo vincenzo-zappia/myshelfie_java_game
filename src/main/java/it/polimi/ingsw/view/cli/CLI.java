@@ -318,6 +318,18 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
+    public void confirmCreation(String content) {
+        lobbyJoined = true;
+        System.out.println(content); //TODO: Formattare carino
+
+        //Notifying the waiting thread
+        synchronized (lock) {
+            lock.notify();
+        }
+
+    }
+
+    @Override
     public void confirmAccess(boolean response) {
         //Receiving feedback about lobby creation/join
         lobbyJoined = response;

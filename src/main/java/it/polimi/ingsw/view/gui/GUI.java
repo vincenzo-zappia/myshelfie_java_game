@@ -65,7 +65,7 @@ public class GUI extends Application {
      * Returns the controller of the current scene
      * @return controller of the current scene
      */
-    protected GenericScene getController(){
+    public GenericScene getController(){
         return currentController;
     }
 
