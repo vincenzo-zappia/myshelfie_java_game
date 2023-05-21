@@ -265,7 +265,7 @@ class GameTest {
      * Checks when boards need to be refilled with cards from Bag (RETURN FALSE)
      */
     @Test
-    void checkRefillCaseFalse(){
+    void checkRefill(){
         game.removeSelectedCards(new int[][]{{1,3}});
         assertFalse(game.checkRefill());
     }

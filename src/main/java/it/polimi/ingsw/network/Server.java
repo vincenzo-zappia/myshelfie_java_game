@@ -121,6 +121,11 @@ public class Server {
         usernameList.add(username);
     }
 
+    /**
+     * Checks that new player's choosed username isn't already in use
+     * @param username to check
+     * @return true if it's already present
+     */
     public synchronized boolean existsUsername(String username) {
         for(String user : usernameList) if(user.equals(username)) return true;
         return false;

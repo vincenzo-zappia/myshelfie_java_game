@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.entities.SerializableTreeMap;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.entities.util.BoardTile;
@@ -67,6 +68,6 @@ public interface View {
      * Updates all the players with the scoreboard at the end of the game
      * @param scoreboard endgame scoreboard ordered by points
      */
-    void showScoreboard(TreeMap<String, Integer> scoreboard);
+    void showScoreboard(SerializableTreeMap<String, Integer> scoreboard);
 
 }

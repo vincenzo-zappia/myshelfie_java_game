@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.entities.SerializableTreeMap;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.Client;
@@ -389,7 +390,7 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void showScoreboard(TreeMap<String, Integer> scoreboard) {
+    public void showScoreboard(SerializableTreeMap<String, Integer> scoreboard) {
         System.out.println(CliUtil.makeTitle("Scoreboard"));
         for (Map.Entry<String, Integer> entry : scoreboard.entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
