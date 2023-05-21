@@ -19,6 +19,8 @@ public class CLI implements Runnable, UserInterface {
     private final ClientController controller;
     private final VirtualModel virtualModel;
     private final Object lock;
+    private final Object lock1;
+
 
     //region FLAGS
     private boolean usernameAccepted;
@@ -31,6 +33,7 @@ public class CLI implements Runnable, UserInterface {
         controller = new ClientController(this, client);
         virtualModel = new VirtualModel();
         lock = new Object();
+        lock1 = new Object();
 
         usernameAccepted = false;
         lobbyJoined = false;
@@ -92,6 +95,16 @@ public class CLI implements Runnable, UserInterface {
 
                     //Starting the game
                     controller.startGame();
+
+                    //Thread waits until notified
+                    synchronized (lock1) {
+                        try {
+                            lock1.wait();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
                 }
 
                 //Joining an existing lobby
@@ -320,6 +333,14 @@ public class CLI implements Runnable, UserInterface {
         System.out.println("Connected players: ");
         System.out.println(CliUtil.makePlayersList(playerUsernames));
     }
+
+    @Override
+    public void confirmStartGame(boolean response) {
+        //Notifying the waiting thread
+        synchronized (lock1) {
+            lock1.notify();
+        }
+    }
     //endregion
 
     //region VIEW
@@ -359,8 +380,12 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void showGoalsDetails(Goal[] commonGoals, PrivateGoal privateGoal) {
+    public void showCommonGoals(Goal[] commonGoals) {
         virtualModel.setCommonGoals(commonGoals);
+    }
+
+    @Override
+    public void showPrivateGoal(PrivateGoal privateGoal) {
         virtualModel.setPrivateGoal(privateGoal);
     }
 

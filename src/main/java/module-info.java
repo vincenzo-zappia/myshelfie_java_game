@@ -1,7 +1,8 @@
 module proj.ingsw.rj {
-    requires java.xml;
-    requires javafx.fxml;
     requires javafx.controls;
+    requires javafx.graphics;
+    requires javafx.fxml;
+    requires java.xml;
 
     opens it.polimi.ingsw.view.gui to javafx.fxml;
     opens it.polimi.ingsw.view.gui.scenes to javafx.fxml;

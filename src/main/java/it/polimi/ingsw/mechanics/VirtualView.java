@@ -11,7 +11,6 @@ import it.polimi.ingsw.entities.util.BoardTile;
 import it.polimi.ingsw.entities.util.Tile;
 import it.polimi.ingsw.view.View;
 
-import java.util.HashMap;
 import java.util.TreeMap;
 
 /**
@@ -61,8 +60,13 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showGoalsDetails(Goal[] commonGoals, PrivateGoal privateGoal) {
-        clientHandler.sendMessage(new GoalsMessage(commonGoals, privateGoal));
+    public void showCommonGoals(Goal[] commonGoals) {
+        clientHandler.sendMessage(new CommonGoalsMessage(commonGoals));
+    }
+
+    @Override
+    public void showPrivateGoal(PrivateGoal privateGoal) {
+        clientHandler.sendMessage(new PrivateGoalMessage(privateGoal));
     }
 
     @Override

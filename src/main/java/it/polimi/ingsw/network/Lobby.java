@@ -5,6 +5,7 @@ import it.polimi.ingsw.mechanics.GameController;
 import it.polimi.ingsw.mechanics.VirtualView;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
+import it.polimi.ingsw.network.messages.server2client.GenericMessage;
 import it.polimi.ingsw.network.messages.server2client.TextResponse;
 import it.polimi.ingsw.network.messages.server2client.SpecificResponse;
 
@@ -84,8 +85,17 @@ public class Lobby {
      */
     public void startGame(){
 
+        //TODO: Decommentare (commentato solo per debug)
+        /*
         //Checking if the number of the players is legal before initializing the game
-        //assert (usernameList.size()>1 && usernameList.size()<=4);
+        if(!(usernameList.size() > 1 && usernameList.size() <= 4)) {
+            lobbyBroadcastMessage(new TextResponse(false, "Not enough players!"));
+            lobbyBroadcastMessage(new SpecificResponse(false, MessageType.START_GAME_RESPONSE));
+            return;
+        }
+
+         */
+        lobbyBroadcastMessage(new SpecificResponse(true, MessageType.START_GAME_RESPONSE));
 
         //Creating GameController and the hashmap <PlayerUsername, VirtualView> through which GameController will manage the sending of messages from server to client
         HashMap<String, VirtualView> viewHashMap = new HashMap<>();
@@ -95,7 +105,7 @@ public class Lobby {
         //Officially starting the game
         inGame = true;
         lobbyBroadcastMessage(new TextResponse(true, "Now in game!"));
-        lobbyBroadcastMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));
+        //lobbyBroadcastMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));
         System.out.println("INFO: Game started");
     }
 

@@ -6,7 +6,6 @@ import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.entities.util.BoardTile;
 import it.polimi.ingsw.entities.util.Tile;
 
-import java.util.HashMap;
 import java.util.TreeMap;
 
 /**
@@ -52,12 +51,18 @@ public interface View {
      */
     void showRefilledBoard(BoardTile[][] boardTiles);
 
+    //TODO: CommonGoal0?
     /**
-     * Sends to a player his private goal and the common goals of the game
+     * Sends the game common goals details to the player
      * @param commonGoals common goals of the game
-     * @param privateGoal player-specific goal
      */
-    void showGoalsDetails(Goal[] commonGoals, PrivateGoal privateGoal);
+    void showCommonGoals(Goal[] commonGoals);
+
+    /**
+     * Sends to the player the details of his specific private goal
+     * @param privateGoal player-specific private goal
+     */
+    void showPrivateGoal(PrivateGoal privateGoal);
 
     /**
      * Updates all the players with the scoreboard at the end of the game

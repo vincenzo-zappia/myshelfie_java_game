@@ -54,6 +54,10 @@ public class ClientController implements Observer {
                 UsernameListMessage connectionMessage = (UsernameListMessage) message;
                 view.refreshConnectedPlayers(connectionMessage.getUsernameList());
             }
+            case START_GAME_RESPONSE -> {
+                SpecificResponse startGameResponse = (SpecificResponse) message;
+                view.confirmStartGame(startGameResponse.getResponse());
+            }
             case CURRENT_PLAYER -> view.showCurrentPlayer(message.getContent());
             case CHECKED_COORDINATES -> {
                 CoordinatesMessage checkedCoordinates = (CoordinatesMessage) message;
@@ -71,9 +75,13 @@ public class ClientController implements Observer {
                 BoardMessage boardUpdate = (BoardMessage) message;
                 view.showRefilledBoard(boardUpdate.getBoardCells());
             }
-            case GOALS_DETAILS -> {
-                GoalsMessage goalsMessage = (GoalsMessage) message;
-                view.showGoalsDetails(goalsMessage.getCommonGoals(), goalsMessage.getPrivateGoal());
+            case COMMON_GOAL -> {
+                CommonGoalsMessage commonGoalsMessage = (CommonGoalsMessage) message;
+                view.showCommonGoals(commonGoalsMessage.getCommonGoals());
+            }
+            case PRIVATE_GOAL -> {
+                PrivateGoalMessage privateGoalMessage = (PrivateGoalMessage) message;
+                view.showPrivateGoal(privateGoalMessage.getPrivateGoal());
             }
             case SCOREBOARD -> {
                 ScoreboardMessage scoreboard = (ScoreboardMessage) message;
