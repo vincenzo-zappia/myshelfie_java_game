@@ -25,7 +25,7 @@ public class Card implements Serializable {
 
     //region METHODS
     public String getImgPath() {
-        return "/assets/Cards/" + imageName;
+        return "assets/Cards/" + imageName;
     }
     public CardType getType() {
         return type;

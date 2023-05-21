@@ -58,8 +58,8 @@ public class GUIManager implements UserInterface {
         Platform.runLater(() -> {
             if(response) {
                 gui.loadScene("game.fxml");
-                //GameScene gameScene = (GameScene) gui.getController();
-                //gameScene.initGame();
+                GameScene gameScene = (GameScene) gui.getController();
+                gameScene.initGame();
             }
         });
     }

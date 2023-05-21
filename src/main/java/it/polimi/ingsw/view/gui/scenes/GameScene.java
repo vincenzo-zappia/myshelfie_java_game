@@ -4,11 +4,17 @@ import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.entities.util.BoardTile;
 import it.polimi.ingsw.entities.util.Tile;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+
+import java.util.ArrayList;
 
 /**
  * Controller of the actual game scene where the player can interact with the game entities
@@ -17,6 +23,7 @@ public class GameScene extends GenericScene{
 
     @FXML private GridPane board;
     @FXML private GridPane bookshelf;
+
     @FXML private ImageView cg1;
     @FXML private ImageView cg1Score;
     @FXML private ImageView cg2;
@@ -24,16 +31,42 @@ public class GameScene extends GenericScene{
     @FXML private ImageView token;
     @FXML private ImageView pg;
 
+    @FXML private Button confirm;
+
+    private ArrayList<int[]> currentSelection;
 
 
+    /**
+     * Creates an array of coordinates from the arraylist ...
+     */
+    @FXML public void onConfirmClick(){
+        int[][] sentSelection = new int[currentSelection.size()][2];
+        for(int i = 0; i < currentSelection.size(); i++){
+            sentSelection[i][0] = currentSelection.get(i)[0];
+            sentSelection[i][1] = currentSelection.get(i)[1];
+        }
+        controller.sendSelection(sentSelection);
+        currentSelection.clear();
+        for(Node node : board.getChildren()) node.setOpacity(1);
+    }
 
     //TODO: Cambia javadoc
     /**
      * Called by the method that changes the scene. Performs initialization routines
      */
     public void initGame(){
-        for(Node node : board.getChildren()) node.setVisible(false);
+        currentSelection = new ArrayList<>();
+
+        for(Node node : board.getChildren()) {
+            //logic
+            node.setOnMouseClicked(onBoardCardClick);
+
+            //graphic
+            node.setVisible(false);
+        }
         for(Node node : bookshelf.getChildren()) node.setVisible(false);
+
+
 
     }
 
@@ -55,7 +88,10 @@ public class GameScene extends GenericScene{
                 Node node = getNodeByRowColumnIndex(row, col, board);
                 if (node instanceof ImageView) {
                     ImageView card = (ImageView) node;
-                    card.setImage(new Image(updatedBoard[row][col].getCard().getImgPath())); //TODO: Aggiungere base path bellino
+                    //String imgPath = Main.class.getResource("") + updatedBoard[row][col].getCard().getImgPath();
+                    String imgPath = "file:/C:/Users/green/Documents/GitHub/proj-ingsw-rj45/target/classes/assets/Cards/games2.png";
+                    System.out.println(imgPath);
+                    card.setImage(new Image(imgPath)); //TODO: Aggiungere base path bellino
                     card.setVisible(true);
                 }
 
@@ -98,14 +134,32 @@ public class GameScene extends GenericScene{
     }
 
     //region UTIL
-    private Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+    private Node getNodeByRowColumnIndex(final int row, final int col, GridPane gridPane) {
         for (Node node : gridPane.getChildren()) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+            Integer rowIndex = GridPane.getRowIndex(node);
+            Integer colIndex = GridPane.getColumnIndex(node);
+
+            if (rowIndex != null && colIndex != null && rowIndex.intValue() == row && colIndex.intValue() == col) {
                 return node;
             }
         }
         return null;
     }
+
+    EventHandler<MouseEvent> onBoardCardClick = event -> {
+        Node clikedNode = (Node) event.getSource();
+        ImageView selectedCard = (ImageView) clikedNode;
+
+        //logic
+        int[] selection = new int[2];
+        selection[0] = GridPane.getRowIndex(clikedNode);
+        selection[1] = GridPane.getColumnIndex(clikedNode);
+        currentSelection.add(selection);
+
+        //graphic
+        selectedCard.setOpacity(0.5);
+
+    };
     //endregion
 
 }

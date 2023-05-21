@@ -105,7 +105,7 @@ public class Lobby {
         //Officially starting the game
         inGame = true;
         lobbyBroadcastMessage(new TextResponse(true, "Now in game!"));
-        lobbyBroadcastMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));
+        //lobbyBroadcastMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));
         System.out.println("INFO: Game started");
     }
 
