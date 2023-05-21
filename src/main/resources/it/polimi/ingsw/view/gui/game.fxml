@@ -332,4 +332,9 @@
          <Font name="System Bold" size="24.0" />
       </font>
    </Button>
+   <Button fx:id="col0" layoutX="1023.0" layoutY="72.0" mnemonicParsing="false" text="Button" />
+   <Button fx:id="col1" layoutX="1114.0" layoutY="72.0" mnemonicParsing="false" text="Button" />
+   <Button fx:id="col2" layoutX="1205.0" layoutY="73.0" mnemonicParsing="false" text="Button" />
+   <Button fx:id="col3" layoutX="1289.0" layoutY="73.0" mnemonicParsing="false" text="Button" />
+   <Button fx:id="col4" layoutX="1388.0" layoutY="72.0" mnemonicParsing="false" text="Button" />
 </AnchorPane>

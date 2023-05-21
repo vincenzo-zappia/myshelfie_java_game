@@ -92,6 +92,7 @@ public class GUIManager implements UserInterface {
     public void showRemovedCards(int[][] coordinates) {
         Platform.runLater(() -> {
             GameScene gameScene = (GameScene) gui.getController();
+            gameScene.removeCards(coordinates);
         });
 
     }

@@ -32,6 +32,13 @@ public class GameScene extends GenericScene{
     @FXML private ImageView pg;
 
     @FXML private Button confirm;
+    @FXML private Button col0;
+    @FXML private Button col1;
+    @FXML private Button col2;
+    @FXML private Button col3;
+    @FXML private Button col4;
+
+
 
     private ArrayList<int[]> currentSelection;
 
@@ -50,6 +57,7 @@ public class GameScene extends GenericScene{
         for(Node node : board.getChildren()) node.setOpacity(1);
     }
 
+
     //TODO: Cambia javadoc
     /**
      * Called by the method that changes the scene. Performs initialization routines
@@ -66,6 +74,11 @@ public class GameScene extends GenericScene{
         }
         for(Node node : bookshelf.getChildren()) node.setVisible(false);
 
+        col0.setOnAction(onInsertColumnClick);
+        col1.setOnAction(onInsertColumnClick);
+        col2.setOnAction(onInsertColumnClick);
+        col3.setOnAction(onInsertColumnClick);
+        col4.setOnAction(onInsertColumnClick);
 
 
     }
@@ -90,7 +103,6 @@ public class GameScene extends GenericScene{
                     ImageView card = (ImageView) node;
                     //String imgPath = Main.class.getResource("") + updatedBoard[row][col].getCard().getImgPath();
                     String imgPath = "file:/C:/Users/green/Documents/GitHub/proj-ingsw-rj45/target/classes/assets/Cards/games2.png";
-                    System.out.println(imgPath);
                     card.setImage(new Image(imgPath)); //TODO: Aggiungere base path bellino
                     card.setVisible(true);
                 }
@@ -114,10 +126,12 @@ public class GameScene extends GenericScene{
                 if(updatedBookshelf[row][col].isTileEmpty()) continue;
 
                 //Updating and displaying the newly added card
-                Node node = getNodeByRowColumnIndex(row, col, board);
+                Node node = getNodeByRowColumnIndex(row, col, bookshelf);
                 if (node instanceof ImageView) {
                     ImageView card = (ImageView) node;
-                    card.setImage(new Image(updatedBookshelf[row][col].getCard().getImgPath())); //TODO: Aggiungere base path bellino
+                    //String imgPath = Main.class.getResource("") + updatedBookshelf[row][col].getCard().getImgPath();
+                    String imgPath = "file:/C:/Users/green/Documents/GitHub/proj-ingsw-rj45/target/classes/assets/Cards/games2.png";
+                    card.setImage(new Image(imgPath)); //TODO: Aggiungere base path bellino
                     card.setVisible(true);
                 }
 
@@ -131,6 +145,16 @@ public class GameScene extends GenericScene{
 
     public void displayPrivateGoal(PrivateGoal privateGoal){
         //pg.setImage(); //TODO: Implementare metodo in PrivateGoal che restituisce image path
+    }
+
+    public void removeCards(int[][] coordinates){
+        for (int[] coordinate : coordinates) {
+            Node node = getNodeByRowColumnIndex(coordinate[0], coordinate[1], board);
+            ImageView card = (ImageView) node;
+            assert card != null;
+            card.setVisible(false);
+        }
+
     }
 
     //region UTIL
@@ -159,6 +183,19 @@ public class GameScene extends GenericScene{
         //graphic
         selectedCard.setOpacity(0.5);
 
+    };
+
+    EventHandler<ActionEvent> onInsertColumnClick = event -> {
+        Button column = (Button) event.getSource();
+        int sentColumn = 5;
+      switch (column.getId()){
+          case "col0" -> sentColumn = 0;
+          case "col1" -> sentColumn = 1;
+          case "col2" -> sentColumn = 2;
+          case "col3" -> sentColumn = 3;
+          case "col4" -> sentColumn = 4;
+      }
+      controller.sendInsertion(sentColumn);
     };
     //endregion
 
