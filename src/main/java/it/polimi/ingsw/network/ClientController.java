@@ -79,6 +79,9 @@ public class ClientController implements Observer {
                 ScoreboardMessage scoreboard = (ScoreboardMessage) message;
                 view.showScoreboard(scoreboard.getScoreboard());
             }
+            case FORCE_DISCONNECTION -> {
+                view.showDisconnection();
+            }
         }
     }
     //endregion

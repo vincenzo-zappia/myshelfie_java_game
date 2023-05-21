@@ -17,6 +17,8 @@ public class Client extends Subject implements Runnable{
     private ObjectOutputStream objOut;
     private ObjectInputStream objIn;
 
+    private Socket socket;
+
     //endregion
 
     //region CONSTRUCTOR
@@ -24,7 +26,7 @@ public class Client extends Subject implements Runnable{
 
         try {
 
-            Socket socket = new Socket(ip, port);
+            socket = new Socket(ip, port);
             objOut = new ObjectOutputStream(socket.getOutputStream());
             objIn = new ObjectInputStream(socket.getInputStream());
 
@@ -48,7 +50,6 @@ public class Client extends Subject implements Runnable{
     }
 
    public void sendMessage(Message msg){
-
        try {
            objOut.writeObject(msg);
            objOut.flush();
@@ -72,6 +73,17 @@ public class Client extends Subject implements Runnable{
             throw new RuntimeException(e);
         }
         return msg;
+    }
+
+    public void forceDisconnection() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        finally{
+            System.out.println("INFO: ??? we are closed");
+        }
     }
 
     //endregion

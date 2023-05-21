@@ -65,4 +65,8 @@ public interface View {
      */
     void showScoreboard(SerializableTreeMap<String, Integer> scoreboard);
 
+    /**
+     * Show disconnection message in CLI
+     */
+    void showDisconnection();
 }
