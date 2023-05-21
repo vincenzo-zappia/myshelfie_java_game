@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.scenes;
 
+import it.polimi.ingsw.Main;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.entities.util.BoardTile;
@@ -79,7 +80,6 @@ public class GameScene extends GenericScene{
         selection[0] = GridPane.getRowIndex(clikedNode);
         selection[1] = GridPane.getColumnIndex(clikedNode);
         currentSelection.add(selection);
-
         //Changing the graphic properties of the card
         selectedCard.setOpacity(0.5);
 
@@ -147,9 +147,8 @@ public class GameScene extends GenericScene{
                 Node node = getNodeByRowColumnIndex(row, col, board);
                 if (node instanceof ImageView) {
                     ImageView card = (ImageView) node;
-                    //String imgPath = Main.class.getResource("") + updatedBoard[row][col].getCard().getImgPath();
-                    String imgPath = "file:/C:/Users/green/Documents/GitHub/proj-ingsw-rj45/target/classes/assets/Cards/games2.png";
-                    card.setImage(new Image(imgPath)); //TODO: Aggiungere base path bellino
+                    String imgPath = Main.getResourcePath() + updatedBoard[row][col].getCard().getImgPath();
+                    card.setImage(new Image(imgPath));
                     card.setVisible(true);
                 }
 
@@ -173,11 +172,11 @@ public class GameScene extends GenericScene{
 
                 //Updating and displaying the newly added card
                 Node node = getNodeByRowColumnIndex(row, col, bookshelf);
+
                 if (node instanceof ImageView) {
                     ImageView card = (ImageView) node;
-                    //String imgPath = Main.class.getResource("") + updatedBookshelf[row][col].getCard().getImgPath();
-                    String imgPath = "file:/C:/Users/green/Documents/GitHub/proj-ingsw-rj45/target/classes/assets/Cards/games2.png";
-                    card.setImage(new Image(imgPath)); //TODO: Aggiungere base path bellino
+                    String imgPath = Main.getResourcePath() + updatedBookshelf[row][col].getCard().getImgPath();
+                    card.setImage(new Image(imgPath));
                     card.setVisible(true);
                 }
 
