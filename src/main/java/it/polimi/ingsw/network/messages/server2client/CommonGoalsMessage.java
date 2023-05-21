@@ -6,7 +6,7 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 
 /**
- * Message containing the details regarding the game common goals and each player's specific private goal
+ * Message containing the details regarding the game common goals
  */
 public class CommonGoalsMessage extends Message {
     private final Goal[] commonGoals;

@@ -4,6 +4,9 @@ import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 
+/**
+ * Message containing the details regarding the player-specific private goal
+ */
 public class PrivateGoalMessage extends Message {
     private final PrivateGoal privateGoal;
 
