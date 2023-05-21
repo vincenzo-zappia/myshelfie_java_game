@@ -1,6 +1,7 @@
 package it.polimi.ingsw.entities;
 
 import it.polimi.ingsw.entities.util.CardType;
+import it.polimi.ingsw.mechanics.PrivateGoalFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +11,8 @@ class PlayerTest {
     Player player;
     @BeforeEach
     void setUp() {
-        player = new Player("Michelangelo");
+        PrivateGoalFactory privateGoalFactory = new PrivateGoalFactory();
+        player = new Player("Michelangelo", privateGoalFactory.makePrivateGoal());
     }
 
     @Test

@@ -20,11 +20,12 @@ public class Player implements Comparable<Player>, Serializable {
     private final String username;
     private final Bookshelf bookshelf;
     private int score;
-    private PrivateGoal privateGoal;
+    private final PrivateGoal privateGoal;
     //endregion
 
     //TODO: Inizializzare private goal
-    public Player(String username){
+    public Player(String username, PrivateGoal privateGoal){
+        this.privateGoal = privateGoal;
         this.username = username;
         bookshelf = new Bookshelf();
         score = 0;
@@ -56,9 +57,6 @@ public class Player implements Comparable<Player>, Serializable {
         return bookshelf;
     }
     public int getScore(){return score;}
-    public void setPrivateGoal(PrivateGoal privateGoal) {
-        this.privateGoal = privateGoal;
-    }
     public PrivateGoal getPrivateGoal() {
         return privateGoal;
     }

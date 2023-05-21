@@ -33,7 +33,8 @@ public class Game{
 
         //Creating the players as entities of the game from the lobby username list
         players = new HashMap<>();
-        for(String user: usernames) players.put(user, new Player(user));
+        PrivateGoalFactory privateGoalFactory = new PrivateGoalFactory();
+        for(String user: usernames)players.put(user, new Player(user, privateGoalFactory.makePrivateGoal()));
 
         //Randomly picking the common goals of the game
         CommonGoalFactory factory = new CommonGoalFactory();
