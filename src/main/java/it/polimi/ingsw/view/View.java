@@ -1,12 +1,10 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.entities.SerializableTreeMap;
+import it.polimi.ingsw.entities.util.SerializableTreeMap;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.entities.util.BoardTile;
 import it.polimi.ingsw.entities.util.Tile;
-
-import java.util.TreeMap;
 
 /**
  * Standardization of all the methods that the Server uses to send requests, updates, error messages, etc

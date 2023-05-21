@@ -1,4 +1,4 @@
-package it.polimi.ingsw.entities;
+package it.polimi.ingsw.entities.util;
 
 import java.io.Serializable;
 import java.util.Comparator;

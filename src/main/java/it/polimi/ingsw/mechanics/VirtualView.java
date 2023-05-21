@@ -1,6 +1,6 @@
 package it.polimi.ingsw.mechanics;
 
-import it.polimi.ingsw.entities.SerializableTreeMap;
+import it.polimi.ingsw.entities.util.SerializableTreeMap;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.ClientHandler;
@@ -10,8 +10,6 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.entities.util.BoardTile;
 import it.polimi.ingsw.entities.util.Tile;
 import it.polimi.ingsw.view.View;
-
-import java.util.TreeMap;
 
 /**
  * Class that manages the creation of messages from server to client. Used by Lobby, GameController
