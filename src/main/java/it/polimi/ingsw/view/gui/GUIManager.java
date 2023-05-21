@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.entities.util.SerializableTreeMap;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.entities.util.BoardTile;
@@ -11,7 +12,6 @@ import it.polimi.ingsw.view.gui.scenes.*;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 public class GUIManager implements UserInterface {
     private final GUI gui;
@@ -131,8 +131,16 @@ public class GUIManager implements UserInterface {
     }
 
     @Override
-    public void showScoreboard(TreeMap<String, Integer> scoreboard) {
+    public void showScoreboard(SerializableTreeMap<String, Integer> scoreboard) {
 
+    }
+
+    @Override
+    public void showToken(String content) {
+        Platform.runLater(() -> {
+            GameScene gameScene = (GameScene) gui.getController();
+            gameScene.removeToken(content);
+        });
     }
     //endregion
 

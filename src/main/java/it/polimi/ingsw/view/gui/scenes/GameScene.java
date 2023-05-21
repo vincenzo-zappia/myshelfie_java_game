@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.scenes;
 
 import it.polimi.ingsw.Main;
+import it.polimi.ingsw.entities.goals.CommonGoal;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.entities.util.BoardTile;
@@ -64,6 +65,13 @@ public class GameScene extends GenericScene{
         col2.setOnAction(onInsertColumnClick);
         col3.setOnAction(onInsertColumnClick);
         col4.setOnAction(onInsertColumnClick);
+
+        cg1.setVisible(false);
+        cg1Score.setVisible(false);
+        cg2.setVisible(false);
+        cg2Score.setVisible(false);
+
+        token.setVisible(true);
 
     }
 
@@ -191,14 +199,19 @@ public class GameScene extends GenericScene{
     public void displayCommonGoals(Goal[] commonGoals){
 
         //TODO: Così a fine turno viene riaggiornata inultimente anche l'immagine del commongoal, inutile ma irrilevante
-        //TODO: Risolvere questione image path
-        /*
-        cg1.setImage(new Image());
-        cg1Score.setImage(new Image());
-        cg2.setImage(new Image());
-        cg2Score.setImage(new Image());
+        CommonGoal commonGoal1 = (CommonGoal) commonGoals[0];
+        CommonGoal commonGoal2 = (CommonGoal) commonGoals[1];
+        String imgPath1 = Main.getResourcePath() + commonGoal1.getFileName();
+        String imgPath2 = Main.getResourcePath() + commonGoal2.getFileName();
+        String pathScore1 = Main.getResourcePath() + commonGoal1.getScoreFileName();
+        String pathScore2 = Main.getResourcePath() + commonGoal2.getScoreFileName();
 
-         */
+        System.out.println(imgPath1);
+        cg1.setImage(new Image(imgPath1));
+        cg1Score.setImage(new Image(pathScore1));
+        cg2.setImage(new Image(imgPath2));
+        cg2Score.setImage(new Image(pathScore2));
+
     }
 
     /**
@@ -206,7 +219,8 @@ public class GameScene extends GenericScene{
      * @param privateGoal player-specific private goal
      */
     public void displayPrivateGoal(PrivateGoal privateGoal){
-        //pg.setImage(new Image()); //TODO: Implementare metodo in PrivateGoal che restituisce image path
+        String pgPath = Main.getResourcePath() + privateGoal.getFileName();
+        pg.setImage(new Image(pgPath));
     }
 
     /**
@@ -221,6 +235,15 @@ public class GameScene extends GenericScene{
             card.setVisible(false);
         }
 
+    }
+
+    /**
+     * Removes the token for the bonus point from the board
+     * @param content message containing the username of the first player who filled his bookshelf
+     */
+    public void removeToken(String content){
+        token.setVisible(false);
+        showMessage(true, content);
     }
     //endregion
 

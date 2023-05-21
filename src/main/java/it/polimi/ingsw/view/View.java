@@ -1,12 +1,10 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.entities.SerializableTreeMap;
+import it.polimi.ingsw.entities.util.SerializableTreeMap;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.entities.util.BoardTile;
 import it.polimi.ingsw.entities.util.Tile;
-
-import java.util.TreeMap;
 
 /**
  * Standardization of all the methods that the Server uses to send requests, updates, error messages, etc
@@ -69,5 +67,11 @@ public interface View {
      * @param scoreboard endgame scoreboard ordered by points
      */
     void showScoreboard(SerializableTreeMap<String, Integer> scoreboard);
+
+    /**
+     * Allows for the bonus point token to be taken by the first player who filled his bookshelf
+     * @param content message containing the username of the player
+     */
+    void showToken(String content);
 
 }

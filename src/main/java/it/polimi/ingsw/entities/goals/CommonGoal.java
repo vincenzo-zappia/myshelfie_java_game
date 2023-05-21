@@ -16,7 +16,7 @@ public abstract class CommonGoal implements Serializable {
     //endregion
 
     protected CommonGoal(String description, String fileName){
-        this.fileName = "\\assets\\CommonGoals" + fileName;
+        this.fileName = "\\assets\\CommonGoals\\" + fileName;
         this.scoreFileName = "scoring-8.jpg";
         score = 8;
         this.description = description;

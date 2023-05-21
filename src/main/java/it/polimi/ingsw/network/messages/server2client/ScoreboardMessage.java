@@ -1,8 +1,6 @@
 package it.polimi.ingsw.network.messages.server2client;
 
-import com.sun.source.tree.Tree;
-import it.polimi.ingsw.entities.SerializableTreeMap;
-import it.polimi.ingsw.network.Server;
+import it.polimi.ingsw.entities.util.SerializableTreeMap;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 

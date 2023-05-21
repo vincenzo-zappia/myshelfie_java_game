@@ -11,9 +11,9 @@ import it.polimi.ingsw.entities.*;
 import it.polimi.ingsw.entities.goals.*;
 import it.polimi.ingsw.entities.util.BoardTile;
 
-import java.io.Serializable;
 import java.util.*;
 
+import it.polimi.ingsw.entities.util.SerializableTreeMap;
 import it.polimi.ingsw.entities.util.Tile;
 
 public class Game{

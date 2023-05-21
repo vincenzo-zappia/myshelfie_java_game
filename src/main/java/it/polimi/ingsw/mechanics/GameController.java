@@ -1,17 +1,14 @@
 package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.entities.SerializableTreeMap;
-import it.polimi.ingsw.exceptions.FullColumnException;
+import it.polimi.ingsw.entities.util.SerializableTreeMap;
 import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.client2server.SelectionRequest;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeMap;
 
 /**
  * Calls the VirtualView to sent messages to the Client. Receives messages from the Clients and defines the relative behavior of the Game.
@@ -84,10 +81,10 @@ public class GameController {
                 case REFILLED_BOARD -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getBoard());
                 case REMOVED_CARDS -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
                 case CURRENT_PLAYER -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
-                case SCOREBOARD -> viewHashMap.get(username).showScoreboard((SerializableTreeMap<String, Integer>) payload[0]);
                 case COMMON_GOAL -> viewHashMap.get(username).showCommonGoals(game.getCommonGoals());
                 case PRIVATE_GOAL -> viewHashMap.get(username).showPrivateGoal(game.getPlayer(username).getPrivateGoal());
-
+                case TOKEN -> viewHashMap.get(username).showToken(turnManager.getCurrentPlayer());
+                case SCOREBOARD -> viewHashMap.get(username).showScoreboard((SerializableTreeMap<String, Integer>) payload[0]);
             }
         }
     }
@@ -193,6 +190,10 @@ public class GameController {
         if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer())){
             turnManager.startEndGame();
             System.out.println("INFO: Endgame started.");
+
+            //Adding the bonus point to the first player who filled his bookshelf
+            broadcastMessage(MessageType.TOKEN);
+            game.getPlayer(turnManager.getCurrentPlayer()).addScore(1);
         }
 
         //Checking if the current player was the last one who had to play a turn, if so, starting the endgame, otherwise
