@@ -9,6 +9,7 @@ public enum MessageType {
     START_GAME_REQUEST,
     SELECTION_REQUEST,
     INSERTION_REQUEST,
+    RECONNECTION_REQUEST,
     //endregion
 
     //region SERVER2CLIENT
