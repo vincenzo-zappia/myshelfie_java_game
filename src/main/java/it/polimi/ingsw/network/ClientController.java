@@ -81,6 +81,7 @@ public class ClientController implements Observer {
             }
             case FORCE_DISCONNECTION -> {
                 view.showDisconnection();
+                client.forceDisconnection();
             }
         }
     }
