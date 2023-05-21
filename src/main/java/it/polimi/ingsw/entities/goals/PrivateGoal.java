@@ -12,6 +12,7 @@ import java.util.HashMap;
 public class PrivateGoal implements Goal, Serializable {
     private static HashMap<Integer, Integer> scores;
     private final SpatialTile[] spatialTiles;
+    private final String fileName;
 
     private int getScore(int check){
         return scores.get(check);
@@ -29,7 +30,7 @@ public class PrivateGoal implements Goal, Serializable {
             put(6, 12);
         }};
 
-
+        fileName = "\\assets\\PrivateGoals\\pg" + (id-1) + ".png";
         spatialTiles = ToolXML.getSpecialCells(id);
     }
 
@@ -47,5 +48,9 @@ public class PrivateGoal implements Goal, Serializable {
             }
         }
         return getScore(checked);
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 }

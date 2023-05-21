@@ -16,7 +16,7 @@ public class CommonGoal12 extends CommonGoal implements Goal{
         super("Five columns of increasing or decreasing height.\n" +
                 "Starting from the first column on the left or on the right,\n" +
                 "each next column must be made of exactly one more tile.\n" +
-                "Tiles can be of any type.", "cg12.png");
+                "Tiles can be of any type.", "cg12.jpg");
     }
 
     private boolean firstCheck(Tile[] row){

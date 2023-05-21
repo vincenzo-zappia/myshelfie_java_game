@@ -11,7 +11,7 @@ public class CommonGoal7 extends CommonGoal implements Goal{
 
     public CommonGoal7() {
         super("Four lines each formed by 5 tiles of maximum three different types.\n" +
-                "One line can show the same or a different combination of another line.", "cg7.png");
+                "One line can show the same or a different combination of another line.", "cg7.jpg");
     }
 
     @Override

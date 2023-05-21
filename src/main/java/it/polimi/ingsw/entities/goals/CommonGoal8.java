@@ -11,7 +11,7 @@ import it.polimi.ingsw.entities.util.Tile;
 public class CommonGoal8 extends CommonGoal implements Goal {
 
     public CommonGoal8() {
-        super("Four tiles of the same type in the four corners of the bookshelf.", "cg8.png");
+        super("Four tiles of the same type in the four corners of the bookshelf.", "cg8.jpg");
     }
 
     @Override
