@@ -1,11 +1,9 @@
 package it.polimi.ingsw.mechanics;
 
+import it.polimi.ingsw.Main;
 import it.polimi.ingsw.entities.util.CardType;
 import it.polimi.ingsw.entities.util.SpatialTile;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -18,7 +16,7 @@ public class ToolXML {
 
     //region CONSTANT
     private static final ClassLoader classLoader = ToolXML.class.getClassLoader();
-    private static final String basePath = classLoader.getResource("").getPath();
+    private static final String basePath = Main.getResourcePath();
     private static final String commandListPath = basePath + "\\config\\CommandList.xml";
     private static final String privateGoalPath = basePath + "\\config\\PrivateGoals.xml";
     //endregion
@@ -51,19 +49,22 @@ public class ToolXML {
     //region PRIVATE GOAL
     public static SpatialTile[] getSpecialCells(int id){
         SpatialTile[] spatialTile = new SpatialTile[6];
+        System.out.println(privateGoalPath);
         File file = new File(privateGoalPath);
         Element root = getRootDocElement(file);
-        NodeList goal = root.getElementsByTagName("Goal");
 
+        NodeList goal = root.getElementsByTagName("Goal");
         Node cellsNode = goal.item(id);
         if(cellsNode.getNodeType() == Node.ELEMENT_NODE){
             Element cells = (Element) cellsNode;
+            
             for(int i=0; i<6; i++){
+                Element cell = (Element) cells.getElementsByTagName("Card").item(i);
 
-                int row = Integer.parseInt(cells.getAttribute("row")),
-                column = Integer.parseInt(cells.getAttribute("column"));
+                int row = Integer.parseInt(cell.getAttribute("row")),
+                column = Integer.parseInt(cell.getAttribute("column"));
 
-                CardType type = CardType.valueOf(cells.getElementsByTagName("Card").item(i).getTextContent());
+                CardType type = CardType.valueOf(cell.getTextContent());
 
                 spatialTile[i] = new SpatialTile(row, column, type);
             }
