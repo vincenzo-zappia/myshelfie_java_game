@@ -48,15 +48,16 @@ public class GameScene extends GenericScene{
     public void initGame(){
         currentSelection = new ArrayList<>();
 
+        //Setting up selection button events and initializing board tiles
         for(Node node : board.getChildren()) {
-            //logic
             node.setOnMouseClicked(onBoardCardClick);
-
-            //graphic
             node.setVisible(false);
         }
+
+        //Initializing bookshelf tiles
         for(Node node : bookshelf.getChildren()) node.setVisible(false);
 
+        //Setting up insertion button events
         col0.setOnAction(onInsertColumnClick);
         col1.setOnAction(onInsertColumnClick);
         col2.setOnAction(onInsertColumnClick);
@@ -209,6 +210,10 @@ public class GameScene extends GenericScene{
         //pg.setImage(new Image()); //TODO: Implementare metodo in PrivateGoal che restituisce image path
     }
 
+    /**
+     * Sets the cards selected from the board invisible when they are inserted in the player's bookshelf
+     * @param coordinates of the board tile containing the cards to be graphically removed
+     */
     public void removeCards(int[][] coordinates){
         for (int[] coordinate : coordinates) {
             Node node = getNodeByRowColumnIndex(coordinate[0], coordinate[1], board);

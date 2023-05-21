@@ -58,22 +58,22 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <ImageView fitHeight="67.0" fitWidth="64.0" pickOnBounds="true">
+            <ImageView fitHeight="67.0" fitWidth="64.0" pickOnBounds="true" GridPane.columnIndex="0" GridPane.rowIndex="0">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
-            <ImageView fitHeight="67.0" fitWidth="66.0" pickOnBounds="true" GridPane.columnIndex="1">
+            <ImageView fitHeight="67.0" fitWidth="66.0" pickOnBounds="true" GridPane.columnIndex="1" GridPane.rowIndex="0">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
-            <ImageView fitHeight="67.0" fitWidth="66.0" pickOnBounds="true" GridPane.columnIndex="2">
+            <ImageView fitHeight="67.0" fitWidth="66.0" pickOnBounds="true" GridPane.columnIndex="2" GridPane.rowIndex="0">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
-            <ImageView fitHeight="67.0" fitWidth="66.0" pickOnBounds="true" GridPane.columnIndex="3">
+            <ImageView fitHeight="67.0" fitWidth="66.0" pickOnBounds="true" GridPane.columnIndex="3" GridPane.rowIndex="0">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
-            <ImageView fitHeight="68.0" fitWidth="67.0" pickOnBounds="true" GridPane.columnIndex="4">
+            <ImageView fitHeight="68.0" fitWidth="67.0" pickOnBounds="true" GridPane.columnIndex="4" GridPane.rowIndex="0">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
-            <ImageView fitHeight="67.0" fitWidth="64.0" pickOnBounds="true" GridPane.rowIndex="1">
+            <ImageView fitHeight="67.0" fitWidth="64.0" pickOnBounds="true" GridPane.columnIndex="0" GridPane.rowIndex="1">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
             <ImageView fitHeight="67.0" fitWidth="69.0" pickOnBounds="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -88,7 +88,7 @@
             <ImageView fitHeight="67.0" fitWidth="67.0" pickOnBounds="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
-            <ImageView fitHeight="66.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+            <ImageView fitHeight="66.0" fitWidth="65.0" pickOnBounds="true" GridPane.columnIndex="0" GridPane.rowIndex="2">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
             <ImageView fitHeight="66.0" fitWidth="66.0" pickOnBounds="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -103,7 +103,7 @@
             <ImageView fitHeight="65.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
-            <ImageView fitHeight="64.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
+            <ImageView fitHeight="64.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="3">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
             <ImageView fitHeight="65.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -118,7 +118,7 @@
             <ImageView fitHeight="65.0" fitWidth="65.0" pickOnBounds="true" GridPane.columnIndex="4" GridPane.rowIndex="3">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
-            <ImageView fitHeight="62.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4">
+            <ImageView fitHeight="62.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="4">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
             <ImageView fitHeight="63.0" fitWidth="65.0" pickOnBounds="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
@@ -133,7 +133,7 @@
             <ImageView fitHeight="63.0" fitWidth="67.0" pickOnBounds="true" GridPane.columnIndex="4" GridPane.rowIndex="4">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
-            <ImageView fitHeight="61.0" fitWidth="64.0" pickOnBounds="true" GridPane.rowIndex="5">
+            <ImageView fitHeight="61.0" fitWidth="64.0" pickOnBounds="true" GridPane.columnIndex="0" GridPane.rowIndex="5">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
             <ImageView fitHeight="61.0" fitWidth="65.0" pickOnBounds="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
@@ -185,10 +185,10 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+            <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="0">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
-            <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
+            <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="0">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
             <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
@@ -239,7 +239,7 @@
             <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8" GridPane.rowIndex="3">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
-            <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4">
+            <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="4">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
             <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
@@ -266,7 +266,7 @@
             <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8" GridPane.rowIndex="4">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
-            <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="5">
+            <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="5">
                <Image url="@../../../../../assets/Cards/books1.png" />
             </ImageView>
             <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
