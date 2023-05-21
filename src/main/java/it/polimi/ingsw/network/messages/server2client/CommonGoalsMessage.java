@@ -8,23 +8,18 @@ import it.polimi.ingsw.network.messages.MessageType;
 /**
  * Message containing the details regarding the game common goals and each player's specific private goal
  */
-public class GoalsMessage extends Message {
+public class CommonGoalsMessage extends Message {
     private final Goal[] commonGoals;
-    private final PrivateGoal privateGoal;
 
-    //TODO: Separa commongoal e privategoal
+    //TODO: CommonGoal0?
 
-    public GoalsMessage(Goal[] commonGoals, PrivateGoal privateGoal) {
+    public CommonGoalsMessage(Goal[] commonGoals) {
         super("server", MessageType.COMMON_GOAL);
         this.commonGoals = commonGoals;
-        this.privateGoal = privateGoal;
     }
 
     public Goal[] getCommonGoals() {
         return commonGoals;
-    }
-    public PrivateGoal getPrivateGoal() {
-        return privateGoal;
     }
 
 }

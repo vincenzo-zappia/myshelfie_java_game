@@ -24,7 +24,6 @@ public class GUIManager implements UserInterface {
         GenericScene.setGui(gui);
     }
 
-
     //region USER INTERFACE
     @Override
     public void confirmUsername(boolean response) {
@@ -116,16 +115,19 @@ public class GUIManager implements UserInterface {
     }
 
     @Override
-    public void showGoalsDetails(Goal[] commonGoals, PrivateGoal privateGoal) {
+    public void showCommonGoals(Goal[] commonGoals) {
         Platform.runLater(() -> {
             GameScene gameScene = (GameScene) gui.getController();
+            gameScene.displayCommonGoals(commonGoals);
         });
-
     }
 
     @Override
     public void showPrivateGoal(PrivateGoal privateGoal) {
-
+        Platform.runLater(() -> {
+            GameScene gameScene = (GameScene) gui.getController();
+            gameScene.displayPrivateGoal(privateGoal);
+        });
     }
 
     @Override

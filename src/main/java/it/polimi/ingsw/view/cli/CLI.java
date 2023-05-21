@@ -379,14 +379,13 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void showGoalsDetails(Goal[] commonGoals, PrivateGoal privateGoal) {
+    public void showCommonGoals(Goal[] commonGoals) {
         virtualModel.setCommonGoals(commonGoals);
-        virtualModel.setPrivateGoal(privateGoal);
     }
 
     @Override
     public void showPrivateGoal(PrivateGoal privateGoal) {
-
+        virtualModel.setPrivateGoal(privateGoal);
     }
 
     @Override

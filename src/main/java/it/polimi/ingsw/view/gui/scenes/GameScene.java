@@ -21,6 +21,7 @@ import java.util.ArrayList;
  */
 public class GameScene extends GenericScene{
 
+    //region FXML
     @FXML private GridPane board;
     @FXML private GridPane bookshelf;
 
@@ -37,30 +38,12 @@ public class GameScene extends GenericScene{
     @FXML private Button col2;
     @FXML private Button col3;
     @FXML private Button col4;
-
-
-
+    //endregion
+    
     private ArrayList<int[]> currentSelection;
 
-
     /**
-     * Creates an array of coordinates from the arraylist ...
-     */
-    @FXML public void onConfirmClick(){
-        int[][] sentSelection = new int[currentSelection.size()][2];
-        for(int i = 0; i < currentSelection.size(); i++){
-            sentSelection[i][0] = currentSelection.get(i)[0];
-            sentSelection[i][1] = currentSelection.get(i)[1];
-        }
-        controller.sendSelection(sentSelection);
-        currentSelection.clear();
-        for(Node node : board.getChildren()) node.setOpacity(1);
-    }
-
-
-    //TODO: Cambia javadoc
-    /**
-     * Called by the method that changes the scene. Performs initialization routines
+     * Routines of game scene initialization such as binding even handlers to buttons and making image views not visible
      */
     public void initGame(){
         currentSelection = new ArrayList<>();
@@ -80,9 +63,71 @@ public class GameScene extends GenericScene{
         col3.setOnAction(onInsertColumnClick);
         col4.setOnAction(onInsertColumnClick);
 
-
     }
 
+    //region CLICKS
+    /**
+     * Adds the coordinates of the card placed in the clicked board tile in the selection arraylist and changes its aesthetic
+     */
+    EventHandler<MouseEvent> onBoardCardClick = event -> {
+        Node clikedNode = (Node) event.getSource();
+        ImageView selectedCard = (ImageView) clikedNode;
+
+        //Adding the clicked card to the selection
+        int[] selection = new int[2];
+        selection[0] = GridPane.getRowIndex(clikedNode);
+        selection[1] = GridPane.getColumnIndex(clikedNode);
+        currentSelection.add(selection);
+
+        //Changing the graphic properties of the card
+        selectedCard.setOpacity(0.5);
+
+    };
+
+    /**
+     * Creates an array of coordinates out of the selection arraylist and sends it in a selection request to the server
+     */
+    @FXML public void onConfirmClick(){
+
+        //Creating the array of coordinates out of the selection arraylist
+        int[][] sentSelection = new int[currentSelection.size()][2];
+        for(int i = 0; i < currentSelection.size(); i++){
+            sentSelection[i][0] = currentSelection.get(i)[0];
+            sentSelection[i][1] = currentSelection.get(i)[1];
+        }
+
+        //Sending the selected coordinates to the server
+        controller.sendSelection(sentSelection);
+
+        //End task routines: clearing the selection arraylist and setting the opacity back to normal
+        currentSelection.clear();
+        for(Node node : board.getChildren()) node.setOpacity(1);
+    }
+
+    /**
+     * Extracts the number of the clicked column and sends it in an insertion request to the server
+     */
+    EventHandler<ActionEvent> onInsertColumnClick = event -> {
+        Button column = (Button) event.getSource();
+        int sentColumn = 5;
+        
+        //Extracting the column number from its relative button
+        switch (column.getId()){
+            case "col0" -> sentColumn = 0;
+            case "col1" -> sentColumn = 1;
+            case "col2" -> sentColumn = 2;
+            case "col3" -> sentColumn = 3;
+            case "col4" -> sentColumn = 4;
+        }
+        
+        //Sending the insertion request to the server
+        controller.sendInsertion(sentColumn);
+        
+    };
+    //endregion
+
+    //Methods called by GUIManager to update the graphical entities of the game scene during the game
+    //region DISPLAYS
     /**
      * Updating and displaying the refilled board
      * @param updatedBoard refilled board
@@ -139,12 +184,29 @@ public class GameScene extends GenericScene{
         }
     }
 
+    /**
+     * Displaying the randomly chosen common goal cards and updating the score whenever a player achieves one
+     * @param commonGoals common goals of the current game
+     */
     public void displayCommonGoals(Goal[] commonGoals){
-        //TODO: Tutt'cos
+
+        //TODO: Così a fine turno viene riaggiornata inultimente anche l'immagine del commongoal, inutile ma irrilevante
+        //TODO: Risolvere questione image path
+        /*
+        cg1.setImage(new Image());
+        cg1Score.setImage(new Image());
+        cg2.setImage(new Image());
+        cg2Score.setImage(new Image());
+
+         */
     }
 
+    /**
+     * Displays the player-specific private goal card randomly chosen for each player at the start of the game
+     * @param privateGoal player-specific private goal
+     */
     public void displayPrivateGoal(PrivateGoal privateGoal){
-        //pg.setImage(); //TODO: Implementare metodo in PrivateGoal che restituisce image path
+        //pg.setImage(new Image()); //TODO: Implementare metodo in PrivateGoal che restituisce image path
     }
 
     public void removeCards(int[][] coordinates){
@@ -156,47 +218,27 @@ public class GameScene extends GenericScene{
         }
 
     }
+    //endregion
 
     //region UTIL
+    /**
+     * Returns the instance of the GridPane child ImageView given its coordinates
+     * @param row GridPane row coordinate fo the ImageView
+     * @param col GridPane column coordinate fo the ImageView
+     * @param gridPane GridPane parent of the ImageView
+     * @return the instance of the ImageView
+     */
     private Node getNodeByRowColumnIndex(final int row, final int col, GridPane gridPane) {
         for (Node node : gridPane.getChildren()) {
             Integer rowIndex = GridPane.getRowIndex(node);
             Integer colIndex = GridPane.getColumnIndex(node);
 
-            if (rowIndex != null && colIndex != null && rowIndex.intValue() == row && colIndex.intValue() == col) {
+            if (rowIndex != null && colIndex != null && rowIndex == row && colIndex == col) {
                 return node;
             }
         }
         return null;
     }
-
-    EventHandler<MouseEvent> onBoardCardClick = event -> {
-        Node clikedNode = (Node) event.getSource();
-        ImageView selectedCard = (ImageView) clikedNode;
-
-        //logic
-        int[] selection = new int[2];
-        selection[0] = GridPane.getRowIndex(clikedNode);
-        selection[1] = GridPane.getColumnIndex(clikedNode);
-        currentSelection.add(selection);
-
-        //graphic
-        selectedCard.setOpacity(0.5);
-
-    };
-
-    EventHandler<ActionEvent> onInsertColumnClick = event -> {
-        Button column = (Button) event.getSource();
-        int sentColumn = 5;
-      switch (column.getId()){
-          case "col0" -> sentColumn = 0;
-          case "col1" -> sentColumn = 1;
-          case "col2" -> sentColumn = 2;
-          case "col3" -> sentColumn = 3;
-          case "col4" -> sentColumn = 4;
-      }
-      controller.sendInsertion(sentColumn);
-    };
     //endregion
 
 }

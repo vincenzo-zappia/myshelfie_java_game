@@ -76,8 +76,12 @@ public class ClientController implements Observer {
                 view.showRefilledBoard(boardUpdate.getBoardCells());
             }
             case COMMON_GOAL -> {
-                GoalsMessage goalsMessage = (GoalsMessage) message;
-                view.showGoalsDetails(goalsMessage.getCommonGoals(), goalsMessage.getPrivateGoal());
+                CommonGoalsMessage commonGoalsMessage = (CommonGoalsMessage) message;
+                view.showCommonGoals(commonGoalsMessage.getCommonGoals());
+            }
+            case PRIVATE_GOAL -> {
+                PrivateGoalMessage privateGoalMessage = (PrivateGoalMessage) message;
+                view.showPrivateGoal(privateGoalMessage.getPrivateGoal());
             }
             case SCOREBOARD -> {
                 ScoreboardMessage scoreboard = (ScoreboardMessage) message;
