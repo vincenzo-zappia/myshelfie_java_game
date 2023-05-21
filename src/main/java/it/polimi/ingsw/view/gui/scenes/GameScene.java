@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Controller of the actual game scene where the player can interact with the game entities
@@ -66,6 +67,7 @@ public class GameScene extends GenericScene{
         col3.setOnAction(onInsertColumnClick);
         col4.setOnAction(onInsertColumnClick);
 
+        //TODO: Fallo direttamente da scenebuilder
         cg1.setVisible(false);
         cg1Score.setVisible(false);
         cg2.setVisible(false);
@@ -79,7 +81,7 @@ public class GameScene extends GenericScene{
 
     //region CLICKS
     /**
-     * Adds the coordinates of the card placed in the clicked board tile in the selection arraylist and changes its aesthetic
+     * Adds or removes the coordinates of the card placed in the clicked board tile in the selection arraylist and changes its aesthetic properties
      */
     EventHandler<MouseEvent> onBoardCardClick = event -> {
         Node clikedNode = (Node) event.getSource();
@@ -89,9 +91,22 @@ public class GameScene extends GenericScene{
         int[] selection = new int[2];
         selection[0] = GridPane.getRowIndex(clikedNode);
         selection[1] = GridPane.getColumnIndex(clikedNode);
-        currentSelection.add(selection);
-        //Changing the graphic properties of the card
-        selectedCard.setOpacity(0.5);
+
+        if (selectedCard.getOpacity() == 1){
+            currentSelection.add(selection);
+
+            //Changing the graphic properties of the card
+            selectedCard.setOpacity(0.5);
+        }
+        else {
+            //Removing the already selected coordinates from the current selection
+            currentSelection.removeIf(coordinates -> Arrays.equals(coordinates, selection));
+
+            //Changing the graphic properties of the card
+            selectedCard.setOpacity(1);
+        }
+
+
 
     };
 
@@ -199,21 +214,22 @@ public class GameScene extends GenericScene{
      * @param commonGoals common goals of the current game
      */
     public void displayCommonGoals(Goal[] commonGoals){
-
-        //TODO: Così a fine turno viene riaggiornata inultimente anche l'immagine del commongoal, inutile ma irrilevante
         CommonGoal commonGoal1 = (CommonGoal) commonGoals[0];
         CommonGoal commonGoal2 = (CommonGoal) commonGoals[1];
+
+        //Extracting the image file paths for the game common goals and their current score value
         String imgPath1 = Main.getResourcePath() + commonGoal1.getFileName();
         String imgPath2 = Main.getResourcePath() + commonGoal2.getFileName();
         String pathScore1 = Main.getResourcePath() + commonGoal1.getScoreFileName();
         String pathScore2 = Main.getResourcePath() + commonGoal2.getScoreFileName();
 
-        System.out.println(imgPath1);
+        //Setting the images of the game common goals and their current score value
         cg1.setImage(new Image(imgPath1));
         cg1Score.setImage(new Image(pathScore1));
         cg2.setImage(new Image(imgPath2));
         cg2Score.setImage(new Image(pathScore2));
 
+        //Making the images visible
         cg1.setVisible(true);
         cg1Score.setVisible(true);
         cg2.setVisible(true);
@@ -242,7 +258,6 @@ public class GameScene extends GenericScene{
             assert card != null;
             card.setVisible(false);
         }
-
     }
 
     /**
