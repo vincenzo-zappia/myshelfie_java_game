@@ -12,10 +12,12 @@ import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.exceptions.GetCardException;
 import it.polimi.ingsw.entities.util.Tile;
 
+import java.io.Serializable;
+
 /**
  * Bookshelf of a player where the cards picked from the board can be added
  */
-public class Bookshelf {
+public class Bookshelf implements Serializable {
     private final Tile[][] bookshelf;
 
     public Bookshelf(){
