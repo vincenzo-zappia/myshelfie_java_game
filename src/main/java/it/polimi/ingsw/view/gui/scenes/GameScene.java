@@ -71,6 +71,8 @@ public class GameScene extends GenericScene{
         cg2.setVisible(false);
         cg2Score.setVisible(false);
 
+        pg.setVisible(false);
+
         token.setVisible(true);
 
     }
@@ -212,6 +214,11 @@ public class GameScene extends GenericScene{
         cg2.setImage(new Image(imgPath2));
         cg2Score.setImage(new Image(pathScore2));
 
+        cg1.setVisible(true);
+        cg1Score.setVisible(true);
+        cg2.setVisible(true);
+        cg2Score.setVisible(true);
+
     }
 
     /**
@@ -221,6 +228,7 @@ public class GameScene extends GenericScene{
     public void displayPrivateGoal(PrivateGoal privateGoal){
         String pgPath = Main.getResourcePath() + privateGoal.getFileName();
         pg.setImage(new Image(pgPath));
+        pg.setVisible(true);
     }
 
     /**
