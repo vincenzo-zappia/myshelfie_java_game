@@ -11,9 +11,11 @@ public abstract class CommonGoal implements Serializable {
     //region ATTRIBUTES
     private int score;
     private final String description;
+    private final String fileName;
     //endregion
 
-    protected CommonGoal(String description){
+    protected CommonGoal(String description, String fileName){
+        this.fileName = "\\assets\\CommonGoals" + fileName;
         score = 8;
         this.description = description;
     }
@@ -55,5 +57,9 @@ public abstract class CommonGoal implements Serializable {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getFileName(){
+        return fileName;
     }
 }

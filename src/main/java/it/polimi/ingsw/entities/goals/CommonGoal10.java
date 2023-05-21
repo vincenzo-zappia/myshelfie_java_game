@@ -12,7 +12,7 @@ public class CommonGoal10 extends CommonGoal implements Goal{
     private Bookshelf b;
 
     public CommonGoal10() {
-        super("Five tiles of the same type forming an X.");
+        super("Five tiles of the same type forming an X.", "cg10.png");
     }
 
     private boolean isX(int row, int column){
