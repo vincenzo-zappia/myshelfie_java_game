@@ -25,6 +25,7 @@ public enum MessageType {
     REFILLED_BOARD,
     COMMON_GOAL,
     PRIVATE_GOAL,
+    TOKEN,
     SCOREBOARD,
     //endregion
 

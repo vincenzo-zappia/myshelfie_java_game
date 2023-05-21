@@ -398,6 +398,11 @@ public class CLI implements Runnable, UserInterface {
         virtualModel.setEndGame();
     }
 
+    @Override
+    public void showToken(String content) {
+        CliUtil.makeConfirmationMessage(content);
+    }
+
     //endregion
 
 }

@@ -73,5 +73,10 @@ public class VirtualView implements View, Observer {
     public void showScoreboard(SerializableTreeMap<String, Integer> scoreboard){
         clientHandler.sendMessage(new ScoreboardMessage(scoreboard));
     }
+
+    @Override
+    public void showToken(String content) {
+        clientHandler.sendMessage(new GenericMessage(content + " filled his bookshelf!", MessageType.TOKEN));
+    }
     //endregion
 }

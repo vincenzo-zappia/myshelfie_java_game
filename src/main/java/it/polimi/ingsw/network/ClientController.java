@@ -87,6 +87,10 @@ public class ClientController implements Observer {
                 ScoreboardMessage scoreboard = (ScoreboardMessage) message;
                 view.showScoreboard(scoreboard.getScoreboard());
             }
+            case TOKEN -> {
+                GenericMessage token = (GenericMessage) message;
+                view.showToken(token.getContent());
+            }
         }
     }
     //endregion

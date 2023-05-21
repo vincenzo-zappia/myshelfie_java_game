@@ -84,10 +84,10 @@ public class GameController {
                 case REFILLED_BOARD -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getBoard());
                 case REMOVED_CARDS -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
                 case CURRENT_PLAYER -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
-                case SCOREBOARD -> viewHashMap.get(username).showScoreboard((TreeMap<String, Integer>) payload[0]);
                 case COMMON_GOAL -> viewHashMap.get(username).showCommonGoals(game.getCommonGoals());
                 case PRIVATE_GOAL -> viewHashMap.get(username).showPrivateGoal(game.getPlayer(username).getPrivateGoal());
-
+                case TOKEN -> viewHashMap.get(username).showToken(turnManager.getCurrentPlayer());
+                case SCOREBOARD -> viewHashMap.get(username).showScoreboard((SerializableTreeMap<String, Integer>) payload[0]);
             }
         }
     }
@@ -193,6 +193,10 @@ public class GameController {
         if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer())){
             turnManager.startEndGame();
             System.out.println("INFO: Endgame started.");
+
+            //Adding the bonus point to the first player who filled his bookshelf
+            broadcastMessage(MessageType.TOKEN);
+            game.getPlayer(turnManager.getCurrentPlayer()).addScore(1);
         }
 
         //Checking if the current player was the last one who had to play a turn, if so, starting the endgame, otherwise
