@@ -6,11 +6,8 @@ import it.polimi.ingsw.network.messages.MessageType;
 /**
  * Message Class that client send to server when trying to reconnect
  */
-public class ReconnectionRequest extends Message {
-
-    private int lobby_id;
-
-    protected ReconnectionRequest(String sender, int lobby_id) {
-        super(sender, MessageType.RECONNECTION_REQUEST);
+public class NetFailureMessage extends Message {
+    public NetFailureMessage(String sender) {
+        super(sender, MessageType.FORCE_DISCONNECTION);
     }
 }

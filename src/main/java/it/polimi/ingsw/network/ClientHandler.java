@@ -64,6 +64,20 @@ public class ClientHandler implements Runnable{
             throw new RuntimeException(e);
 
         }
+        finally {
+            System.out.println("ERROR: Something in connection goes terribly wrong\n");
+            int id = lobby.lobbyNetworkFailure(this);
+            Thread.sleep(10);
+            server.removeLobby(id);
+            try {
+                socket.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            finally {
+                System.out.println("INFO: the socket is closing mannaggia alla madonna");
+            }
+        }
     }
 
     /**
