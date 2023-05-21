@@ -320,6 +320,11 @@ public class CLI implements Runnable, UserInterface {
         System.out.println("Connected players: ");
         System.out.println(CliUtil.makePlayersList(playerUsernames));
     }
+
+    @Override
+    public void showDisconnection() {
+        System.out.println("MyShelfie: one of the players disconnected from server, restart the game\n");
+    }
     //endregion
 
     //region VIEW
@@ -333,11 +338,6 @@ public class CLI implements Runnable, UserInterface {
     public void showCurrentPlayer(String currentPlayer){
         //TODO: Formattare carino CliUtil
         System.out.println("Current player: " + currentPlayer);
-    }
-
-    @Override
-    public void showDisconnection(){
-        System.out.println("MyShelfie: one of the players disconnected from server, restart the game\n");
     }
 
     @Override

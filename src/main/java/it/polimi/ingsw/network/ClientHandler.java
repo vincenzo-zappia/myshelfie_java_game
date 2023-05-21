@@ -67,7 +67,6 @@ public class ClientHandler implements Runnable{
         finally {
             System.out.println("ERROR: Something in connection goes terribly wrong\n");
             int id = lobby.lobbyNetworkFailure(this);
-            Thread.sleep(10);
             server.removeLobby(id);
             try {
                 socket.close();

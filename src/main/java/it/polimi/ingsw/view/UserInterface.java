@@ -19,7 +19,6 @@ public interface UserInterface extends View {
     /**
      * Gives feedback about the creation or joining of a lobby
      * @param response if the player successfully created/joined a lobby
-     * @param content description of the feedback
      */
     void confirmAccess(boolean response);
 
@@ -29,4 +28,5 @@ public interface UserInterface extends View {
      */
     void refreshConnectedPlayers(ArrayList<String> playerUsernames);
 
+    void showDisconnection();
 }
