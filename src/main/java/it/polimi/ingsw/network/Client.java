@@ -7,6 +7,8 @@ import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import static java.lang.System.exit;
+
 /**
  * Class that manages only the network functionality of the Client (send and receive message,
  * server connection, ...)
@@ -78,6 +80,7 @@ public class Client extends Subject implements Runnable{
     public void forceDisconnection() {
         try {
             socket.close();
+            exit(0);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
