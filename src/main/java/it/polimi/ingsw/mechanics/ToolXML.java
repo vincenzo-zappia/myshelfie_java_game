@@ -49,7 +49,6 @@ public class ToolXML {
     //region PRIVATE GOAL
     public static SpatialTile[] getSpecialCells(int id){
         SpatialTile[] spatialTile = new SpatialTile[6];
-        System.out.println(privateGoalPath);
         File file = new File(privateGoalPath);
         Element root = getRootDocElement(file);
 
@@ -57,7 +56,7 @@ public class ToolXML {
         Node cellsNode = goal.item(id);
         if(cellsNode.getNodeType() == Node.ELEMENT_NODE){
             Element cells = (Element) cellsNode;
-            
+
             for(int i=0; i<6; i++){
                 Element cell = (Element) cells.getElementsByTagName("Card").item(i);
 
