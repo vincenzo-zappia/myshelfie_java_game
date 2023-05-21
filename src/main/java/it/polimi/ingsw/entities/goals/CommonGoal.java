@@ -12,10 +12,12 @@ public abstract class CommonGoal implements Serializable {
     private int score;
     private final String description;
     private final String fileName;
+    private String scoreFileName;
     //endregion
 
     protected CommonGoal(String description, String fileName){
         this.fileName = "\\assets\\CommonGoals" + fileName;
+        this.scoreFileName = "scoring-8.jpg";
         score = 8;
         this.description = description;
     }
@@ -46,7 +48,10 @@ public abstract class CommonGoal implements Serializable {
 
     private void decrementScore(){
         if(score==0) return; //TODO: generare eccezione?
-        else score -= 2;
+        else{
+            score -= 2;
+            scoreFileName = "scoring-" + score + ".jpg";
+        }
     }
 
     protected int getScore(){
@@ -61,5 +66,9 @@ public abstract class CommonGoal implements Serializable {
 
     public String getFileName(){
         return fileName;
+    }
+
+    public String getScoreFileName(){
+        return "\\assets\\Tokens\\" + scoreFileName;
     }
 }
