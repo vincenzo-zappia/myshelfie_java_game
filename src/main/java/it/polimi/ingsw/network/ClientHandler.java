@@ -140,7 +140,7 @@ public class ClientHandler implements Runnable{
                 if(server.existsLobby(joinLobbyRequest.getLobbyId())) this.lobby = server.getLobby(joinLobbyRequest.getLobbyId());
                 else {
                     sendMessage(new TextResponse(false, "This lobby doesn't exist!"));
-                    sendMessage(new SpecificResponse(false, MessageType.ACCESS_RESPONSE));
+                    sendMessage(new SpecificResponse(false, null, MessageType.ACCESS_RESPONSE));
                     joinLobbyHandler();
                     return; //Return to stop the recursion
                 }
@@ -151,7 +151,8 @@ public class ClientHandler implements Runnable{
                  */
                 if(lobby.joinLobby(new NetworkPlayer(message.getSender(), this))){
                     sendMessage(new TextResponse(true, "Join successful!"));
-                    sendMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));
+                    sendMessage(new SpecificResponse(true, "Lobby ID: " + lobby.getLobbyID() ,MessageType.ACCESS_RESPONSE));
+
 
                     //Sending to all the players the updated username list with the new entry
                     lobby.lobbyBroadcastMessage(new UsernameListMessage(lobby.getUsernameList()));

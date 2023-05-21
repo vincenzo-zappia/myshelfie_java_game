@@ -52,7 +52,7 @@ public class ClientController implements Observer {
             }
             case ACCESS_RESPONSE -> {
                 SpecificResponse response = (SpecificResponse) message;
-                view.confirmAccess(response.getResponse());
+                view.confirmAccess(response.getResponse(), response.getContent());
             }
             case NEW_CONNECTION -> {
                 UsernameListMessage connectionMessage = (UsernameListMessage) message;

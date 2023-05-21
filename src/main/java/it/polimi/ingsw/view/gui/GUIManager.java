@@ -19,7 +19,7 @@ public class GUIManager implements UserInterface {
 
     public GUIManager(GUI gui){
         this.gui = gui;
-        ClientController clientController = new ClientController(this, new Client("10.0.0.4", 2023));
+        ClientController clientController = new ClientController(this, new Client("localhost", 2023));
         GenericScene.setController(clientController);
         GenericScene.setGui(gui);
     }
@@ -37,16 +37,17 @@ public class GUIManager implements UserInterface {
         Platform.runLater(() -> {
             LobbyScene lobbyScene = (LobbyScene) gui.getController();
             lobbyScene.showStart();
-
-            //TODO: Printa a schermo ID lobby
+            lobbyScene.showLobbyID(content);
         });
     }
 
     @Override
-    public void confirmAccess(boolean response) {
+    public void confirmAccess(boolean response, String content) {
         Platform.runLater(() -> {
             //AccessScene accessScene = (AccessScene) gui.getController();
             if(response) gui.loadScene("lobby.fxml");
+            LobbyScene lobbyScene = (LobbyScene) gui.getController();
+            lobbyScene.showLobbyID(content);
             //TODO: gestire else (id lobby non esistente)
         });
 
@@ -143,7 +144,7 @@ public class GUIManager implements UserInterface {
     @Override
     public void showScoreboard(SerializableTreeMap<String, Integer> scoreboard) {
         Platform.runLater(() -> {
-            gui.loadScene("winner.fxml");
+
             WinnerScene winnerScene = (WinnerScene) gui.getController();
             //TODO: Display scoreboard
         });

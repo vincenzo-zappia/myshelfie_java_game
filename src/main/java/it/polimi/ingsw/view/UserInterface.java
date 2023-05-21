@@ -25,7 +25,7 @@ public interface UserInterface extends View {
      * Gives feedback about the joining of a lobby
      * @param response if the player successfully created/joined a lobby
      */
-    void confirmAccess(boolean response);
+    void confirmAccess(boolean response, String content);
 
     /**
      * Displays the list of the usernames of the players connected to the lobby at that point in time

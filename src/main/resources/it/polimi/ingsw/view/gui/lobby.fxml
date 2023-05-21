@@ -69,9 +69,20 @@
          <Insets bottom="30.0" right="30.0" />
       </StackPane.margin>
    </Button>
-   <Label fx:id="feedback" text="none" visible="true" StackPane.alignment="TOP_CENTER">
+   <Label fx:id="lobbyID" text="Label" visible="false" StackPane.alignment="BOTTOM_CENTER">
+      <StackPane.margin>
+         <Insets bottom="50.0" />
+      </StackPane.margin>
+      <font>
+         <Font name="System Bold" size="20.0" />
+      </font>
+   </Label>
+   <Label fx:id="feedback" text="none" visible="false" StackPane.alignment="TOP_CENTER">
       <StackPane.margin>
          <Insets top="230.0" />
       </StackPane.margin>
+      <font>
+         <Font name="System Bold" size="14.0" />
+      </font>
    </Label>
 </StackPane>

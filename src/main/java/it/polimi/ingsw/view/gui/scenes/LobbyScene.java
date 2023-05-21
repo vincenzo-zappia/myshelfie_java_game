@@ -22,6 +22,8 @@ public class LobbyScene extends GenericScene{
     @FXML private Label label3;
     @FXML private Label label4;
 
+    @FXML private Label lobbyID;
+
     @FXML private Button start;
 
 
@@ -34,6 +36,11 @@ public class LobbyScene extends GenericScene{
 
     public void showStart(){
         start.setVisible(true);
+    }
+
+    public void showLobbyID(String lobbyID){
+        this.lobbyID.setText(lobbyID);
+        this.lobbyID.setVisible(true);
     }
 
     /**

@@ -330,7 +330,7 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void confirmAccess(boolean response) {
+    public void confirmAccess(boolean response, String content) {
         //Receiving feedback about lobby creation/join
         lobbyJoined = response;
 
