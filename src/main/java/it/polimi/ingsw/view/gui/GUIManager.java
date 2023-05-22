@@ -94,6 +94,7 @@ public class GUIManager implements UserInterface {
     public void sendCheckedCoordinates(int[][] coordinates) {
         Platform.runLater(() -> {
             GameScene gameScene = (GameScene) gui.getController();
+            //TODO: Inutile in GUI?
         });
 
     }

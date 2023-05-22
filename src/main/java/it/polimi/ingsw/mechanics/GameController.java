@@ -105,10 +105,11 @@ public class GameController {
             return;
         }
 
-        int[][] copy = Arrays.copyOf(message.getCoordinates(), message.getCoordinates().length); //TODO: Capire perché cambia ordine
+        int[][] tmp = message.getCoordinates().clone();
+        System.out.println("Prima canselect: " + Arrays.deepToString(tmp));
 
         //Checking if the cards selected are actually selectable
-        if(game.canSelect(message.getSender(), copy)) {
+        if(game.canSelect(message.getSender(), tmp)) {
 
             //Sending positive feedback to the player with the checked coordinates
             viewHashMap.get(message.getSender()).sendCheckedCoordinates(message.getCoordinates());
@@ -117,6 +118,7 @@ public class GameController {
 
             //Saving the coordinates of the removed cards in order to broadcast them at the end of the turn
             coordinates = message.getCoordinates();
+            System.out.println("Dopo canselect: " + Arrays.deepToString(coordinates));
 
             //Turn phase management: the player is now allowed to insert the selected cards into his bookshelf
             canInsert = true;
@@ -176,6 +178,7 @@ public class GameController {
 
         //Broadcasting to all the players the coordinates of the cards removed in the last turn
         broadcastMessage(MessageType.REMOVED_CARDS, (Object) coordinates);
+        //for (String username : viewHashMap.keySet()) viewHashMap.get(username).showRemovedCards(coordinates); //TODO: Debug: broadcast senza cast
 
         //Checking if the boards has to be refilled. If so, broadcasting the updated board to all the players
         if(game.checkRefill()){
@@ -183,6 +186,7 @@ public class GameController {
             System.out.println("INFO: Board refilled.");
         }
 
+        System.out.println("endTurn: " + Arrays.deepToString(coordinates)); //TODO: Debug
         //Checking if the current player has achieved anyone of the common goals
         game.scoreCommonGoal(turnManager.getCurrentPlayer());
         broadcastMessage(MessageType.COMMON_GOAL);

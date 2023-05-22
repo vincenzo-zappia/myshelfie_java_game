@@ -11,6 +11,7 @@ import it.polimi.ingsw.view.UserInterface;
  * Creates and sends messages to the server from the user interface.
  */
 public class ClientController implements Observer {
+
     //region ATTRIBUTES
     private final UserInterface view; //either CLI or GUI for the packing of messages User interface -> Server
     private final Client client; //for the unpacking of messages Server -> User interface
