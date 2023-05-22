@@ -9,6 +9,9 @@ package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CommonGoal3 extends CommonGoal implements Goal{
 
     public CommonGoal3() {
@@ -23,68 +26,60 @@ public class CommonGoal3 extends CommonGoal implements Goal{
      * @return true if one is found
      */
     private boolean searchSeq(int[][] matrix) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                if(matrix[i][j] != UNAVAILABLE){
-                    //controllo orizzontale
-                    if (j <= matrix[i].length - 4) {
-                        if (matrix[i][j] == matrix[i][j+1] && matrix[i][j+1] == matrix[i][j+2] && matrix[i][j+2] == matrix[i][j+3]) {
-                            matrix[i][j] = UNAVAILABLE;
-                            matrix[i][j+1] = UNAVAILABLE;
-                            matrix[i][j+2] = UNAVAILABLE;
-                            matrix[i][j+3] = UNAVAILABLE;
-                            return true;
-                        }
-                    }
-                    //controllo verticale
-                    if (i <= matrix.length - 4) {
-                        if (matrix[i][j] == matrix[i+1][j] && matrix[i+1][j] == matrix[i+2][j] && matrix[i+2][j] == matrix[i+3][j]) {
-                            matrix[i][j] = UNAVAILABLE;
-                            matrix[i+1][j] = UNAVAILABLE;
-                            matrix[i+2][j] = UNAVAILABLE;
-                            matrix[i+3][j] = UNAVAILABLE;
-                            return true;
-                        }
-                    }
-                    //controllo diagonale in basso a destra
-                    if (i <= matrix.length - 4 && j <= matrix[i].length - 4) {
-                        if (matrix[i][j] == matrix[i+1][j+1] && matrix[i+1][j+1] == matrix[i+2][j+2] && matrix[i+2][j+2] == matrix[i+3][j+3]) {
-                            matrix[i][j] = UNAVAILABLE;
-                            matrix[i+1][j+1] = UNAVAILABLE;
-                            matrix[i+2][j+2] = UNAVAILABLE;
-                            matrix[i+3][j+3] = UNAVAILABLE;
-                            return true;
-                        }
-                    }
-                    //controllo diagonale in basso a sinistra
-                    if (i <= matrix.length - 4 && j >= 3) {
-                        if (matrix[i][j] == matrix[i+1][j-1] && matrix[i+1][j-1] == matrix[i+2][j-2] && matrix[i+2][j-2] == matrix[i+3][j-3]) {
-                            matrix[i][j] = UNAVAILABLE;
-                            matrix[i+1][j-1] = UNAVAILABLE;
-                            matrix[i+2][j-2] = UNAVAILABLE;
-                            matrix[i+3][j-3] = UNAVAILABLE;
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        boolean[][] visited = new boolean[rows][cols];
+        int groupCount = 0;
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (!visited[i][j]) {
+                    int value = matrix[i][j];
+                    int groupSize = findAdjacent(matrix, visited, i, j, value);
+                    if (groupSize >= 4) {
+                        groupCount++;
+                        if (groupCount >= 4) {
                             return true;
                         }
                     }
                 }
             }
         }
+
         return false;
     }
 
-    //TODO: migliorare algoritmo searchSeq (mancano alcune forme e.g. "L")
+    /**
+     * Check the adjacents tiles and count them
+     * @param matrix int[][] of cards's types
+     * @param visited matrix of already visited cards
+     * @param row to check
+     * @param col to check
+     * @param value contained in tile
+     * @return count of adjacent tiles group
+     */
+    private int findAdjacent(int[][] matrix, boolean[][] visited, int row, int col, int value) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+
+        if (row < 0 || row >= rows || col < 0 || col >= cols || visited[row][col] || matrix[row][col] != value) {
+            return 0;
+        }
+
+        visited[row][col] = true;
+
+        int count = 1;
+        count += findAdjacent(matrix, visited, row - 1, col, value); //Up
+        count += findAdjacent(matrix, visited, row + 1, col, value); //Down
+        count += findAdjacent(matrix, visited, row, col - 1, value); //Left
+        count += findAdjacent(matrix, visited, row, col + 1, value); //Right
+
+        return count;
+    }
 
     @Override
     public int checkGoal(Bookshelf bs) {
-        int tmp=0;
-        int result = 0;
-        int[][] m = bs.getBookshelfColors();
-
-        do{
-            if(searchSeq(m))result++;
-            tmp++;
-        }while(tmp<4);
-        if(result>=4) return getScore();
+        if(searchSeq(bs.getBookshelfColors())) return getScore();
         return 0;
     }
 }
