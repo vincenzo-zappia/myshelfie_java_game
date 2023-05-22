@@ -64,9 +64,4 @@ public interface View {
      * @param scoreboard endgame scoreboard ordered by points
      */
     void showScoreboard(SerializableTreeMap<String, Integer> scoreboard);
-
-    /**
-     * Show disconnection message in CLI
-     */
-    void showDisconnection();
 }

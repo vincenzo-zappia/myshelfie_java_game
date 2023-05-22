@@ -16,6 +16,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import static java.lang.System.exit;
+
 /**
  * Controller that manages the reception and the sending of messages between the server and a specific client
  */
@@ -70,11 +72,9 @@ public class ClientHandler implements Runnable{
             server.removeLobby(id);
             try {
                 socket.close();
+                //exit(0);
             } catch (IOException e) {
                 throw new RuntimeException(e);
-            }
-            finally {
-                System.out.println("INFO: the socket is closing mannaggia alla madonna");
             }
         }
     }
