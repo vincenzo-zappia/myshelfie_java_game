@@ -53,6 +53,9 @@ public class Game{
      */
     public boolean canSelect(String playerUsername, int[][] coord){
 
+        //Checking if any of the coordinates exceed the board dimensions
+        for (int[] row : coord) for (int col : row) if (col < 0 || col > 8) return false;
+
         //Checking if the player has selected more cards than they can insert into their bookshelf
         Bookshelf bookshelf = players.get(playerUsername).getBookshelf();
         boolean sentinel = false;
@@ -70,56 +73,36 @@ public class Game{
         }
          */
 
-        //Checking if any of the coordinates exceed the board dimensions
-        for (int[] row : coord) for (int col : row) if (col < 0 || col > 8) return false;
-
-        //Checking if a single card is selectable
+        //Checking if the single card is selectable in case of a singular selection
         if (coord.length == 1) return board.selectableCard(coord[0][0], coord[0][1]);
 
-        //Checking if the selection forms a continuous row or column
+        //Checking if the selection is neither in a row nor a column (therefore in a diagonal)
         boolean isRow = true;
         boolean isColumn = true;
-        int firstRow = coord[0][0];
-        int firstCol = coord[0][1];
+        int firstRow = coord[0][0]; //If it's a row selection the row has to be unique
+        int firstCol = coord[0][1]; //If it's a column selection the column has to be unique
 
         for (int[] cell : coord) {
-            if (cell[0] != firstRow) {
-                isRow = false;
-            }
-            if (cell[1] != firstCol) {
-                isColumn = false;
-            }
+            if (cell[0] != firstRow) isRow = false;
+            if (cell[1] != firstCol) isColumn = false;
         }
+        if (!isRow && !isColumn) return false;
 
-        if (!isRow && !isColumn) {
-            return false;
-        }
-
+        //Checking if the selection forms a continuous row in the case of a row selection
         if (isRow) {
             Arrays.sort(coord, Comparator.comparingInt(a -> a[1]));
-            for (int i = 0; i < coord.length - 1; i++) {
-                if (coord[i][1] + 1 != coord[i + 1][1]) {
-                    return false;
-                }
-            }
+            for (int i = 0; i < coord.length - 1; i++) if (coord[i][1] + 1 != coord[i + 1][1]) return false;
         }
 
+        //Checking if the selection forms a continuous column in the case of a column selection
         if (isColumn) {
             Arrays.sort(coord, Comparator.comparingInt(a -> a[0]));
-            for (int i = 0; i < coord.length - 1; i++) {
-                if (coord[i][0] + 1 != coord[i + 1][0]) {
-                    return false;
-                }
-            }
+            for (int i = 0; i < coord.length - 1; i++) if (coord[i][0] + 1 != coord[i + 1][0]) return false;
         }
 
-        //Checking if the cards are selectable by game rules
+        //Checking if the selection is valid by game rules
         if (coord.length <= 3) {
-            for (int[] cell : coord) {
-                if (!board.selectableCard(cell[0], cell[1])) {
-                    return false;
-                }
-            }
+            for (int[] cell : coord) if (!board.selectableCard(cell[0], cell[1])) return false;
             return true;
         }
 
@@ -230,53 +213,6 @@ public class Game{
         SerializableTreeMap<String, Integer> treeMap = new SerializableTreeMap<>(comparator);
         treeMap.putAll(hashmap);
         return treeMap;
-    }
-    //endregion
-
-    //region UTIL
-    /**
-     * Rearranges the coordinates to make them usable by canSelect()
-     * @param coordinates to sort
-     * @return coordinates sorted by descending order
-     */
-    private int[][] sortCoordinates(int[][] coordinates){
-        int[] tmp;
-
-        if(coordinates.length == 3){
-            if(coordinates[0][0] == coordinates[1][0]){                              //the x's coordinates are fixed
-                tmp = new int[]{coordinates[0][1], coordinates[1][1], coordinates[2][1]};  //y's coordinates are saved into tmp[3]
-
-                //Sorting the coordinates by descending order and saving them into the array
-                Arrays.sort(tmp);
-                for(int i = 0; i < 3; i++){
-                    coordinates[i][1] = tmp[i];
-                }
-            }
-            if(coordinates[0][1] == coordinates[1][1]){                              //same as before, but now the y's coordinates
-                tmp = new int[]{coordinates[0][0], coordinates[1][0], coordinates[2][0]};  //are fixed
-                Arrays.sort(tmp);
-                for(int i = 0; i < 3; i++){
-                    coordinates[i][0] = tmp[i];
-                }
-            }
-        }
-        return coordinates;
-    }
-
-    /**
-     * Checks if the selected cards are in a diagonal
-     * @param coordinates of the selected cards
-     * @return if the cards are diagonally arranged
-     */
-    private boolean isDiagonal(int[][] coordinates){
-
-        //Checking relatively to the number of cards selected
-        switch (coordinates.length){
-            case 2 -> { return coordinates[0][0] != coordinates[1][0] && coordinates[0][1] != coordinates[1][1]; }
-            case 3 -> { return coordinates[0][0] != coordinates[1][0] && coordinates[0][1] != coordinates[1][1] && coordinates[1][0] != coordinates[2][0] && coordinates[1][1] != coordinates[2][1]; }
-        }
-        return false;
-
     }
     //endregion
 
