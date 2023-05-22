@@ -74,4 +74,6 @@ public interface View {
      */
     void showToken(String content);
 
+    void showChat(String chat);
+
 }

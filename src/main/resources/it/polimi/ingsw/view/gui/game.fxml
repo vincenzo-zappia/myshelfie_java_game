@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -18,7 +19,7 @@
 <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.GameScene">
    <AnchorPane layoutX="-270.0" layoutY="-137.0" prefHeight="768.0" prefWidth="1539.0" scaleX="0.65" scaleY="0.65" AnchorPane.bottomAnchor="-131.0" AnchorPane.leftAnchor="-270.0" AnchorPane.rightAnchor="-269.0" AnchorPane.topAnchor="-137.0">
       <children>
-         <VBox spacing="90.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <VBox spacing="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                <Pane>
                   <children>
@@ -48,6 +49,13 @@
                                              <ImageView fx:id="pg" fitHeight="265.0" fitWidth="228.0" pickOnBounds="true" preserveRatio="true">
                   <Image url="@../../../../../assets/PrivateGoals/pg1.png" />
                </ImageView>
+               <Label fx:id="chat" />
+               <AnchorPane>
+                  <children>
+                     <TextField fx:id="writeChat" AnchorPane.bottomAnchor="20.0" />
+                     <Button layoutX="148.6666717529297" mnemonicParsing="false" onAction="#sendChat" text="Button" AnchorPane.bottomAnchor="20.0" />
+                  </children>
+               </AnchorPane>
             </children>
             <padding>
                <Insets left="50.0" top="50.0" />

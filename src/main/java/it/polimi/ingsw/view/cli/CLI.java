@@ -415,6 +415,11 @@ public class CLI implements Runnable, UserInterface {
         CliUtil.makeConfirmationMessage(content);
     }
 
+    @Override
+    public void showChat(String chat) {
+        System.out.println(chat);
+    }
+
     //endregion
 
 }

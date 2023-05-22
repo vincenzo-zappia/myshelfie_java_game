@@ -11,6 +11,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -41,6 +43,10 @@ public class GameScene extends GenericScene{
     @FXML private Button col2;
     @FXML private Button col3;
     @FXML private Button col4;
+
+    @FXML private TextField writeChat;
+    @FXML private Label chat;
+
     //endregion
     
     private ArrayList<int[]> currentSelection;
@@ -105,8 +111,6 @@ public class GameScene extends GenericScene{
             //Changing the graphic properties of the card
             selectedCard.setOpacity(1);
         }
-
-
 
     };
 
@@ -267,6 +271,21 @@ public class GameScene extends GenericScene{
     public void removeToken(String content){
         token.setVisible(false);
         showMessage(true, content);
+    }
+    //endregion
+
+    //TODO: Chat implementata solo in GameScene decidere se in tutto il gioco => spostarla in GenericScene
+    //region CHAT
+    @FXML public void sendChat(){
+        String message = writeChat.getText();
+        controller.sendChat(message);
+    }
+
+    public void showChat(String message){
+        String previous = chat.getText();
+        if (previous.length() > 60) chat.setText(message); //TODO: Decidere dimensione massima visualizzabile dalla chat
+        else chat.setText(previous + "\n" + message);
+        chat.setVisible(true);
     }
     //endregion
 

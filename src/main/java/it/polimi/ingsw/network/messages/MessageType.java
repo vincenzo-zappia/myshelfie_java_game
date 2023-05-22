@@ -30,4 +30,6 @@ public enum MessageType {
     SCOREBOARD,
     //endregion
 
+    CHAT,
+
 }

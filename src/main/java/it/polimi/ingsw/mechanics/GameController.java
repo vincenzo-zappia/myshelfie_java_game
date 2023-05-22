@@ -57,6 +57,9 @@ public class GameController {
      */
     public synchronized void messageHandler(Message message){
 
+        //TODO: Per ora invio chat implementato in gamecontroller perché solo in scena Game (in clienthandler sarebbe stato peggio in quanto avrei dovuto filtrare tutti i messaggi)
+        if (message.getType().equals(MessageType.CHAT)) for(String username : viewHashMap.keySet()) viewHashMap.get(username).showChat(message.getSender() + ": " + message.getContent());
+
         //Checking if it's the turn of the player who sent the message
         if (!turnManager.getCurrentPlayer().equals(message.getSender())) {
             viewHashMap.get(message.getSender()).sendGenericResponse(false, "It's not your turn!");

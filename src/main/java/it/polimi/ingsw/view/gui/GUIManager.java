@@ -30,6 +30,7 @@ public class GUIManager implements UserInterface {
         UsernameScene usernameScene = (UsernameScene) gui.getController();
         if(response) gui.loadScene("connection.fxml");
         //TODO: Gestire else (chiamate metodi di usernameScene)
+        else usernameScene.setEnable();
     }
 
     @Override
@@ -156,6 +157,15 @@ public class GUIManager implements UserInterface {
         Platform.runLater(() -> {
             GameScene gameScene = (GameScene) gui.getController();
             gameScene.removeToken(content);
+        });
+    }
+
+    @Override
+    public void showChat(String chat) {
+        //TODO: Per il momento implementata solo nella game scene
+        Platform.runLater(() -> {
+            GameScene gameScene = (GameScene) gui.getController();
+            gameScene.showChat(chat);
         });
     }
     //endregion

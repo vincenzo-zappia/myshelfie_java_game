@@ -37,7 +37,6 @@ public class Lobby {
     //endregion
 
     //region METHODS
-
     /**
      * Method used by clients to enter a lobby
      * @param netPlayer player that request access to lobby

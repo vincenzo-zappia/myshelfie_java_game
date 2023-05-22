@@ -19,4 +19,8 @@ public class UsernameScene extends GenericScene{
         controller.checkUsername(username);
     }
 
+    public void setEnable(){
+        textField1.setDisable(false);
+    }
+
 }

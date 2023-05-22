@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.network.messages.ChatMessage;
 import it.polimi.ingsw.network.messages.client2server.*;
 import it.polimi.ingsw.network.messages.server2client.*;
 import it.polimi.ingsw.network.messages.Message;
@@ -96,6 +97,10 @@ public class ClientController implements Observer {
                 GenericMessage token = (GenericMessage) message;
                 view.showToken(token.getContent());
             }
+            case CHAT -> {
+                ChatMessage chatMessage = (ChatMessage) message ;
+                view.showChat(chatMessage.getContent());
+            }
         }
     }
     //endregion
@@ -151,6 +156,11 @@ public class ClientController implements Observer {
     public void sendInsertion(int column){
         Message insert = new InsertionRequest(username, column);
         client.sendMessage(insert);
+    }
+
+    public void sendChat(String chat){
+        Message message = new ChatMessage(username, chat);
+        client.sendMessage(message);
     }
     //endregion
 
