@@ -96,7 +96,7 @@ public class Game{
         }
 
         if (isRow) {
-            Arrays.sort(coord, (a, b) -> Integer.compare(a[1], b[1]));
+            Arrays.sort(coord, Comparator.comparingInt(a -> a[1]));
             for (int i = 0; i < coord.length - 1; i++) {
                 if (coord[i][1] + 1 != coord[i + 1][1]) {
                     return false;
@@ -105,7 +105,7 @@ public class Game{
         }
 
         if (isColumn) {
-            Arrays.sort(coord, (a, b) -> Integer.compare(a[0], b[0]));
+            Arrays.sort(coord, Comparator.comparingInt(a -> a[0]));
             for (int i = 0; i < coord.length - 1; i++) {
                 if (coord[i][0] + 1 != coord[i + 1][0]) {
                     return false;

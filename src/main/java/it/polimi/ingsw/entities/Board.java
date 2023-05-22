@@ -92,7 +92,7 @@ public class Board {
      */
     public boolean selectableCard(int row, int column){
 
-        //Checking if the received tile coordinates exceed the board boundaries
+        //Checking if the received tile coordinates exceed the board boundaries //TODO: Doppio check
         if(row < 0 || row > 8 || column < 0 || column > 8) return false;
 
         //Checking whether the selected tile is already empty or not part of the playable board

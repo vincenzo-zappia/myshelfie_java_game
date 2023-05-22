@@ -122,7 +122,6 @@ public class GameScene extends GenericScene{
             sentSelection[i][1] = currentSelection.get(i)[1];
         }
 
-        System.out.println("GameScene: " + Arrays.deepToString(sentSelection)); //TODO: Debug
         //Sending the selected coordinates to the server
         controller.sendSelection(sentSelection);
 
