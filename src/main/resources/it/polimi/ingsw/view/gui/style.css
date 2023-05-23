@@ -1,0 +1,29 @@
+.confirm-buton {
+    -fx-background-color: #2196F3; /* Colore di sfondo azzurro */
+    -fx-text-fill: white; /* Colore del testo bianco */
+    -fx-background-radius: 20px; /* Raggio dei bordi arrotondati */
+    -fx-padding: 5px 5px; /* Spazio interno al pulsante */
+}
+
+.background-img {
+    -fx-background-image: url('../../../../../assets/misc/sfondo-parquet.jpg');
+    -fx-background-size: cover; /* Imposta il ridimensionamento dell'immagine */
+    -fx-background-repeat: no-repeat;
+}
+
+.centro {
+    -fx-alignment-baseline: center;
+}
+
+.goals {
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 1), 10, 0, 0, 0); /* Imposta l'ombra */
+}
+
+.top-bar {
+    -fx-background-color: rgba(173, 216, 230, 0.7); /* Colore di sfondo azzurro chiaro e trasparente */
+    -fx-padding: 10px; /* Padding interno della top bar */
+    -fx-alignment: center; /* Allineamento del contenuto al centro della top bar */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0); /* Ombra della top bar */
+    -fx-effect: lighting;
+}
