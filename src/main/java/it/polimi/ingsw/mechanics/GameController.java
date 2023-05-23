@@ -218,7 +218,7 @@ public class GameController {
     public void findWinner(){
         //Scoring each individual private goal
 
-        //game.scorePrivateGoal();  TODO decommentare e sistemare
+        game.scorePrivateGoal();
 
         //Creating the scoreboard (sort algorithm in client)
         SerializableTreeMap<String, Integer> scoreboard = game.orderByScore();

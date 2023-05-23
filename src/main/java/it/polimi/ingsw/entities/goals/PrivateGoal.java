@@ -18,20 +18,19 @@ public class PrivateGoal implements Goal, Serializable {
         return scores.get(check);
     }
 
-    public PrivateGoal(int id){
+    public PrivateGoal(SpatialTile[] spatialTiles, String fileName){
         //riempimento hashmap con gli score e gli obiettivi acqisiti
-        scores = new HashMap<>(){{
-            put(0, 0);
-            put(1, 1);
-            put(2, 2);
-            put(3, 4);
-            put(4, 6);
-            put(5, 9);
-            put(6, 12);
-        }};
+        scores = new HashMap<>();
+        scores.put(0, 0);
+        scores.put(1, 1);
+        scores.put(2, 2);
+        scores.put(3, 4);
+        scores.put(4, 6);
+        scores.put(5, 9);
+        scores.put(6, 12);
 
-        fileName = "\\assets\\PrivateGoals\\pg" + (id-1) + ".png";
-        spatialTiles = ToolXML.getSpecialCells(id);
+        this.fileName = fileName;
+        this.spatialTiles = spatialTiles;
     }
 
     @Override
@@ -51,6 +50,6 @@ public class PrivateGoal implements Goal, Serializable {
     }
 
     public String getFileName() {
-        return fileName;
+        return "\\assets\\PrivateGoals\\" + fileName;
     }
 }

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <PrivateGoals>
-	<Goal>
+	<Goal filename="pg1.png">
 		<Card row="0" column="0">PLANTS</Card>
 		<Card row="0" column="2">FRAMES</Card>
 		<Card row="1" column="4">CATS</Card>
@@ -9,7 +9,7 @@
 		<Card row="5" column="2">TROPHIES</Card>
 	</Goal>
 	
-	<Goal>
+	<Goal filename="pg2.png">
 		<Card row="1" column="1">PLANTS</Card>
 		<Card row="2" column="0">CATS</Card>
 		<Card row="2" column="2">GAMES</Card>
@@ -18,7 +18,7 @@
 		<Card row="5" column="4">FRAMES</Card>
 	</Goal>
 	
-	<Goal>
+	<Goal filename="pg3.png">
 		<Card row="1" column="0">FRAMES</Card>
 		<Card row="1" column="3">GAMES</Card>
 		<Card row="2" column="2">PLANTS</Card>
@@ -27,7 +27,7 @@
 		<Card row="5" column="0">BOOKS</Card>
 	</Goal>
 	
-	<Goal>
+	<Goal filename="pg4.png">
 		<Card row="0" column="4">GAMES</Card>
 		<Card row="2" column="0">TROPHIES</Card>
 		<Card row="2" column="2">FRAMES</Card>
@@ -36,7 +36,7 @@
 		<Card row="4" column="2">CATS</Card>
 	</Goal>
 	
-	<Goal>
+	<Goal filename="pg5.png">
 		<Card row="1" column="1">TROPHIES</Card>
 		<Card row="3" column="1">FRAMES</Card>
 		<Card row="3" column="2">BOOKS</Card>
@@ -45,7 +45,7 @@
 		<Card row="5" column="3">CATS</Card>
 	</Goal>
 	
-	<Goal>
+	<Goal filename="pg6.png">
 		<Card row="0" column="2">TROPHIES</Card>
 		<Card row="0" column="4">CATS</Card>
 		<Card row="2" column="3">BOOKS</Card>
@@ -54,7 +54,7 @@
 		<Card row="5" column="0">PLANTS</Card>
 	</Goal>
 	
-	<Goal>
+	<Goal filename="pg7.png">
 		<Card row="0" column="0">CATS</Card>
 		<Card row="1" column="3">FRAMES</Card>
 		<Card row="2" column="1">PLANTS</Card>
@@ -63,7 +63,7 @@
 		<Card row="5" column="2">BOOKS</Card>
 	</Goal>
 	
-	<Goal>
+	<Goal filename="pg8.png">
 		<Card row="0" column="4">FRAMES</Card>
 		<Card row="1" column="1">CATS</Card>
 		<Card row="2" column="2">TROPHIES</Card>
@@ -72,7 +72,7 @@
 		<Card row="5" column="3">GAMES</Card>
 	</Goal>
 	
-	<Goal>
+	<Goal filename="pg9.png">
 		<Card row="0" column="2">GAMES</Card>
 		<Card row="2" column="2">CATS</Card>
 		<Card row="3" column="4">BOOKS</Card>
@@ -81,7 +81,7 @@
 		<Card row="5" column="0">FRAMES</Card>
 	</Goal>
 	
-	<Goal>
+	<Goal filename="pg10.png">
 		<Card row="0" column="4">TROPHIES</Card>
 		<Card row="1" column="1">GAMES</Card>
 		<Card row="2" column="0">BOOKS</Card>
@@ -90,7 +90,7 @@
 		<Card row="5" column="3">PLANTS</Card>
 	</Goal>
 	
-	<Goal>
+	<Goal filename="pg11.png">
 		<Card row="0" column="2">PLANTS</Card>
 		<Card row="1" column="1">BOOKS</Card>
 		<Card row="2" column="0">GAMES</Card>
@@ -99,7 +99,7 @@
 		<Card row="5" column="3">TROPHIES</Card>
 	</Goal>
 	
-	<Goal>
+	<Goal filename="pg12.png">
 		<Card row="0" column="2">BOOKS</Card>
 		<Card row="1" column="1">PLANTS</Card>
 		<Card row="2" column="2">FRAMES</Card>

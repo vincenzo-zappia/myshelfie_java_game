@@ -1,6 +1,7 @@
 package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.Main;
+import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.entities.util.CardType;
 import it.polimi.ingsw.entities.util.SpatialTile;
 import org.w3c.dom.*;
@@ -47,8 +48,11 @@ public class ToolXML {
     //endregion
 
     //region PRIVATE GOAL
-    public static SpatialTile[] getSpecialCells(int id){
+    public static PrivateGoal getPrivateGoal(int id){
+
         SpatialTile[] spatialTile = new SpatialTile[6];
+        String fileName = "";
+
         File file = new File(privateGoalPath);
         Element root = getRootDocElement(file);
 
@@ -56,6 +60,7 @@ public class ToolXML {
         Node cellsNode = goal.item(id);
         if(cellsNode.getNodeType() == Node.ELEMENT_NODE){
             Element cells = (Element) cellsNode;
+            fileName = cells.getAttribute("filename");
 
             for(int i=0; i<6; i++){
                 Element cell = (Element) cells.getElementsByTagName("Card").item(i);
@@ -69,7 +74,7 @@ public class ToolXML {
             }
         }
 
-        return spatialTile;
+        return new PrivateGoal(spatialTile, fileName);
 
     }
     //endregion
