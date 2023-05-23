@@ -56,7 +56,7 @@
          </Label>
       </Pane>
    </TilePane>
-   <Label alignment="CENTER" prefHeight="44.0" prefWidth="388.0" text="Connected users: 1/4" StackPane.alignment="BOTTOM_CENTER">
+   <Label fx:id="playerNum" alignment="CENTER" prefHeight="44.0" prefWidth="388.0" text="Connected users: 1/4" StackPane.alignment="BOTTOM_CENTER">
       <font>
          <Font size="20.0" />
       </font>

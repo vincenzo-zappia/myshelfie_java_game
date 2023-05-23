@@ -23,6 +23,7 @@ public class LobbyScene extends GenericScene{
     @FXML private Label label4;
 
     @FXML private Label lobbyID;
+    @FXML private Label playerNum;
 
     @FXML private Button start;
 
@@ -57,23 +58,29 @@ public class LobbyScene extends GenericScene{
         pane1.setVisible(true);
         label1.setText(playerUsernames.get(0));
 
+        int playerNum = playerUsernames.size();
         //Setting the username of the second player
-        if (playerUsernames.size() > 1){
+        if (playerNum > 1){
             pane2.setVisible(true);
             label2.setText(playerUsernames.get(1));
         }
         //Setting the username of the third player
-        if (playerUsernames.size() > 2){
+        if (playerNum > 2){
             pane3.setVisible(true);
             label3.setText(playerUsernames.get(2));
         }
 
         //Setting the username of the fourth player
-        if (playerUsernames.size() > 3){
+        if (playerNum > 3){
             pane4.setVisible(true);
             label4.setText(playerUsernames.get(3));
         }
 
+        refreshPlayerNum(playerNum);
+    }
+
+    private void refreshPlayerNum(int num){
+        playerNum.setText("Connected users: " + num + "/4");
     }
 
 }
