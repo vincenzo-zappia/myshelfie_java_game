@@ -2,6 +2,7 @@ package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
+import it.polimi.ingsw.entities.util.Tile;
 import it.polimi.ingsw.exceptions.GetCardException;
 import it.polimi.ingsw.mechanics.ToolXML;
 import it.polimi.ingsw.entities.util.SpatialTile;
@@ -10,9 +11,12 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 public class PrivateGoal implements Goal, Serializable {
+
+    //region ATTRIBUTES
     private static HashMap<Integer, Integer> scores;
     private final SpatialTile[] spatialTiles;
     private final String fileName;
+    //endregion
 
     private int getScore(int check){
         return scores.get(check);
@@ -52,4 +56,15 @@ public class PrivateGoal implements Goal, Serializable {
     public String getFileName() {
         return "\\assets\\PrivateGoals\\" + fileName;
     }
+
+    public Tile[][] getGoalStructure(){
+
+        Tile[][] structure = new Tile[6][5];
+        for(int i=0; i<6;i++) for(int j=0; j<5; j++) structure[i][j] = new Tile();
+
+        for(SpatialTile spatialTile : spatialTiles) structure[spatialTile.getRow()][spatialTile.getColumn()].setCard(spatialTile.getCard());
+
+        return structure;
+    }
+
 }

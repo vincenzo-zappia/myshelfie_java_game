@@ -47,8 +47,7 @@ public abstract class CommonGoal implements Serializable {
     //TODO: soluzione da migliorare, magari implementando il numero di giocatori
 
     private void decrementScore(){
-        if(score==0) return; //TODO: generare eccezione?
-        else{
+        if(score>0){
             score -= 2;
             scoreFileName = "scoring-" + score + ".jpg";
         }

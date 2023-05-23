@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.entities.goals.CommonGoal;
 import it.polimi.ingsw.entities.util.SerializableTreeMap;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
@@ -142,10 +143,7 @@ public class CLI implements Runnable, UserInterface {
         while(!virtualModel.getEndGame()){
             String read = scanner.nextLine();
 
-            if (!read.contains(" ")){
-                System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
-                continue;
-            }
+            if (!read.contains(" ")) read += " ";
 
             String[] splitted = read.split(" ", 2);
 
@@ -202,15 +200,16 @@ public class CLI implements Runnable, UserInterface {
                     }
                 }
 
-                //Help command for syntax aid
                 case "help" -> {
-                    System.out.println("Command list:");
+                    //Help command for syntax aid
+                    System.out.println(CliUtil.makeTitle("Command List"));
                     System.out.println(CliUtil.makeCommandList());
                 }
 
                 default -> System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
             }
         }
+
         //System.out.println(CliUtil.makeTitle("Game Over!"));
     }
 
@@ -270,9 +269,11 @@ public class CLI implements Runnable, UserInterface {
      * Prints the details of the two game common goals on screen
      */
     private void showCommonGoals(){
-        Goal[] goals = virtualModel.getCommonGoals();
-
-
+        CommonGoal commonGoal1 = (CommonGoal) virtualModel.getCommonGoals()[0],
+        commonGoal2 = (CommonGoal) virtualModel.getCommonGoals()[1];
+        System.out.println(CliUtil.makeTitle("Common Goals"));
+        System.out.println(CliUtil.makeCommonGoal(commonGoal1.getDescription()) + "\n");
+        System.out.println(CliUtil.makeCommonGoal(commonGoal2.getDescription()));
     }
 
     /**
@@ -280,6 +281,8 @@ public class CLI implements Runnable, UserInterface {
      */
     private void showPrivateGoal() {
         PrivateGoal privateGoal = virtualModel.getPrivateGoal();
+        System.out.println(CliUtil.makeTitle("Private Goal"));
+        System.out.println(CliUtil.makeBookshelf(CliUtil.bookshelfConverter(privateGoal.getGoalStructure())));
     }
 
     /**

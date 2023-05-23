@@ -288,6 +288,10 @@ public class CliUtil {
         return res + ColorCode.DEFAULT.getCode();
     }
 
+    public static String makeCommonGoal(String description){
+        return ColorCode.ORANGE.getCode()  + AsciiTool.DOT.getSymbol() + description.replace("\n", "\n  ") + ColorCode.DEFAULT.getCode();
+    }
+
     public static String makeErrorMessage(String message) {
         return ColorCode.RED.getCode() + AsciiTool.X.getSymbol() + message + ColorCode.DEFAULT.getCode();
     }
@@ -297,7 +301,9 @@ public class CliUtil {
     }
 
     public static String makeCommandList() {
-        return String.join("\n", ToolXML.getCommandList());
+        return ColorCode.ORANGE.getCode() + AsciiTool.DOT.getSymbol() +
+                String.join("\n" + AsciiTool.DOT.getSymbol(), ToolXML.getCommandList()) +
+                ColorCode.DEFAULT.getCode();
     }
     //endregion
 
