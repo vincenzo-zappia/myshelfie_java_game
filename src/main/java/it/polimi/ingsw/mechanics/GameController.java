@@ -6,10 +6,8 @@ import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.client2server.SelectionRequest;
-import javafx.scene.transform.MatrixType;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -112,10 +110,10 @@ public class GameController {
         coordinates = message.getCoordinates().clone(); //TODO: Sovrascrive: salva prima di controllare se selezione valida, serve per mantenere orine prima che canSelect lo sfasi con Arrays.sort
 
         //Checking if the cards selected are actually selectable
-        if(game.canSelect(message.getSender(), message.getCoordinates())) {
+        if((message.getCoordinates().length != 0) && game.canSelect(message.getSender(), message.getCoordinates())) {
 
             //Sending positive feedback to the player with the checked coordinates
-            viewHashMap.get(message.getSender()).sendCheckedCoordinates(message.getCoordinates());
+            viewHashMap.get(message.getSender()).sendCheckedCoordinates(true, message.getCoordinates());
             viewHashMap.get(message.getSender()).sendGenericResponse(true, "Valid selection!");
             System.out.println("INFO: " + message.getSender() + " made a valid selection");
 
@@ -124,6 +122,7 @@ public class GameController {
         }
         else{
             //Sending negative feedback to the player
+            viewHashMap.get(message.getSender()).sendCheckedCoordinates(false, message.getCoordinates());
             viewHashMap.get(message.getSender()).sendGenericResponse(false, "Invalid selection! Please retry.");
             System.out.println("INFO: " + message.getSender() + " made an invalid selection");
         }

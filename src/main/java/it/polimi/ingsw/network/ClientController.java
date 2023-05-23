@@ -67,7 +67,7 @@ public class ClientController implements Observer {
             case CURRENT_PLAYER -> view.showCurrentPlayer(message.getContent());
             case CHECKED_COORDINATES -> {
                 CoordinatesMessage checkedCoordinates = (CoordinatesMessage) message;
-                view.sendCheckedCoordinates(checkedCoordinates.getCoordinates());
+                view.sendCheckedCoordinates(checkedCoordinates.isValid(), checkedCoordinates.getCoordinates());
             }
             case REMOVED_CARDS -> {
                 CoordinatesMessage removedCards = (CoordinatesMessage) message;

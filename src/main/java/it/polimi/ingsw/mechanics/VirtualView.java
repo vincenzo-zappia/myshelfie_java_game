@@ -38,8 +38,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void sendCheckedCoordinates(int[][] coordinates) {
-        clientHandler.sendMessage(new CoordinatesMessage(coordinates, MessageType.CHECKED_COORDINATES));
+    public void sendCheckedCoordinates(boolean response, int[][] coordinates) {
+        clientHandler.sendMessage(new CoordinatesMessage(response, coordinates, MessageType.CHECKED_COORDINATES));
     }
 
     @Override

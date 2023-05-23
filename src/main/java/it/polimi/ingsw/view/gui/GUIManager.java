@@ -15,10 +15,12 @@ import java.util.ArrayList;
 
 public class GUIManager implements UserInterface {
     private final GUI gui;
-    private String currentScene;
 
     public GUIManager(GUI gui){
         this.gui = gui;
+    }
+
+    public void start(){
         ClientController clientController = new ClientController(this, new Client("localhost", 2023));
         GenericScene.setController(clientController);
         GenericScene.setGui(gui);
@@ -72,6 +74,10 @@ public class GUIManager implements UserInterface {
                 GameScene gameScene = (GameScene) gui.getController();
                 gameScene.initGame();
             }
+            else{
+                LobbyScene lobbyScene = (LobbyScene) gui.getController();
+                lobbyScene.enableStartButton(true);
+            }
         });
     }
     //endregion
@@ -86,16 +92,17 @@ public class GUIManager implements UserInterface {
     public void showCurrentPlayer(String currentPlayer) {
         Platform.runLater(() -> {
             GameScene gameScene = (GameScene) gui.getController();
-            //TODO: Print a schermo current player nella text box notifiche di gioco
+            gameScene.showMessage(true, "Current player: " + currentPlayer);
         });
 
     }
 
     @Override
-    public void sendCheckedCoordinates(int[][] coordinates) {
+    public void sendCheckedCoordinates(boolean valid, int[][] coordinates) {
         Platform.runLater(() -> {
             GameScene gameScene = (GameScene) gui.getController();
-            //TODO: Inutile in GUI?
+            gameScene.setSelectable(!valid);
+            if (!valid) gameScene.resetBoardCardOpacity();
         });
 
     }
@@ -105,6 +112,10 @@ public class GUIManager implements UserInterface {
         Platform.runLater(() -> {
             GameScene gameScene = (GameScene) gui.getController();
             gameScene.removeCards(coordinates);
+
+            //abilito il tasto di selezione e faccio scomparire i tasti di insertion
+            gameScene.setSelectable(true);
+            gameScene.showInsertionButtons(false);
         });
 
     }

@@ -27,6 +27,7 @@ import java.util.Arrays;
 public class GameScene extends GenericScene{
 
     //region FXML
+
     @FXML private GridPane board;
     @FXML private GridPane bookshelf;
 
@@ -48,6 +49,8 @@ public class GameScene extends GenericScene{
     @FXML private Label chat;
 
     //endregion
+
+    private boolean selectable;
     
     private ArrayList<int[]> currentSelection;
 
@@ -83,6 +86,9 @@ public class GameScene extends GenericScene{
 
         token.setVisible(true);
 
+        enableConfirmationButton(false);
+        selectable = true;
+
     }
 
     //region CLICKS
@@ -90,6 +96,9 @@ public class GameScene extends GenericScene{
      * Adds or removes the coordinates of the card placed in the clicked board tile in the selection arraylist and changes its aesthetic properties
      */
     EventHandler<MouseEvent> onBoardCardClick = event -> {
+
+        if (!selectable) return;
+
         Node clikedNode = (Node) event.getSource();
         ImageView selectedCard = (ImageView) clikedNode;
 
@@ -103,6 +112,7 @@ public class GameScene extends GenericScene{
 
             //Changing the graphic properties of the card
             selectedCard.setOpacity(0.5);
+            enableConfirmationButton(true);
         }
         else {
             //Removing the already selected coordinates from the current selection
@@ -110,6 +120,7 @@ public class GameScene extends GenericScene{
 
             //Changing the graphic properties of the card
             selectedCard.setOpacity(1);
+            if (!cardSelected()) enableConfirmationButton(false);
         }
 
     };
@@ -131,7 +142,8 @@ public class GameScene extends GenericScene{
 
         //End task routines: clearing the selection arraylist and setting the opacity back to normal
         currentSelection.clear();
-        for(Node node : board.getChildren()) node.setOpacity(1);
+        enableConfirmationButton(false);
+
     }
 
     /**
@@ -256,6 +268,7 @@ public class GameScene extends GenericScene{
      * @param coordinates of the board tile containing the cards to be graphically removed
      */
     public void removeCards(int[][] coordinates){
+        resetBoardCardOpacity();
         for (int[] coordinate : coordinates) {
             Node node = getNodeByRowColumnIndex(coordinate[0], coordinate[1], board);
             ImageView card = (ImageView) node;
@@ -307,6 +320,28 @@ public class GameScene extends GenericScene{
             }
         }
         return null;
+    }
+
+    public void enableConfirmationButton(boolean enabled){
+        confirm.setDisable(!enabled);
+    }
+
+    public void showInsertionButtons(boolean visibility){
+
+    }
+
+    private boolean cardSelected(){
+        for(Node node : board.getChildren()) if (node.getOpacity() != 1) return true;
+
+        return false;
+    }
+
+    public void setSelectable(boolean selectable) {
+        this.selectable = selectable;
+    }
+
+    public void resetBoardCardOpacity(){
+        for(Node node : board.getChildren()) node.setOpacity(1);
     }
     //endregion
 

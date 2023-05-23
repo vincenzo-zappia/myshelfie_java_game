@@ -11,4 +11,6 @@ module proj.ingsw.rj {
     exports it.polimi.ingsw.entities.goals;
     exports it.polimi.ingsw.view.gui;
     exports it.polimi.ingsw.view.gui.scenes;
+    exports it.polimi.ingsw.network;
+    exports it.polimi.ingsw.network.messages;
 }

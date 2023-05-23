@@ -16,7 +16,6 @@ public class GUI extends Application {
     private GenericScene currentController;
 
     public static void main(String[] args) {
-
         launch();
     }
 
@@ -33,6 +32,7 @@ public class GUI extends Application {
             stage.setScene(scene);
             stage.show();
             GUIManager guiManager = new GUIManager(this);
+            guiManager.start();
 
         } catch (Exception e){
             System.out.println(e.getMessage());
@@ -43,7 +43,7 @@ public class GUI extends Application {
         stage.setTitle("MyShelfie");
         stage.setFullScreen(true);
         stage.setMinWidth(1000);
-        stage.setMinHeight(500);
+        stage.setMinHeight(600);
     }
 
     /**

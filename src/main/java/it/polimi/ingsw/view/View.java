@@ -27,9 +27,11 @@ public interface View {
 
     /**
      * Sends back the selected coordinates if the selection is valid
+     *
+     * @param valid
      * @param coordinates coordinates selected by the player
      */
-    void sendCheckedCoordinates(int[][] coordinates);
+    void sendCheckedCoordinates(boolean valid, int[][] coordinates); //todo: revisionare javadoc
 
     /**
      * Sends the coordinates of the cards successfully removed by the current player

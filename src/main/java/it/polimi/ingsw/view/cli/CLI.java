@@ -369,8 +369,8 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void sendCheckedCoordinates(int[][] coordinates){
-        virtualModel.setCoordinates(coordinates);
+    public void sendCheckedCoordinates(boolean valid, int[][] coordinates){
+        if (valid) virtualModel.setCoordinates(coordinates);
     }
 
     @Override

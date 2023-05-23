@@ -32,10 +32,14 @@ public class LobbyScene extends GenericScene{
      */
     @FXML protected void onStartGameClick(){
         controller.startGame();
+        enableStartButton(false);
     }
 
     public void showStart(){
         start.setVisible(true);
+    }
+    public void enableStartButton(boolean enabled){
+        start.setDisable(!enabled);
     }
 
     public void showLobbyID(String lobbyID){
