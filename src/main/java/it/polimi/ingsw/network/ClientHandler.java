@@ -89,7 +89,7 @@ public class ClientHandler implements Runnable{
         Message message = receiveOneMessage();
 
         if(message.getType() == MessageType.USERNAME_REQUEST){
-            if(!server.existsUsername(message.getContent()) || !message.getContent().replace(" ", "").equals("")) {
+            if(!server.existsUsername(message.getContent()) && !message.getContent().replace(" ", "").equals("")) {
 
                 //Sending positive feedback back to the player
                 sendMessage(new TextResponse(true, "Username available!"));
