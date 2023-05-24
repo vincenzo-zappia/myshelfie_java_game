@@ -22,38 +22,28 @@ class CommonGoal5Test {
 
     @Test
     void checkGoal1() {
-        try {
-            for(int i=0; i<1; i++) {
-                bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
-                bookshelf.addCard(i, new Card("img.png", CardType.CATS));
-                bookshelf.addCard(i, new Card("img.png", CardType.BOOKS));
-                bookshelf.addCard(i, new Card("img.png", CardType.GAMES));
-                bookshelf.addCard(i, new Card("img.png", CardType.PLANTS));
-                bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
-            }
-        } catch (FullColumnException e) {
-            throw new RuntimeException(e);
+        for(int i=0; i<1; i++) {
+            bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
+            bookshelf.addCard(i, new Card("img.png", CardType.CATS));
+            bookshelf.addCard(i, new Card("img.png", CardType.BOOKS));
+            bookshelf.addCard(i, new Card("img.png", CardType.GAMES));
+            bookshelf.addCard(i, new Card("img.png", CardType.PLANTS));
+            bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
         }
-
         int score = cg5.checkGoal(bookshelf);
         assertNotEquals(8, score);
     }
 
     @Test
     void checkGoal2() {
-        try {
-            for(int i=0; i<3; i++) {
-                bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
-                bookshelf.addCard(i, new Card("img.png", CardType.CATS));
-                bookshelf.addCard(i, new Card("img.png", CardType.BOOKS));
-                bookshelf.addCard(i, new Card("img.png", CardType.GAMES));
-                bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
-                bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
-            }
-        } catch (FullColumnException e) {
-            throw new RuntimeException(e);
+        for(int i=0; i<3; i++) {
+            bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
+            bookshelf.addCard(i, new Card("img.png", CardType.CATS));
+            bookshelf.addCard(i, new Card("img.png", CardType.BOOKS));
+            bookshelf.addCard(i, new Card("img.png", CardType.GAMES));
+            bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
+            bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
         }
-
         int score = cg5.checkGoal(bookshelf);
         assertEquals(8, score);
     }
