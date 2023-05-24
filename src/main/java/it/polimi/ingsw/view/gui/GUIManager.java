@@ -62,6 +62,7 @@ public class GUIManager implements UserInterface {
             //TODO: Check con enum?
             LobbyScene lobbyScene = (LobbyScene) gui.getController();
             lobbyScene.showRefreshedConnectedPlayers(playerUsernames);
+            //TODO: pulsone
         });
 
     }

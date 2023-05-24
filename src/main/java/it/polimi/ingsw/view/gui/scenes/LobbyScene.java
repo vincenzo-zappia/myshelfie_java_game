@@ -57,23 +57,27 @@ public class LobbyScene extends GenericScene{
         //Setting the username of the lobby master
         pane1.setVisible(true);
         label1.setText(playerUsernames.get(0));
+        this.playerNum.setText("Connected players: 1/4");
 
         int playerNum = playerUsernames.size();
         //Setting the username of the second player
         if (playerNum > 1){
             pane2.setVisible(true);
             label2.setText(playerUsernames.get(1));
+            this.playerNum.setText("Connected players: 2/4");
         }
         //Setting the username of the third player
         if (playerNum > 2){
             pane3.setVisible(true);
             label3.setText(playerUsernames.get(2));
+            this.playerNum.setText("Connected players: 3/4");
         }
 
         //Setting the username of the fourth player
         if (playerNum > 3){
             pane4.setVisible(true);
             label4.setText(playerUsernames.get(3));
+            this.playerNum.setText("Connected players: 4/4");
         }
 
         refreshPlayerNum(playerNum);
