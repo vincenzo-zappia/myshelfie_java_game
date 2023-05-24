@@ -16,6 +16,10 @@ public class CommonGoal8 extends CommonGoal implements Goal {
 
     @Override
     public int checkGoal(Bookshelf bookshelf) {
+
+        //Verifico che il goal non sia gia stato preso //todo: tradurre
+        if(isReaced()) return 0;
+
         Tile c1, c2, c3, c4;
 
         try {
@@ -29,7 +33,10 @@ public class CommonGoal8 extends CommonGoal implements Goal {
             throw new RuntimeException(e);
         }
 
-        if(c1.getCard().sameType(c2.getCard()) && c3.getCard().sameType(c4.getCard()) && c2.getCard().sameType(c4.getCard())) return getScore();
+        if(c1.getCard().sameType(c2.getCard()) && c3.getCard().sameType(c4.getCard()) && c2.getCard().sameType(c4.getCard())){
+            goalReaced();
+            return getScore();
+        }
         else return 0;
     }
 }

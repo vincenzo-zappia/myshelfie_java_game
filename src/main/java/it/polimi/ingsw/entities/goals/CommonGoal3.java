@@ -79,7 +79,14 @@ public class CommonGoal3 extends CommonGoal implements Goal{
 
     @Override
     public int checkGoal(Bookshelf bs) {
-        if(searchSeq(bs.getBookshelfColors())) return getScore();
+
+        //Verifico che il goal non sia gia stato preso //todo: tradurre
+        if(isReaced()) return 0;
+
+        if(searchSeq(bs.getBookshelfColors())){
+            goalReaced();
+            return getScore();
+        }
         return 0;
     }
 }

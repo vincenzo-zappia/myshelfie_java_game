@@ -15,13 +15,20 @@ public class CommonGoal2 extends CommonGoal implements Goal {
 
     @Override
     public int checkGoal(Bookshelf bookshelf) {
+
+        //Verifico che il goal non sia gia stato preso //todo: tradurre
+        if(isReaced()) return 0;
+
         int count=0;
         for(int i=0; i<5; i++){
             if (!(bookshelf.cardsInColumn(i) == 6)) continue;
             if (allTypesDifferent(bookshelf.getColumn(i))) count++;
         }
-        //TODO: Vedere se deve essere strettamente uguale o almeno 2
-        if (count>=2) return getScore();
+
+        if (count>=2) {
+            goalReaced();
+            return getScore();
+        }
         else return 0;
     }
 }

@@ -16,7 +16,14 @@ public class CommonGoal5 extends CommonGoal implements Goal{
 
     @Override
     public int checkGoal(Bookshelf bs) {
-        if (findColumns(bs.getBookshelfColors())) return getScore();
+
+        //Verifico che il goal non sia gia stato preso //todo: tradurre
+        if(isReaced()) return 0;
+
+        if (findColumns(bs.getBookshelfColors())){
+            goalReaced();
+            return getScore();
+        }
         return 0;
     }
 

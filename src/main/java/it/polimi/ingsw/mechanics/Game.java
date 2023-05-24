@@ -31,15 +31,15 @@ public class Game{
         board = new Board(usernames.size());
         board.fillBoard();
 
-        //Creating the players as entities of the game from the lobby username list
-        players = new HashMap<>();
-        PrivateGoalFactory privateGoalFactory = new PrivateGoalFactory();
-        for(String user: usernames)players.put(user, new Player(user, privateGoalFactory.makePrivateGoal()));
-
         //Randomly picking the common goals of the game
         CommonGoalFactory factory = new CommonGoalFactory();
         commonGoals = factory.makeCommonGoal();
         commonGoal0 = new CommonGoal0();
+
+        //Creating the players as entities of the game from the lobby username list
+        players = new HashMap<>();
+        PrivateGoalFactory privateGoalFactory = new PrivateGoalFactory();
+        for(String user: usernames)players.put(user, new Player(user, privateGoalFactory.makePrivateGoal(), commonGoals));
 
     }
 
@@ -181,9 +181,8 @@ public class Game{
     public void scoreCommonGoal(String username){
         Player p = players.get(username);
         System.out.println(commonGoals[0].getClass().toString());
-        p.addScore(commonGoals[0].checkGoal(p.getBookshelf()));
         System.out.println(commonGoals[1].getClass().toString());
-        p.addScore(commonGoals[1].checkGoal(p.getBookshelf()));
+        p.addScore(p.scoreCommonGoals());
     }
 
     /**

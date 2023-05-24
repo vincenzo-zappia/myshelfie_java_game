@@ -10,6 +10,7 @@ public abstract class CommonGoal implements Serializable {
 
     //region ATTRIBUTES
     private int score;
+    private boolean reaced;
     private final String description;
     private final String fileName;
     private String scoreFileName;
@@ -18,8 +19,9 @@ public abstract class CommonGoal implements Serializable {
     protected CommonGoal(String description, String fileName){
         this.fileName = "\\assets\\CommonGoals\\" + fileName;
         this.scoreFileName = "scoring-8.jpg";
-        score = 8;
         this.description = description;
+        this.reaced = false;
+        score = 8;
     }
 
     protected static boolean allTypesDifferent(Tile[] list) {
@@ -44,8 +46,6 @@ public abstract class CommonGoal implements Serializable {
         return false;
     }
 
-    //TODO: soluzione da migliorare, magari implementando il numero di giocatori
-
     private void decrementScore(){
         if(score>0){
             score -= 2;
@@ -57,6 +57,14 @@ public abstract class CommonGoal implements Serializable {
         int oldScore = score;
         decrementScore();
         return oldScore;
+    }
+
+    protected void goalReaced(){
+        reaced = true;
+    }
+
+    protected boolean isReaced(){
+        return reaced;
     }
 
     public String getDescription() {

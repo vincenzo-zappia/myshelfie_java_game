@@ -7,6 +7,7 @@
 
 package it.polimi.ingsw.entities;
 
+import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 
 import java.io.Serializable;
@@ -21,12 +22,13 @@ public class Player implements Comparable<Player>, Serializable {
     private final Bookshelf bookshelf;
     private int score;
     private final PrivateGoal privateGoal;
+    private final Goal[] commonGoals;
     //endregion
 
-    //TODO: Inizializzare private goal
-    public Player(String username, PrivateGoal privateGoal){
+    public Player(String username, PrivateGoal privateGoal, Goal[] commonGoals){
         this.privateGoal = privateGoal;
         this.username = username;
+        this.commonGoals = commonGoals;
         bookshelf = new Bookshelf();
         score = 0;
     }
@@ -36,7 +38,16 @@ public class Player implements Comparable<Player>, Serializable {
      * Adds points to the player's score
      * @param points added
      */
-    public void addScore(int points){score+=points;}
+    public void addScore(int points){
+        score+=points;
+    }
+
+    public int scoreCommonGoals(){
+        int sum = 0;
+        sum += commonGoals[0].checkGoal(bookshelf);
+        sum += commonGoals[1].checkGoal(bookshelf);
+        return sum;
+    }
 
     /**
      * Compares the current player to another by score

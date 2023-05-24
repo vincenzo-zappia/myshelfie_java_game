@@ -22,6 +22,10 @@ public class CommonGoal4 extends CommonGoal implements Goal{
 
     @Override
     public int checkGoal(Bookshelf bs) {
+
+        //Verifico che il goal non sia gia stato preso //todo: tradurre
+        if(isReaced()) return 0;
+
         int tmp=0;
         int[][] x = bs.getBookshelfColors();
 
@@ -157,7 +161,10 @@ public class CommonGoal4 extends CommonGoal implements Goal{
                 }
             }
         }
-        if(tmp>=6) return getScore();
+        if(tmp>=6){
+            goalReaced();
+            return getScore();
+        }
         return 0;
     }
 }
