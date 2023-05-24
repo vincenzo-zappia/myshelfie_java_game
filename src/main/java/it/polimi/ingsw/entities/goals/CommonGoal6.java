@@ -18,7 +18,7 @@ public class CommonGoal6 extends CommonGoal implements Goal{
     public int checkGoal(Bookshelf bookshelf) {
 
         //Verifico che il goal non sia gia stato preso //todo: tradurre
-        if(isReaced()) return 0;
+        if(isReached()) return 0;
 
         int count=0;
         for(int i=0; i<6; i++){
@@ -27,7 +27,7 @@ public class CommonGoal6 extends CommonGoal implements Goal{
         }
 
         if(count>=2){
-            goalReaced();
+            goalReached();
             return getScore();
         }
         else return 0;

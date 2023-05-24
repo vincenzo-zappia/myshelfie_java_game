@@ -10,7 +10,7 @@ public abstract class CommonGoal implements Serializable {
 
     //region ATTRIBUTES
     private int score;
-    private boolean reaced;
+    private boolean reached;
     private final String description;
     private final String fileName;
     private String scoreFileName;
@@ -20,7 +20,7 @@ public abstract class CommonGoal implements Serializable {
         this.fileName = "\\assets\\CommonGoals\\" + fileName;
         this.scoreFileName = "scoring-8.jpg";
         this.description = description;
-        this.reaced = false;
+        this.reached = false;
         score = 8;
     }
 
@@ -59,12 +59,12 @@ public abstract class CommonGoal implements Serializable {
         return oldScore;
     }
 
-    protected void goalReaced(){
-        reaced = true;
+    protected void goalReached(){
+        reached = true;
     }
 
-    protected boolean isReaced(){
-        return reaced;
+    protected boolean isReached(){
+        return reached;
     }
 
     public String getDescription() {

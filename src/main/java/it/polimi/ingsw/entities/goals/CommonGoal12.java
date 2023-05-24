@@ -28,7 +28,7 @@ public class CommonGoal12 extends CommonGoal implements Goal{
     public int checkGoal(Bookshelf bookshelf) {
 
         //Verifico che il goal non sia gia stato preso //todo: tradurre
-        if(isReaced()) return 0;
+        if(isReached()) return 0;
 
         if(!firstCheck(bookshelf.getRow(5))) return 0; //verifico che sia presente una carta in almeno tutte le 5 colonne
 
@@ -38,7 +38,7 @@ public class CommonGoal12 extends CommonGoal implements Goal{
 
             if(!(len == lenSucc+1 || len == lenSucc-1)) return 0;
         }
-        goalReaced();
+        goalReached();
         return getScore();
     }
 }

@@ -25,7 +25,7 @@ public class CommonGoal1 extends CommonGoal implements Goal{
     public int checkGoal(Bookshelf bs) {
 
         //Verifico che il goal non sia gia stato preso //todo: tradurre
-        if(isReaced()) return 0;
+        if(isReached()) return 0;
 
         //equal square card
         int tmp=0;
@@ -46,7 +46,7 @@ public class CommonGoal1 extends CommonGoal implements Goal{
         }
 
         if(tmp>=2){
-            goalReaced();
+            goalReached();
             return getScore();
         }
         else return 0;

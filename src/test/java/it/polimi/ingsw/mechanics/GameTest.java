@@ -162,10 +162,8 @@ class GameTest {
     }
 
 
-    //TODO: da verificare
     @Test
     void scorePrivateGoal() {
-        /*
         game.getPlayer("G2").getBookshelf().addCard(0, new Card("img.png", CardType.FRAMES));
         game.getPlayer("G2").getBookshelf().addCard(0, new Card("img.png", CardType.FRAMES));
         game.getPlayer("G2").getBookshelf().addCard(0, new Card("img.png", CardType.FRAMES));
@@ -194,13 +192,8 @@ class GameTest {
         game.getPlayer("G2").getBookshelf().addCard(4, new Card("img.png", CardType.CATS));
         game.getPlayer("G2").getBookshelf().addCard(4, new Card("img.png", CardType.PLANTS));
 
-
-        game.getPlayer("G2").setPrivateGoal(new PrivateGoal(0));
-
         game.scorePrivateGoal();
         assertTrue(game.getPlayer("G2").getScore()>0);
-
-         */
     }
 
     /**

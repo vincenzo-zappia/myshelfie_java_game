@@ -9,9 +9,6 @@ package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class CommonGoal3 extends CommonGoal implements Goal{
 
     public CommonGoal3() {
@@ -81,10 +78,10 @@ public class CommonGoal3 extends CommonGoal implements Goal{
     public int checkGoal(Bookshelf bs) {
 
         //Verifico che il goal non sia gia stato preso //todo: tradurre
-        if(isReaced()) return 0;
+        if(isReached()) return 0;
 
         if(searchSeq(bs.getBookshelfColors())){
-            goalReaced();
+            goalReached();
             return getScore();
         }
         return 0;

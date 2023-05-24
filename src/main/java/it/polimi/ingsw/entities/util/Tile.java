@@ -26,9 +26,9 @@ public class Tile implements Serializable {
         this.card = card;
         empty = false;
     }
-    public Card getCard() throws GetCardException {
-        if(isTileEmpty()) throw new GetCardException();
-        return card;
+    public Card getCard() {
+        if(!isTileEmpty()) return card;
+        return null;
     }
     public void setTileEmpty(){
         empty=true;

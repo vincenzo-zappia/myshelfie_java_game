@@ -41,20 +41,16 @@ public class PrivateGoal implements Goal, Serializable {
     public int checkGoal(Bookshelf bookshelf) {
         int checked=0;
         for (SpatialTile spatialTile : spatialTiles) {
-            try {
-                Card bookshelfCard = bookshelf.getBookshelfTile(spatialTile.getRow(), spatialTile.getColumn()).getCard(),
-                        goalCard = spatialTile.getCard();
+            if(bookshelf.getBookshelfTile(spatialTile.getRow(),spatialTile.getColumn()).getCard() != null){
+                Card bookshelfCard = bookshelf.getBookshelfTile(spatialTile.getRow(), spatialTile.getColumn()).getCard(), goalCard = spatialTile.getCard();
                 if (bookshelfCard.sameType(goalCard)) checked++;
-
-            } catch (GetCardException e) {
-                throw new RuntimeException(e);
             }
         }
         return getScore(checked);
     }
 
     public String getFileName() {
-        return "\\assets\\PrivateGoals\\" + fileName;
+        return "src/main/resources/assets/PrivateGoals" + fileName;
     }
 
     public Tile[][] getGoalStructure(){

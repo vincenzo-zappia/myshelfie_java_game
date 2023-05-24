@@ -18,10 +18,10 @@ public class CommonGoal5 extends CommonGoal implements Goal{
     public int checkGoal(Bookshelf bs) {
 
         //Verifico che il goal non sia gia stato preso //todo: tradurre
-        if(isReaced()) return 0;
+        if(isReached()) return 0;
 
         if (findColumns(bs.getBookshelfColors())){
-            goalReaced();
+            goalReached();
             return getScore();
         }
         return 0;

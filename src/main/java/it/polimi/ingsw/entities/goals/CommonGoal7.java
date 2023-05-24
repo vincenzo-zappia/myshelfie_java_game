@@ -18,7 +18,7 @@ public class CommonGoal7 extends CommonGoal implements Goal{
     public int checkGoal(Bookshelf bs) {
 
         //Verifico che il goal non sia gia stato preso //todo: tradurre
-        if(isReaced()) return 0;
+        if(isReached()) return 0;
 
         int tmp;
         int cntr=0;
@@ -35,7 +35,7 @@ public class CommonGoal7 extends CommonGoal implements Goal{
             }
         }
         if(cntr>=4){
-            goalReaced();
+            goalReached();
             return getScore();
         }
         return 0;

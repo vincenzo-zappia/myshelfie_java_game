@@ -2,38 +2,17 @@ package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.util.CardType;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TreeMap;
 
 /**
- * Questo CommonGoal si riferisce ai Goals presente sulla Board
+ * Questo CommonGoal si riferisce ai Goals presenti sulla Board
  */
 public class CommonGoal0 implements Goal{
 
-    //TODO: Vincè controlla se va bene
-    //private int[][] mColor = new int[6][5];
-    //private final int[] scores;
-   //private int partial;
-    /*
-    public void setColorMatrix(int[][] matrix){
-        mColor = matrix;
-    }
-    */
-    public CommonGoal0() {
-        //scores = new int[]{0,3,5,8};
-    }
-
     @Override
     public int checkGoal(Bookshelf bookshelf) {
-        /*
-            partial = 0;
-            for(CardType type: CardType.values()){...}
-
-            return findLargestAdjacentGroup(mColor);
-        */
-
         return searchGroups(bookshelf.getBookshelfColors());
     }
 
@@ -49,13 +28,15 @@ public class CommonGoal0 implements Goal{
         ArrayList<Integer> num = new ArrayList<>();
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                if (!visited[i][j]) {
+                if (!visited[i][j] && matrix[i][j] != UNAVAILABLE) {
                     int value = matrix[i][j];
                     num.add(findAdjacent(matrix, visited, i, j, value));
                 }
             }
         }
-        return Collections.max(num); //TODO: contare solo gruppo più grande o restituire punteggio per tutti gruppi presenti?
+        int res = Collections.max(num);
+        if(res>1)return res;
+        return 0;
     }
 
     /**
@@ -86,41 +67,4 @@ public class CommonGoal0 implements Goal{
         return count;
     }
 
-    //TODO: se precedenti metodi funzionano, rimuovere sottostanti
-    /*
-    private static int findLargestAdjacentGroup(int[][] matrix) {
-        int largestGroupSize = 0;
-
-            // Visita ogni elemento della matrice come un nodo in un grafo
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                int currentGroupSize = visitNode(matrix, i, j, matrix[i][j], new boolean[matrix.length][matrix[0].length]);
-                largestGroupSize = Math.max(largestGroupSize, currentGroupSize);
-            }
-        }
-
-        return largestGroupSize;
-    }
-
-
-
-    // Visita un nodo e tutti i suoi nodi adiacenti che hanno lo stesso valore
-    private static int visitNode(int[][] matrix, int i, int j, int value, boolean[][] visited) {
-        // Verifica se il nodo è già stato visitato o se il valore non corrisponde
-        if (i < 0 || i >= matrix.length || j < 0 || j >= matrix[0].length || visited[i][j] || matrix[i][j] != value || matrix[i][j] == Goal.UNAVAILABLE) {
-            return 0;
-        }
-
-        visited[i][j] = true;
-
-        // Visita tutti i nodi adiacenti che hanno lo stesso valore
-        int size = 1;
-        size += visitNode(matrix, i + 1, j, value, visited);
-        size += visitNode(matrix, i - 1, j, value, visited);
-        size += visitNode(matrix, i, j + 1, value, visited);
-        size += visitNode(matrix, i, j - 1, value, visited);
-
-        return size;
-    }
-*/
 }

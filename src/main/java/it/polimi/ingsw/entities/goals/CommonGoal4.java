@@ -24,7 +24,7 @@ public class CommonGoal4 extends CommonGoal implements Goal{
     public int checkGoal(Bookshelf bs) {
 
         //Verifico che il goal non sia gia stato preso //todo: tradurre
-        if(isReaced()) return 0;
+        if(isReached()) return 0;
 
         int tmp=0;
         int[][] x = bs.getBookshelfColors();
@@ -162,7 +162,7 @@ public class CommonGoal4 extends CommonGoal implements Goal{
             }
         }
         if(tmp>=6){
-            goalReaced();
+            goalReached();
             return getScore();
         }
         return 0;
