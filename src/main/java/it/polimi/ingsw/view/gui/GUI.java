@@ -1,9 +1,11 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.Main;
 import it.polimi.ingsw.view.gui.scenes.GenericScene;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -12,6 +14,7 @@ public class GUI extends Application {
     //TODO: Spostare creazione client nel costruttore di GUI e CLI
 
     private Scene scene;
+    private Stage stage;
     private FXMLLoader currentLoader;
     private GenericScene currentController;
 
@@ -22,6 +25,7 @@ public class GUI extends Application {
     @Override
     public void start(Stage stage) {
         try{
+            this.stage = stage;
             //TODO: setup scena iniziale;
             currentLoader = new FXMLLoader(GUI.class.getResource("username.fxml"));
             Scene scene = new Scene(currentLoader.load(), 900,600);
@@ -41,6 +45,7 @@ public class GUI extends Application {
 
     private void startupStage(Stage stage){
         stage.setTitle("MyShelfie");
+        stage.getIcons().add(new Image(Main.getResourcePath() + "\\assets\\misc\\icon.png"));
         stage.setFullScreen(true);
         stage.setMinWidth(1000);
         stage.setMinHeight(600);
@@ -69,4 +74,7 @@ public class GUI extends Application {
         return currentController;
     }
 
+    public Stage getStage() {
+        return stage;
+    }
 }
