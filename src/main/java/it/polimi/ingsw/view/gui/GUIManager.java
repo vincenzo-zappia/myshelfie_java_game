@@ -157,9 +157,9 @@ public class GUIManager implements UserInterface {
     @Override
     public void showScoreboard(SerializableTreeMap<String, Integer> scoreboard) {
         Platform.runLater(() -> {
-
+            gui.loadScene("winner.fxml");
             WinnerScene winnerScene = (WinnerScene) gui.getController();
-            //TODO: Display scoreboard
+            winnerScene.displayScoreboard(scoreboard);
         });
     }
 

@@ -50,14 +50,14 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Label text="Label" GridPane.rowIndex="1" />
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label text="Label" GridPane.rowIndex="2" />
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label text="Label" GridPane.rowIndex="3" />
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Label text="Label" GridPane.rowIndex="4" />
-                  <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label text="Label" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                  <Label text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Label" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                  <Label text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="Label" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                  <Label text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label text="Label" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                  <Label text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                </children>
             </GridPane>
          </children>

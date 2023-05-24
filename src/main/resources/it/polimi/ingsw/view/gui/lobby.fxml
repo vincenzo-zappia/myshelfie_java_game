@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.LobbyScene">
+<StackPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.LobbyScene">
    <ImageView fitHeight="200.0" fitWidth="603.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
       <Image url="@../../../../../assets/misc/logo.png" />
    </ImageView>
@@ -61,7 +61,7 @@
          <Font size="20.0" />
       </font>
    </Label>
-   <Button fx:id="start" mnemonicParsing="false" onAction="#onStartGameClick" prefHeight="56.0" prefWidth="166.0" text="START" visible="false" StackPane.alignment="BOTTOM_RIGHT">
+   <Button fx:id="start" mnemonicParsing="false" onAction="#onStartGameClick" prefHeight="56.0" prefWidth="166.0" styleClass="start-button" text="START" StackPane.alignment="BOTTOM_RIGHT">
       <font>
          <Font size="25.0" />
       </font>

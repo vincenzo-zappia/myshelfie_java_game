@@ -9,6 +9,7 @@ import it.polimi.ingsw.entities.util.Tile;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -48,6 +49,8 @@ public class GameScene extends GenericScene{
     @FXML private TextField writeChat;
     @FXML private Label chat;
 
+    @FXML private ImageView livingroom;
+
     //endregion
 
     private boolean selectable;
@@ -58,6 +61,7 @@ public class GameScene extends GenericScene{
      * Routines of game scene initialization such as binding even handlers to buttons and making image views not visible
      */
     public void initGame(){
+
         currentSelection = new ArrayList<>();
 
         //Setting up selection button events and initializing board tiles
@@ -304,24 +308,7 @@ public class GameScene extends GenericScene{
     //endregion
 
     //region UTIL
-    /**
-     * Returns the instance of the GridPane child ImageView given its coordinates
-     * @param row GridPane row coordinate fo the ImageView
-     * @param col GridPane column coordinate fo the ImageView
-     * @param gridPane GridPane parent of the ImageView
-     * @return the instance of the ImageView
-     */
-    private Node getNodeByRowColumnIndex(final int row, final int col, GridPane gridPane) {
-        for (Node node : gridPane.getChildren()) {
-            Integer rowIndex = GridPane.getRowIndex(node);
-            Integer colIndex = GridPane.getColumnIndex(node);
 
-            if (rowIndex != null && colIndex != null && rowIndex == row && colIndex == col) {
-                return node;
-            }
-        }
-        return null;
-    }
 
     public void enableConfirmationButton(boolean enabled){
         confirm.setDisable(!enabled);
