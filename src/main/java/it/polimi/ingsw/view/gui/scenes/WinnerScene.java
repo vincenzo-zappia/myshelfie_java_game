@@ -15,7 +15,7 @@ public class WinnerScene extends GenericScene {
 
     //region CLICK
     @FXML public void onNewGameClick(){
-        //todo: vedere se mantenere
+        gui.loadScene("connection.fxml");
     }
 
     @FXML public void onQuitClick(){

@@ -4,6 +4,7 @@ import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.goals.CommonGoal0;
 import it.polimi.ingsw.entities.util.CardType;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,9 +13,12 @@ public class CommonGoal0Test {
     private static CommonGoal0 cg0;
     public static Bookshelf b;
 
+    @BeforeAll
+    static void setUp(){
+        cg0=new CommonGoal0();
+    }
     @BeforeEach
     void Init(){
-        cg0=new CommonGoal0();
         b=new Bookshelf();
     }
 
@@ -30,7 +34,7 @@ public class CommonGoal0Test {
             b.addCard(i, new Card("img.png", CardType.TROPHIES));
         }
         int score = cg0.checkGoal(b);
-        assertEquals(4, score);
+        assertEquals(6, score);
     }
 
     @Test
@@ -45,7 +49,7 @@ public class CommonGoal0Test {
             b.addCard(i, new Card("img.png", CardType.TROPHIES));
         }
         int score = cg0.checkGoal(b);
-        assertEquals(6, score);
+        assertEquals(11, score);
     }
 
     @Test
@@ -58,7 +62,7 @@ public class CommonGoal0Test {
             b.addCard(i, new Card("img.png", CardType.TROPHIES));
         }
         int score = cg0.checkGoal(b);
-        assertEquals(16, score);
+        assertEquals(11, score);
     }
 
     @Test
@@ -71,7 +75,7 @@ public class CommonGoal0Test {
             b.addCard(i, new Card("img.png", CardType.FRAMES));
         }
         int score = cg0.checkGoal(b);
-        assertEquals(12, score);
+        assertEquals(11, score);
     }
 
     @Test
@@ -85,7 +89,7 @@ public class CommonGoal0Test {
             b.addCard(i, new Card("img.png", CardType.BOOKS));
         }
         int score = cg0.checkGoal(b);
-        assertEquals(5, score);
+        assertEquals(30, score);
     }
 
     @Test

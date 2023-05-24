@@ -149,7 +149,7 @@ public class CommonGoal4 extends CommonGoal implements Goal{
                         }
                         if (x[i][j] == x[i - 1][j]) {
                             x[i][j] = UNAVAILABLE;
-                            x[i + 1][j] = UNAVAILABLE;
+                            x[i - 1][j] = UNAVAILABLE;
                             tmp++;
                         }
                         if (x[i][j] == x[i][j - 1]) {

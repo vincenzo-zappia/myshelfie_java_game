@@ -1,10 +1,7 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.entities.util.CardType;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.TreeMap;
+import java.util.HashMap;
 
 /**
  * Questo CommonGoal si riferisce ai Goals presenti sulla Board
@@ -13,30 +10,39 @@ public class CommonGoal0 implements Goal{
 
     @Override
     public int checkGoal(Bookshelf bookshelf) {
-        return searchGroups(bookshelf.getBookshelfColors());
+        HashMap<Integer, Integer> res = searchGroups(bookshelf.getBookshelfColors());
+        int points = 0;
+
+        for(Integer t: res.keySet()){
+            if (res.get(t) == 3)points = points+2;
+            if(res.get(t)==4)points=points+3;
+            if(res.get(t)==5)points=points+5;
+            if(res.get(t)>5)points=points+8;
+        }
+        return points;
     }
 
     /**
      * Methods that search the max player's group of tiles
+     *
      * @param matrix bookshelf colors
      * @return group's size
      */
-    private int searchGroups(int[][] matrix) {
+    private HashMap<Integer, Integer> searchGroups(int[][] matrix) {
         int rows = matrix.length;
         int cols = matrix[0].length;
         boolean[][] visited = new boolean[rows][cols];
-        ArrayList<Integer> num = new ArrayList<>();
+        HashMap<Integer, Integer> num = new HashMap<>();
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 if (!visited[i][j] && matrix[i][j] != UNAVAILABLE) {
                     int value = matrix[i][j];
-                    num.add(findAdjacent(matrix, visited, i, j, value));
+                    num.put(value, findAdjacent(matrix, visited, i, j, value));
                 }
             }
         }
-        int res = Collections.max(num);
-        if(res>1)return res;
-        return 0;
+        return num;
     }
 
     /**
