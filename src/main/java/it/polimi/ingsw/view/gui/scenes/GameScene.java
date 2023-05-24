@@ -292,6 +292,7 @@ public class GameScene extends GenericScene{
     @FXML public void sendChat(){
         String message = writeChat.getText();
         controller.sendChat(message);
+        writeChat.clear();
     }
 
     public void showChat(String message){
