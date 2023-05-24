@@ -1,0 +1,50 @@
+ <?xml version='1.0' encoding='UTF-8' ?>
+<Board>
+	<P2 row="1" column="3" />
+	<P2 row="1" column="4" />
+	<P2 row="2" column="3" />
+	<P2 row="2" column="4" />
+	<P2 row="2" column="5" />
+	<P2 row="3" column="2" />
+	<P2 row="3" column="3" />
+	<P2 row="3" column="4" />
+	<P2 row="3" column="5" />
+	<P2 row="3" column="6" />
+	<P2 row="3" column="7" />
+	<P2 row="4" column="1" />
+	<P2 row="4" column="2" />
+	<P2 row="4" column="3" />
+	<P2 row="4" column="4" />
+	<P2 row="4" column="5" />
+	<P2 row="4" column="6" />
+	<P2 row="4" column="7" />
+	<P2 row="5" column="1" />
+	<P2 row="5" column="2" />
+	<P2 row="5" column="3" />
+	<P2 row="5" column="4" />
+	<P2 row="5" column="5" />
+	<P2 row="5" column="6" />
+	<P2 row="6" column="3" />
+	<P2 row="6" column="4" />
+	<P2 row="6" column="5" />
+	<P2 row="7" column="4" />
+	<P2 row="7" column="5" />
+	
+	<P3 row="0" column="3" />
+	<P3 row="2" column="2" />
+	<P3 row="2" column="6" />
+	<P3 row="3" column="8" />
+	<P3 row="5" column="0" />
+	<P3 row="6" column="2" />
+	<P3 row="6" column="6" />
+	<P3 row="8" column="5" />
+	
+	<P4 row="0" column="4" />
+	<P4 row="1" column="5" />
+	<P4 row="3" column="1" />
+	<P4 row="4" column="0" />
+	<P4 row="4" column="8" />
+	<P4 row="5" column="7" />
+	<P4 row="7" column="3" />
+	<P4 row="8" column="4" />
+</Board>
