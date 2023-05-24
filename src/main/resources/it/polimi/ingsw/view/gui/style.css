@@ -27,3 +27,15 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0); /* Ombra della top bar */
     -fx-effect: lighting;
 }
+
+.start-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-color: blue;
+    -fx-border-width: 1px;
+    -fx-text-fill: blue;
+}
+
+.start-button:hover {
+    -fx-background-color: rgba(0, 0, 255, 0.2); /* Colore di sfondo leggermente evidenziato al passaggio del mouse */
+}
