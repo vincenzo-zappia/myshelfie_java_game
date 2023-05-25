@@ -22,19 +22,33 @@ class CommonGoal4Test {
     void setUp() {bookshelf=new Bookshelf();}
 
     @Test
-    void checkGoal() {
-        try {
-            for(int i=0; i<3; i++) {
-                bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
-                bookshelf.addCard(i, new Card("img.png", CardType.CATS));
-                bookshelf.addCard(i, new Card("img.png", CardType.CATS));
-                bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
-            }
-        } catch (FullColumnException e) {
-            throw new RuntimeException(e);
+    void checkGoalCaseTrue() {
+        for(int i=0; i<2; i++) {
+            bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
+            bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
+            bookshelf.addCard(i, new Card("img.png", CardType.CATS));
+            bookshelf.addCard(i, new Card("img.png", CardType.CATS));
+            bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
         }
+        bookshelf.addCard(3, new Card("img.png", CardType.PLANTS));
+        bookshelf.addCard(3, new Card("img.png", CardType.PLANTS));
 
         int score = cg4.checkGoal(bookshelf);
         assertEquals(8, score);
+    }
+
+    @Test
+    void checkGoalCaseFalse() {
+        for(int i=0; i<2; i++) {
+            bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
+            bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
+            bookshelf.addCard(i, new Card("img.png", CardType.CATS));
+            bookshelf.addCard(i, new Card("img.png", CardType.CATS));
+            bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
+        }
+        bookshelf.addCard(3, new Card("img.png", CardType.PLANTS));
+
+        int score = cg4.checkGoal(bookshelf);
+        assertEquals(0, score);
     }
 }

@@ -8,8 +8,10 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-
+ //TODO 3 da finire e scoreboard
 public class CommonGoal3 extends CommonGoal implements Goal{
+
+     boolean[][] visited;
 
     public CommonGoal3() {
         super("Four groups each containing at least 4 tiles of the same types (not necessarily in the depicted shape).\n" +
@@ -25,14 +27,14 @@ public class CommonGoal3 extends CommonGoal implements Goal{
     private boolean searchSeq(int[][] matrix) {
         int rows = matrix.length;
         int cols = matrix[0].length;
-        boolean[][] visited = new boolean[rows][cols];
+        visited = new boolean[rows][cols];
         int groupCount = 0;
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 if (!visited[i][j]) {
                     int value = matrix[i][j];
-                    int groupSize = findAdjacent(matrix, visited, i, j, value);
+                    int groupSize = findAdjacent(matrix, i, j, value);
                     if (groupSize >= 4) {
                         groupCount++;
                         if (groupCount >= 4) {
@@ -42,36 +44,34 @@ public class CommonGoal3 extends CommonGoal implements Goal{
                 }
             }
         }
-
         return false;
     }
 
     /**
      * Check the adjacents tiles and count them
      * @param matrix int[][] of cards's types
-     * @param visited matrix of already visited cards
      * @param row to check
      * @param col to check
      * @param value contained in tile
      * @return count of adjacent tiles group
      */
-    private int findAdjacent(int[][] matrix, boolean[][] visited, int row, int col, int value) {
+    private int findAdjacent(int[][] matrix, int row, int col, int value) {
         int rows = matrix.length;
         int cols = matrix[0].length;
 
-        if (row < 0 || row >= rows || col < 0 || col >= cols || visited[row][col] || matrix[row][col] != value) {
+        if (row < 0 || row >= rows || col < 0 || col >= cols || visited[row][col] || matrix[row][col] != value || matrix[row][col] == UNAVAILABLE) {
             return 0;
         }
 
         visited[row][col] = true;
 
-        int count = 1;
-        count += findAdjacent(matrix, visited, row - 1, col, value); //Up
-        count += findAdjacent(matrix, visited, row + 1, col, value); //Down
-        count += findAdjacent(matrix, visited, row, col - 1, value); //Left
-        count += findAdjacent(matrix, visited, row, col + 1, value); //Right
+        int count=0;
+        count += findAdjacent(matrix, row - 1, col, value); //Up
+        count += findAdjacent(matrix, row + 1, col, value); //Down
+        count += findAdjacent(matrix, row, col - 1, value); //Left
+        count += findAdjacent(matrix, row, col + 1, value); //Right
 
-        return count;
+        return count+1;
     }
 
     @Override

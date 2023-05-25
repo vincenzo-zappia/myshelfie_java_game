@@ -26,8 +26,6 @@ class CommonGoal3Test {
     void checkGoalVerticalHorizontal() {
 
         for(int i=0; i<4; i++) {
-            bookshelf.addCard(i, new Card("img.png", CardType.PLANTS));
-            bookshelf.addCard(i, new Card("img.png", CardType.GAMES));
             bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
             bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
             bookshelf.addCard(i, new Card("img.png", CardType.FRAMES));
@@ -62,6 +60,7 @@ class CommonGoal3Test {
         bookshelf.addCard(2, new Card("img.png", CardType.TROPHIES));
 
         int score = cg3.checkGoal(bookshelf);
+        System.out.println(score);
         assertEquals(8, score);
     }
 
