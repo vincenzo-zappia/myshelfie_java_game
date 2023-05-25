@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <VBox alignment="CENTER" prefHeight="540.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Group>
+               <children>
+                  <ImageView fx:id="cg2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Documents/GitHub/proj-ingsw-rj45/src/main/resources/assets/CommonGoals/cg2.jpg" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="cg2Score" fitHeight="94.0" fitWidth="64.0" layoutX="111.67741394042969" layoutY="33.27667999267578" pickOnBounds="true" preserveRatio="true" rotate="-7.0">
+                     <image>
+                        <Image url="@../Documents/GitHub/proj-ingsw-rj45/src/main/resources/assets/Tokens/scoring-8.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Group>
+            <Group>
+               <children>
+                  <ImageView fx:id="cg1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Documents/GitHub/proj-ingsw-rj45/src/main/resources/assets/CommonGoals/cg1.jpg" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="cg1Score" fitHeight="94.0" fitWidth="64.0" layoutX="106.67741394042969" layoutY="38.27668762207031" pickOnBounds="true" preserveRatio="true" rotate="-7.0">
+                     <image>
+                        <Image url="@../Documents/GitHub/proj-ingsw-rj45/src/main/resources/assets/Tokens/scoring-8.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Group>
+            <ImageView fx:id="pg" fitHeight="265.0" fitWidth="228.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Documents/GitHub/proj-ingsw-rj45/src/main/resources/assets/PrivateGoals/pg1.png" />
+               </image>
+            </ImageView>
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <ImageView fitHeight="446.0" fitWidth="473.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../Documents/GitHub/proj-ingsw-rj45/src/main/resources/assets/misc/livingroom.png" />
+         </image>
+      </ImageView>
+   </center>
+   <right>
+      <ImageView fitHeight="348.0" fitWidth="369.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../Documents/GitHub/proj-ingsw-rj45/src/main/resources/assets/misc/bookshelf.png" />
+         </image>
+      </ImageView>
+   </right>
+   <top>
+      <HBox prefHeight="60.0" prefWidth="1000.0" BorderPane.alignment="CENTER" />
+   </top>
+   <bottom>
+      <HBox prefHeight="30.0" prefWidth="1000.0" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>
