@@ -50,7 +50,7 @@ public class PrivateGoal implements Goal, Serializable {
     }
 
     public String getFileName() {
-        return "\\assets\\PrivateGoals\\" + fileName;
+        return "/assets/PrivateGoals/" + fileName;
     }
 
     public Tile[][] getGoalStructure(){
