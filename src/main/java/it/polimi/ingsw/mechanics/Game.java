@@ -68,9 +68,8 @@ public class Game{
         //TODO: Vedere se funziona funzionale
         /*
         int maxCards = Arrays.stream(coord).mapToInt(row -> 6 - bookshelf.cardsInColumn(row[0])).max().orElse(0);
-        if (maxCards < coord.length) {
-            return false;
-        }
+        if (maxCards < coord.length) return false;
+
          */
 
         //Checking if the single card is selectable in case of a singular selection
@@ -190,8 +189,8 @@ public class Game{
      */
     public void scorePrivateGoal(){
         for(Player p : players.values()){
-            p.addScore(p.getPrivateGoal().checkGoal(p.getBookshelf()));
-            //p.addScore(commonGoal0.checkGoal(p.getBookshelf())); todo: decommentare
+            //p.addScore(p.getPrivateGoal().checkGoal(p.getBookshelf()));
+            p.addScore(commonGoal0.checkGoal(p.getBookshelf()));
         }
     }
 

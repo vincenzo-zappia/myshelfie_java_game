@@ -39,6 +39,7 @@ public class LobbyScene extends GenericScene{
     public void showStart(){
         start.setVisible(true);
     }
+
     public void enableStartButton(boolean enabled){
         start.setDisable(!enabled);
     }

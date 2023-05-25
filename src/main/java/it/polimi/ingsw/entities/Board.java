@@ -92,23 +92,20 @@ public class Board {
      */
     public boolean selectableCard(int row, int column){
 
-        //Checking if the received tile coordinates exceed the board boundaries //TODO: Doppio check
-        if(row < 0 || row > 8 || column < 0 || column > 8) return false;
-
         //Checking whether the selected tile is already empty or not part of the playable board
         if (board[row][column].isTileActive() && !board[row][column].isTileEmpty()) {
 
             //Checking whether the tile below the current one is empty or not active
-            if (row > 0 && board[row - 1][column].isTileEmpty() || !board[row - 1][column].isTileActive()) return true;
+            if (row > 0 && (board[row - 1][column].isTileEmpty() || !board[row - 1][column].isTileActive())) return true;
 
             //Checking whether the tile above the current one is empty or not active
-            if (row < 8 && board[row + 1][column].isTileEmpty() || !board[row + 1][column].isTileActive()) return true;
+            if (row < 8 && (board[row + 1][column].isTileEmpty() || !board[row + 1][column].isTileActive())) return true;
 
             //Checking whether the tile on the left is empty or not active
-            if (column > 0 && board[row][column - 1].isTileEmpty() || !board[row][column - 1].isTileActive()) return true;
+            if (column > 0 && (board[row][column - 1].isTileEmpty() || !board[row][column - 1].isTileActive())) return true;
 
             //Checking whether the tile on the right is empty or not active
-            if (column < 8 && board[row][column + 1].isTileEmpty() || !board[row][column + 1].isTileActive()) return true;
+            if (column < 8 && (board[row][column + 1].isTileEmpty() || !board[row][column + 1].isTileActive())) return true;
         }
         return false;
     }

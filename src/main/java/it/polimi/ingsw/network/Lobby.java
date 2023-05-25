@@ -84,7 +84,12 @@ public class Lobby {
      */
     public void startGame(){
 
+        System.out.print("Lobby: ");
+        for (String username : usernameList) System.out.print(username); //TODO: Debug
+        System.out.println(" ");
+
         //TODO: Decommentare (commentato solo per debug)
+
         /*
         //Checking if the number of the players is legal before initializing the game
         if(!(usernameList.size() > 1 && usernameList.size() <= 4)) {

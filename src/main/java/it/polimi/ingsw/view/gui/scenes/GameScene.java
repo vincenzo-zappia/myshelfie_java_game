@@ -58,7 +58,7 @@ public class GameScene extends GenericScene{
     private ArrayList<int[]> currentSelection;
 
     /**
-     * Routines of game scene initialization such as binding even handlers to buttons and making image views not visible
+     * Routine of game scene initialization such as binding even handlers to buttons and making image views not visible
      */
     public void initGame(){
 
@@ -273,6 +273,7 @@ public class GameScene extends GenericScene{
      */
     public void removeCards(int[][] coordinates){
         resetBoardCardOpacity();
+
         for (int[] coordinate : coordinates) {
             Node node = getNodeByRowColumnIndex(coordinate[0], coordinate[1], board);
             ImageView card = (ImageView) node;
@@ -330,6 +331,8 @@ public class GameScene extends GenericScene{
 
     public void resetBoardCardOpacity(){
         for(Node node : board.getChildren()) node.setOpacity(1);
+        currentSelection.clear();
+        enableConfirmationButton(false);
     }
     //endregion
 

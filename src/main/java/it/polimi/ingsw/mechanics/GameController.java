@@ -53,10 +53,13 @@ public class GameController {
      * Method that handles the received generic Message by checking its actual type and calls the wanted method
      * @param message received message
      */
-    public synchronized void messageHandler(Message message){
+    public void messageHandler(Message message){
 
         //TODO: Per ora invio chat implementato in gamecontroller perché solo in scena Game (in clienthandler sarebbe stato peggio in quanto avrei dovuto filtrare tutti i messaggi)
-        if (message.getType().equals(MessageType.CHAT)) for(String username : viewHashMap.keySet()) viewHashMap.get(username).showChat(message.getSender() + ": " + message.getContent());
+        if (message.getType().equals(MessageType.CHAT)){
+            for(String username : viewHashMap.keySet()) viewHashMap.get(username).showChat(message.getSender() + ": " + message.getContent());
+            return;
+        }
 
         //Checking if it's the turn of the player who sent the message
         if (!turnManager.getCurrentPlayer().equals(message.getSender())) {
@@ -188,7 +191,7 @@ public class GameController {
         broadcastMessage(MessageType.COMMON_GOAL);
 
         //Checking if the bookshelf of the current player got full
-        if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer())){
+        if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer()) && !turnManager.inEndGame()){
             turnManager.startEndGame();
             System.out.println("INFO: Endgame started.");
 
