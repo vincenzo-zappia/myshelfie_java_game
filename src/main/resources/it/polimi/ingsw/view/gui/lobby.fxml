@@ -61,7 +61,7 @@
          <Font size="20.0" />
       </font>
    </Label>
-   <Button fx:id="start" mnemonicParsing="false" onAction="#onStartGameClick" prefHeight="56.0" prefWidth="166.0" styleClass="start-button" text="START" StackPane.alignment="BOTTOM_RIGHT">
+   <Button fx:id="start" mnemonicParsing="false" onAction="#onStartGameClick" prefHeight="56.0" prefWidth="166.0" styleClass="start-button" text="START" visible="false" StackPane.alignment="BOTTOM_RIGHT">
       <font>
          <Font size="25.0" />
       </font>

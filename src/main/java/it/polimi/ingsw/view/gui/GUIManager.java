@@ -47,7 +47,6 @@ public class GUIManager implements UserInterface {
     @Override
     public void confirmAccess(boolean response, String content) {
         Platform.runLater(() -> {
-            //AccessScene accessScene = (AccessScene) gui.getController();
             if(response) gui.loadScene("lobby.fxml");
             LobbyScene lobbyScene = (LobbyScene) gui.getController();
             lobbyScene.showLobbyID(content);

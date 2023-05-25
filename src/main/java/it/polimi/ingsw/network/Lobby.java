@@ -89,7 +89,6 @@ public class Lobby {
         System.out.println(" ");
 
         //TODO: Decommentare (commentato solo per debug)
-
         /*
         //Checking if the number of the players is legal before initializing the game
         if(!(usernameList.size() > 1 && usernameList.size() <= 4)) {
@@ -99,17 +98,16 @@ public class Lobby {
         }
 
          */
+
+        //Officially starting the game
         lobbyBroadcastMessage(new SpecificResponse(true, MessageType.START_GAME_RESPONSE));
+        lobbyBroadcastMessage(new TextResponse(true, "Now in game!"));
+        inGame = true;
 
         //Creating GameController and the hashmap <PlayerUsername, VirtualView> through which GameController will manage the sending of messages from server to client
         HashMap<String, VirtualView> viewHashMap = new HashMap<>();
         for(NetworkPlayer netPlayer: networkMap.values()) viewHashMap.put(netPlayer.getUsername(), netPlayer.getVirtualView());
         gameController = new GameController(new Game(usernameList), viewHashMap);
-
-        //Officially starting the game
-        inGame = true;
-        lobbyBroadcastMessage(new TextResponse(true, "Now in game!"));
-        //lobbyBroadcastMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));
         System.out.println("INFO: Game started");
     }
 
