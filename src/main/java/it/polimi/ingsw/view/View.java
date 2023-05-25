@@ -26,12 +26,11 @@ public interface View {
     void showCurrentPlayer(String currentPlayer);
 
     /**
-     * Sends back the selected coordinates if the selection is valid
-     *
-     * @param valid
+     * Sends back the selected coordinates and gives feedback about its validity
+     * @param valid if the selection is valid
      * @param coordinates coordinates selected by the player
      */
-    void sendCheckedCoordinates(boolean valid, int[][] coordinates); //todo: revisionare javadoc
+    void sendCheckedCoordinates(boolean valid, int[][] coordinates);
 
     /**
      * Sends the coordinates of the cards successfully removed by the current player
@@ -51,7 +50,6 @@ public interface View {
      */
     void showRefilledBoard(BoardTile[][] boardTiles);
 
-    //TODO: CommonGoal0?
     /**
      * Sends the game common goals details to the player
      * @param commonGoals common goals of the game
@@ -64,6 +62,7 @@ public interface View {
      */
     void showPrivateGoal(PrivateGoal privateGoal);
 
+    //TODO: Nfunziona fratm
     /**
      * Updates all the players with the scoreboard at the end of the game
      * @param scoreboard endgame scoreboard ordered by points
@@ -75,7 +74,5 @@ public interface View {
      * @param content message containing the username of the player
      */
     void showToken(String content);
-
-    void showChat(String chat);
 
 }

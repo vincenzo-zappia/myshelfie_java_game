@@ -55,12 +55,6 @@ public class GameController {
      */
     public void messageHandler(Message message){
 
-        //TODO: Per ora invio chat implementato in gamecontroller perché solo in scena Game (in clienthandler sarebbe stato peggio in quanto avrei dovuto filtrare tutti i messaggi)
-        if (message.getType().equals(MessageType.CHAT)){
-            for(String username : viewHashMap.keySet()) viewHashMap.get(username).showChat(message.getSender() + ": " + message.getContent());
-            return;
-        }
-
         //Checking if it's the turn of the player who sent the message
         if (!turnManager.getCurrentPlayer().equals(message.getSender())) {
             viewHashMap.get(message.getSender()).sendGenericResponse(false, "It's not your turn!");
@@ -110,7 +104,7 @@ public class GameController {
         }
 
         //Saving the coordinates of the removed cards in order to broadcast them at the end of the turn
-        coordinates = message.getCoordinates().clone(); //TODO: Sovrascrive: salva prima di controllare se selezione valida, serve per mantenere orine prima che canSelect lo sfasi con Arrays.sort
+        coordinates = message.getCoordinates().clone();
 
         //Checking if the cards selected are actually selectable
         if((message.getCoordinates().length != 0) && game.canSelect(message.getSender(), message.getCoordinates())) {

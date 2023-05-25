@@ -80,7 +80,7 @@ public class GameScene extends GenericScene{
         col3.setOnAction(onInsertColumnClick);
         col4.setOnAction(onInsertColumnClick);
 
-        //TODO: Fallo direttamente da scenebuilder
+        //TODO: Fallo direttamente da scenebuilder (finire fxml)
         cg1.setVisible(false);
         cg1Score.setVisible(false);
         cg2.setVisible(false);
@@ -292,7 +292,6 @@ public class GameScene extends GenericScene{
     }
     //endregion
 
-    //TODO: Chat implementata solo in GameScene decidere se in tutto il gioco => spostarla in GenericScene
     //region CHAT
     @FXML public void sendChat(){
         String message = writeChat.getText();
@@ -302,7 +301,7 @@ public class GameScene extends GenericScene{
 
     public void showChat(String message){
         String previous = chat.getText();
-        if (previous.length() > 60) chat.setText(message); //TODO: Decidere dimensione massima visualizzabile dalla chat
+        if (previous.length() > 60) chat.setText(message); //TODO: Decidere dimensione massima visualizzabile dalla chat (fxml)
         else chat.setText(previous + "\n" + message);
         chat.setVisible(true);
     }

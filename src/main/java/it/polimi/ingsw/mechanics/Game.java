@@ -189,7 +189,7 @@ public class Game{
      */
     public void scorePrivateGoal(){
         for(Player p : players.values()){
-            //p.addScore(p.getPrivateGoal().checkGoal(p.getBookshelf()));
+            p.addScore(p.getPrivateGoal().checkGoal(p.getBookshelf()));
             p.addScore(commonGoal0.checkGoal(p.getBookshelf()));
         }
     }

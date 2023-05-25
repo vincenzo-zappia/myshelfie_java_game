@@ -39,4 +39,6 @@ public interface UserInterface extends View {
      */
     void confirmStartGame(boolean response);
 
+    void showChat(String chat);
+
 }

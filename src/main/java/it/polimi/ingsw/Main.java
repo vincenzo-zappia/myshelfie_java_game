@@ -21,16 +21,15 @@ public class Main {
         System.out.println("[0] CLI \n[1] GUI");
         String selection = in.nextLine();
 
-        Client client = new Client("localhost", 2023);
-
-
-        //Selection of the CLI as the user interface
+        //Starting the chosen user interface
         if (selection.equals("0")){
+
+            //TODO: Scelta IP e port e verifica
+            Client client = new Client("localhost", 2023);
             CLI cli = new CLI(client);
             new Thread(cli).start();
         }
 
-        //Selection of the GUI as the user interface
         else if (selection.equals("1")) {
             GUI.main(args);
         }
