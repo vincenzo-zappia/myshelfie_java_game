@@ -42,4 +42,6 @@
 
 .board {
     -fx-background-image: url('../../../../../assets/misc/livingroom.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
 }
