@@ -31,7 +31,6 @@ public class GUIManager implements UserInterface {
     public void confirmUsername(boolean response) {
         UsernameScene usernameScene = (UsernameScene) gui.getController();
         if(response) gui.loadScene("connection.fxml");
-        //TODO: Gestire else (chiamate metodi di usernameScene)
         else usernameScene.setEnable();
     }
 
@@ -50,7 +49,6 @@ public class GUIManager implements UserInterface {
             if(response) gui.loadScene("lobby.fxml");
             LobbyScene lobbyScene = (LobbyScene) gui.getController();
             lobbyScene.showLobbyID(content);
-            //TODO: gestire else (id lobby non esistente)
         });
 
     }
@@ -58,10 +56,8 @@ public class GUIManager implements UserInterface {
     @Override
     public void refreshConnectedPlayers(ArrayList<String> playerUsernames) {
         Platform.runLater(() -> {
-            //TODO: Check con enum?
             LobbyScene lobbyScene = (LobbyScene) gui.getController();
             lobbyScene.showRefreshedConnectedPlayers(playerUsernames);
-            //TODO: pulsone
         });
 
     }
@@ -78,6 +74,14 @@ public class GUIManager implements UserInterface {
                 LobbyScene lobbyScene = (LobbyScene) gui.getController();
                 lobbyScene.enableStartButton(true);
             }
+        });
+    }
+
+    @Override
+    public void showChat(String chat) {
+        Platform.runLater(() -> {
+            GameScene gameScene = (GameScene) gui.getController();
+            gameScene.showChat(chat);
         });
     }
     //endregion
@@ -168,15 +172,6 @@ public class GUIManager implements UserInterface {
         Platform.runLater(() -> {
             GameScene gameScene = (GameScene) gui.getController();
             gameScene.removeToken(content);
-        });
-    }
-
-    @Override
-    public void showChat(String chat) {
-        //TODO: Per il momento implementata solo nella game scene
-        Platform.runLater(() -> {
-            GameScene gameScene = (GameScene) gui.getController();
-            gameScene.showChat(chat);
         });
     }
     //endregion

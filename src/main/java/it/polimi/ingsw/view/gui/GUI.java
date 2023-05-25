@@ -12,8 +12,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class GUI extends Application {
-    //TODO: Spostare creazione client nel costruttore di GUI e CLI
-
     private Scene scene;
     private Stage stage;
     private FXMLLoader currentLoader;
@@ -27,7 +25,7 @@ public class GUI extends Application {
     public void start(Stage stage) {
         try{
             this.stage = stage;
-            //TODO: setup scena iniziale;
+            //TODO: Scena iniziale IP e port
             currentLoader = new FXMLLoader(GUI.class.getResource("username.fxml"));
             Scene scene = new Scene(currentLoader.load(), 900,600);
             this.currentController = currentLoader.getController();
@@ -84,4 +82,5 @@ public class GUI extends Application {
     public Stage getStage() {
         return stage;
     }
+    
 }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.entities.util.BoardTile;
 import it.polimi.ingsw.entities.util.Tile;
 
+//TODO: Non serve in GUI(?)
 /**
  * Client side abstraction of the game entities
  */
@@ -16,7 +17,7 @@ public class VirtualModel {
     private Goal[] commonGoals;
     private PrivateGoal privateGoal;
     private int[][] coordinates;
-    private boolean endGame; //TODO: Spostare flag in CLI in quanto non serve in GUI
+    private boolean endGame;
     //endregion
 
     public VirtualModel(){

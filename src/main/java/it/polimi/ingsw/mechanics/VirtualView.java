@@ -76,10 +76,5 @@ public class VirtualView implements View, Observer {
     public void showToken(String content) {
         clientHandler.sendMessage(new GenericMessage(content + " filled his bookshelf!", MessageType.TOKEN));
     }
-
-    @Override
-    public void showChat(String chat) {
-        clientHandler.sendMessage(new ChatMessage("server", chat));
-    }
     //endregion
 }

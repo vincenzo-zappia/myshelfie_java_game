@@ -138,7 +138,6 @@ public class CLI implements Runnable, UserInterface {
     private void gameHandler() {
         scanner = new Scanner(System.in);
 
-        //TODO: Implementare stop del loop attraverso chiamata di scoreboard
         //While loop to read the user keyboard input (until the game ends)
         while(!virtualModel.getEndGame()){
             String read = scanner.nextLine();
@@ -356,6 +355,11 @@ public class CLI implements Runnable, UserInterface {
             lock1.notify();
         }
     }
+
+    @Override
+    public void showChat(String chat) {
+        System.out.println(chat);
+    }
     //endregion
 
     //region VIEW
@@ -417,12 +421,6 @@ public class CLI implements Runnable, UserInterface {
     public void showToken(String content) {
         CliUtil.makeConfirmationMessage(content);
     }
-
-    @Override
-    public void showChat(String chat) {
-        System.out.println(chat);
-    }
-
     //endregion
 
 }

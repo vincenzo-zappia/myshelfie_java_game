@@ -11,8 +11,6 @@ import it.polimi.ingsw.network.messages.MessageType;
 public class CommonGoalsMessage extends Message {
     private final Goal[] commonGoals;
 
-    //TODO: CommonGoal0?
-
     public CommonGoalsMessage(Goal[] commonGoals) {
         super("server", MessageType.COMMON_GOAL);
         this.commonGoals = commonGoals;

@@ -3,6 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.mechanics.Game;
 import it.polimi.ingsw.mechanics.GameController;
 import it.polimi.ingsw.mechanics.VirtualView;
+import it.polimi.ingsw.network.messages.ChatMessage;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.server2client.GenericMessage;
@@ -112,11 +113,13 @@ public class Lobby {
     }
 
     /**
-     * Forwards an external message to the GameController
+     * Forwards an external message to the GameController if it's not a chat message
      * @param message message to forwards
      */
     public void sendToGame(Message message){
-        gameController.messageHandler(message);
+        if(message.getType().equals(MessageType.CHAT))
+            lobbyBroadcastMessage(new ChatMessage("server", message.getSender() + ": " + message.getContent()));
+        else gameController.messageHandler(message);
     }
 
     public int getLobbyID() {
