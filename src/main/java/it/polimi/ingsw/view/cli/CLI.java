@@ -13,6 +13,8 @@ import it.polimi.ingsw.view.VirtualModel;
 
 import java.util.*;
 
+import static java.lang.System.exit;
+
 public class CLI implements Runnable, UserInterface {
 
     //region ATTRIBUTES
@@ -227,6 +229,7 @@ public class CLI implements Runnable, UserInterface {
                 controller.sendNewGame(false);
                 System.out.println("Closing the application...");
                 controller.stopClientConnection();
+                exit(0);
             }
         }
 
