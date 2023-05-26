@@ -7,13 +7,11 @@ import it.polimi.ingsw.network.messages.ChatMessage;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.client2server.NetFailureMessage;
-import it.polimi.ingsw.network.messages.server2client.GenericMessage;
 import it.polimi.ingsw.network.messages.server2client.TextResponse;
 import it.polimi.ingsw.network.messages.server2client.SpecificResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Lobby with an instance of the game
@@ -45,7 +43,6 @@ public class Lobby {
      * @param netPlayer player that request access to lobby
      */
     public boolean joinLobby(NetworkPlayer netPlayer){
-        Message response;
 
         //Checking if the selected lobby is already running a game
         if(inGame){
@@ -81,16 +78,9 @@ public class Lobby {
         }
     }
 
-    public int lobbyNetworkFailure(ClientHandler ch){
-        for (Map.Entry<String, NetworkPlayer> entry : networkMap.entrySet()) {
-            if (entry.getValue().getClientHandler().equals(ch)) {
-                networkMap.remove(entry.getKey());
-                break;
-            }
-        }
-        for(NetworkPlayer player: networkMap.values()){
-            player.getClientHandler().sendMessage(new NetFailureMessage("Server"));
-        }
+    public int forceDisconnection(ClientHandler ch){
+        networkMap.entrySet().stream().filter(entry -> !entry.getValue().getClientHandler().equals(ch)).forEach(entry -> entry.getValue().getClientHandler().sendMessage(new NetFailureMessage("Server")));
+
         return lobbyID;
     }
 
@@ -112,7 +102,6 @@ public class Lobby {
             lobbyBroadcastMessage(new SpecificResponse(false, MessageType.START_GAME_RESPONSE));
             return;
         }
-
          */
 
         //Officially starting the game
@@ -123,7 +112,7 @@ public class Lobby {
         //Creating GameController and the hashmap <PlayerUsername, VirtualView> through which GameController will manage the sending of messages from server to client
         HashMap<String, VirtualView> viewHashMap = new HashMap<>();
         for(NetworkPlayer netPlayer: networkMap.values()) viewHashMap.put(netPlayer.getUsername(), netPlayer.getVirtualView());
-        gameController = new GameController(new Game(usernameList), viewHashMap);
+        gameController = new GameController(this, new Game(usernameList), viewHashMap);
         System.out.println("INFO: Game started");
     }
 
@@ -135,6 +124,15 @@ public class Lobby {
         if(message.getType().equals(MessageType.CHAT))
             lobbyBroadcastMessage(new ChatMessage("server", message.getSender() + ": " + message.getContent()));
         else gameController.messageHandler(message);
+    }
+
+    public void endGame(){
+        inGame = false;
+        server.removeLobby(lobbyID);
+    }
+
+    public boolean isInGame(){
+        return inGame;
     }
 
     public int getLobbyID() {

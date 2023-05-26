@@ -9,6 +9,7 @@ public enum MessageType {
     START_GAME_REQUEST,
     SELECTION_REQUEST,
     INSERTION_REQUEST,
+    NEW_GAME_REQUEST,
     //endregion
 
     //region SERVER2CLIENT
@@ -28,7 +29,7 @@ public enum MessageType {
     PRIVATE_GOAL,
     TOKEN,
     SCOREBOARD,
-    FORCE_DISCONNECTION,
+    DISCONNECTION,
     //endregion
 
     CHAT,

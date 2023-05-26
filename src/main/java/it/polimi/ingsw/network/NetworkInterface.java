@@ -32,7 +32,7 @@ public abstract class NetworkInterface {
      * Algorithm for the reception of one message
      * @return the message received
      */
-    protected Message receiveOneMessage(){
+    protected Message receiveMessage(){
         boolean received = false;
         Message message = null;
         try {
@@ -60,15 +60,15 @@ public abstract class NetworkInterface {
     }
 
     public void safeDisconnect() {
+        System.out.println("INFO: Closing the socket...");
         try {
             socket.close();
-            exit(0);
+            System.out.println("INFO: Socket closed successfully. Shutting down...");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("INFO: Couldn't close socket. Shutting down...");
         }
-        finally{
-            System.out.println("INFO: ??? we are closed");
-        }
+
+        exit(0);
     }
 
     protected ObjectInputStream getObjectInput(){

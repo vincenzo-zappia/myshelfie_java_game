@@ -9,6 +9,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static java.lang.System.exit;
@@ -26,7 +27,7 @@ public class Main {
         if (selection.equals("0")){
 
             //TODO: Scelta IP e port e verifica
-            Client client = null;
+            Client client;
             try {
                 client = new Client("localhost", 2023);
             } catch (IOException e) {
@@ -48,21 +49,12 @@ public class Main {
 
     }
 
-    private String requestIp(){
-        return "";
-    }
-
-    //questo metodo dovrebbe servire per verificare la porta e l'ip
-    private boolean gh(){
-        return true;
-    }
-
     public static String getResourcePath() {
         String basePath;
         URI uri;
 
         try {
-            uri = Main.class.getResource("").toURI();
+            uri = Objects.requireNonNull(Main.class.getResource("")).toURI();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

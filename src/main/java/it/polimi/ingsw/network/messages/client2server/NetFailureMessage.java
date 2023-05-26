@@ -8,6 +8,6 @@ import it.polimi.ingsw.network.messages.MessageType;
  */
 public class NetFailureMessage extends Message {
     public NetFailureMessage(String sender) {
-        super(sender, MessageType.FORCE_DISCONNECTION);
+        super(sender, MessageType.DISCONNECTION);
     }
 }

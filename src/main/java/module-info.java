@@ -10,6 +10,7 @@ module proj.ingsw.rj {
     exports it.polimi.ingsw.entities;
     exports it.polimi.ingsw.entities.util;
     exports it.polimi.ingsw.entities.goals;
+    exports it.polimi.ingsw.view;
     exports it.polimi.ingsw.view.gui;
     exports it.polimi.ingsw.view.gui.scenes;
     exports it.polimi.ingsw.network;

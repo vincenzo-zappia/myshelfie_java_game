@@ -44,17 +44,19 @@ public class CLI implements Runnable, UserInterface {
     @Override
     public void run() {
         System.out.println(CliUtil.makeTitle());
-        connectionHandler();
+        if (!usernameAccepted) usernameHandler();
+        lobbyHandler();
         gameHandler();
+        endGameHandler();
     }
 
     /**
      * Manages the choosing of a username and either the creation of a new lobby or the joining of an existing one
      */
-    private void connectionHandler() {
+    private void usernameHandler() {
 
         //Asking the player for his username and sending it to server to check for its availability
-        while(!usernameAccepted) {
+        while (!usernameAccepted) {
             String username = requestUsername();
             controller.checkUsername(username);
 
@@ -67,7 +69,9 @@ public class CLI implements Runnable, UserInterface {
                 }
             }
         }
+    }
 
+    private void lobbyHandler(){
         //Asking the player whether to join or create a new lobby and waiting for server feedback
         while (!lobbyJoined) {
             String selection = requestLobby();
@@ -117,7 +121,7 @@ public class CLI implements Runnable, UserInterface {
                         controller.joinLobby(id);
                     } catch (NumberFormatException e) {
                         System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
-                        connectionHandler();
+                        usernameHandler();
                     }
 
                     //Thread waits until notified
@@ -209,8 +213,23 @@ public class CLI implements Runnable, UserInterface {
                 default -> System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
             }
         }
+    }
 
-        //System.out.println(CliUtil.makeTitle("Game Over!"));
+    private void endGameHandler(){
+        String response = requestNewGame();
+
+        switch (response){
+            case "0" -> {
+                controller.sendNewGame(true);
+                run();
+            }
+            case "1" -> {
+                controller.sendNewGame(false);
+                System.out.println("Waiting for disconnection...");
+                //todo chiusura socket (fare test)
+            }
+        }
+
     }
 
     //region PRIVATE METHODS
@@ -243,6 +262,19 @@ public class CLI implements Runnable, UserInterface {
         }while (!selection.equals("0") && !selection.equals("1"));
 
 
+
+        return selection;
+    }
+
+    private String requestNewGame(){
+        //Taking the input and checking its syntax
+        String selection;
+        do {
+            System.out.println("[0] Start new game\n[1] Quit");
+            selection = scanner.nextLine();
+            if(!selection.equals("0") && !selection.equals("1")) System.out.println(CliUtil.makeErrorMessage("Enter valid number."));
+        }
+        while (!selection.equals("0") && !selection.equals("1"));
 
         return selection;
     }

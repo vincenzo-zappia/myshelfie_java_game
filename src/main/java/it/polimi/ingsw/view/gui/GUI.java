@@ -13,7 +13,6 @@ import java.io.IOException;
 
 public class GUI extends Application {
     private Scene scene;
-    private Stage stage;
     private FXMLLoader currentLoader;
     private GenericScene currentController;
 
@@ -24,7 +23,6 @@ public class GUI extends Application {
     @Override
     public void start(Stage stage) {
         try{
-            this.stage = stage;
             //TODO: Scena iniziale IP e port
             currentLoader = new FXMLLoader(GUI.class.getResource("username.fxml"));
             Scene scene = new Scene(currentLoader.load(), 900,600);
@@ -79,8 +77,5 @@ public class GUI extends Application {
         return currentController;
     }
 
-    public Stage getStage() {
-        return stage;
-    }
     
 }

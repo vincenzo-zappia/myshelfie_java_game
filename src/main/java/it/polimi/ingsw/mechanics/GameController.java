@@ -2,6 +2,7 @@ package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.util.SerializableTreeMap;
+import it.polimi.ingsw.network.Lobby;
 import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
@@ -16,22 +17,21 @@ import java.util.HashMap;
 public class GameController {
 
     //region NETWORK ATTRIBUTES
-    //attributi verso la parte del modello
-    private final Game game;
-    private final TurnManager turnManager;
-
-    //attributi verso la parte di networking
+    private final Lobby lobby;
     private final HashMap<String, VirtualView> viewHashMap;
     //endregion
 
-    //region LOGIC ATTRIBUTES
+    //region GAME ATTRIBUTES
+    private final Game game;
+    private final TurnManager turnManager;
     private int[][] coordinates; //Turn-specific board coordinates temporarily saved as attributes to be sent as message
     private boolean canInsert; //Turn phase management
     //endregion
 
     //region CONSTRUCTOR
-    public GameController(Game game, HashMap<String, VirtualView> viewHashMap){
+    public GameController(Lobby lobby, Game game, HashMap<String, VirtualView> viewHashMap){
         turnManager = new TurnManager(new ArrayList<>(viewHashMap.keySet()));
+        this.lobby = lobby;
         this.game = game;
         this.viewHashMap = viewHashMap;
 
@@ -194,10 +194,12 @@ public class GameController {
             game.getPlayer(turnManager.getCurrentPlayer()).addScore(1);
         }
 
-        //Checking if the current player was the last one who had to play a turn, if so, starting the endgame, otherwise
-        //calling for the next player
+        //Checking if the current player was the last one who had to play a turn, if so, starting the endgame, otherwise calling for the next player
         if(!turnManager.nextTurn()) {
             findWinner();
+
+            //Endgame routines
+            lobby.endGame();
         }
         else{
             //Broadcasting the username of the next player who plays a turn

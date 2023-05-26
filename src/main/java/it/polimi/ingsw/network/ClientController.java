@@ -93,10 +93,6 @@ public class ClientController implements Observer {
                 ScoreboardMessage scoreboard = (ScoreboardMessage) message;
                 view.showScoreboard(scoreboard.getScoreboard());
             }
-            case FORCE_DISCONNECTION -> {
-                view.showDisconnection();
-                client.safeDisconnect();
-            }
             case TOKEN -> {
                 GenericMessage token = (GenericMessage) message;
                 view.showToken(token.getContent());
@@ -104,6 +100,10 @@ public class ClientController implements Observer {
             case CHAT -> {
                 ChatMessage chatMessage = (ChatMessage) message ;
                 view.showChat(chatMessage.getContent());
+            }
+            case DISCONNECTION -> {
+                view.showDisconnection();
+                client.safeDisconnect();
             }
         }
     }
@@ -165,6 +165,11 @@ public class ClientController implements Observer {
     public void sendChat(String chat){
         Message message = new ChatMessage(username, chat);
         client.sendMessage(message);
+    }
+
+    public void sendNewGame(boolean newGame){
+        NewGameRequest newGameRequest = new NewGameRequest(username, newGame);
+        client.sendMessage(newGameRequest);
     }
     //endregion
 

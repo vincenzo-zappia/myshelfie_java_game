@@ -9,6 +9,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.*;
 import it.polimi.ingsw.network.messages.client2server.JoinLobbyRequest;
+import it.polimi.ingsw.network.messages.client2server.NewGameRequest;
 import it.polimi.ingsw.network.messages.server2client.*;
 
 import java.io.IOException;
@@ -38,27 +39,26 @@ public class ClientHandler extends NetworkInterface implements Runnable{
         //Receiving the request to check username availability
         checkUsernameHandler();
 
-        //Receiving the request either to create a lobby or join an existing one
-        joinLobbyHandler();
+        do {
+            //Receiving the request either to create a lobby or join an existing one
+            joinLobbyHandler();
 
-        //Starting to receive all the possible game commands once the game has officially started
-        try {
-            //While loop to wait the reception of messages
-            while(!Thread.currentThread().isInterrupted()){
-                Message msg = (Message) getObjectInput().readObject();
-                System.out.println("INFO: Message received");
-                if(msg != null) lobby.sendToGame(msg);
+            //Starting to receive all the possible game commands once the game has officially started
+            try {
+                //While loop to wait the reception of messages
+                while (lobby.isInGame()) {
+                    Message msg = (Message) getObjectInput().readObject();
+                    System.out.println("INFO: Message received");
+                    if (msg != null) lobby.sendToGame(msg);
+                }
             }
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("INFO: ClientHandler interrupted");
-            throw new RuntimeException(e);
-
-        }
-        finally {
-            System.out.println("ERROR: Something in connection goes terribly wrong");
-            int id = lobby.lobbyNetworkFailure(this);
-            server.removeLobby(id);
-        }
+            catch (IOException | ClassNotFoundException e) {
+                System.out.println("INFO: A player has disconnected. Closing the game...");
+                int id = lobby.forceDisconnection(this);
+                server.removeLobby(id);
+                safeDisconnect();
+            }
+        } while(endGameHandler());
         safeDisconnect();
     }
 
@@ -67,7 +67,7 @@ public class ClientHandler extends NetworkInterface implements Runnable{
      * Checks if the username selected by the player is available
      */
     private void checkUsernameHandler(){
-        Message message = receiveOneMessage();
+        Message message = receiveMessage();
 
         if(message.getType() == MessageType.USERNAME_REQUEST){
             if(!server.existsUsername(message.getContent()) && !message.getContent().replace(" ", "").equals("")) {
@@ -91,7 +91,7 @@ public class ClientHandler extends NetworkInterface implements Runnable{
      * Either creates a new lobby or checks if the player can join the selected existing one
      */
     private void joinLobbyHandler() {
-        Message message = receiveOneMessage();
+        Message message = receiveMessage();
 
         switch(message.getType()){
 
@@ -152,7 +152,7 @@ public class ClientHandler extends NetworkInterface implements Runnable{
      * (initialization of all the data structures needed for the game to work)
      */
     private void startGameHandler() {
-        Message message = receiveOneMessage();
+        Message message = receiveMessage();
 
         if (message.getType() == MessageType.START_GAME_REQUEST){
             lobby.startGame();
@@ -161,6 +161,17 @@ public class ClientHandler extends NetworkInterface implements Runnable{
             sendMessage(new TextResponse(false, "The game has to start first!"));
             startGameHandler();
         }
+    }
+
+    private boolean endGameHandler(){
+        Message message = receiveMessage();
+
+        if (message.getType() == MessageType.NEW_GAME_REQUEST){
+            NewGameRequest newGameRequest = (NewGameRequest) message;
+            return newGameRequest.getNewGame();
+        }
+        //Closing the game if the message type doesn't check
+        return false;
     }
 
     //endregion

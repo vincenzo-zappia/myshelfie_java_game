@@ -25,7 +25,7 @@ public class Client extends NetworkInterface implements Runnable, Subject {
         while(!Thread.currentThread().isInterrupted()){
 
             //Actual management of the received message relatively to the state of Client
-            notifyObserver(receiveOneMessage());
+            notifyObserver(receiveMessage());
         }
     }
 
