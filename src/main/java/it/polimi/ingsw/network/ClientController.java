@@ -103,10 +103,7 @@ public class ClientController implements Observer {
                 ChatMessage chatMessage = (ChatMessage) message ;
                 view.showChat(chatMessage.getContent());
             }
-            case DISCONNECTION -> {
-                view.showDisconnection();
-                client.safeDisconnect();
-            }
+            case DISCONNECTION -> view.showDisconnection();
         }
     }
     //endregion
