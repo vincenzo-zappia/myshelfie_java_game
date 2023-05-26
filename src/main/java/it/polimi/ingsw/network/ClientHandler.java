@@ -66,7 +66,6 @@ public class ClientHandler extends NetworkInterface implements Runnable{
                 lobby.endGame();
                 lobby.forceDisconnection(this);
                 safeDisconnect();
-                Thread.currentThread().interrupt(); //Single client, not client handler
             }
         } while(newGame);
         safeDisconnect();

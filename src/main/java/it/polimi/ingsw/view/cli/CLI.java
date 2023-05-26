@@ -225,8 +225,8 @@ public class CLI implements Runnable, UserInterface {
             }
             case "1" -> {
                 controller.sendNewGame(false);
-                System.out.println("Waiting for disconnection...");
-                //todo chiusura socket (fare test)
+                System.out.println("Closing the application...");
+                controller.stopClientConnection();
             }
         }
 
