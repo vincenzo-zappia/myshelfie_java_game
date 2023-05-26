@@ -63,8 +63,8 @@ public class VirtualModel {
     public PrivateGoal getPrivateGoal() {
         return privateGoal;
     }
-    public void setEndGame(){
-        endGame = true;
+    public void setEndGame(boolean status){
+        endGame = status;
     }
     public boolean getEndGame(){
         return endGame;

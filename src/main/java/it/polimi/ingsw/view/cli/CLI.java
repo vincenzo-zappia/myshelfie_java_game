@@ -226,6 +226,7 @@ public class CLI implements Runnable, UserInterface {
             case "0" -> {
                 controller.sendNewGame(true);
                 lobbyJoined = false;
+                virtualModel.setEndGame(false);
                 run();
             }
             case "1" -> {
@@ -403,8 +404,9 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void showDisconnection() {
-        virtualModel.setEndGame(); //TODO: Testare
+        virtualModel.setEndGame(true);
         System.out.println("Closing the game...");
+        System.out.println("Press enter to continue.");
     }
     //endregion
 
@@ -468,7 +470,7 @@ public class CLI implements Runnable, UserInterface {
         for (Map.Entry<Integer, String> entry : entryList) {
             System.out.println("Player: " + entry.getKey() + ", Score: " + entry.getValue());
         }
-        virtualModel.setEndGame();
+        virtualModel.setEndGame(true);
     }
 
     @Override
