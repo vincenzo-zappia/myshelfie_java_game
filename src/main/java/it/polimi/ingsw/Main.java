@@ -4,6 +4,7 @@ import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.gui.GUI;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
@@ -25,7 +26,12 @@ public class Main {
         if (selection.equals("0")){
 
             //TODO: Scelta IP e port e verifica
-            Client client = new Client("localhost", 2023);
+            Client client = null;
+            try {
+                client = new Client("localhost", 2023);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             CLI cli = new CLI(client);
             new Thread(cli).start();
         }

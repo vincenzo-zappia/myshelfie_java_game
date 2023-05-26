@@ -12,35 +12,23 @@ import it.polimi.ingsw.network.messages.client2server.JoinLobbyRequest;
 import it.polimi.ingsw.network.messages.server2client.*;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
-
-import static java.lang.System.exit;
 
 /**
  * Controller that manages the reception and the sending of messages between the server and a specific client
  */
-public class ClientHandler implements Runnable{
+public class ClientHandler extends NetworkInterface implements Runnable{
 
     //region ATTRIBUTES
-    private final Socket socket;
     private final Server server;
     private Lobby lobby;
-    private final ObjectOutputStream objOut;
-    private final ObjectInputStream objIn;
+
     //endregion
 
     public ClientHandler(Server server, Socket socket) {
-        this.socket = socket;
+        super(socket);
         this.server = server;
 
-        try {
-            objOut = new ObjectOutputStream(socket.getOutputStream());
-            objIn = new ObjectInputStream(socket.getInputStream());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /**
@@ -57,7 +45,7 @@ public class ClientHandler implements Runnable{
         try {
             //While loop to wait the reception of messages
             while(!Thread.currentThread().isInterrupted()){
-                Message msg = (Message) objIn.readObject();
+                Message msg = (Message) getObjectInput().readObject();
                 System.out.println("INFO: Message received");
                 if(msg != null) lobby.sendToGame(msg);
             }
@@ -67,32 +55,12 @@ public class ClientHandler implements Runnable{
 
         }
         finally {
-            System.out.println("ERROR: Something in connection goes terribly wrong\n");
+            System.out.println("ERROR: Something in connection goes terribly wrong");
             int id = lobby.lobbyNetworkFailure(this);
             server.removeLobby(id);
-            try {
-                socket.close();
-                //exit(0);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
+        safeDisconnect();
     }
-
-    /**
-     * Sends a message from server to client (TCP/IP)
-     * @param message sent message
-     */
-    public void sendMessage(Message message){
-        try {
-            objOut.writeObject(message);
-            objOut.reset(); //anziché flush
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    //TODO: Implementare safe disconnect
 
     //region METHODS
     /**
@@ -195,23 +163,6 @@ public class ClientHandler implements Runnable{
         }
     }
 
-    /**
-     * Algorithm for the reception of one message
-     * @return the message received
-     */
-    private Message receiveOneMessage(){
-        boolean received = false;
-        Message message = null;
-        try {
-            while(!received){
-                message = (Message) objIn.readObject();
-                received = message != null;
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e); //Message reception error message
-        }
-        return message;
-    }
     //endregion
 
 }

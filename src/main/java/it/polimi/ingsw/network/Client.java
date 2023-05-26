@@ -6,37 +6,16 @@ import it.polimi.ingsw.observer.Subject;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
-
-import static java.lang.System.exit;
 
 /**
  * Class that manages only the network functionality of the Client (send and receive message,
  * server connection, ...)
  */
-public class Client implements Runnable, Subject{
+public class Client extends NetworkInterface implements Runnable, Subject {
 
-    //region ATTRIBUTES
-    private ObjectOutputStream objOut;
-    private ObjectInputStream objIn;
-
-    private Socket socket;
-
-    //endregion
-
-    //region CONSTRUCTOR
-    public Client(String ip, int port){
-        try {
-            socket = new Socket(ip, port);
-            objOut = new ObjectOutputStream(socket.getOutputStream());
-            objIn = new ObjectInputStream(socket.getInputStream());
-
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
+    public Client(String ip, int port) throws IOException {
+       super(new Socket(ip, port));
     }
-    //endregion
 
     /**
      * The method receiveMessage() of Client is called in loop by the CLI/GUI for the whole duration of the game
@@ -46,55 +25,20 @@ public class Client implements Runnable, Subject{
         while(!Thread.currentThread().isInterrupted()){
 
             //Actual management of the received message relatively to the state of Client
-            notifyObserver(receiveMessage());
+            notifyObserver(receiveOneMessage());
         }
     }
-
-   public void sendMessage(Message msg){
-       try {
-           objOut.writeObject(msg);
-           objOut.flush();
-       } catch (IOException e) {
-           throw new RuntimeException(e);
-       }
-   }
-
-    /**
-     * Waits the reception of a message and manages it accordingly to the state of Client
-     */
-    public Message receiveMessage(){
-        boolean res = false;
-        Message msg = null;
-        try {
-            while(!res){
-                msg = (Message) objIn.readObject();
-                res = msg!=null;
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e); //TODO: Gestione crash server
-        }
-        return msg;
-    }
-
-    public void forceDisconnection() {
-        try {
-            socket.close();
-            exit(0);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        finally{
-            System.out.println("INFO: ??? we are closed");
-        }
-    }
-    //endregion
 
     //region OBSERVER
     @Override
-    public void register(Observer o) { observers.add(o); }
+    public void register(Observer o) {
+        observers.add(o);
+    }
 
     @Override
-    public void unregister(Observer o) { observers.remove(o); }
+    public void unregister(Observer o) {
+        observers.remove(o);
+    }
 
     @Override
     public void notifyObserver(Message message) {

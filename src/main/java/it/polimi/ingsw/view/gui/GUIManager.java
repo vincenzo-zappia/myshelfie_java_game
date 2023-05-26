@@ -11,6 +11,7 @@ import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.gui.scenes.*;
 import javafx.application.Platform;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GUIManager implements UserInterface {
@@ -21,7 +22,12 @@ public class GUIManager implements UserInterface {
     }
 
     public void start(){
-        ClientController clientController = new ClientController(this, new Client("localhost", 2023));
+        ClientController clientController = null;
+        try {
+            clientController = new ClientController(this, new Client("10.0.0.4", 2023));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         GenericScene.setController(clientController);
         GenericScene.setGui(gui);
     }
