@@ -23,6 +23,7 @@ public class CLI implements Runnable, UserInterface {
     private final Object lock1;
 
 
+
     //region FLAGS
     private boolean usernameAccepted;
     private boolean lobbyJoined;
@@ -413,8 +414,16 @@ public class CLI implements Runnable, UserInterface {
     @Override
     public void showScoreboard(SerializableTreeMap<String, Integer> scoreboard) {
         System.out.println(CliUtil.makeTitle("Scoreboard"));
-        for (Map.Entry<String, Integer> entry : scoreboard.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+
+        //Creazione di un elenco ordinato delle coppie chiave-valore
+        List<Map.Entry<Integer, String>> entryList = new ArrayList<>((Collection) scoreboard.entrySet());
+
+        //Ordinamento in ordine decrescente in base ai valori
+        entryList.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
+
+        //Stampa delle chiavi e dei valori in ordine decrescente dei valori
+        for (Map.Entry<Integer, String> entry : entryList) {
+            System.out.println("Player: " + entry.getKey() + ", Score: " + entry.getValue());
         }
         virtualModel.setEndGame();
     }
