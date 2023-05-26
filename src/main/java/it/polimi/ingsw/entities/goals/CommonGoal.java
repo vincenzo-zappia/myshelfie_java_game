@@ -63,6 +63,10 @@ public abstract class CommonGoal implements Serializable {
         reached = true;
     }
 
+    /**
+     * Checks if a common goal is already reached by other players
+     * @return boolean value reached (false if no one take the goal)
+     */
     protected boolean isReached(){
         return reached;
     }

@@ -1,42 +1,84 @@
-/* Author/s: Tirabassi M., Vianello G., Zappia V.
- * Date: 2/04/2023
- * IDE: IntelliJ IDEA
- * Version 0.3
- * Comments: da finire implementando algoritmo per ricercare sequenza di carte
- */
-
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
- //TODO 3 da finire e scoreboard
+
 public class CommonGoal3 extends CommonGoal implements Goal{
 
-     boolean[][] visited;
+    int count;
+    int[][] doublecheck;
 
     public CommonGoal3() {
         super("Four groups each containing at least 4 tiles of the same types (not necessarily in the depicted shape).\n" +
                 "The tiles of one group can be different from those of another group.", "cg3.jpg");
+
+        doublecheck= new int[6][5];
     }
 
     /**
      * Algorithm that search a single sequence of adjacent
-     * with the same tile
+     * cards with the same tile
      * @param matrix used to search the sequences
      * @return true if one is found
      */
-    private boolean searchSeq(int[][] matrix) {
+    public boolean searchSeq(int[][] matrix) {
         int rows = matrix.length;
         int cols = matrix[0].length;
-        visited = new boolean[rows][cols];
+
+        boolean[][] visited = new boolean[rows][cols];
+
         int groupCount = 0;
 
+        // Search for horizontal groups
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                if (!visited[i][j]) {
+                if (!visited[i][j] && matrix[i][j] != UNAVAILABLE) {
                     int value = matrix[i][j];
-                    int groupSize = findAdjacent(matrix, i, j, value);
+                    int groupSize = findGroup(matrix, visited, i, j, value, true, false);
                     if (groupSize >= 4) {
                         groupCount++;
+                        copyMatrix(matrix);
+                        if (groupCount >= 4) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Reset visited array
+        visited = new boolean[rows][cols];
+        count = 0;
+
+        // Search for vertical groups
+        for (int j = 0; j < cols; j++) {
+            for (int i = 0; i < rows; i++) {
+                if (!visited[i][j] && matrix[i][j] != UNAVAILABLE) {
+                    int value = matrix[i][j];
+                    int groupSize = findGroup(matrix, visited, i, j, value, false, false);
+                    if (groupSize >= 4) {
+                        groupCount++;
+                        copyMatrix(matrix);
+                        if (groupCount >= 4) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Reset visited array
+        visited = new boolean[rows][cols];
+        count =0;
+
+        // Search for vertical groups
+        for (int j = 0; j < cols; j++) {
+            for (int i = 0; i < rows; i++) {
+                if (!visited[i][j] && matrix[i][j] != UNAVAILABLE) {
+                    int value = matrix[i][j];
+                    int groupSize = findGroup(matrix, visited, i, j, value, false, true);
+                    if (groupSize >= 4) {
+                        groupCount++;
+                        copyMatrix(matrix);
                         if (groupCount >= 4) {
                             return true;
                         }
@@ -47,42 +89,72 @@ public class CommonGoal3 extends CommonGoal implements Goal{
         return false;
     }
 
-    /**
-     * Check the adjacents tiles and count them
-     * @param matrix int[][] of cards's types
-     * @param row to check
-     * @param col to check
-     * @param value contained in tile
-     * @return count of adjacent tiles group
-     */
-    private int findAdjacent(int[][] matrix, int row, int col, int value) {
-        int rows = matrix.length;
-        int cols = matrix[0].length;
+     /**
+      * Check the adjacents tiles and count them
+      * @param matrix int[][] of cards's types
+      * @param row to check
+      * @param col to check
+      * @param value contained in tile
+      * @return count of adjacent tiles group
+      */
+     private int findGroup(int[][] matrix, boolean[][] visited, int row, int col, int value, boolean horizontal, boolean shapes) {
+         int rows = matrix.length;
+         int cols = matrix[0].length;
 
-        if (row < 0 || row >= rows || col < 0 || col >= cols || visited[row][col] || matrix[row][col] != value || matrix[row][col] == UNAVAILABLE) {
-            return 0;
-        }
+         if (row < 0 || row >= rows || col < 0 || col >= cols || visited[row][col] || matrix[row][col]==UNAVAILABLE || matrix[row][col] != value) {
+             return 0;
+         }
 
-        visited[row][col] = true;
+         visited[row][col] = true;
+         matrix[row][col] = UNAVAILABLE;
+         setChecked(row, col);
 
-        int count=0;
-        count += findAdjacent(matrix, row - 1, col, value); //Up
-        count += findAdjacent(matrix, row + 1, col, value); //Down
-        count += findAdjacent(matrix, row, col - 1, value); //Left
-        count += findAdjacent(matrix, row, col + 1, value); //Right
+         count++;
+         if(horizontal){
+             count += findGroup(matrix, visited, row, col - 1, value,true, false); // Left
+             count += findGroup(matrix, visited, row, col + 1, value, true, false); // Right
+         }
+         if(!horizontal && !shapes){
+             count += findGroup(matrix, visited, row - 1, col, value, false, false); // Up
+             count += findGroup(matrix, visited, row + 1, col, value, false, false); // Down
+         }
+         if(shapes){
+             count += findGroup(matrix, visited, row, col - 1, value,false, true); // Left
+             count += findGroup(matrix, visited, row, col + 1, value, false, true); // Right
+             count += findGroup(matrix, visited, row - 1, col, value, false,true); // Up
+             count += findGroup(matrix, visited, row + 1, col, value, false, true); // Down
+         }
+         if(count >= 4) return count;
+         else return 0;
+     }
 
-        return count+1;
-    }
+     /**
+      * Set an element of the doublecheck matrix as UNAVAILABLE
+      * @param row to set UNAVAILABLE
+      * @param col to set UNAVAILABLE
+      */
+     private void setChecked(int row, int col){
+         doublecheck[row][col] = UNAVAILABLE;
+     }
+
+     /**
+      * Copy doublecheck matrix into bookshelf generated matrix
+      * @param m bookshelf's matrix
+      */
+     private void copyMatrix(int[][] m){
+         for(int i = 0; i<6; i++){
+             for (int j = 0; j<5; j++)if(doublecheck[i][j]==UNAVAILABLE) m[i][j]=UNAVAILABLE;
+         }
+     }
+
 
     @Override
     public int checkGoal(Bookshelf bs) {
-
-        //Verifico che il goal non sia gia stato preso //todo: tradurre
-        if(isReached()) return 0;
-
-        if(searchSeq(bs.getBookshelfColors())){
-            goalReached();
-            return getScore();
+        if(!isReached()){
+            if(searchSeq(bs.getBookshelfColors())){
+                goalReached();
+                return getScore();
+            }
         }
         return 0;
     }
