@@ -385,7 +385,7 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void showDisconnection() {
-        System.out.println("MyShelfie: one of the players disconnected from server, restart the game\n");
+        System.out.println("Closing the game...");
     }
   
     public void confirmStartGame(boolean response) {

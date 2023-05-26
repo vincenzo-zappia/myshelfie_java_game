@@ -46,7 +46,7 @@ public class ClientHandler extends NetworkInterface implements Runnable{
             //Starting to receive all the possible game commands once the game has officially started
             try {
                 //While loop to wait the reception of messages
-                while (lobby.isInGame()) {
+                while (lobby.isLobbyOnline()) {
                     Message msg = (Message) getObjectInput().readObject();
                     System.out.println("INFO: Message received");
                     if (msg != null) lobby.sendToGame(msg);
@@ -98,7 +98,7 @@ public class ClientHandler extends NetworkInterface implements Runnable{
         switch(message.getType()){
 
             //Creation of a new lobby
-            case CREATE_LOBBY_REQUEST -> {
+            case CREATE_LOBBY_REQUEST ->  {
 
                 //Creating a new lobby
                 this.lobby = server.createLobby();

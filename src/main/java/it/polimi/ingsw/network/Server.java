@@ -132,16 +132,18 @@ public class Server {
         return false;
     }
 
-    public synchronized Lobby getLobby(int lobbyId){
-        return lobbyMap.get(lobbyId);
-    }
-    //endregion
-
     /**
-     * remove username from ArrayList
+     * Removes a username from the username list
      * @param username that needs to be removed
      */
     public void removeUsername(String username){
         usernameList.remove(username);
     }
+
+    public synchronized Lobby getLobby(int lobbyId){
+        return lobbyMap.get(lobbyId);
+    }
+    //endregion
+
+
 }
