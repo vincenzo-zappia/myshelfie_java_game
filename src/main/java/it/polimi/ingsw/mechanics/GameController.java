@@ -214,8 +214,8 @@ public class GameController {
      * Scores the private goal for every player and creates the final scoreboard announcing the winner
      */
     public void findWinner(){
-        //Scoring each individual private goal
 
+        //Scoring each individual private goal
         game.scorePrivateGoal();
 
         //Creating the scoreboard (sort algorithm in client)

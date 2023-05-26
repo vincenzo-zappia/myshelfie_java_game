@@ -62,10 +62,11 @@ public class ClientHandler extends NetworkInterface implements Runnable{
                 }
             }
             catch (IOException | ClassNotFoundException e) {
+
+                //Safe disconnection
                 System.out.println("INFO: A player has disconnected. Closing the game...");
                 lobby.endGame();
                 lobby.forceDisconnection(this);
-                safeDisconnect();
             }
         } while(newGame);
         safeDisconnect();
