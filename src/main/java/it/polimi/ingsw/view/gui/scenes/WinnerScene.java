@@ -21,6 +21,7 @@ public class WinnerScene extends GenericScene {
 
     @FXML public void onQuitClick(){
         controller.sendNewGame(false);
+        controller.stopClientConnection();
         gui.stop();
     }
     //endregion

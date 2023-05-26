@@ -170,6 +170,10 @@ public class ClientController implements Observer {
         NewGameRequest newGameRequest = new NewGameRequest(username, newGame);
         client.sendMessage(newGameRequest);
     }
+
+    public void stopClientConnection(){
+        client.safeDisconnect();
+    }
     //endregion
 
 }
