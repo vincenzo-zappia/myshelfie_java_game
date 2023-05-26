@@ -172,7 +172,7 @@ public class ClientController implements Observer {
     }
 
     public void stopClientConnection(){
-        client.safeDisconnect();
+        client.closeClient();
     }
     //endregion
 

@@ -29,6 +29,10 @@ public class Client extends NetworkInterface implements Runnable, Subject {
         }
     }
 
+    public void closeClient(){
+        Thread.currentThread().interrupt();
+    }
+
     //region OBSERVER
     @Override
     public void register(Observer o) {
