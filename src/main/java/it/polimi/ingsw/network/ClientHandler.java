@@ -57,9 +57,11 @@ public class ClientHandler extends NetworkInterface implements Runnable{
                 int id = lobby.forceDisconnection(this);
                 server.removeLobby(id);
                 safeDisconnect();
+                Thread.currentThread().interrupt();
             }
         } while(endGameHandler());
         safeDisconnect();
+        Thread.currentThread().interrupt();
     }
 
     //region METHODS

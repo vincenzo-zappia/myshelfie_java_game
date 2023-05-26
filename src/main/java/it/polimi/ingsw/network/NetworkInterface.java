@@ -68,7 +68,6 @@ public abstract class NetworkInterface {
             System.out.println("INFO: Couldn't close socket. Shutting down...");
         }
 
-        exit(0);
     }
 
     protected ObjectInputStream getObjectInput(){
