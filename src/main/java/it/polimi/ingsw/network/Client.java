@@ -25,9 +25,7 @@ public class Client extends Subject implements Runnable{
 
     //region CONSTRUCTOR
     public Client(String ip, int port){
-
         try {
-
             socket = new Socket(ip, port);
             objOut = new ObjectOutputStream(socket.getOutputStream());
             objIn = new ObjectInputStream(socket.getInputStream());
@@ -72,7 +70,7 @@ public class Client extends Subject implements Runnable{
                 res = msg!=null;
             }
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e); //TODO: Gestione crash server
         }
         return msg;
     }

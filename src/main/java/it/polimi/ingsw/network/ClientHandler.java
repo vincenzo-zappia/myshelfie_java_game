@@ -208,7 +208,7 @@ public class ClientHandler implements Runnable{
                 received = message != null;
             }
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e); //Message reception error message
         }
         return message;
     }

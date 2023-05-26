@@ -63,6 +63,11 @@ public class GUIManager implements UserInterface {
     }
 
     @Override
+    public void showDisconnection() {
+        //TODO: todo
+    }
+
+    @Override
     public void confirmStartGame(boolean response) {
         Platform.runLater(() -> {
             if(response) {
