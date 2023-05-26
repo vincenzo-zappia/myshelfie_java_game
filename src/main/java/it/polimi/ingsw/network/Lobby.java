@@ -82,7 +82,6 @@ public class Lobby {
 
     public void forceDisconnection(ClientHandler ch){
         networkMap.entrySet().stream().filter(entry -> !entry.getValue().getClientHandler().equals(ch)).forEach(entry -> entry.getValue().getClientHandler().sendMessage(new NetFailureMessage("Server")));
-        endGame();
     }
 
     /**
