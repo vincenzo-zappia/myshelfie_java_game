@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-import java.util.Map;
+import java.util.*;
 
 public class WinnerScene extends GenericScene {
 
@@ -27,10 +27,25 @@ public class WinnerScene extends GenericScene {
     //region EXTERNAL METHOD
     public void displayScoreboard(SerializableTreeMap<String, Integer> scoreboardMap){
 
-        String[] usernames = scoreboardMap.keySet().toArray(new String[0]);
-        Integer[] scores = scoreboardMap.values().toArray(new Integer[0]);
+        //TODO da verificare funzionamento
+        List<Map.Entry<String, Integer>> entryList = new ArrayList<>(scoreboardMap.entrySet());
+        Collections.sort(entryList, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> entry1, Map.Entry<String, Integer> entry2) {
+                // Ordine decrescente
+                return entry2.getValue().compareTo(entry1.getValue());
+            }
+        });
+        TreeMap<String, Integer> ordered = new TreeMap<>();
 
-        for (int i=0; i< scoreboardMap.size(); i++) {
+        for (Map.Entry<String, Integer> entry : entryList) {
+            ordered.put(entry.getKey(), entry.getValue());
+        }
+
+        String[] usernames = ordered.keySet().toArray(new String[0]);
+        Integer[] scores = ordered.values().toArray(new Integer[0]);
+
+        for (int i=0; i< ordered.size(); i++) {
             Label username = (Label) getNodeByRowColumnIndex(i+1,0,scoreboard),
             score = (Label) getNodeByRowColumnIndex(i+1,1,scoreboard);
 
