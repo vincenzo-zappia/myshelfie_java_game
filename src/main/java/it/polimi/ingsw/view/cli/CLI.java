@@ -304,7 +304,9 @@ public class CLI implements Runnable, UserInterface {
      * @param str The String to check
      * @return true if and only if the String is in the correct format.
      */
-    private boolean checkFormat(String str){ return str.matches("\\(\\d+;\\d+\\)"); }
+    private boolean checkFormat(String str){
+        return str.matches("\\(\\d+;\\d+\\)");
+    }
     //endregion
 
     //region USER INTERFACE

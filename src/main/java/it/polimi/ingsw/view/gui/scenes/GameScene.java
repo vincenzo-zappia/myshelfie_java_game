@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -54,6 +55,9 @@ public class GameScene extends GenericScene{
     //endregion
 
     private boolean selectable;
+
+    private Tooltip cg1tooltip;
+    private Tooltip cg2tooltip;
     
     private ArrayList<int[]> currentSelection;
 
@@ -254,6 +258,11 @@ public class GameScene extends GenericScene{
         cg1Score.setVisible(true);
         cg2.setVisible(true);
         cg2Score.setVisible(true);
+
+        cg1tooltip = new Tooltip(commonGoal1.getDescription());
+        cg2tooltip = new Tooltip(commonGoal2.getDescription());
+        Tooltip.install(cg1, cg1tooltip);
+        Tooltip.install(cg2, cg2tooltip);
 
     }
 

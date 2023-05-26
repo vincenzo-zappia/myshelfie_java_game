@@ -45,3 +45,27 @@
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
 }
+
+.test {
+    -fx-background-color: #2196f3;
+    -fx-text-fill: white;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-pref-width: 120px;
+    -fx-pref-height: 40px;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-width: 2px;
+    -fx-border-color: #ffffff;
+    -fx-cursor: hand;
+}
+
+.test:hover {
+    -fx-background-color: #64b5f6;
+    -fx-text-fill: white;
+}
+
+.test:pressed {
+    -fx-background-color: #1976d2;
+    -fx-text-fill: white;
+}

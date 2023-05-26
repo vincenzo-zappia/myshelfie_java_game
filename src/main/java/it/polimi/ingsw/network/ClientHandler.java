@@ -161,9 +161,7 @@ public class ClientHandler implements Runnable{
 
             }
 
-            default -> {
-                sendMessage(new TextResponse(false, "Invalid command!"));
-            }
+            default -> sendMessage(new TextResponse(false, "Invalid command!"));
         }
 
     }

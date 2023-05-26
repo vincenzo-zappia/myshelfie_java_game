@@ -29,7 +29,7 @@
          </font>
       </TextField>
       <Separator prefWidth="200.0" />
-      <Button mnemonicParsing="false" onAction="#onNextClick" prefHeight="52.0" prefWidth="382.0" text="NEXT">
+      <Button defaultButton="true" mnemonicParsing="false" onAction="#onNextClick" prefHeight="52.0" prefWidth="382.0" text="NEXT">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
