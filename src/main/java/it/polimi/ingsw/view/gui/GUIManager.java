@@ -73,7 +73,7 @@ public class GUIManager implements UserInterface {
     public void showDisconnection() {
         Platform.runLater(() -> {
             gui.loadScene("disconnection.fxml");
-            gui.getController().showMessage(false, "Closing the game...");
+            gui.getController().showMessage(false, "A player has disconnected!");
         });
     }
 

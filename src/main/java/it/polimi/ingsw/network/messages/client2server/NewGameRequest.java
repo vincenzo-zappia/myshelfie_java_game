@@ -12,8 +12,8 @@ public class NewGameRequest extends Message {
         this.newGame = newGame;
     }
 
-
     public boolean getNewGame() {
         return newGame;
     }
+
 }

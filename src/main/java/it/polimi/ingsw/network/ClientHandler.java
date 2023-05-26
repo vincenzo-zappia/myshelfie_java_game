@@ -36,6 +36,8 @@ public class ClientHandler extends NetworkInterface implements Runnable{
      * Waits for incoming messages from client to server
      */
     public void run() {
+        boolean newGame = false;
+
         //Receiving the request to check username availability
         checkUsernameHandler();
 
@@ -49,7 +51,13 @@ public class ClientHandler extends NetworkInterface implements Runnable{
                 while (lobby.isLobbyOnline()) {
                     Message msg = (Message) getObjectInput().readObject();
                     System.out.println("INFO: Message received");
-                    if (msg != null) lobby.sendToGame(msg);
+                    if (msg != null){
+                        if(msg.getType() == MessageType.NEW_GAME_REQUEST) {
+                            NewGameRequest newGameRequest = (NewGameRequest) msg;
+                            newGame = newGameRequest.getNewGame();
+                        }
+                        else {lobby.sendToGame(msg);}
+                    }
                 }
             }
             catch (IOException | ClassNotFoundException e) {
@@ -59,7 +67,7 @@ public class ClientHandler extends NetworkInterface implements Runnable{
                 safeDisconnect();
                 Thread.currentThread().interrupt(); //Single client, not client handler
             }
-        } while(endGameHandler());
+        } while(newGame);
         safeDisconnect();
         Thread.currentThread().interrupt(); //Single client, not client handler
     }
@@ -168,11 +176,12 @@ public class ClientHandler extends NetworkInterface implements Runnable{
     private boolean endGameHandler(){
         Message message = receiveMessage();
 
+        System.out.println(message.getType()); //TODO: Dehug
+
         if (message.getType() == MessageType.NEW_GAME_REQUEST){
             NewGameRequest newGameRequest = (NewGameRequest) message;
             return newGameRequest.getNewGame();
         }
-
         return endGameHandler();
     }
 
