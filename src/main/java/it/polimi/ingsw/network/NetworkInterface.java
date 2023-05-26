@@ -70,6 +70,7 @@ public abstract class NetworkInterface {
         } catch (IOException e) {
             System.out.println("INFO: Couldn't close socket. Shutting down...");
         }
+        Thread.currentThread().interrupt();
     }
 
     protected ObjectInputStream getObjectInput(){

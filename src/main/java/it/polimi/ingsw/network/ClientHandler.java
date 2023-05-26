@@ -70,7 +70,6 @@ public class ClientHandler extends NetworkInterface implements Runnable{
             }
         } while(newGame);
         safeDisconnect();
-        Thread.currentThread().interrupt(); //Single client, not client handler
     }
 
     //region METHODS
