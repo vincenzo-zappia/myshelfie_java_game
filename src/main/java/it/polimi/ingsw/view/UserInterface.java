@@ -33,8 +33,6 @@ public interface UserInterface extends View {
      */
     void refreshConnectedPlayers(ArrayList<String> playerUsernames);
 
-    void showDisconnection();
-
     /**
      * Gives feedback about the start of the game
      * @param response if the game started
@@ -42,5 +40,8 @@ public interface UserInterface extends View {
     void confirmStartGame(boolean response);
 
     void showChat(String chat);
+
+    //TODO: Implementato downstream, non mi piace
+    void showDisconnection();
 
 }

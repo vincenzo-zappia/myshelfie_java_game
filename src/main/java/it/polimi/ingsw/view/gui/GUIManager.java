@@ -7,6 +7,7 @@ import it.polimi.ingsw.entities.util.BoardTile;
 import it.polimi.ingsw.entities.util.Tile;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
+import it.polimi.ingsw.network.messages.server2client.TextResponse;
 import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.gui.scenes.*;
 import javafx.application.Platform;
@@ -70,7 +71,10 @@ public class GUIManager implements UserInterface {
 
     @Override
     public void showDisconnection() {
-        //TODO: todo
+        Platform.runLater(() -> {
+            gui.loadScene("winner.fxml");
+            gui.getController().showMessage(false, "Closing the game...");
+        });
     }
 
     @Override

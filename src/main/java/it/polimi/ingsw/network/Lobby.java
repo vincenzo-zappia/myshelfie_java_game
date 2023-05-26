@@ -24,11 +24,13 @@ public class Lobby {
     private final ArrayList<String> usernameList;
     private final HashMap<String, NetworkPlayer> networkMap;
     private GameController gameController;
+    private boolean lobbyOnline;
     private boolean inGame;
     //endregion
 
     //region CONSTRUCTOR
     public Lobby(Server server, int lobbyID) {
+        lobbyOnline = true;
         inGame = false;
         this.lobbyID = lobbyID;
         this.server = server;
@@ -127,12 +129,8 @@ public class Lobby {
     }
 
     public void endGame(){
-        inGame = false;
+        lobbyOnline = false;
         server.removeLobby(lobbyID);
-    }
-
-    public boolean isInGame(){
-        return inGame;
     }
 
     public int getLobbyID() {
@@ -141,6 +139,10 @@ public class Lobby {
 
     public ArrayList<String> getUsernameList(){
         return usernameList;
+    }
+
+    public boolean isLobbyOnline() {
+        return lobbyOnline;
     }
     //endregion
 
