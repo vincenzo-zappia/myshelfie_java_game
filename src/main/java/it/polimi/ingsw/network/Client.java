@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.observer.Subject;
 
 import java.io.*;
@@ -13,7 +14,7 @@ import static java.lang.System.exit;
  * Class that manages only the network functionality of the Client (send and receive message,
  * server connection, ...)
  */
-public class Client extends Subject implements Runnable{
+public class Client implements Runnable, Subject{
 
     //region ATTRIBUTES
     private ObjectOutputStream objOut;
@@ -86,7 +87,21 @@ public class Client extends Subject implements Runnable{
             System.out.println("INFO: ??? we are closed");
         }
     }
+    //endregion
 
+    //region OBSERVER
+    @Override
+    public void register(Observer o) { observers.add(o); }
+
+    @Override
+    public void unregister(Observer o) { observers.remove(o); }
+
+    @Override
+    public void notifyObserver(Message message) {
+        for(Observer o : observers){
+            o.update(message);
+        }
+    }
     //endregion
 
 }
