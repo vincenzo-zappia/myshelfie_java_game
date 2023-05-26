@@ -212,6 +212,8 @@ public class CLI implements Runnable, UserInterface {
                     System.out.println(CliUtil.makeCommandList());
                 }
 
+                case "" -> {}
+
                 default -> System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
             }
         }
@@ -223,6 +225,7 @@ public class CLI implements Runnable, UserInterface {
         switch (response){
             case "0" -> {
                 controller.sendNewGame(true);
+                lobbyJoined = false;
                 run();
             }
             case "1" -> {
@@ -385,12 +388,6 @@ public class CLI implements Runnable, UserInterface {
         System.out.println("Connected players: ");
         System.out.println(CliUtil.makePlayersList(playerUsernames));
     }
-
-    @Override
-    public void showDisconnection() {
-        virtualModel.setEndGame(); //TODO: Testare
-        System.out.println("Closing the game...");
-    }
   
     public void confirmStartGame(boolean response) {
         //Notifying the waiting thread
@@ -402,6 +399,12 @@ public class CLI implements Runnable, UserInterface {
     @Override
     public void showChat(String chat) {
         System.out.println(chat);
+    }
+
+    @Override
+    public void showDisconnection() {
+        virtualModel.setEndGame(); //TODO: Testare
+        System.out.println("Closing the game...");
     }
     //endregion
 
