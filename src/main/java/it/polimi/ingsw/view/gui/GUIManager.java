@@ -72,7 +72,7 @@ public class GUIManager implements UserInterface {
     @Override
     public void showDisconnection() {
         Platform.runLater(() -> {
-            gui.loadScene("winner.fxml");
+            gui.loadScene("disconnection.fxml");
             gui.getController().showMessage(false, "Closing the game...");
         });
     }
