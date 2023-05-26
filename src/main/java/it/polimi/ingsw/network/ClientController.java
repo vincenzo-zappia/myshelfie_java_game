@@ -106,7 +106,6 @@ public class ClientController implements Observer {
             case DISCONNECTION -> {
                 view.showDisconnection();
                 client.safeDisconnect();
-                exit(0);
             }
         }
     }
