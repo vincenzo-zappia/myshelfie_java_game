@@ -5,6 +5,7 @@ import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.entities.util.BoardTile;
 import it.polimi.ingsw.entities.util.Tile;
 
+//TODO: Non serve in GUI(?)
 /**
  * Client side abstraction of the game entities
  */

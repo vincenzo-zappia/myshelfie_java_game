@@ -11,12 +11,19 @@ public class CommonGoal5 extends CommonGoal implements Goal{
 
     public CommonGoal5() {
         super("Three columns each formed by 6 tiles of maximum three different types.\n" +
-                "One column can show the same or a different combination of another column.");
+                "One column can show the same or a different combination of another column.", "cg5.jpg");
     }
 
     @Override
     public int checkGoal(Bookshelf bs) {
-        if (findColumns(bs.getBookshelfColors())) return getScore();
+
+        //Verifico che il goal non sia gia stato preso //todo: tradurre
+        if(isReached()) return 0;
+
+        if (findColumns(bs.getBookshelfColors())){
+            goalReached();
+            return getScore();
+        }
         return 0;
     }
 

@@ -1,0 +1,71 @@
+.confirm-buton {
+    -fx-background-color: #2196F3; /* Colore di sfondo azzurro */
+    -fx-text-fill: white; /* Colore del testo bianco */
+    -fx-background-radius: 20px; /* Raggio dei bordi arrotondati */
+    -fx-padding: 5px 5px; /* Spazio interno al pulsante */
+}
+
+.background-img {
+    -fx-background-image: url('../../../../../assets/misc/sfondo-parquet.jpg');
+    -fx-background-size: cover; /* Imposta il ridimensionamento dell'immagine */
+    -fx-background-repeat: no-repeat;
+}
+
+.centro {
+    -fx-alignment-baseline: center;
+}
+
+.goals {
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 1), 10, 0, 0, 0); /* Imposta l'ombra */
+}
+
+.top-bar {
+    -fx-background-color: rgba(173, 216, 230, 0.7); /* Colore di sfondo azzurro chiaro e trasparente */
+    -fx-padding: 10px; /* Padding interno della top bar */
+    -fx-alignment: center; /* Allineamento del contenuto al centro della top bar */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0); /* Ombra della top bar */
+    -fx-effect: lighting;
+}
+
+.start-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-color: blue;
+    -fx-border-width: 1px;
+    -fx-text-fill: blue;
+}
+
+.start-button:hover {
+    -fx-background-color: rgba(0, 0, 255, 0.2); /* Colore di sfondo leggermente evidenziato al passaggio del mouse */
+}
+
+.board {
+    -fx-background-image: url('../../../../../assets/misc/livingroom.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+
+.test {
+    -fx-background-color: #2196f3;
+    -fx-text-fill: white;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-pref-width: 120px;
+    -fx-pref-height: 40px;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-border-width: 2px;
+    -fx-border-color: #ffffff;
+    -fx-cursor: hand;
+}
+
+.test:hover {
+    -fx-background-color: #64b5f6;
+    -fx-text-fill: white;
+}
+
+.test:pressed {
+    -fx-background-color: #1976d2;
+    -fx-text-fill: white;
+}

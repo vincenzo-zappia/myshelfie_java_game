@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<CommandList>
+	<command id="show">Show the desired item. -> show [bookshelf | board | commongoals | privategoal]</command>
+	<command id="start">Start the game (command usable by whoever created the lobby). -> start</command>
+	<command id="select">Select the cards of the board in the preferred order. -> select [(x;y),(x;y),(x;y)]</command>
+	<command id="insert">Insert cards in the bookshelf. -> insert [0-4]</command>
+</CommandList>

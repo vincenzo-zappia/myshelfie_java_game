@@ -16,7 +16,7 @@ public class CommonGoal12 extends CommonGoal implements Goal{
         super("Five columns of increasing or decreasing height.\n" +
                 "Starting from the first column on the left or on the right,\n" +
                 "each next column must be made of exactly one more tile.\n" +
-                "Tiles can be of any type.");
+                "Tiles can be of any type.", "cg12.jpg");
     }
 
     private boolean firstCheck(Tile[] row){
@@ -26,6 +26,10 @@ public class CommonGoal12 extends CommonGoal implements Goal{
 
     @Override
     public int checkGoal(Bookshelf bookshelf) {
+
+        //Verifico che il goal non sia gia stato preso //todo: tradurre
+        if(isReached()) return 0;
+
         if(!firstCheck(bookshelf.getRow(5))) return 0; //verifico che sia presente una carta in almeno tutte le 5 colonne
 
         for(int i=0; i<4; i++){
@@ -34,6 +38,7 @@ public class CommonGoal12 extends CommonGoal implements Goal{
 
             if(!(len == lenSucc+1 || len == lenSucc-1)) return 0;
         }
+        goalReached();
         return getScore();
     }
 }

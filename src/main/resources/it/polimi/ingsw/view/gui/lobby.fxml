@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.LobbyScene">
+   <ImageView fitHeight="200.0" fitWidth="603.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
+      <Image url="@../../../../../assets/misc/logo.png" />
+   </ImageView>
+   <TilePane alignment="CENTER" prefHeight="220.0" prefWidth="1011.0" StackPane.alignment="CENTER">
+      <Pane fx:id="pane1" prefHeight="184.0" prefWidth="200.0" visible="false">
+         <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
+            <Image url="@../../../../../assets/misc/user-logo.png" />
+         </ImageView>
+         <Label fx:id="label1" alignment="TOP_CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="32.0" prefWidth="202.0" text="Nickname">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Label>
+      </Pane>
+      <Pane fx:id="pane2" prefHeight="184.0" prefWidth="200.0" visible="false">
+         <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
+            <Image url="@../../../../../assets/misc/user-logo.png" />
+         </ImageView>
+         <Label fx:id="label2" alignment="TOP_CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="32.0" prefWidth="202.0" text="Nickname">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Label>
+      </Pane>
+      <Pane fx:id="pane3" prefHeight="184.0" prefWidth="200.0" visible="false">
+         <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
+            <Image url="@../../../../../assets/misc/user-logo.png" />
+         </ImageView>
+         <Label fx:id="label3" alignment="TOP_CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="32.0" prefWidth="202.0" text="Nickname">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Label>
+      </Pane>
+      <Pane fx:id="pane4" prefHeight="184.0" prefWidth="200.0" visible="false">
+         <ImageView cache="true" fitHeight="122.0" fitWidth="124.0" layoutX="38.0" layoutY="14.0" pickOnBounds="true">
+            <Image url="@../../../../../assets/misc/user-logo.png" />
+         </ImageView>
+         <Label fx:id="label4" alignment="TOP_CENTER" layoutX="-1.0" layoutY="132.0" prefHeight="32.0" prefWidth="202.0" text="Nickname">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Label>
+      </Pane>
+   </TilePane>
+   <Label fx:id="playerNum" alignment="CENTER" prefHeight="44.0" prefWidth="388.0" text="Connected users: 1/4" StackPane.alignment="BOTTOM_CENTER">
+      <font>
+         <Font size="20.0" />
+      </font>
+   </Label>
+   <Button fx:id="start" mnemonicParsing="false" onAction="#onStartGameClick" prefHeight="56.0" prefWidth="166.0" styleClass="start-button" text="START" visible="false" StackPane.alignment="BOTTOM_RIGHT">
+      <font>
+         <Font size="25.0" />
+      </font>
+      <StackPane.margin>
+         <Insets bottom="30.0" right="30.0" />
+      </StackPane.margin>
+   </Button>
+   <Label fx:id="lobbyID" text="Label" visible="false" StackPane.alignment="BOTTOM_CENTER">
+      <StackPane.margin>
+         <Insets bottom="50.0" />
+      </StackPane.margin>
+      <font>
+         <Font name="System Bold" size="20.0" />
+      </font>
+   </Label>
+   <Label fx:id="feedback" text="none" visible="false" StackPane.alignment="TOP_CENTER">
+      <StackPane.margin>
+         <Insets top="230.0" />
+      </StackPane.margin>
+      <font>
+         <Font name="System Bold" size="14.0" />
+      </font>
+   </Label>
+</StackPane>

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
-import it.polimi.ingsw.entities.SerializableTreeMap;
+import it.polimi.ingsw.entities.goals.CommonGoal;
+import it.polimi.ingsw.entities.util.SerializableTreeMap;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.Client;
@@ -19,6 +20,9 @@ public class CLI implements Runnable, UserInterface {
     private final ClientController controller;
     private final VirtualModel virtualModel;
     private final Object lock;
+    private final Object lock1;
+
+
 
     //region FLAGS
     private boolean usernameAccepted;
@@ -31,6 +35,7 @@ public class CLI implements Runnable, UserInterface {
         controller = new ClientController(this, client);
         virtualModel = new VirtualModel();
         lock = new Object();
+        lock1 = new Object();
 
         usernameAccepted = false;
         lobbyJoined = false;
@@ -38,7 +43,7 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void run() {
-        //TODO: CliUtil stampa titolo ascii art
+        System.out.println(CliUtil.makeTitle());
         connectionHandler();
         gameHandler();
     }
@@ -92,6 +97,16 @@ public class CLI implements Runnable, UserInterface {
 
                     //Starting the game
                     controller.startGame();
+
+                    //Thread waits until notified
+                    synchronized (lock1) {
+                        try {
+                            lock1.wait();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
                 }
 
                 //Joining an existing lobby
@@ -124,15 +139,11 @@ public class CLI implements Runnable, UserInterface {
     private void gameHandler() {
         scanner = new Scanner(System.in);
 
-        //TODO: Implementare stop del loop attraverso chiamata di scoreboard
         //While loop to read the user keyboard input (until the game ends)
         while(!virtualModel.getEndGame()){
             String read = scanner.nextLine();
 
-            if (!read.contains(" ")){
-                System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
-                continue;
-            }
+            if (!read.contains(" ")) read += " ";
 
             String[] splitted = read.split(" ", 2);
 
@@ -189,15 +200,16 @@ public class CLI implements Runnable, UserInterface {
                     }
                 }
 
-                //Help command for syntax aid
                 case "help" -> {
-                    System.out.println("Command list:");
+                    //Help command for syntax aid
+                    System.out.println(CliUtil.makeTitle("Command List"));
                     System.out.println(CliUtil.makeCommandList());
                 }
 
                 default -> System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
             }
         }
+
         //System.out.println(CliUtil.makeTitle("Game Over!"));
     }
 
@@ -257,9 +269,11 @@ public class CLI implements Runnable, UserInterface {
      * Prints the details of the two game common goals on screen
      */
     private void showCommonGoals(){
-        Goal[] goals = virtualModel.getCommonGoals();
-
-
+        CommonGoal commonGoal1 = (CommonGoal) virtualModel.getCommonGoals()[0],
+        commonGoal2 = (CommonGoal) virtualModel.getCommonGoals()[1];
+        System.out.println(CliUtil.makeTitle("Common Goals"));
+        System.out.println(CliUtil.makeCommonGoal(commonGoal1.getDescription()) + "\n");
+        System.out.println(CliUtil.makeCommonGoal(commonGoal2.getDescription()));
     }
 
     /**
@@ -267,6 +281,8 @@ public class CLI implements Runnable, UserInterface {
      */
     private void showPrivateGoal() {
         PrivateGoal privateGoal = virtualModel.getPrivateGoal();
+        System.out.println(CliUtil.makeTitle("Private Goal"));
+        System.out.println(CliUtil.makeBookshelf(CliUtil.bookshelfConverter(privateGoal.getGoalStructure())));
     }
 
     /**
@@ -289,7 +305,9 @@ public class CLI implements Runnable, UserInterface {
      * @param str The String to check
      * @return true if and only if the String is in the correct format.
      */
-    private boolean checkFormat(String str){ return str.matches("\\(\\d+;\\d+\\)"); }
+    private boolean checkFormat(String str){
+        return str.matches("\\(\\d+;\\d+\\)");
+    }
     //endregion
 
     //region USER INTERFACE
@@ -305,7 +323,19 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void confirmAccess(boolean response) {
+    public void confirmCreation(String content) {
+        lobbyJoined = true;
+        System.out.println(content); //TODO: Formattare carino
+
+        //Notifying the waiting thread
+        synchronized (lock) {
+            lock.notify();
+        }
+
+    }
+
+    @Override
+    public void confirmAccess(boolean response, String content) {
         //Receiving feedback about lobby creation/join
         lobbyJoined = response;
 
@@ -325,6 +355,18 @@ public class CLI implements Runnable, UserInterface {
     public void showDisconnection() {
         System.out.println("MyShelfie: one of the players disconnected from server, restart the game\n");
     }
+  
+    public void confirmStartGame(boolean response) {
+        //Notifying the waiting thread
+        synchronized (lock1) {
+            lock1.notify();
+        }
+    }
+
+    @Override
+    public void showChat(String chat) {
+        System.out.println(chat);
+    }
     //endregion
 
     //region VIEW
@@ -341,8 +383,8 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void sendCheckedCoordinates(int[][] coordinates){
-        virtualModel.setCoordinates(coordinates);
+    public void sendCheckedCoordinates(boolean valid, int[][] coordinates){
+        if (valid) virtualModel.setCoordinates(coordinates);
     }
 
     @Override
@@ -364,20 +406,36 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void showGoalsDetails(Goal[] commonGoals, PrivateGoal privateGoal) {
+    public void showCommonGoals(Goal[] commonGoals) {
         virtualModel.setCommonGoals(commonGoals);
+    }
+
+    @Override
+    public void showPrivateGoal(PrivateGoal privateGoal) {
         virtualModel.setPrivateGoal(privateGoal);
     }
 
     @Override
     public void showScoreboard(SerializableTreeMap<String, Integer> scoreboard) {
         System.out.println(CliUtil.makeTitle("Scoreboard"));
-        for (Map.Entry<String, Integer> entry : scoreboard.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+
+        //Creazione di un elenco ordinato delle coppie chiave-valore
+        List<Map.Entry<Integer, String>> entryList = new ArrayList<>((Collection) scoreboard.entrySet());
+
+        //Ordinamento in ordine decrescente in base ai valori
+        entryList.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
+
+        //Stampa delle chiavi e dei valori in ordine decrescente dei valori
+        for (Map.Entry<Integer, String> entry : entryList) {
+            System.out.println("Player: " + entry.getKey() + ", Score: " + entry.getValue());
         }
         virtualModel.setEndGame();
     }
 
+    @Override
+    public void showToken(String content) {
+        CliUtil.makeConfirmationMessage(content);
+    }
     //endregion
 
 }

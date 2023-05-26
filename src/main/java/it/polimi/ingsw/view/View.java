@@ -1,13 +1,10 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.entities.SerializableTreeMap;
+import it.polimi.ingsw.entities.util.SerializableTreeMap;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.entities.util.BoardTile;
 import it.polimi.ingsw.entities.util.Tile;
-
-import java.util.HashMap;
-import java.util.TreeMap;
 
 /**
  * Standardization of all the methods that the Server uses to send requests, updates, error messages, etc
@@ -29,10 +26,11 @@ public interface View {
     void showCurrentPlayer(String currentPlayer);
 
     /**
-     * Sends back the selected coordinates if the selection is valid
+     * Sends back the selected coordinates and gives feedback about its validity
+     * @param valid if the selection is valid
      * @param coordinates coordinates selected by the player
      */
-    void sendCheckedCoordinates(int[][] coordinates);
+    void sendCheckedCoordinates(boolean valid, int[][] coordinates);
 
     /**
      * Sends the coordinates of the cards successfully removed by the current player
@@ -53,15 +51,28 @@ public interface View {
     void showRefilledBoard(BoardTile[][] boardTiles);
 
     /**
-     * Sends to a player his private goal and the common goals of the game
+     * Sends the game common goals details to the player
      * @param commonGoals common goals of the game
-     * @param privateGoal player-specific goal
      */
-    void showGoalsDetails(Goal[] commonGoals, PrivateGoal privateGoal);
+    void showCommonGoals(Goal[] commonGoals);
 
+    /**
+     * Sends to the player the details of his specific private goal
+     * @param privateGoal player-specific private goal
+     */
+    void showPrivateGoal(PrivateGoal privateGoal);
+
+    //TODO: Nfunziona fratm
     /**
      * Updates all the players with the scoreboard at the end of the game
      * @param scoreboard endgame scoreboard ordered by points
      */
     void showScoreboard(SerializableTreeMap<String, Integer> scoreboard);
+
+    /**
+     * Allows for the bonus point token to be taken by the first player who filled his bookshelf
+     * @param content message containing the username of the player
+     */
+    void showToken(String content);
+
 }

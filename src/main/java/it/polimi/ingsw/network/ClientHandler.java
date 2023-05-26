@@ -102,7 +102,7 @@ public class ClientHandler implements Runnable{
         Message message = receiveOneMessage();
 
         if(message.getType() == MessageType.USERNAME_REQUEST){
-            if(!server.existsUsername(message.getContent())) {
+            if(!server.existsUsername(message.getContent()) && !message.getContent().replace(" ", "").equals("")) {
 
                 //Sending positive feedback back to the player
                 sendMessage(new TextResponse(true, "Username available!"));
@@ -135,8 +135,11 @@ public class ClientHandler implements Runnable{
 
                 //Joining the newly created lobby and sending back the lobby ID
                 lobby.joinLobby(new NetworkPlayer(message.getSender(), this));
-                sendMessage(new TextResponse(true, "Creation successful!\nLobby ID: " + lobby.getLobbyID()));
-                sendMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));
+                sendMessage(new TextResponse(true, "Creation successful!"));
+                sendMessage(new GenericMessage("Lobby ID: " + lobby.getLobbyID(), MessageType.CREATION_RESPONSE));
+
+                //Showing the newly created lobby
+                lobby.lobbyBroadcastMessage(new UsernameListMessage(lobby.getUsernameList()));
 
                 //Initialization of the game
                 startGameHandler();
@@ -150,7 +153,7 @@ public class ClientHandler implements Runnable{
                 if(server.existsLobby(joinLobbyRequest.getLobbyId())) this.lobby = server.getLobby(joinLobbyRequest.getLobbyId());
                 else {
                     sendMessage(new TextResponse(false, "This lobby doesn't exist!"));
-                    sendMessage(new SpecificResponse(false, MessageType.ACCESS_RESPONSE));
+                    sendMessage(new SpecificResponse(false, null, MessageType.ACCESS_RESPONSE));
                     joinLobbyHandler();
                     return; //Return to stop the recursion
                 }
@@ -161,7 +164,8 @@ public class ClientHandler implements Runnable{
                  */
                 if(lobby.joinLobby(new NetworkPlayer(message.getSender(), this))){
                     sendMessage(new TextResponse(true, "Join successful!"));
-                    sendMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));
+                    sendMessage(new SpecificResponse(true, "Lobby ID: " + lobby.getLobbyID() ,MessageType.ACCESS_RESPONSE));
+
 
                     //Sending to all the players the updated username list with the new entry
                     lobby.lobbyBroadcastMessage(new UsernameListMessage(lobby.getUsernameList()));
@@ -170,9 +174,7 @@ public class ClientHandler implements Runnable{
 
             }
 
-            default -> {
-                sendMessage(new TextResponse(false, "Invalid command!"));
-            }
+            default -> sendMessage(new TextResponse(false, "Invalid command!"));
         }
 
     }

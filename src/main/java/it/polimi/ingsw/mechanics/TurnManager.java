@@ -2,7 +2,6 @@ package it.polimi.ingsw.mechanics;
 
 import java.util.ArrayList;
 
-//TODO: Decidere se il TurnManager debba essere in grado di inviare messaggi ai client. In quel caso diventerebbe "TurnController" e avrebbe bisogno di un'hashmap come attributo.
 /**
  * "Iterator" that has the role to select the current player relatively to the logic of the game
  */
@@ -20,6 +19,10 @@ public class TurnManager {
         this.currentPlayer = playerUsernames.get(0);
         System.out.println("INFO: Current player is: " + currentPlayer);
         endGame = false;
+
+        System.out.print("TurnManager: ");
+        for (String username : playerUsernames) System.out.print(username); //TODO: Debug
+        System.out.println(" ");
     }
     //endregion
 
@@ -33,7 +36,7 @@ public class TurnManager {
     public boolean nextTurn(){
         int currentPlayerIndex = playerUsernames.indexOf(currentPlayer);
 
-        //Checks if an iteration has ended, if so, and the endgame has not yet started, it starts back from the couch
+        //Checking if an iteration has ended, if so, and the endgame has not yet started, it starts back from the couch
         if(currentPlayerIndex + 1 < playerUsernames.size()) currentPlayerIndex += 1;
         else if(!endGame) currentPlayerIndex = 0;
         else return false;
@@ -48,6 +51,10 @@ public class TurnManager {
      */
     public void startEndGame(){
         endGame = true;
+    }
+
+    public boolean inEndGame(){
+        return endGame;
     }
 
     public String getCurrentPlayer(){

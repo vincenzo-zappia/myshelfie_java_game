@@ -1,12 +1,12 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
+import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.goals.CommonGoal0;
-import it.polimi.ingsw.entities.goals.Goal;
-import org.junit.jupiter.api.Test;
+import it.polimi.ingsw.entities.util.CardType;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CommonGoal0Test {
@@ -14,29 +14,89 @@ public class CommonGoal0Test {
     public static Bookshelf b;
 
     @BeforeAll
-    public static void inizialize(){
-        cg0 = new CommonGoal0();
-        b = new Bookshelf();
+    static void setUp(){
+        cg0=new CommonGoal0();
     }
     @BeforeEach
-    public void creationMatrix(){
-        int u = Goal.UNAVAILABLE;
-        int[][] matrix = {
-                {u,u,u,u,u},
-                {u,u,u,u,u},
-                {u,u,u,u,u},
-                {u,1,u,u,u},
-                {1,1,u,1,u},
-                {1,1,1,1,u}
-        };
-
-        cg0.setColorMatrix(matrix);
+    void Init(){
+        b=new Bookshelf();
     }
 
     @Test
-    public void test1(){
-        int result = cg0.checkGoal(b);
-        assertEquals(8, result);
+    void twoGroups2x2() {
+        for(int i=0; i<2; i++) {
+            b.addCard(i, new Card("img.png", CardType.FRAMES));
+            b.addCard(i, new Card("img.png", CardType.FRAMES));
+        }
+
+        for(int i=3; i<5; i++) {
+            b.addCard(i, new Card("img.png", CardType.TROPHIES));
+            b.addCard(i, new Card("img.png", CardType.TROPHIES));
+        }
+        int score = cg0.checkGoal(b);
+        assertEquals(6, score);
     }
 
+    @Test
+    void testGroup2x3() {
+        for(int i=0; i<3; i++) {
+            b.addCard(i, new Card("img.png", CardType.FRAMES));
+            b.addCard(i, new Card("img.png", CardType.FRAMES));
+        }
+
+        for(int i=3; i<5; i++) {
+            b.addCard(i, new Card("img.png", CardType.TROPHIES));
+            b.addCard(i, new Card("img.png", CardType.TROPHIES));
+        }
+        int score = cg0.checkGoal(b);
+        assertEquals(11, score);
+    }
+
+    @Test
+    void testGroup4x4() {
+        for(int i=0; i<4; i++) {
+            b.addCard(i, new Card("img.png", CardType.FRAMES));
+            b.addCard(i, new Card("img.png", CardType.FRAMES));
+            b.addCard(i, new Card("img.png", CardType.FRAMES));
+            b.addCard(i, new Card("img.png", CardType.FRAMES));
+            b.addCard(i, new Card("img.png", CardType.TROPHIES));
+        }
+        int score = cg0.checkGoal(b);
+        assertEquals(11, score);
+    }
+
+    @Test
+    void fakeGroup4x4() {
+        for(int i=0; i<4; i++) {
+            b.addCard(i, new Card("img.png", CardType.FRAMES));
+            b.addCard(i, new Card("img.png", CardType.FRAMES));
+            b.addCard(i, new Card("img.png", CardType.FRAMES));
+            b.addCard(i, new Card("img.png", CardType.TROPHIES));
+            b.addCard(i, new Card("img.png", CardType.FRAMES));
+        }
+        int score = cg0.checkGoal(b);
+        assertEquals(11, score);
+    }
+
+    @Test
+    void onlyRowsGroups() {
+        for(int i=0; i<5; i++) {
+            b.addCard(i, new Card("img.png", CardType.FRAMES));
+            b.addCard(i, new Card("img.png", CardType.CATS));
+            b.addCard(i, new Card("img.png", CardType.PLANTS));
+            b.addCard(i, new Card("img.png", CardType.GAMES));
+            b.addCard(i, new Card("img.png", CardType.TROPHIES));
+            b.addCard(i, new Card("img.png", CardType.BOOKS));
+        }
+        int score = cg0.checkGoal(b);
+        assertEquals(30, score);
+    }
+
+    @Test
+    void noGroups() {
+
+        b.addCard(3, new Card("img.png", CardType.BOOKS));
+        int score = cg0.checkGoal(b);
+        assertEquals(0, score);
+    }
 }

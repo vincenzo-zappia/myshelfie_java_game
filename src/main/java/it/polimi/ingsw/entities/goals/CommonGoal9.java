@@ -18,11 +18,15 @@ public class CommonGoal9 extends CommonGoal implements Goal{
 
     public CommonGoal9() {
         super("Eight tiles of the same type.\n" +
-                "There's no restriction about the position of these tiles.");
+                "There's no restriction about the position of these tiles.", "cg9.jpg");
     }
 
     @Override
     public int checkGoal(Bookshelf bs) {
+
+        //Verifico che il goal non sia gia stato preso //todo: tradurre
+        if(isReached()) return 0;
+
         int tmp=0;
         int[][] x = bs.getBookshelfColors();
 
@@ -32,7 +36,10 @@ public class CommonGoal9 extends CommonGoal implements Goal{
                     for(int k = 0; k < 6; k++){
                         for(int l = 0; l < 5; l++)if(x[k][l] != UNAVAILABLE && k!=i && l!=j && x[i][j] == x[k][l])tmp++;
                     }
-                    if(tmp >= 8) return getScore(); //if the algorithm find 8 identical tiles return the score
+                    if(tmp >= 8){
+                        goalReached();
+                        return getScore(); //if the algorithm find 8 identical tiles return the score
+                    }
                     tmp=0;
                 }
             }

@@ -12,7 +12,7 @@ public class CommonGoal11 extends CommonGoal implements Goal{
     private static final int[][] corners = {{0,0}, {0,4}, {5,0}, {5,4}};
 
     public CommonGoal11() {
-        super("Five tiles of the same type forming a diagonal.");
+        super("Five tiles of the same type forming a diagonal.", "cg11.jpg");
     }
 
     private boolean findDiagonalWithSameColor(int row, int column, Bookshelf b){
@@ -35,7 +35,14 @@ public class CommonGoal11 extends CommonGoal implements Goal{
     }
     @Override
     public int checkGoal(Bookshelf bookshelf) {
-        for(int i=0; i<4; i++) if (findDiagonalWithSameColor(corners[i][0], corners[i][1], bookshelf)) return getScore();
+
+        //Verifico che il goal non sia gia stato preso //todo: tradurre
+        if(isReached()) return 0;
+
+        for(int i=0; i<4; i++) if (findDiagonalWithSameColor(corners[i][0], corners[i][1], bookshelf)){
+            goalReached();
+            return getScore();
+        }
         return 0;
     }
 }

@@ -1,67 +1,76 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.entities.util.CardType;
+import java.util.HashMap;
 
-/*
- * Questo CommonGoal si riferisce ai Goals presente sulla Board
+/**
+ * Questo CommonGoal si riferisce ai Goals presenti sulla Board
  */
 public class CommonGoal0 implements Goal{
-    //TODO: revisionare (se quallcuno lo tocca vincenzo utilizzera il metodo kill(); )
-    private int[][] mColor = new int[6][5];
-    private final int[] scores;
-
-    public void setColorMatrix(int[][] matrix){
-        mColor = matrix;
-    }
-
-    public CommonGoal0() {
-        scores = new int[]{2,3,5,8};
-    }
 
     @Override
     public int checkGoal(Bookshelf bookshelf) {
+        HashMap<Integer, Integer> res = searchGroups(bookshelf.getBookshelfColors());
+        int points = 0;
 
-        int partial = 0;
-        for(CardType type: CardType.values()){
-
+        for(Integer t: res.keySet()){
+            if (res.get(t) == 3)points = points+2;
+            if(res.get(t)==4)points=points+3;
+            if(res.get(t)==5)points=points+5;
+            if(res.get(t)>5)points=points+8;
         }
-        return findLargestAdjacentGroup(mColor);
+        return points;
     }
 
-    private static int findLargestAdjacentGroup(int[][] matrix) {
-        int largestGroupSize = 0;
+    /**
+     * Methods that search the max player's group of tiles
+     *
+     * @param matrix bookshelf colors
+     * @return group's size
+     */
+    private HashMap<Integer, Integer> searchGroups(int[][] matrix) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        boolean[][] visited = new boolean[rows][cols];
+        HashMap<Integer, Integer> num = new HashMap<>();
 
-            // Visita ogni elemento della matrice come un nodo in un grafo
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                int currentGroupSize = visitNode(matrix, i, j, matrix[i][j], new boolean[matrix.length][matrix[0].length]);
-                largestGroupSize = Math.max(largestGroupSize, currentGroupSize);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (!visited[i][j] && matrix[i][j] != UNAVAILABLE) {
+                    int value = matrix[i][j];
+                    num.put(value, findAdjacent(matrix, visited, i, j, value));
+                }
             }
         }
-
-        return largestGroupSize;
+        return num;
     }
 
+    /**
+     * Check the adjacents tiles and count them
+     * @param matrix int[][] of cards's types
+     * @param visited matrix of already visited cards
+     * @param row to check
+     * @param col to check
+     * @param value contained in tile
+     * @return count of adjacent tiles group
+     */
+    private int findAdjacent(int[][] matrix, boolean[][] visited, int row, int col, int value) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
 
-
-    // Visita un nodo e tutti i suoi nodi adiacenti che hanno lo stesso valore
-    private static int visitNode(int[][] matrix, int i, int j, int value, boolean[][] visited) {
-        // Verifica se il nodo è già stato visitato o se il valore non corrisponde
-        if (i < 0 || i >= matrix.length || j < 0 || j >= matrix[0].length || visited[i][j] || matrix[i][j] != value || matrix[i][j] == Goal.UNAVAILABLE) {
+        if (row < 0 || row >= rows || col < 0 || col >= cols || visited[row][col] || matrix[row][col] != value) {
             return 0;
         }
 
-        visited[i][j] = true;
+        visited[row][col] = true;
 
-        // Visita tutti i nodi adiacenti che hanno lo stesso valore
-        int size = 1;
-        size += visitNode(matrix, i + 1, j, value, visited);
-        size += visitNode(matrix, i - 1, j, value, visited);
-        size += visitNode(matrix, i, j + 1, value, visited);
-        size += visitNode(matrix, i, j - 1, value, visited);
+        int count = 1;
+        count += findAdjacent(matrix, visited, row - 1, col, value); //Up
+        count += findAdjacent(matrix, visited, row + 1, col, value); //Down
+        count += findAdjacent(matrix, visited, row, col - 1, value); //Left
+        count += findAdjacent(matrix, visited, row, col + 1, value); //Right
 
-        return size;
+        return count;
     }
 
 }

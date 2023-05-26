@@ -2,6 +2,7 @@ package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.goals.CommonGoal1;
+import it.polimi.ingsw.entities.goals.CommonGoal3;
 import it.polimi.ingsw.entities.goals.CommonGoal5;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.util.CardType;
@@ -132,40 +133,35 @@ class GameTest {
      */
     @Test
     void scoreCommonGoalCaseTrue() {
-        for(int i=0; i<2; i++) {
-            game.getPlayer("G1").getBookshelf().addCard(i, new Card("img.png", CardType.FRAMES));
-            game.getPlayer("G1").getBookshelf().addCard(i, new Card("img.png", CardType.FRAMES));
-            game.getPlayer("G1").getBookshelf().addCard(i, new Card("img.png", CardType.FRAMES));
-            game.getPlayer("G1").getBookshelf().addCard(i, new Card("img.png", CardType.FRAMES));
-        }
+        ArrayList<Card> cards = new ArrayList<>();
         Goal[] tmp = new Goal[2];
         tmp[0] = new CommonGoal1();
         tmp[1] = new CommonGoal1();
         game.setCommonGoals(tmp);
-        game.scoreCommonGoal("G1");
-        assertTrue(game.getPlayer("G1").getScore()>0);
 
-        for(int i=0; i<3; i++) {
-            game.getPlayer("G2").getBookshelf().addCard(i, new Card("img.png", CardType.FRAMES));
-            game.getPlayer("G2").getBookshelf().addCard(i, new Card("img.png", CardType.CATS));
-            game.getPlayer("G2").getBookshelf().addCard(i, new Card("img.png", CardType.BOOKS));
-            game.getPlayer("G2").getBookshelf().addCard(i, new Card("img.png", CardType.GAMES));
-            game.getPlayer("G2").getBookshelf().addCard(i, new Card("img.png", CardType.FRAMES));
-            game.getPlayer("G2").getBookshelf().addCard(i, new Card("img.png", CardType.FRAMES));
+        for(int i=0; i<2; i++) {
+           cards.add(new Card("img.png", CardType.FRAMES));
         }
-        Goal[] v = new Goal[2];
-        v[0] = new CommonGoal5();
-        v[1] = new CommonGoal5();
-        game.setCommonGoals(v);
-        game.scoreCommonGoal("G2");
-        assertTrue(game.getPlayer("G2").getScore()>0);
+        game.addCardsToBookshelf("G1", 0, cards);
+        game.addCardsToBookshelf("G1", 1, cards);
+
+        for(int i=0; i<2; i++) {
+            cards.add(new Card("img.png", CardType.BOOKS));
+        }
+        game.addCardsToBookshelf("G1", 3, cards);
+        game.addCardsToBookshelf("G1", 4, cards);
+
+
+        game.scoreCommonGoal("G1");
+        System.out.println(game.getPlayer("G1").getScore());
+        assertTrue(game.getPlayer("G1").getScore()>0);
     }
 
-
-    //TODO: da verificare
+    /**
+     * check if private goals scoring works
+     */
     @Test
     void scorePrivateGoal() {
-        /*
         game.getPlayer("G2").getBookshelf().addCard(0, new Card("img.png", CardType.FRAMES));
         game.getPlayer("G2").getBookshelf().addCard(0, new Card("img.png", CardType.FRAMES));
         game.getPlayer("G2").getBookshelf().addCard(0, new Card("img.png", CardType.FRAMES));
@@ -194,13 +190,8 @@ class GameTest {
         game.getPlayer("G2").getBookshelf().addCard(4, new Card("img.png", CardType.CATS));
         game.getPlayer("G2").getBookshelf().addCard(4, new Card("img.png", CardType.PLANTS));
 
-
-        game.getPlayer("G2").setPrivateGoal(new PrivateGoal(0));
-
         game.scorePrivateGoal();
         assertTrue(game.getPlayer("G2").getScore()>0);
-
-         */
     }
 
     /**

@@ -9,24 +9,27 @@ package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
 
-/*
+/**
  * Two groups each containing 4 tiles of the same type in a 2x2 square.
  * The tiles of one square can be different from those of the other square.
  */
-
 public class CommonGoal1 extends CommonGoal implements Goal{
 
     public CommonGoal1() {
         super("Two groups each containing 4 tiles of the same type in a 2x2 square.\n" +
-                "The tiles of one square can be different from those of the other square.");
+                "The tiles of one square can be different from those of the other square.", "cg1.jpg");
     }
 
     @Override
     public int checkGoal(Bookshelf bs) {
+
+
+        //Verifico che il goal non sia gia stato preso //todo: tradurre
+        if(isReached()) return 0;
+
         //equal square card
         int tmp=0;
         int[][] x = bs.getBookshelfColors();
-
         for(int i = 0; i < 5 ; i++){  //search from row 0 to row-1
             for(int j = 0; j < 4; j++){ //search from column 0 to column-1
                 if(x[i][j] != UNAVAILABLE){  //check the cell if it is empty or not
@@ -41,7 +44,10 @@ public class CommonGoal1 extends CommonGoal implements Goal{
             }
         }
 
-        if(tmp>=2) return getScore();
+        if(tmp>=2){
+            goalReached();
+            return getScore();
+        }
         else return 0;
     }
 }

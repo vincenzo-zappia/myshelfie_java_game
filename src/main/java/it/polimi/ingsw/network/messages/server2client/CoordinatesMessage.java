@@ -8,6 +8,13 @@ import it.polimi.ingsw.network.messages.MessageType;
  */
 public class CoordinatesMessage extends Message {
     private final int[][] coordinates;
+    private boolean valid;
+
+    public CoordinatesMessage(boolean valid, int[][] coordinates, MessageType type){
+        super("server", type);
+        this.valid = valid;
+        this.coordinates = coordinates;
+    }
 
     public CoordinatesMessage(int[][] coordinates, MessageType type) {
         super("server", type);
@@ -16,5 +23,9 @@ public class CoordinatesMessage extends Message {
 
     public int[][] getCoordinates() {
         return coordinates;
+    }
+
+    public boolean isValid() {
+        return valid;
     }
 }

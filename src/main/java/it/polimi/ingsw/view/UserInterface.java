@@ -17,10 +17,15 @@ public interface UserInterface extends View {
     void confirmUsername(boolean response);
 
     /**
-     * Gives feedback about the creation or joining of a lobby
+     * Gives feedback about the creation of a lobby
+     */
+    void confirmCreation(String content);
+
+    /**
+     * Gives feedback about the joining of a lobby
      * @param response if the player successfully created/joined a lobby
      */
-    void confirmAccess(boolean response);
+    void confirmAccess(boolean response, String content);
 
     /**
      * Displays the list of the usernames of the players connected to the lobby at that point in time
@@ -29,4 +34,13 @@ public interface UserInterface extends View {
     void refreshConnectedPlayers(ArrayList<String> playerUsernames);
 
     void showDisconnection();
+
+    /**
+     * Gives feedback about the start of the game
+     * @param response if the game started
+     */
+    void confirmStartGame(boolean response);
+
+    void showChat(String chat);
+
 }

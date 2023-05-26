@@ -3,9 +3,11 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.mechanics.Game;
 import it.polimi.ingsw.mechanics.GameController;
 import it.polimi.ingsw.mechanics.VirtualView;
+import it.polimi.ingsw.network.messages.ChatMessage;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.client2server.NetFailureMessage;
+import it.polimi.ingsw.network.messages.server2client.GenericMessage;
 import it.polimi.ingsw.network.messages.server2client.TextResponse;
 import it.polimi.ingsw.network.messages.server2client.SpecificResponse;
 
@@ -38,7 +40,6 @@ public class Lobby {
     //endregion
 
     //region METHODS
-
     /**
      * Method used by clients to enter a lobby
      * @param netPlayer player that request access to lobby
@@ -99,27 +100,41 @@ public class Lobby {
      */
     public void startGame(){
 
+        System.out.print("Lobby: ");
+        for (String username : usernameList) System.out.print(username); //TODO: Debug
+        System.out.println(" ");
+
+        //TODO: Decommentare (commentato solo per debug)
+        /*
         //Checking if the number of the players is legal before initializing the game
-        //assert (usernameList.size()>1 && usernameList.size()<=4);
+        if(!(usernameList.size() > 1 && usernameList.size() <= 4)) {
+            lobbyBroadcastMessage(new TextResponse(false, "Not enough players!"));
+            lobbyBroadcastMessage(new SpecificResponse(false, MessageType.START_GAME_RESPONSE));
+            return;
+        }
+
+         */
+
+        //Officially starting the game
+        lobbyBroadcastMessage(new SpecificResponse(true, MessageType.START_GAME_RESPONSE));
+        lobbyBroadcastMessage(new TextResponse(true, "Now in game!"));
+        inGame = true;
 
         //Creating GameController and the hashmap <PlayerUsername, VirtualView> through which GameController will manage the sending of messages from server to client
         HashMap<String, VirtualView> viewHashMap = new HashMap<>();
         for(NetworkPlayer netPlayer: networkMap.values()) viewHashMap.put(netPlayer.getUsername(), netPlayer.getVirtualView());
         gameController = new GameController(new Game(usernameList), viewHashMap);
-
-        //Officially starting the game
-        inGame = true;
-        lobbyBroadcastMessage(new TextResponse(true, "Now in game!"));
-        lobbyBroadcastMessage(new SpecificResponse(true, MessageType.ACCESS_RESPONSE));
         System.out.println("INFO: Game started");
     }
 
     /**
-     * Forwards an external message to the GameController
+     * Forwards an external message to the GameController if it's not a chat message
      * @param message message to forwards
      */
     public void sendToGame(Message message){
-        gameController.messageHandler(message);
+        if(message.getType().equals(MessageType.CHAT))
+            lobbyBroadcastMessage(new ChatMessage("server", message.getSender() + ": " + message.getContent()));
+        else gameController.messageHandler(message);
     }
 
     public int getLobbyID() {

@@ -16,7 +16,8 @@ enum ColorCode {
     MAGENTA("\u001B[35m"),
     WHITE("\u001B[37m"),
     BROWN("\u001B[33m"),
-    ORANGE("\u001B[38;2;255;165;0m");
+    ORANGE("\u001B[38;2;255;165;0m"),
+    YELLOW("\u001B[33;1m");
 
     private final String code;
     ColorCode(String code){
@@ -171,6 +172,21 @@ public class CliUtil {
     //endregion
 
     //region MAKE METHODS
+    public static String makeTitle(){
+        return ColorCode.YELLOW.getCode() + " __       __                   ______   __                  __   ______   __           \n" +
+                "|  \\     /  \\                 /      \\ |  \\                |  \\ /      \\ |  \\          \n" +
+                "| $$\\   /  $$ __    __       |  $$$$$$\\| $$____    ______  | $$|  $$$$$$\\ \\$$  ______  \n" +
+                "| $$$\\ /  $$$|  \\  |  \\      | $$___\\$$| $$    \\  /      \\ | $$| $$_  \\$$|  \\ /      \\ \n" +
+                "| $$$$\\  $$$$| $$  | $$       \\$$    \\ | $$$$$$$\\|  $$$$$$\\| $$| $$ \\    | $$|  $$$$$$\\\n" +
+                "| $$\\$$ $$ $$| $$  | $$       _\\$$$$$$\\| $$  | $$| $$    $$| $$| $$$$    | $$| $$    $$\n" +
+                "| $$ \\$$$| $$| $$__/ $$      |  \\__| $$| $$  | $$| $$$$$$$$| $$| $$      | $$| $$$$$$$$\n" +
+                "| $$  \\$ | $$ \\$$    $$       \\$$    $$| $$  | $$ \\$$     \\| $$| $$      | $$ \\$$     \\\n" +
+                " \\$$      \\$$ _\\$$$$$$$        \\$$$$$$  \\$$   \\$$  \\$$$$$$$ \\$$ \\$$       \\$$  \\$$$$$$$\n" +
+                "             |  \\__| $$                                                                \n" +
+                "              \\$$    $$                                                                \n" +
+                "               \\$$$$$$                                                                 \n" +
+                "\n" + ColorCode.DEFAULT.getCode();
+    }
     public static String makeLegend() {
         String line1 = ColorCode.GREEN.getCode() + AsciiTool.DOT.getSymbol() + "C: Cat\t\t" + ColorCode.WHITE.getCode() + AsciiTool.DOT.getSymbol() + "B: Books\n";
         String line2 = ColorCode.ORANGE.getCode() + AsciiTool.DOT.getSymbol() + "G: Game\t\t" + ColorCode.BLUE.getCode() + AsciiTool.DOT.getSymbol() + "F: Frames\n";
@@ -288,6 +304,10 @@ public class CliUtil {
         return res + ColorCode.DEFAULT.getCode();
     }
 
+    public static String makeCommonGoal(String description){
+        return ColorCode.ORANGE.getCode()  + AsciiTool.DOT.getSymbol() + description.replace("\n", "\n  ") + ColorCode.DEFAULT.getCode();
+    }
+
     public static String makeErrorMessage(String message) {
         return ColorCode.RED.getCode() + AsciiTool.X.getSymbol() + message + ColorCode.DEFAULT.getCode();
     }
@@ -297,7 +317,9 @@ public class CliUtil {
     }
 
     public static String makeCommandList() {
-        return String.join("\n", ToolXML.getCommandList());
+        return ColorCode.ORANGE.getCode() + AsciiTool.DOT.getSymbol() +
+                String.join("\n" + AsciiTool.DOT.getSymbol(), ToolXML.getCommandList()) +
+                ColorCode.DEFAULT.getCode();
     }
     //endregion
 

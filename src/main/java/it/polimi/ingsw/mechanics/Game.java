@@ -11,9 +11,9 @@ import it.polimi.ingsw.entities.*;
 import it.polimi.ingsw.entities.goals.*;
 import it.polimi.ingsw.entities.util.BoardTile;
 
-import java.io.Serializable;
 import java.util.*;
 
+import it.polimi.ingsw.entities.util.SerializableTreeMap;
 import it.polimi.ingsw.entities.util.Tile;
 
 public class Game{
@@ -31,18 +31,18 @@ public class Game{
         board = new Board(usernames.size());
         board.fillBoard();
 
-        //Creating the players as entities of the game from the lobby username list
-        players = new HashMap<>();
-        for(String user: usernames) players.put(user, new Player(user));
-
         //Randomly picking the common goals of the game
         CommonGoalFactory factory = new CommonGoalFactory();
         commonGoals = factory.makeCommonGoal();
         commonGoal0 = new CommonGoal0();
 
+        //Creating the players as entities of the game from the lobby username list
+        players = new HashMap<>();
+        PrivateGoalFactory privateGoalFactory = new PrivateGoalFactory();
+        for(String user: usernames)players.put(user, new Player(user, privateGoalFactory.makePrivateGoal(), commonGoals));
+
     }
 
-    //TODO: Per ogni errore specificare il tipo attraverso il valore di un'enumerazinoe di errori
     //region METHODS
     /**
      * Checks if the selected cards are selectable
@@ -53,7 +53,10 @@ public class Game{
      */
     public boolean canSelect(String playerUsername, int[][] coord){
 
-        //Checking if the player has selected more cards than he can insert into his bookshelf
+        //Checking if any of the coordinates exceed the board dimensions
+        for (int[] row : coord) for (int col : row) if (col < 0 || col > 8) return false;
+
+        //Checking if the player has selected more cards than they can insert into their bookshelf
         Bookshelf bookshelf = players.get(playerUsername).getBookshelf();
         boolean sentinel = false;
         for(int i = 0; i < 5; i++) if(6 - bookshelf.cardsInColumn(i) >= coord.length){
@@ -62,56 +65,48 @@ public class Game{
         }
         if (!sentinel) return false;
 
-        //Checking if any of the coordinates exceed the board dimensions
-        for (int[] i : coord) for (int j : i) if (j < 0 || j > 8) return false;
+        //TODO: Vedere se funziona funzionale
+        /*
+        int maxCards = Arrays.stream(coord).mapToInt(row -> 6 - bookshelf.cardsInColumn(row[0])).max().orElse(0);
+        if (maxCards < coord.length) return false;
 
-        //TODO: Rendere progressione cumulabile?
-        //Ordering the selected cards to allow for a discontinuous selection
-        if (coord.length > 1) {
-            int[][] tmp = coord;
-            if (isDiagonal(coord)) return false;
-            coord = sortCoordinates(tmp);
-        }
+         */
 
-        //Checking if the selection of 3 cards is either in a row or a column
-        if (coord.length == 3 && (coord[0][0] == coord[1][0] + 1 && coord[1][0] == coord[2][0] + 1  //card1.x = card2.x-1 = card3.x-2
-                || coord[0][1] == coord[1][1] + 1 && coord[1][1] == coord[2][1] + 1))            //card1.x = card2.x = card3.x
-        {
-            int cntr = 0;
-            for (int i = 0; i < 3; i++) if (board.selectableCard(coord[i][0], coord[i][1])) cntr++;
-            if (cntr == 3) return true;
-        }
-
-        //Checking if the selection of 2 cards is either in a row or a column
-        if (coord.length == 2 && (coord[0][0] == coord[1][0] + 1         //card1.x = card2.x-1
-                || coord[0][1] == coord[1][1] + 1))                   //card1.x = card2.x
-        {
-            int cntr = 0;
-            for (int i = 0; i < 2; i++) if (board.selectableCard(coord[i][0], coord[i][1])) cntr++;
-            if (cntr == 2) return true;
-        }
-
-        //Checking if the selection of 3 cards is either in a row or a column
-        if (coord.length == 3 && (coord[0][0] == coord[1][0] - 1 && coord[1][0] == coord[2][0] - 1  //card1.x = card2.x-1 = card3.x-2
-                || coord[0][1] == coord[1][1] - 1 && coord[1][1] == coord[2][1] - 1))            //card1.x = card2.x = card3.x
-        {
-            int cntr = 0;
-            for (int i = 0; i < 3; i++) if (board.selectableCard(coord[i][0], coord[i][1])) cntr++;
-            if (cntr == 3) return true;
-        }
-
-        //Checking if the selection of 2 cards is either in a row or a column
-        if (coord.length == 2 && (coord[0][0] == coord[1][0] - 1         //card1.x = card2.x-1
-                || coord[0][1] == coord[1][1] - 1))                   //card1.x = card2.x
-        {
-            int cntr = 0;
-            for (int i = 0; i < 2; i++) if (board.selectableCard(coord[i][0], coord[i][1])) cntr++;
-            if (cntr == 2) return true;
-        }
-
-        //Checking if a single card is selectable
+        //Checking if the single card is selectable in case of a singular selection
         if (coord.length == 1) return board.selectableCard(coord[0][0], coord[0][1]);
+
+        //Checking if the selection is neither in a row nor a column (therefore in a diagonal)
+        boolean isRow = true;
+        boolean isColumn = true;
+        int firstRow = coord[0][0]; //If it's a row selection the row has to be unique
+        int firstCol = coord[0][1]; //If it's a column selection the column has to be unique
+
+        for (int[] cell : coord) {
+            if (cell[0] != firstRow) isRow = false;
+            if (cell[1] != firstCol) isColumn = false;
+        }
+        if (!isRow && !isColumn) return false;
+
+        //Checking if the selection forms a continuous row in the case of a row selection
+        if (isRow) {
+            Arrays.sort(coord, Comparator.comparingInt(a -> a[1]));
+            for (int i = 0; i < coord.length - 1; i++) if (coord[i][1] + 1 != coord[i + 1][1]) return false;
+        }
+
+        //Checking if the selection forms a continuous column in the case of a column selection
+        if (isColumn) {
+            Arrays.sort(coord, Comparator.comparingInt(a -> a[0]));
+            for (int i = 0; i < coord.length - 1; i++) if (coord[i][0] + 1 != coord[i + 1][0]) return false;
+        }
+
+        //Checking if the selection is valid by game rules
+        if (coord.length <= 3) {
+            for (int[] cell : coord) if (!board.selectableCard(cell[0], cell[1])) return false;
+            return true;
+        }
+
         return false;
+
     }
 
     /**
@@ -185,9 +180,8 @@ public class Game{
     public void scoreCommonGoal(String username){
         Player p = players.get(username);
         System.out.println(commonGoals[0].getClass().toString());
-        p.addScore(commonGoals[0].checkGoal(p.getBookshelf()));
         System.out.println(commonGoals[1].getClass().toString());
-        p.addScore(commonGoals[1].checkGoal(p.getBookshelf()));
+        p.addScore(p.scoreCommonGoals());
     }
 
     /**
@@ -217,53 +211,6 @@ public class Game{
         SerializableTreeMap<String, Integer> treeMap = new SerializableTreeMap<>(comparator);
         treeMap.putAll(hashmap);
         return treeMap;
-    }
-    //endregion
-
-    //region UTIL
-    /**
-     * Rearranges the coordinates to make them usable by canSelect()
-     * @param coordinates to sort
-     * @return coordinates sorted by descending order
-     */
-    private int[][] sortCoordinates(int[][] coordinates){
-        int[] tmp;
-
-        if(coordinates.length == 3){
-            if(coordinates[0][0] == coordinates[1][0]){                              //the x's coordinates are fixed
-                tmp = new int[]{coordinates[0][1], coordinates[1][1], coordinates[2][1]};  //y's coordinates are saved into tmp[3]
-
-                //Sorting the coordinates by descending order and saving them into the array
-                Arrays.sort(tmp);
-                for(int i = 0; i < 3; i++){
-                    coordinates[i][1] = tmp[i];
-                }
-            }
-            if(coordinates[0][1] == coordinates[1][1]){                              //same as before, but now the y's coordinates
-                tmp = new int[]{coordinates[0][0], coordinates[1][0], coordinates[2][0]};  //are fixed
-                Arrays.sort(tmp);
-                for(int i = 0; i < 3; i++){
-                    coordinates[i][0] = tmp[i];
-                }
-            }
-        }
-        return coordinates;
-    }
-
-    /**
-     * Checks if the selected cards are in a diagonal
-     * @param coordinates of the selected cards
-     * @return if the cards are diagonally arranged
-     */
-    private boolean isDiagonal(int[][] coordinates){
-
-        //Checking relatively to the number of cards selected
-        switch (coordinates.length){
-            case 2 -> { return coordinates[0][0] != coordinates[1][0] && coordinates[0][1] != coordinates[1][1]; }
-            case 3 -> { return coordinates[0][0] != coordinates[1][0] && coordinates[0][1] != coordinates[1][1] && coordinates[1][0] != coordinates[2][0] && coordinates[1][1] != coordinates[2][1]; }
-        }
-        return false;
-
     }
     //endregion
 

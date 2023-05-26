@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.network.messages.ChatMessage;
 import it.polimi.ingsw.network.messages.client2server.*;
 import it.polimi.ingsw.network.messages.server2client.*;
 import it.polimi.ingsw.network.messages.Message;
@@ -11,6 +12,7 @@ import it.polimi.ingsw.view.UserInterface;
  * Creates and sends messages to the server from the user interface.
  */
 public class ClientController implements Observer {
+
     //region ATTRIBUTES
     private final UserInterface view; //either CLI or GUI for the packing of messages User interface -> Server
     private final Client client; //for the unpacking of messages Server -> User interface
@@ -46,18 +48,26 @@ public class ClientController implements Observer {
 
                 view.confirmUsername(response.getResponse());
             }
+            case CREATION_RESPONSE -> {
+                GenericMessage creationResponse = (GenericMessage) message;
+                view.confirmCreation(creationResponse.getContent());
+            }
             case ACCESS_RESPONSE -> {
                 SpecificResponse response = (SpecificResponse) message;
-                view.confirmAccess(response.getResponse());
+                view.confirmAccess(response.getResponse(), response.getContent());
             }
             case NEW_CONNECTION -> {
                 UsernameListMessage connectionMessage = (UsernameListMessage) message;
                 view.refreshConnectedPlayers(connectionMessage.getUsernameList());
             }
+            case START_GAME_RESPONSE -> {
+                SpecificResponse startGameResponse = (SpecificResponse) message;
+                view.confirmStartGame(startGameResponse.getResponse());
+            }
             case CURRENT_PLAYER -> view.showCurrentPlayer(message.getContent());
             case CHECKED_COORDINATES -> {
                 CoordinatesMessage checkedCoordinates = (CoordinatesMessage) message;
-                view.sendCheckedCoordinates(checkedCoordinates.getCoordinates());
+                view.sendCheckedCoordinates(checkedCoordinates.isValid(), checkedCoordinates.getCoordinates());
             }
             case REMOVED_CARDS -> {
                 CoordinatesMessage removedCards = (CoordinatesMessage) message;
@@ -71,9 +81,13 @@ public class ClientController implements Observer {
                 BoardMessage boardUpdate = (BoardMessage) message;
                 view.showRefilledBoard(boardUpdate.getBoardCells());
             }
-            case GOALS_DETAILS -> {
-                GoalsMessage goalsMessage = (GoalsMessage) message;
-                view.showGoalsDetails(goalsMessage.getCommonGoals(), goalsMessage.getPrivateGoal());
+            case COMMON_GOAL -> {
+                CommonGoalsMessage commonGoalsMessage = (CommonGoalsMessage) message;
+                view.showCommonGoals(commonGoalsMessage.getCommonGoals());
+            }
+            case PRIVATE_GOAL -> {
+                PrivateGoalMessage privateGoalMessage = (PrivateGoalMessage) message;
+                view.showPrivateGoal(privateGoalMessage.getPrivateGoal());
             }
             case SCOREBOARD -> {
                 ScoreboardMessage scoreboard = (ScoreboardMessage) message;
@@ -82,6 +96,14 @@ public class ClientController implements Observer {
             case FORCE_DISCONNECTION -> {
                 view.showDisconnection();
                 client.forceDisconnection();
+            }
+            case TOKEN -> {
+                GenericMessage token = (GenericMessage) message;
+                view.showToken(token.getContent());
+            }
+            case CHAT -> {
+                ChatMessage chatMessage = (ChatMessage) message ;
+                view.showChat(chatMessage.getContent());
             }
         }
     }
@@ -138,6 +160,11 @@ public class ClientController implements Observer {
     public void sendInsertion(int column){
         Message insert = new InsertionRequest(username, column);
         client.sendMessage(insert);
+    }
+
+    public void sendChat(String chat){
+        Message message = new ChatMessage(username, chat);
+        client.sendMessage(message);
     }
     //endregion
 

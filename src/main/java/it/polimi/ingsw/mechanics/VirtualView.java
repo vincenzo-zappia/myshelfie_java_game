@@ -1,6 +1,6 @@
 package it.polimi.ingsw.mechanics;
 
-import it.polimi.ingsw.entities.SerializableTreeMap;
+import it.polimi.ingsw.entities.util.SerializableTreeMap;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.ClientHandler;
@@ -10,9 +10,6 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.entities.util.BoardTile;
 import it.polimi.ingsw.entities.util.Tile;
 import it.polimi.ingsw.view.View;
-
-import java.util.HashMap;
-import java.util.TreeMap;
 
 /**
  * Class that manages the creation of messages from server to client. Used by Lobby, GameController
@@ -41,8 +38,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void sendCheckedCoordinates(int[][] coordinates) {
-        clientHandler.sendMessage(new CoordinatesMessage(coordinates, MessageType.CHECKED_COORDINATES));
+    public void sendCheckedCoordinates(boolean response, int[][] coordinates) {
+        clientHandler.sendMessage(new CoordinatesMessage(response, coordinates, MessageType.CHECKED_COORDINATES));
     }
 
     @Override
@@ -61,13 +58,23 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showGoalsDetails(Goal[] commonGoals, PrivateGoal privateGoal) {
-        clientHandler.sendMessage(new GoalsMessage(commonGoals, privateGoal));
+    public void showCommonGoals(Goal[] commonGoals) {
+        clientHandler.sendMessage(new CommonGoalsMessage(commonGoals));
+    }
+
+    @Override
+    public void showPrivateGoal(PrivateGoal privateGoal) {
+        clientHandler.sendMessage(new PrivateGoalMessage(privateGoal));
     }
 
     @Override
     public void showScoreboard(SerializableTreeMap<String, Integer> scoreboard){
         clientHandler.sendMessage(new ScoreboardMessage(scoreboard));
+    }
+
+    @Override
+    public void showToken(String content) {
+        clientHandler.sendMessage(new GenericMessage(content + " filled his bookshelf!", MessageType.TOKEN));
     }
     //endregion
 }

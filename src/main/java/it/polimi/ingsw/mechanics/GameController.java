@@ -1,17 +1,14 @@
 package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.entities.SerializableTreeMap;
-import it.polimi.ingsw.exceptions.FullColumnException;
+import it.polimi.ingsw.entities.util.SerializableTreeMap;
 import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 import it.polimi.ingsw.network.messages.client2server.SelectionRequest;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeMap;
 
 /**
  * Calls the VirtualView to sent messages to the Client. Receives messages from the Clients and defines the relative behavior of the Game.
@@ -42,7 +39,8 @@ public class GameController {
         //goals and their specific private goal
         broadcastMessage(MessageType.CURRENT_PLAYER);
         broadcastMessage(MessageType.REFILLED_BOARD);
-        broadcastMessage(MessageType.GOALS_DETAILS);
+        broadcastMessage(MessageType.COMMON_GOAL);
+        broadcastMessage(MessageType.PRIVATE_GOAL);
 
         //The game starts in the selection phase
         canInsert = false;
@@ -55,7 +53,7 @@ public class GameController {
      * Method that handles the received generic Message by checking its actual type and calls the wanted method
      * @param message received message
      */
-    public synchronized void messageHandler(Message message){
+    public void messageHandler(Message message){
 
         //Checking if it's the turn of the player who sent the message
         if (!turnManager.getCurrentPlayer().equals(message.getSender())) {
@@ -83,8 +81,10 @@ public class GameController {
                 case REFILLED_BOARD -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getBoard());
                 case REMOVED_CARDS -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
                 case CURRENT_PLAYER -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
-                case SCOREBOARD -> viewHashMap.get(username).showScoreboard((SerializableTreeMap<String, Integer>) payload[0]); //TODO: Debug: non invia il messaggio
-                case GOALS_DETAILS -> viewHashMap.get(username).showGoalsDetails(game.getCommonGoals(), game.getPlayer(username).getPrivateGoal());
+                case COMMON_GOAL -> viewHashMap.get(username).showCommonGoals(game.getCommonGoals());
+                case PRIVATE_GOAL -> viewHashMap.get(username).showPrivateGoal(game.getPlayer(username).getPrivateGoal());
+                case TOKEN -> viewHashMap.get(username).showToken(turnManager.getCurrentPlayer());
+                case SCOREBOARD -> viewHashMap.get(username).showScoreboard((SerializableTreeMap<String, Integer>) payload[0]);
             }
         }
     }
@@ -95,34 +95,33 @@ public class GameController {
      * @param message message sent by the client with the coordinates of the selected cards
      */
     public synchronized void cardSelection(SelectionRequest message){
-        System.out.println("INFO: Selection phase started");
 
         //Checking if the player has already made a selection
         if(canInsert){
             viewHashMap.get(message.getSender()).sendGenericResponse(false, "Selection already made!");
-            System.out.println("The player has already made his selection.");
+            System.out.println("INFO: " + message.getSender() + " tried to make another selection");
             return;
         }
 
+        //Saving the coordinates of the removed cards in order to broadcast them at the end of the turn
+        coordinates = message.getCoordinates().clone();
+
         //Checking if the cards selected are actually selectable
-        if(game.canSelect(message.getSender(), message.getCoordinates())) {
+        if((message.getCoordinates().length != 0) && game.canSelect(message.getSender(), message.getCoordinates())) {
 
             //Sending positive feedback to the player with the checked coordinates
-            viewHashMap.get(message.getSender()).sendCheckedCoordinates(message.getCoordinates());
+            viewHashMap.get(message.getSender()).sendCheckedCoordinates(true, message.getCoordinates());
             viewHashMap.get(message.getSender()).sendGenericResponse(true, "Valid selection!");
-            System.out.println("INFO: Selection made.");
-
-            //Saving the coordinates of the removed cards in order to broadcast them at the end of the turn
-            coordinates = message.getCoordinates();
+            System.out.println("INFO: " + message.getSender() + " made a valid selection");
 
             //Turn phase management: the player is now allowed to insert the selected cards into his bookshelf
             canInsert = true;
-            System.out.println("INFO: Selection phase ended");
         }
         else{
             //Sending negative feedback to the player
+            viewHashMap.get(message.getSender()).sendCheckedCoordinates(false, message.getCoordinates());
             viewHashMap.get(message.getSender()).sendGenericResponse(false, "Invalid selection! Please retry.");
-            System.out.println("INFO: Selection not made.");
+            System.out.println("INFO: " + message.getSender() + " made an invalid selection");
         }
     }
 
@@ -132,12 +131,11 @@ public class GameController {
      *                he wants to put them in his bookshelf
      */
     public synchronized void cardInsertion(InsertionRequest message){
-        System.out.println("INFO: Insertion phase started");
 
         //Checking if the player has first made a selection
         if(!canInsert){
             viewHashMap.get(message.getSender()).sendGenericResponse(false, "First select your cards!" );
-            System.out.println("INFO: The player has to make the selection before the insertion.");
+            System.out.println("INFO: " + message.getSender() + " tried to make an insertion before a selection");
             return;
         }
 
@@ -146,14 +144,14 @@ public class GameController {
 
             //Removal of the previously selected cards from the game board
             ArrayList<Card> cards = game.removeSelectedCards(coordinates);
-            System.out.println("INFO: Cards removed from the board and inserted in " + turnManager.getCurrentPlayer() + "'s bookshelf in column " + message.getSelectedColumn());
 
             //Insertion of the cards (updating the bookshelf of the player)
             game.addCardsToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), cards);
+            System.out.println("INFO: Cards removed from the board and inserted in " + turnManager.getCurrentPlayer() + "'s bookshelf in column " + message.getSelectedColumn());
 
             //Sending positive feedback to the player with the updated bookshelf
             viewHashMap.get(message.getSender()).showUpdatedBookshelf(game.getPlayerBookshelf(turnManager.getCurrentPlayer()));
-            viewHashMap.get(message.getSender()).sendGenericResponse(true, "Insertion successful!" );
+            viewHashMap.get(message.getSender()).sendGenericResponse(true, "Insertion successful!");
 
             //End turn housekeeping routine
             endTurn();
@@ -161,7 +159,7 @@ public class GameController {
         else {
             //Sending negative feedback to the player with the bookshelf without changes
             viewHashMap.get(message.getSender()).sendGenericResponse(false, "Invalid column! Please select another." );
-            System.out.println("INFO: Cards not inserted.");
+            System.out.println("INFO: " + message.getSender() + " made an invalid insertion");
         }
 
     }
@@ -184,11 +182,16 @@ public class GameController {
 
         //Checking if the current player has achieved anyone of the common goals
         game.scoreCommonGoal(turnManager.getCurrentPlayer());
+        broadcastMessage(MessageType.COMMON_GOAL);
 
         //Checking if the bookshelf of the current player got full
-        if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer())){
+        if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer()) && !turnManager.inEndGame()){
             turnManager.startEndGame();
             System.out.println("INFO: Endgame started.");
+
+            //Adding the bonus point to the first player who filled his bookshelf
+            broadcastMessage(MessageType.TOKEN);
+            game.getPlayer(turnManager.getCurrentPlayer()).addScore(1);
         }
 
         //Checking if the current player was the last one who had to play a turn, if so, starting the endgame, otherwise
@@ -211,7 +214,7 @@ public class GameController {
     public void findWinner(){
         //Scoring each individual private goal
 
-        //game.scorePrivateGoal();  TODO decommentare e sistemare
+        game.scorePrivateGoal();
 
         //Creating the scoreboard (sort algorithm in client)
         SerializableTreeMap<String, Integer> scoreboard = game.orderByScore();
