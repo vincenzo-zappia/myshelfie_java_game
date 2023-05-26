@@ -54,14 +54,13 @@ public class ClientHandler extends NetworkInterface implements Runnable{
             }
             catch (IOException | ClassNotFoundException e) {
                 System.out.println("INFO: A player has disconnected. Closing the game...");
-                int id = lobby.forceDisconnection(this);
-                server.removeLobby(id);
+                lobby.forceDisconnection(this);
                 safeDisconnect();
-                Thread.currentThread().interrupt();
+                Thread.currentThread().interrupt(); //Single client, not client handler
             }
         } while(endGameHandler());
         safeDisconnect();
-        Thread.currentThread().interrupt();
+        Thread.currentThread().interrupt(); //Single client, not client handler
     }
 
     //region METHODS
