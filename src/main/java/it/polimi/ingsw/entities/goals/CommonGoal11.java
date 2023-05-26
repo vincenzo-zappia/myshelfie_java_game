@@ -36,13 +36,7 @@ public class CommonGoal11 extends CommonGoal implements Goal{
     @Override
     public int checkGoal(Bookshelf bookshelf) {
 
-        //Verifico che il goal non sia gia stato preso //todo: tradurre
-        if(isReached()) return 0;
-
-        for(int i=0; i<4; i++) if (findDiagonalWithSameColor(corners[i][0], corners[i][1], bookshelf)){
-            goalReached();
-            return getScore();
-        }
+        for(int i=0; i<4; i++) if (findDiagonalWithSameColor(corners[i][0], corners[i][1], bookshelf)) return getScore();
         return 0;
     }
 }

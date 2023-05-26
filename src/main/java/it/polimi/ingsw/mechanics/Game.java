@@ -39,7 +39,7 @@ public class Game{
         //Creating the players as entities of the game from the lobby username list
         players = new HashMap<>();
         PrivateGoalFactory privateGoalFactory = new PrivateGoalFactory();
-        for(String user: usernames)players.put(user, new Player(user, privateGoalFactory.makePrivateGoal(), commonGoals));
+        for(String user: usernames) players.put(user, new Player(user, privateGoalFactory.makePrivateGoal()));
 
     }
 
@@ -69,7 +69,6 @@ public class Game{
         /*
         int maxCards = Arrays.stream(coord).mapToInt(row -> 6 - bookshelf.cardsInColumn(row[0])).max().orElse(0);
         if (maxCards < coord.length) return false;
-
          */
 
         //Checking if the single card is selectable in case of a singular selection
@@ -179,9 +178,16 @@ public class Game{
      */
     public void scoreCommonGoal(String username){
         Player p = players.get(username);
-        System.out.println(commonGoals[0].getClass().toString());
-        System.out.println(commonGoals[1].getClass().toString());
-        p.addScore(p.scoreCommonGoals());
+
+        for(int i=0; i<2; i++){
+            if(!p.isCommonGoalScored(i)){
+                int score = commonGoals[i].checkGoal(p.getBookshelf());
+                if (score>0){
+                    p.scoreCommonGoal(i);
+                    p.addScore(score);
+                }
+            }
+        }
     }
 
     /**

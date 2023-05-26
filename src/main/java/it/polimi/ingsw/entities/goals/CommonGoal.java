@@ -10,7 +10,6 @@ public abstract class CommonGoal implements Serializable {
 
     //region ATTRIBUTES
     private int score;
-    private boolean reached;
     private final String description;
     private final String fileName;
     private String scoreFileName;
@@ -20,7 +19,6 @@ public abstract class CommonGoal implements Serializable {
         this.fileName = "/assets/CommonGoals/" + fileName;
         this.scoreFileName = "scoring-8.jpg";
         this.description = description;
-        this.reached = false;
         score = 8;
     }
 
@@ -57,18 +55,6 @@ public abstract class CommonGoal implements Serializable {
         int oldScore = score;
         decrementScore();
         return oldScore;
-    }
-
-    protected void goalReached(){
-        reached = true;
-    }
-
-    /**
-     * Checks if a common goal is already reached by other players
-     * @return boolean value reached (false if no one take the goal)
-     */
-    protected boolean isReached(){
-        return reached;
     }
 
     public String getDescription() {

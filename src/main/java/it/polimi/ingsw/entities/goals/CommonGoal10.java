@@ -36,16 +36,10 @@ public class CommonGoal10 extends CommonGoal implements Goal{
     @Override
     public int checkGoal(Bookshelf bookshelf) {
 
-        //Verifico che il goal non sia gia stato preso //todo: tradurre
-        if(isReached()) return 0;
-
         b = bookshelf;
         for(int i = 0; i<4; i++){
             for (int j = 0; j<3; j++){
-                if(isX(i, j)){
-                    goalReached();
-                    return getScore();
-                }
+                if(isX(i, j)) return getScore();
             }
         }
         return 0;
