@@ -59,6 +59,9 @@ public abstract class NetworkInterface {
         }
     }
 
+    /**
+     * Closes the socket safely
+     */
     public void safeDisconnect() {
         System.out.println("INFO: Closing the socket...");
         try {
@@ -67,7 +70,6 @@ public abstract class NetworkInterface {
         } catch (IOException e) {
             System.out.println("INFO: Couldn't close socket. Shutting down...");
         }
-
     }
 
     protected ObjectInputStream getObjectInput(){

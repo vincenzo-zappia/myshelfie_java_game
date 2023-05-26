@@ -8,6 +8,10 @@ import it.polimi.ingsw.network.messages.MessageType;
  */
 public class GenericMessage extends Message {
 
+    public GenericMessage(MessageType type){
+        super("server", type);
+    }
+
     public GenericMessage(String content, MessageType type) {
         super("server", type);
         setContent(content);

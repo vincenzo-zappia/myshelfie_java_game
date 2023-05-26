@@ -6,9 +6,9 @@ import it.polimi.ingsw.mechanics.VirtualView;
 import it.polimi.ingsw.network.messages.ChatMessage;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.network.messages.client2server.NetFailureMessage;
-import it.polimi.ingsw.network.messages.server2client.TextResponse;
+import it.polimi.ingsw.network.messages.server2client.GenericMessage;
 import it.polimi.ingsw.network.messages.server2client.SpecificResponse;
+import it.polimi.ingsw.network.messages.server2client.TextResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,10 +80,6 @@ public class Lobby {
         }
     }
 
-    public void forceDisconnection(ClientHandler ch){
-        networkMap.entrySet().stream().filter(entry -> !entry.getValue().getClientHandler().equals(ch)).forEach(entry -> entry.getValue().getClientHandler().sendMessage(new NetFailureMessage("Server")));
-    }
-
     /**
      * Creates and initializes all the data structures needed for the creation of an actual new game. The game has now
      * officially started.
@@ -126,9 +122,20 @@ public class Lobby {
         else gameController.messageHandler(message);
     }
 
+    /**
+     * Endgame routine started either after the game ends or a player is disconnected
+     */
     public void endGame(){
         lobbyOnline = false;
         server.removeLobby(lobbyID);
+    }
+
+    /**
+     * Forces all the players in the same lobby of the disconnected player to quit the game and choose between quitting or playing again
+     * @param clientHandler of the disconnected player
+     */
+    public void forceDisconnection(ClientHandler clientHandler){
+        networkMap.entrySet().stream().filter(entry -> !entry.getValue().getClientHandler().equals(clientHandler)).forEach(entry -> entry.getValue().getClientHandler().sendMessage(new GenericMessage(MessageType.DISCONNECTION)));
     }
 
     public int getLobbyID() {

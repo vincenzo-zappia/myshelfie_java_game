@@ -23,13 +23,11 @@ public class ClientHandler extends NetworkInterface implements Runnable{
     //region ATTRIBUTES
     private final Server server;
     private Lobby lobby;
-
     //endregion
 
     public ClientHandler(Server server, Socket socket) {
         super(socket);
         this.server = server;
-
     }
 
     /**
@@ -43,7 +41,7 @@ public class ClientHandler extends NetworkInterface implements Runnable{
 
         do {
             //Receiving the request either to create a lobby or join an existing one
-            joinLobbyHandler();
+            joinLobbyHandler(); //TODO: Gestire caso disconnessione lobby
 
             //Starting to receive all the possible game commands once the game has officially started
             try {
@@ -52,11 +50,14 @@ public class ClientHandler extends NetworkInterface implements Runnable{
                     Message msg = (Message) getObjectInput().readObject();
                     System.out.println("INFO: Message received");
                     if (msg != null){
+
+                        //TODO: Possibilità di iniziare nuovo game anche dopo disconnessione/fine partita
+                        //Deciding whether to keep playing or quitting the application
                         if(msg.getType() == MessageType.NEW_GAME_REQUEST) {
                             NewGameRequest newGameRequest = (NewGameRequest) msg;
                             newGame = newGameRequest.getNewGame();
                         }
-                        else {lobby.sendToGame(msg);}
+                        else lobby.sendToGame(msg); //Forwarding the game command to the game
                     }
                 }
             }
@@ -172,19 +173,6 @@ public class ClientHandler extends NetworkInterface implements Runnable{
             startGameHandler();
         }
     }
-
-    private boolean endGameHandler(){
-        Message message = receiveMessage();
-
-        System.out.println(message.getType()); //TODO: Dehug
-
-        if (message.getType() == MessageType.NEW_GAME_REQUEST){
-            NewGameRequest newGameRequest = (NewGameRequest) message;
-            return newGameRequest.getNewGame();
-        }
-        return endGameHandler();
-    }
-
     //endregion
 
 }

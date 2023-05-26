@@ -385,7 +385,7 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void showDisconnection() {
-        virtualModel.setEndGame();
+        virtualModel.setEndGame(); //TODO: Testare
         System.out.println("Closing the game...");
     }
   
