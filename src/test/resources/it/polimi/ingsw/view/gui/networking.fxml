@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane alignment="TOP_CENTER" prefHeight="600" prefWidth="900" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.NetworkingScene">
+<StackPane alignment="TOP_CENTER" prefHeight="600" prefWidth="900" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.NetworkScene">
 
    <ImageView fitHeight="200.0" fitWidth="603.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../../../../../assets/misc/logo.png" />

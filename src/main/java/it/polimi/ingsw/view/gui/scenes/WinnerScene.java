@@ -15,11 +15,12 @@ public class WinnerScene extends GenericScene {
 
     //region CLICK
     @FXML public void onNewGameClick(){
+        controller.sendNewGame(true);
         gui.loadScene("connection.fxml");
     }
 
     @FXML public void onQuitClick(){
-        //todo: inserire un client.disconnect()
+        controller.sendNewGame(false);
         gui.stop();
     }
     //endregion
