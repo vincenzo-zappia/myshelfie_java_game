@@ -33,6 +33,8 @@ public interface UserInterface extends View {
      */
     void refreshConnectedPlayers(ArrayList<String> playerUsernames);
 
+    void showDisconnection();
+
     /**
      * Gives feedback about the start of the game
      * @param response if the game started

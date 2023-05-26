@@ -101,6 +101,7 @@ public class Server {
      * @param lobbyId to identify the lobby to delete
      */
     public synchronized void removeLobby(int lobbyId){
+        for(String x: lobbyMap.get(lobbyId).getUsernameList()) removeUsername(x);
         lobbyMap.remove(lobbyId);
     }
 
@@ -135,4 +136,12 @@ public class Server {
         return lobbyMap.get(lobbyId);
     }
     //endregion
+
+    /**
+     * remove username from ArrayList
+     * @param username that needs to be removed
+     */
+    public void removeUsername(String username){
+        usernameList.remove(username);
+    }
 }

@@ -93,6 +93,10 @@ public class ClientController implements Observer {
                 ScoreboardMessage scoreboard = (ScoreboardMessage) message;
                 view.showScoreboard(scoreboard.getScoreboard());
             }
+            case FORCE_DISCONNECTION -> {
+                view.showDisconnection();
+                client.forceDisconnection();
+            }
             case TOKEN -> {
                 GenericMessage token = (GenericMessage) message;
                 view.showToken(token.getContent());

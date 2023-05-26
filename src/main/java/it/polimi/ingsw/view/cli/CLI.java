@@ -352,6 +352,10 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
+    public void showDisconnection() {
+        System.out.println("MyShelfie: one of the players disconnected from server, restart the game\n");
+    }
+  
     public void confirmStartGame(boolean response) {
         //Notifying the waiting thread
         synchronized (lock1) {

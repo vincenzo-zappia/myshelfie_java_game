@@ -28,6 +28,7 @@ public enum MessageType {
     PRIVATE_GOAL,
     TOKEN,
     SCOREBOARD,
+    FORCE_DISCONNECTION,
     //endregion
 
     CHAT,

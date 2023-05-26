@@ -6,12 +6,14 @@ import it.polimi.ingsw.mechanics.VirtualView;
 import it.polimi.ingsw.network.messages.ChatMessage;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
+import it.polimi.ingsw.network.messages.client2server.NetFailureMessage;
 import it.polimi.ingsw.network.messages.server2client.GenericMessage;
 import it.polimi.ingsw.network.messages.server2client.TextResponse;
 import it.polimi.ingsw.network.messages.server2client.SpecificResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Lobby with an instance of the game
@@ -77,6 +79,19 @@ public class Lobby {
         for(NetworkPlayer player: networkMap.values()){
             player.getClientHandler().sendMessage(message);
         }
+    }
+
+    public int lobbyNetworkFailure(ClientHandler ch){
+        for (Map.Entry<String, NetworkPlayer> entry : networkMap.entrySet()) {
+            if (entry.getValue().getClientHandler().equals(ch)) {
+                networkMap.remove(entry.getKey());
+                break;
+            }
+        }
+        for(NetworkPlayer player: networkMap.values()){
+            player.getClientHandler().sendMessage(new NetFailureMessage("Server"));
+        }
+        return lobbyID;
     }
 
     /**
