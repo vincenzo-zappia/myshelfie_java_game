@@ -74,8 +74,8 @@ public class Server {
     }
 
     /**
-     * Creates a lobby as requested by player
-     * @return the new initialized lobby
+     * Creates a new lobby and adds it to the hashmap
+     * @return the newly initialized lobby
      */
     public Lobby createLobby() {
 
@@ -97,8 +97,17 @@ public class Server {
     }
 
     /**
-     * Remove specified lobby from the server
-     * @param lobbyId to identify the lobby to delete
+     * Checks if a specific lobby exists
+     * @param lobbyId of the lobby to check
+     * @return if the lobby exists
+     */
+    public synchronized boolean existsLobby(int lobbyId){
+        return lobbyMap.containsKey(lobbyId);
+    }
+
+    /**
+     * Removes a specific lobby from the map
+     * @param lobbyId of the lobby to remove
      */
     public synchronized void removeLobby(int lobbyId){
         for(String x: lobbyMap.get(lobbyId).getUsernameList()) removeUsername(x);
@@ -106,26 +115,17 @@ public class Server {
     }
 
     /**
-     * Checks that the lobby hashmap contains a certain ID
-     * @param lobbyId that needs to be checked
-     * @return if the map contains the ID
-     */
-    public synchronized boolean existsLobby(int lobbyId){
-        return lobbyMap.containsKey(lobbyId);
-    }
-
-    /**
-     * Adds the username to the server list
-     * @param username to check
+     * Adds a username to the server username list
+     * @param username to add
      */
     public synchronized void addUsername(String username){
         usernameList.add(username);
     }
 
     /**
-     * Checks that new player's choosed username isn't already in use
+     * Checks if a username is available
      * @param username to check
-     * @return true if it's already present
+     * @return if the username is unavailable
      */
     public synchronized boolean existsUsername(String username) {
         for(String user : usernameList) if(user.equals(username)) return true;
@@ -133,8 +133,8 @@ public class Server {
     }
 
     /**
-     * Removes a username from the username list
-     * @param username that needs to be removed
+     * Removes a username from the server username list
+     * @param username to remove
      */
     public void removeUsername(String username){
         usernameList.remove(username);

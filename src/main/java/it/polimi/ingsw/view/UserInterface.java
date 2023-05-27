@@ -39,9 +39,15 @@ public interface UserInterface extends View {
      */
     void confirmStartGame(boolean response);
 
+    /**
+     * Displays a new chat message
+     * @param chat message
+     */
     void showChat(String chat);
 
-    //TODO: Implementato downstream, non mi piace
+    /**
+     * Prompts the player to either choose to play a new game or quit the application after a player has disconnected
+     */
     void showDisconnection();
 
 }

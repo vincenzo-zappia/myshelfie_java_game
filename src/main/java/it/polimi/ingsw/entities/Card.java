@@ -24,18 +24,24 @@ public class Card implements Serializable {
     }
 
     //region METHODS
+    /**
+     * @return The path of the resource starting from the resources root
+     */
     public String getImgPath() {
-        return "/assets/Cards/" + imageName; //TODO: Sistemare path name
+        return "/assets/Cards/" + imageName;
     }
+
     public CardType getType() {
         return type;
     }
-    public boolean sameType(Card c){
-        return (this.type == c.getType());
-    }
-    //todo: mai usato, rimuovere?
-    public boolean sameCard(Card card) {
-        return card.getType() == this.type && card.getImgPath().equals(getImgPath());
+
+    /**
+     * Checks if two cards have the same color
+     * @param card card to compare
+     * @return true if the two cards have the same color
+     */
+    public boolean sameType(Card card){
+        return (this.type == card.getType());
     }
     //endregion
 
