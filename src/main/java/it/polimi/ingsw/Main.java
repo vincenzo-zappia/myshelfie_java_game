@@ -15,10 +15,11 @@ import java.util.Scanner;
 import static java.lang.System.exit;
 
 public class Main {
-
     private static final Scanner in = new Scanner(System.in);
 
     public static void main(String[] args) {
+
+        //Making the player choose the user interface
         System.out.println("Select user interface:");
         System.out.println("[0] CLI \n[1] GUI");
         String selection = in.nextLine();
@@ -41,7 +42,7 @@ public class Main {
             GUI.main(args);
         }
 
-        //Shutting off if the selection doesn't match
+        //Shutting off if the selection doesn't match any user interface
         else{
             System.out.println("Incorrect selection!");
             exit(0);
@@ -49,16 +50,22 @@ public class Main {
 
     }
 
+    /**
+     * @return The path of the resources root
+     */
     public static String getResourcePath() {
         String basePath;
         URI uri;
 
+        //Getting the base path of the Main class
         try {
             uri = Objects.requireNonNull(Main.class.getResource("")).toURI();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
         Path path = Paths.get(uri);
+
+        //Going down three directory levels (it/polimi/ingsw)
         basePath = path.getParent().getParent().getParent().toString();
 
         return basePath;

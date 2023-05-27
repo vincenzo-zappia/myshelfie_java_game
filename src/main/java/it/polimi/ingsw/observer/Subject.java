@@ -19,7 +19,7 @@ public interface Subject {
     /**
      * Removes observer from the list
      */
-    void unregister(Observer o); //todo: rimuovere?
+    void unregister(Observer o);
 
     /**
      * Notifies all observers in the list
