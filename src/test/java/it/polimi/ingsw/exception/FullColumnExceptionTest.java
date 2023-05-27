@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.exception;
+package it.polimi.ingsw.exception;
 
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;

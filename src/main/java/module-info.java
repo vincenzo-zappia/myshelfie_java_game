@@ -6,6 +6,11 @@ module proj.ingsw.rj {
 
     opens it.polimi.ingsw.view.gui to javafx.fxml;
     opens it.polimi.ingsw.view.gui.scenes to javafx.fxml;
+    opens it.polimi.ingsw.entities;
+    opens it.polimi.ingsw.entities.goals;
+    opens it.polimi.ingsw.entities.util;
+    opens it.polimi.ingsw.mechanics;
+    opens it.polimi.ingsw.network;
 
     exports it.polimi.ingsw.exceptions;
     exports it.polimi.ingsw.mechanics;

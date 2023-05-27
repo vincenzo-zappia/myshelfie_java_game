@@ -1,9 +1,8 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.network;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 class ClientHandlerTest {
     //TODO: testing the validity of each command sent by the client
 

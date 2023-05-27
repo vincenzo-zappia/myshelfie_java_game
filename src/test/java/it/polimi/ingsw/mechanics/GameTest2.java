@@ -1,13 +1,8 @@
-package it.polimi.ingsw.server.model.entities.state;
+package it.polimi.ingsw.mechanics;
 
-import it.polimi.ingsw.entities.Player;
 import it.polimi.ingsw.mechanics.Game;
-import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
-public class GameTest {
+public class GameTest2 {
     Game game;
 
     /*
