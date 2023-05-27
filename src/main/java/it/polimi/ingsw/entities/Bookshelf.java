@@ -48,7 +48,7 @@ public class Bookshelf implements Serializable {
     public boolean isBookshelfFull(){
 
         //Returning false if a single tile is empty
-        boolean sentinel = false;
+        boolean sentinel;
         for(int i = 0; i < 6; i++) {
             for(int j = 0; j < 5; j++){
                 sentinel = bookshelf[i][j].isTileEmpty();

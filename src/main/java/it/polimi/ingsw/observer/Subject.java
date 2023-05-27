@@ -14,17 +14,17 @@ public interface Subject {
      * Adds observer to the list
      * @param o observer to add
      */
-    public void register(Observer o);
+    void register(Observer o);
 
     /**
      * Removes observer from the list
      */
-    public void unregister(Observer o);
+    void unregister(Observer o); //todo: rimuovere?
 
     /**
      * Notifies all observers in the list
      * @param message object with the updated information
      */
-    public void notifyObserver(Message message);
+    void notifyObserver(Message message);
 
 }

@@ -2,8 +2,6 @@ package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
 
-import java.io.Serializable;
-
 public interface Goal {
     int UNAVAILABLE = 104; //DEBUG use
 

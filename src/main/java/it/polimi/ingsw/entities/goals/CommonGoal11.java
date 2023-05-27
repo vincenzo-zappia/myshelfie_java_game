@@ -1,7 +1,6 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.entities.util.CardType;
 import it.polimi.ingsw.entities.util.Tile;
 
 /*
@@ -17,7 +16,6 @@ public class CommonGoal11 extends CommonGoal implements Goal{
 
     private boolean findDiagonalWithSameColor(int row, int column, Bookshelf b){
         int mRow = 0, mColumn = 0;
-        CardType compareType;
 
         if(row == 0) mRow = 1;
         else if (row == 5) mRow = -1;

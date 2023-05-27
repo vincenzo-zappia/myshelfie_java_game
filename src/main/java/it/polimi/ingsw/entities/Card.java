@@ -33,6 +33,7 @@ public class Card implements Serializable {
     public boolean sameType(Card c){
         return (this.type == c.getType());
     }
+    //todo: mai usato, rimuovere?
     public boolean sameCard(Card card) {
         return card.getType() == this.type && card.getImgPath().equals(getImgPath());
     }

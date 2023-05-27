@@ -8,7 +8,6 @@
 package it.polimi.ingsw.entities.util;
 
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.exceptions.GetCardException;
 import java.io.Serializable;
 
 /**

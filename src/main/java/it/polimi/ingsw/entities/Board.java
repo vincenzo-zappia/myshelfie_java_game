@@ -105,7 +105,7 @@ public class Board {
             if (column > 0 && (board[row][column - 1].isTileEmpty() || !board[row][column - 1].isTileActive())) return true;
 
             //Checking whether the tile on the right is empty or not active
-            if (column < 8 && (board[row][column + 1].isTileEmpty() || !board[row][column + 1].isTileActive())) return true;
+            return column < 8 && (board[row][column + 1].isTileEmpty() || !board[row][column + 1].isTileActive());
         }
         return false;
     }

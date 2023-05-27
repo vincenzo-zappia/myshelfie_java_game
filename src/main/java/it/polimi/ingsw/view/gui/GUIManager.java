@@ -7,7 +7,6 @@ import it.polimi.ingsw.entities.util.BoardTile;
 import it.polimi.ingsw.entities.util.Tile;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.network.ClientController;
-import it.polimi.ingsw.network.messages.server2client.TextResponse;
 import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.gui.scenes.*;
 import javafx.application.Platform;
@@ -23,9 +22,9 @@ public class GUIManager implements UserInterface {
     }
 
     public void start(){
-        ClientController clientController = null;
+        ClientController clientController;
         try {
-            clientController = new ClientController(this, new Client("10.0.0.4", 2023));
+            clientController = new ClientController(this, new Client("localhost", 2023));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

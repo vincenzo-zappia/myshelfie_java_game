@@ -45,12 +45,7 @@ public class CommonGoal5 extends CommonGoal implements Goal{
         return false;
     }
 
-    /**
-     *
-     * @param v array of int numbers in a single column
-     * @param n
-     * @return
-     */
+
     private boolean isInColumn(int[] v, int n) {
         for (int j : v) if (j == n && j != UNAVAILABLE) return true;
         return false;

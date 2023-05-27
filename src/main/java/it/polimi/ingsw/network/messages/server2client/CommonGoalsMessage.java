@@ -1,7 +1,6 @@
 package it.polimi.ingsw.network.messages.server2client;
 
 import it.polimi.ingsw.entities.goals.Goal;
-import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 

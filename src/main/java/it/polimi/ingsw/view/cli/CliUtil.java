@@ -272,19 +272,18 @@ public class CliUtil {
     }
 
     public static String makePlayersList(ArrayList<String> players){
-        String partial = "";
-        for(String p: players) partial += AsciiTool.DOT.getSymbol() + p + "\n";
-        return partial;
+        StringBuilder partial = new StringBuilder();
+        for(String p: players) partial.append(AsciiTool.DOT.getSymbol()).append(p).append("\n");
+        return partial.toString();
     }
 
     public static String makeBookshelf(char[][] matrix) {
-        String bookshelf = ColorCode.BROWN.getCode() + getHeader(5);
+        StringBuilder bookshelf = new StringBuilder(ColorCode.BROWN.getCode() + getHeader(5));
         for(int i=0; i<matrix[0].length; i++){
-            bookshelf += getRowContent(matrix[i])+
-                    getIntermediate(5);
+            bookshelf.append(getRowContent(matrix[i])).append(getIntermediate(5));
         }
-        bookshelf += getRowContent(matrix[matrix[0].length]) + getFooter(5);
-        return bookshelf;
+        bookshelf.append(getRowContent(matrix[matrix[0].length])).append(getFooter(5));
+        return bookshelf.toString();
     }
 
     public static String makeTitle(String title) {

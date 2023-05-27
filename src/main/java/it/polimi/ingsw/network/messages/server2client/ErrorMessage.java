@@ -3,6 +3,8 @@ package it.polimi.ingsw.network.messages.server2client;
 import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.network.messages.MessageType;
 
+//todo: eliminare?
+
 /**
  * Specific message containing the description of the error occurred
  */

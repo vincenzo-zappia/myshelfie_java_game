@@ -7,8 +7,6 @@ import it.polimi.ingsw.network.messages.Message;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.UserInterface;
 
-import static java.lang.System.exit;
-
 /**
  * Manages the messages received from the server by calling the methods of the user interface.
  * Creates and sends messages to the server from the user interface.

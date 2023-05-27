@@ -16,7 +16,6 @@ import java.util.ArrayList;
 public class ToolXML {
 
     //region CONSTANT
-    private static final ClassLoader classLoader = ToolXML.class.getClassLoader();
     private static final String basePath = Main.getResourcePath();
     private static final String commandListPath = basePath + "\\config\\CommandList.xml";
     private static final String privateGoalPath = basePath + "\\config\\PrivateGoals.xml";
@@ -35,15 +34,6 @@ public class ToolXML {
         }
 
         return doc.getDocumentElement();
-    }
-
-    private static Document createDoc() throws ParserConfigurationException {
-        // Crea un oggetto DocumentBuilder per creare il documento XML
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-
-        // Crea un oggetto Document vuoto
-        return builder.newDocument();
     }
     //endregion
 
