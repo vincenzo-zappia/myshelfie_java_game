@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.Server;
 import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.gui.GUI;
 
@@ -18,6 +19,7 @@ public class Main {
     private static final Scanner in = new Scanner(System.in);
 
     public static void main(String[] args) {
+        argsCheck(args);
 
         //Making the player choose the user interface
         System.out.println("Select user interface:");
@@ -25,7 +27,7 @@ public class Main {
         String selection = in.nextLine();
 
         //Starting the CLI
-        if (selection.equals("0")){
+        if (selection.equals("0")) {
             CLI cli = new CLI(requestNetworkInformation());
             new Thread(cli).start();
         }
@@ -44,6 +46,18 @@ public class Main {
     }
 
     //region METHODS
+
+    private static void argsCheck(String[] args){
+        if(args.length>0){
+            switch (args[0]){
+                case "--server" -> {
+                    Server.main(args);
+                    return;
+                }
+            }
+        }
+    }
+
     /**
      * Requests the user the server IP and port and creates a new Client instance
      * @return the new Client instance

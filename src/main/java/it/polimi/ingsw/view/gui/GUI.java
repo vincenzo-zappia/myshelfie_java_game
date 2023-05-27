@@ -58,7 +58,7 @@ public class GUI extends Application {
      */
     private void startupStage(Stage stage){
         stage.setTitle("MyShelfie");
-       //stage.getIcons().add(new Image(Main.getResourcePath() + "\\assets\\misc\\icon.png"));
+        stage.getIcons().add(new Image(Main.getResourcePath() + "/assets/misc/icon.png"));
         stage.setFullScreen(true);
         stage.setMinWidth(1000);
         stage.setMinHeight(600);
