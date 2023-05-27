@@ -53,12 +53,12 @@ public class Player implements Comparable<Player>, Serializable {
 
     /**
      * Compares the current player to another by score
-     * @param player to be compared
+     * @param other to be compared
      * @return integer codifying the comparison
      */
     @Override
-    public int compareTo(Player player) {
-        return Integer.compare(score, player.getScore());
+    public int compareTo(Player other) {
+        return Integer.compare(other.score, this.score);
     }
     //endregion
 

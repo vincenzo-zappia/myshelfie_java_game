@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.entities.Scoreboard;
 import it.polimi.ingsw.entities.goals.CommonGoal;
-import it.polimi.ingsw.entities.util.SerializableTreeMap;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.Client;
@@ -480,18 +480,11 @@ public class CLI implements Runnable, UserInterface {
     }
 
     @Override
-    public void showScoreboard(SerializableTreeMap<String, Integer> scoreboard) {
+    public void showScoreboard(Scoreboard scoreboard) {
         System.out.println(CliUtil.makeTitle("Scoreboard"));
 
-        //Creazione di un elenco ordinato delle coppie chiave-valore
-        List<Map.Entry<Integer, String>> entryList = new ArrayList<>((Collection) scoreboard.entrySet());
-
-        //Ordinamento in ordine decrescente in base ai valori
-        entryList.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
-
-        //Stampa delle chiavi e dei valori in ordine decrescente dei valori
-        for (Map.Entry<Integer, String> entry : entryList) {
-            System.out.println("Player: " + entry.getKey() + ", Score: " + entry.getValue());
+        for (int i = 0; i < scoreboard.getUser_scores().length; i++) {
+            System.out.println("Player: " + scoreboard.getUsername(i) + ", Score: " + scoreboard.getScores(i));
         }
         virtualModel.setEndGame(true);
     }

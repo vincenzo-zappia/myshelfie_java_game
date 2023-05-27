@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.entities.util.SerializableTreeMap;
+import it.polimi.ingsw.entities.Scoreboard;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.entities.util.BoardTile;
@@ -67,7 +67,7 @@ public interface View {
      * Updates all the players with the scoreboard at the end of the game
      * @param scoreboard endgame scoreboard ordered by points
      */
-    void showScoreboard(SerializableTreeMap<String, Integer> scoreboard);
+    void showScoreboard(Scoreboard scoreboard);
 
     /**
      * Allows for the bonus point token to be taken by the first player who filled his bookshelf

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Card;
+import it.polimi.ingsw.entities.Scoreboard;
 import it.polimi.ingsw.entities.goals.CommonGoal1;
-import it.polimi.ingsw.entities.goals.CommonGoal3;
 import it.polimi.ingsw.entities.goals.CommonGoal5;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.util.CardType;
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,14 +39,13 @@ class GameTest {
         game.getPlayer("G3").addScore(9);
         game.getPlayer("G4").addScore(12);
 
-        TreeMap<String, Integer> res = game.orderByScore();
+        Scoreboard res = game.orderByScore();
 
-        System.out.println(res);
+        for (int i = 0; i < 4; i++) System.out.println(res.getScores(i));
 
-        assertEquals(res.get("G1"), 10);
-        assertEquals(res.get("G2"), 99);
-        assertEquals(res.get("G3"), 9);
-        assertEquals(res.get("G4"), 12);
+        assertTrue(res.getScores(0)>res.getScores(1));
+        assertTrue(res.getScores(1)>res.getScores(2));
+        assertTrue(res.getScores(2)>res.getScores(3));
     }
 
     /**

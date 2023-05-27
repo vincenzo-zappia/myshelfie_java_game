@@ -241,10 +241,10 @@ public class GameScene extends GenericScene{
         CommonGoal commonGoal2 = (CommonGoal) commonGoals[1];
 
         //Extracting the image file paths for the game common goals and their current score value
-        String imgPath1 = Main.getResourcePath() + commonGoal1.getFileName();
-        String imgPath2 = Main.getResourcePath() + commonGoal2.getFileName();
-        String pathScore1 = Main.getResourcePath() + commonGoal1.getScoreFileName();
-        String pathScore2 = Main.getResourcePath() + commonGoal2.getScoreFileName();
+        String imgPath1 = "src/main/resources/assets/CommonGoals/" + commonGoal1.getFileName();
+        String imgPath2 = "src/main/resources/assets/CommonGoals/" + commonGoal2.getFileName();
+        String pathScore1 = "src/main/resources/assets/Tokens/" + commonGoal1.getScoreFileName();
+        String pathScore2 = "src/main/resources/assets/Tokens/" + commonGoal2.getScoreFileName();
 
         //Setting the images of the game common goals and their current score value
         cg1.setImage(new Image(imgPath1));
@@ -270,7 +270,7 @@ public class GameScene extends GenericScene{
      * @param privateGoal player-specific private goal
      */
     public void displayPrivateGoal(PrivateGoal privateGoal){
-        String pgPath = Main.getResourcePath() + privateGoal.getFileName();
+        String pgPath = "src/main/resources/assets/PrivateGoals/" + privateGoal.getFileName();
         pg.setImage(new Image(pgPath));
         pg.setVisible(true);
     }

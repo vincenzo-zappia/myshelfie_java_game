@@ -1,6 +1,6 @@
 package it.polimi.ingsw.mechanics;
 
-import it.polimi.ingsw.entities.util.SerializableTreeMap;
+import it.polimi.ingsw.entities.Scoreboard;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.goals.PrivateGoal;
 import it.polimi.ingsw.network.ClientHandler;
@@ -75,7 +75,7 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showScoreboard(SerializableTreeMap<String, Integer> scoreboard){
+    public void showScoreboard(Scoreboard scoreboard){
         clientHandler.sendMessage(new ScoreboardMessage(scoreboard));
     }
 

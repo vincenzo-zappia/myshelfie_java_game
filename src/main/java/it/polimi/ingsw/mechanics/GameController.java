@@ -1,7 +1,7 @@
 package it.polimi.ingsw.mechanics;
 
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.entities.util.SerializableTreeMap;
+import it.polimi.ingsw.entities.Scoreboard;
 import it.polimi.ingsw.network.Lobby;
 import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
 import it.polimi.ingsw.network.messages.Message;
@@ -84,7 +84,7 @@ public class GameController {
                 case COMMON_GOAL -> viewHashMap.get(username).showCommonGoals(game.getCommonGoals());
                 case PRIVATE_GOAL -> viewHashMap.get(username).showPrivateGoal(game.getPlayer(username).getPrivateGoal());
                 case TOKEN -> viewHashMap.get(username).showToken(turnManager.getCurrentPlayer());
-                case SCOREBOARD -> viewHashMap.get(username).showScoreboard((SerializableTreeMap<String, Integer>) payload[0]);
+                case SCOREBOARD -> viewHashMap.get(username).showScoreboard((Scoreboard) payload[0]);
             }
         }
     }
@@ -219,7 +219,7 @@ public class GameController {
         game.scorePrivateGoal();
 
         //Creating the scoreboard (sort algorithm in client)
-        SerializableTreeMap<String, Integer> scoreboard = game.orderByScore();
+        Scoreboard scoreboard = game.orderByScore();
 
         System.out.println(scoreboard);
 

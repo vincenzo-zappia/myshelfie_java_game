@@ -13,7 +13,6 @@ import it.polimi.ingsw.entities.util.BoardTile;
 
 import java.util.*;
 
-import it.polimi.ingsw.entities.util.SerializableTreeMap;
 import it.polimi.ingsw.entities.util.Tile;
 
 public class Game{
@@ -206,19 +205,11 @@ public class Game{
      * Arranges the players by score
      * @return ordered SerializableTreeMap (username, score)
      */
-    public SerializableTreeMap<String, Integer> orderByScore(){
-        HashMap<String, Integer> hashmap = new HashMap<>();
-
-        //For loop to fill hashmap
-        for(String username: players.keySet())hashmap.put(username, getPlayer(username).getScore());
-
-        //Making a custom comparator to sort the players by descending order by score
-        Comparator<String> comparator = (score1, score2) -> hashmap.get(score2).compareTo(hashmap.get(score1));
-
-        //Creating a treemap using a personalized comparator (see code above)
-        SerializableTreeMap<String, Integer> treeMap = new SerializableTreeMap<>(comparator);
-        treeMap.putAll(hashmap);
-        return treeMap;
+    public Scoreboard orderByScore(){
+        Scoreboard scoreboard = new Scoreboard(players.size());
+        scoreboard.fillScoreboard(getPlayers());
+        scoreboard.orderByDesc();
+        return scoreboard;
     }
     //endregion
 

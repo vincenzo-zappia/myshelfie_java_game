@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui.scenes;
 
-import it.polimi.ingsw.entities.util.SerializableTreeMap;
+import it.polimi.ingsw.entities.Scoreboard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -27,35 +27,17 @@ public class WinnerScene extends GenericScene {
     //endregion
 
     //region EXTERNAL METHOD
-    public void displayScoreboard(SerializableTreeMap<String, Integer> scoreboardMap){
+    public void displayScoreboard(Scoreboard s){
 
-        //TODO da verificare funzionamento
-        List<Map.Entry<String, Integer>> entryList = new ArrayList<>(scoreboardMap.entrySet());
-        Collections.sort(entryList, new Comparator<Map.Entry<String, Integer>>() {
-            @Override
-            public int compare(Map.Entry<String, Integer> entry1, Map.Entry<String, Integer> entry2) {
-                // Ordine decrescente
-                return entry2.getValue().compareTo(entry1.getValue());
-            }
-        });
-        TreeMap<String, Integer> ordered = new TreeMap<>();
-
-        for (Map.Entry<String, Integer> entry : entryList) {
-            ordered.put(entry.getKey(), entry.getValue());
-        }
-
-        String[] usernames = ordered.keySet().toArray(new String[0]);
-        Integer[] scores = ordered.values().toArray(new Integer[0]);
-
-        for (int i=0; i< ordered.size(); i++) {
+        for (int i=0; i< s.getUser_scores().length; i++) {
             Label username = (Label) getNodeByRowColumnIndex(i+1,0,scoreboard),
             score = (Label) getNodeByRowColumnIndex(i+1,1,scoreboard);
 
             username.setVisible(true);
             score.setVisible(true);
 
-            username.setText(usernames[i]);
-            score.setText(String.valueOf(scores[i]));
+            username.setText(s.getUsername(i));
+            score.setText(String.valueOf(s.getScores(i)));
         }
     }
     //endregion
