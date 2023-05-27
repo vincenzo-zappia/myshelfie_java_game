@@ -22,15 +22,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.GameScene">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="background-img" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.GameScene">
    <center>
-      <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab text="board*">
+          <Tab text="LIVINGROOM">
             <content>
                   <TilePane alignment="CENTER">
                      <children>
-                        <Group>
+                        <Group styleClass="goals">
                            <children>
                               <ImageView fitHeight="515.0" fitWidth="534.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -299,7 +299,7 @@
                   </TilePane>
             </content>
           </Tab>
-          <Tab text="bookshelf*">
+          <Tab text="BOOKSHELF">
             <content>
                   <VBox alignment="CENTER">
                      <children>
@@ -500,7 +500,7 @@
    <top>
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <MenuButton mnemonicParsing="false" text="CHAT">
+            <MenuButton mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="CHAT">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -512,21 +512,21 @@
                   </CustomMenuItem>
                   <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Unspecified Action">
                      <content>
-                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0">
+                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="200.0" spacing="5.0">
                            <children>
                               <TextField fx:id="writeChat" />
-                              <Button mnemonicParsing="false" onAction="#sendChat" text="Button" />
+                              <Button mnemonicParsing="false" onAction="#sendChat" text="SEND" />
                            </children>
                         </HBox>
                      </content>
                   </CustomMenuItem>
                </items>
             </MenuButton>
-          <Button fx:id="confirm" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onConfirmClick" text="CONFIRM">
+          <Button fx:id="confirm" alignment="CENTER" mnemonicParsing="false" onAction="#onConfirmClick" styleClass="test" text="CONFIRM">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Button>
-            <Label fx:id="feedback" text="Label">
+            <Label fx:id="feedback" text="Label" visible="false">
                <font>
                   <Font size="15.0" />
                </font></Label>
@@ -536,7 +536,7 @@
    <right>
       <VBox alignment="CENTER" minWidth="-Infinity" prefHeight="560.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Group>
+            <Group styleClass="goals">
                <children>
                   <ImageView fx:id="cg1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -550,7 +550,7 @@
                   </ImageView>
                </children>
             </Group>
-            <Group>
+            <Group styleClass="goals">
                <children>
                   <ImageView fx:id="cg2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -564,14 +564,14 @@
                   </ImageView>
                </children>
             </Group>
-            <ImageView fx:id="pg" fitHeight="228.0" fitWidth="145.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="pg" fitHeight="228.0" fitWidth="145.0" pickOnBounds="true" preserveRatio="true" styleClass="goals">
                <image>
                   <Image url="@../../../../../assets/PrivateGoals/pg1.png" />
                </image>
             </ImageView>
          </children>
          <BorderPane.margin>
-            <Insets right="20.0" />
+            <Insets right="60.0" />
          </BorderPane.margin>
       </VBox>
    </right>
