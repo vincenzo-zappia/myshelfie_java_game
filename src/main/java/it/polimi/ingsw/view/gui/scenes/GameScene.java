@@ -24,6 +24,7 @@ import java.util.Arrays;
  */
 public class GameScene extends GenericScene{
 
+    //region ATTRIBUTES
     //region BOARD
     @FXML private GridPane board;
     @FXML private Button confirm;
@@ -47,24 +48,35 @@ public class GameScene extends GenericScene{
     @FXML private ImageView pg;
     //endregion
 
-    //region CHAT
-    @FXML private TextField writeChat;
-    @FXML private Label chat;
-    //endregion
-
     @FXML private TabPane tabPane;
-
     private ArrayList<int[]> currentSelection;
     private boolean selectable;
+    //endregion
+
+    //region CHAT
+    @FXML private TextField writeChat;
+    @FXML private TextArea chat;
 
     /**
-     * Switches either to the board or the bookshelf tab depending on the parameter
-     * @param tab index of the tab to switch to
+     * Creates and sends a chat message through the client side controller to the server
      */
-    public void switchTab(int tab){
-        tabPane.getSelectionModel().select(tab);
+    @FXML public void sendChat(){
+        String message = writeChat.getText();
+        controller.sendChat(message);
+        writeChat.clear();
     }
 
+    /**
+     * Displays the new chat message after the previous one
+     * @param message chat text to display
+     */
+    public void showChat(String message){
+        String previous = chat.getText();
+        chat.setText(previous + "\n" + message);
+    }
+    //endregion
+
+    //region CONSTRUCTOR
     /**
      * Routine of game scene initialization such as binding even handlers to buttons and making image views not visible
      */
@@ -101,6 +113,7 @@ public class GameScene extends GenericScene{
         selectable = true;
 
     }
+    //endregion
 
     //region CLICKS
     /**
@@ -302,20 +315,13 @@ public class GameScene extends GenericScene{
         token.setVisible(false);
         showMessage(true, content);
     }
-    //endregion
 
-    //region CHAT
-    @FXML public void sendChat(){
-        String message = writeChat.getText();
-        controller.sendChat(message);
-        writeChat.clear();
-    }
-
-    public void showChat(String message){
-        String previous = chat.getText();
-        if (previous.length() > 60) chat.setText(message); //TODO: Decidere dimensione massima visualizzabile dalla chat (fxml)
-        else chat.setText(previous + "\n" + message);
-        chat.setVisible(true);
+    /**
+     * Switches either to the board or the bookshelf tab depending on the parameter
+     * @param tab index of the tab to switch to
+     */
+    public void switchTab(int tab){
+        tabPane.getSelectionModel().select(tab);
     }
     //endregion
 

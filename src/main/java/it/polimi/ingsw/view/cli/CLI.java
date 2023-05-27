@@ -212,12 +212,14 @@ public class CLI implements Runnable, UserInterface {
                     }
                 }
 
+                //Help command to show the list of possible commands
                 case "help" -> {
                     //Help command for syntax aid
                     System.out.println(CliUtil.makeTitle("Command List"));
                     System.out.println(CliUtil.makeCommandList());
                 }
 
+                //Empty enter to refresh the loop
                 case "" -> {}
 
                 default -> System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
