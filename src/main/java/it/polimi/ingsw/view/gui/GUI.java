@@ -29,7 +29,7 @@ public class GUI extends Application {
         try{
             //TODO: Scena iniziale IP e port
             currentLoader = new FXMLLoader(GUI.class.getResource("username.fxml"));
-            Scene scene = new Scene(currentLoader.load(), 900,600);
+            Scene scene = new Scene(currentLoader.load(), 1000,600);
             this.currentController = currentLoader.getController();
 
             this.scene = scene;

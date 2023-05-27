@@ -223,6 +223,7 @@ public class CLI implements Runnable, UserInterface {
                 default -> System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax.\nType help for a list of commands."));
             }
         }
+
     }
 
     /**
@@ -483,10 +484,15 @@ public class CLI implements Runnable, UserInterface {
     public void showScoreboard(Scoreboard scoreboard) {
         System.out.println(CliUtil.makeTitle("Scoreboard"));
 
+        //Printing the ordered scoreboard
         for (int i = 0; i < scoreboard.getUser_scores().length; i++) {
-            System.out.println("Player: " + scoreboard.getUsername(i) + ", Score: " + scoreboard.getScores(i));
+            System.out.println("Player: " + scoreboard.getUsername(i) + "\tScore: " + scoreboard.getScores(i));
         }
+
+        //Prompting the player to choose between playing a new game or quitting the application
         virtualModel.setEndGame(true);
+        System.out.println("Press enter to continue");
+
     }
 
     @Override

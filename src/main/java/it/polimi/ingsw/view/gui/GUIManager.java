@@ -18,8 +18,12 @@ import java.util.ArrayList;
  * Manages the reception of messages from the server and calls their needed implementation relatively to the scene
  */
 public class GUIManager implements UserInterface {
-    private final GUI gui;
 
+    //region ATTRIBUTES
+    private final GUI gui;
+    //endregion
+
+    //region CONSTRUCTOR
     public GUIManager(GUI gui){
         this.gui = gui;
     }
@@ -34,6 +38,7 @@ public class GUIManager implements UserInterface {
         GenericScene.setController(clientController);
         GenericScene.setGui(gui);
     }
+    //endregion
 
     //region USER INTERFACE
     @Override
@@ -124,6 +129,7 @@ public class GUIManager implements UserInterface {
             GameScene gameScene = (GameScene) gui.getController();
             gameScene.setSelectable(!valid);
             if (!valid) gameScene.resetBoardCardOpacity();
+            else gameScene.switchTab(1); //Switching to the bookshelf tab
         });
 
     }

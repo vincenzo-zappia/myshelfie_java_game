@@ -10,10 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -27,44 +24,51 @@ import java.util.Arrays;
  */
 public class GameScene extends GenericScene{
 
-    //region FXML
-
+    //region BOARD
     @FXML private GridPane board;
-    @FXML private GridPane bookshelf;
+    @FXML private Button confirm;
+    //endregion
 
+    //region BOOKSHELF
+    @FXML private GridPane bookshelf;
+    @FXML private Button col0;
+    @FXML private Button col1;
+    @FXML private Button col2;
+    @FXML private Button col3;
+    @FXML private Button col4;
+    //endregion
+
+    //region GOALS
     @FXML private ImageView cg1;
     @FXML private ImageView cg1Score;
     @FXML private ImageView cg2;
     @FXML private ImageView cg2Score;
     @FXML private ImageView token;
     @FXML private ImageView pg;
-
-    @FXML private Button confirm;
-    @FXML private Button col0;
-    @FXML private Button col1;
-    @FXML private Button col2;
-    @FXML private Button col3;
-    @FXML private Button col4;
-
-    @FXML private TextField writeChat;
-    @FXML private Label chat;
-
-    @FXML private ImageView livingroom;
-
     //endregion
 
+    //region CHAT
+    @FXML private TextField writeChat;
+    @FXML private Label chat;
+    //endregion
+
+    @FXML private TabPane tabPane;
+
+    private ArrayList<int[]> currentSelection;
     private boolean selectable;
 
-    private Tooltip cg1tooltip;
-    private Tooltip cg2tooltip;
-    
-    private ArrayList<int[]> currentSelection;
+    /**
+     * Switches either to the board or the bookshelf tab depending on the parameter
+     * @param tab index of the tab to switch to
+     */
+    public void switchTab(int tab){
+        tabPane.getSelectionModel().select(tab);
+    }
 
     /**
      * Routine of game scene initialization such as binding even handlers to buttons and making image views not visible
      */
     public void initGame(){
-
         currentSelection = new ArrayList<>();
 
         //Setting up selection button events and initializing board tiles
@@ -241,10 +245,10 @@ public class GameScene extends GenericScene{
         CommonGoal commonGoal2 = (CommonGoal) commonGoals[1];
 
         //Extracting the image file paths for the game common goals and their current score value
-        String imgPath1 = "src/main/resources/assets/CommonGoals/" + commonGoal1.getFileName();
-        String imgPath2 = "src/main/resources/assets/CommonGoals/" + commonGoal2.getFileName();
-        String pathScore1 = "src/main/resources/assets/Tokens/" + commonGoal1.getScoreFileName();
-        String pathScore2 = "src/main/resources/assets/Tokens/" + commonGoal2.getScoreFileName();
+        String imgPath1 = Main.getResourcePath() + commonGoal1.getFileName();
+        String imgPath2 = Main.getResourcePath() + commonGoal2.getFileName();
+        String pathScore1 = Main.getResourcePath() + commonGoal1.getScoreFileName();
+        String pathScore2 = Main.getResourcePath() + commonGoal2.getScoreFileName();
 
         //Setting the images of the game common goals and their current score value
         cg1.setImage(new Image(imgPath1));
@@ -258,8 +262,8 @@ public class GameScene extends GenericScene{
         cg2.setVisible(true);
         cg2Score.setVisible(true);
 
-        cg1tooltip = new Tooltip(commonGoal1.getDescription());
-        cg2tooltip = new Tooltip(commonGoal2.getDescription());
+        Tooltip cg1tooltip = new Tooltip(commonGoal1.getDescription());
+        Tooltip cg2tooltip = new Tooltip(commonGoal2.getDescription());
         Tooltip.install(cg1, cg1tooltip);
         Tooltip.install(cg2, cg2tooltip);
 
@@ -270,7 +274,7 @@ public class GameScene extends GenericScene{
      * @param privateGoal player-specific private goal
      */
     public void displayPrivateGoal(PrivateGoal privateGoal){
-        String pgPath = "src/main/resources/assets/PrivateGoals/" + privateGoal.getFileName();
+        String pgPath = Main.getResourcePath() + privateGoal.getFileName();
         pg.setImage(new Image(pgPath));
         pg.setVisible(true);
     }
@@ -316,8 +320,6 @@ public class GameScene extends GenericScene{
     //endregion
 
     //region UTIL
-
-
     public void enableConfirmationButton(boolean enabled){
         confirm.setDisable(!enabled);
     }

@@ -37,7 +37,7 @@ public class ClientHandler extends NetworkInterface implements Runnable{
      * Waits for incoming messages from client to server
      */
     public void run() {
-        boolean newGame = false;
+        boolean newGame = true;
 
         //Receiving the request to check username availability
         checkUsernameHandler();
