@@ -2,10 +2,7 @@ package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
-import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.entities.util.CardType;
-import it.polimi.ingsw.network.Client;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
