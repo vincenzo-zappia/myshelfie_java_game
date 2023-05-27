@@ -8,11 +8,10 @@ package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
 
-/*
+/**
  * Six groups each containing at least 2 tiles of the same type (not necessarily in the depicted shape).
  * The tiles of one group can be different from those of another groups.
  */
-
 public class CommonGoal4 extends CommonGoal implements Goal{
 
     public CommonGoal4() {
@@ -46,4 +45,5 @@ public class CommonGoal4 extends CommonGoal implements Goal{
         if(tmp>=6) return getScore();
         return 0;
     }
+
 }

@@ -123,7 +123,7 @@ public class Lobby {
     }
 
     /**
-     * Endgame routine started either after the game ends or a player is disconnected
+     * Sets the lobby offline and removes it from the server list after a game has ended or a player is disconnected
      */
     public void endGame(){
         lobbyOnline = false;
@@ -137,7 +137,9 @@ public class Lobby {
     public void forceDisconnection(ClientHandler clientHandler){
         networkMap.entrySet().stream().filter(entry -> !entry.getValue().getClientHandler().equals(clientHandler)).forEach(entry -> entry.getValue().getClientHandler().sendMessage(new GenericMessage(MessageType.DISCONNECTION)));
     }
+    //endregion
 
+    //region GETTER
     public int getLobbyID() {
         return lobbyID;
     }

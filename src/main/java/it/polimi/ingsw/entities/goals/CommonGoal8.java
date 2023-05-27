@@ -4,10 +4,9 @@ import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.exceptions.GetCardException;
 import it.polimi.ingsw.entities.util.Tile;
 
-/*
+/**
  * Four tiles of the same type in the four corners of the bookshelf.
  */
-
 public class CommonGoal8 extends CommonGoal implements Goal {
 
     public CommonGoal8() {
@@ -33,4 +32,5 @@ public class CommonGoal8 extends CommonGoal implements Goal {
         if(c1.getCard().sameType(c2.getCard()) && c3.getCard().sameType(c4.getCard()) && c2.getCard().sameType(c4.getCard())) return getScore();
         else return 0;
     }
+
 }

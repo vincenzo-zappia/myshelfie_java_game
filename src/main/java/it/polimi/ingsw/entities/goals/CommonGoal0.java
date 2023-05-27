@@ -4,10 +4,11 @@ import it.polimi.ingsw.entities.Bookshelf;
 import java.util.HashMap;
 
 /**
- * Questo CommonGoal si riferisce ai Goals presenti sulla Board
+ * The always present game common goal (the one on the board)
  */
 public class CommonGoal0 implements Goal{
 
+    //region CONSTRUCTOR
     @Override
     public int checkGoal(Bookshelf bookshelf) {
         HashMap<Integer, Integer> res = searchGroups(bookshelf.getBookshelfColors());
@@ -21,12 +22,13 @@ public class CommonGoal0 implements Goal{
         }
         return points;
     }
+    //endregion
 
+    //region METHODS
     /**
-     * Methods that search the max player's group of tiles
-     *
-     * @param matrix bookshelf colors
-     * @return group's size
+     * Searches for the biggest group of tiles of the same type
+     * @param matrix type abstracted bookshelf
+     * @return the biggest group size
      */
     private HashMap<Integer, Integer> searchGroups(int[][] matrix) {
         int rows = matrix.length;
@@ -46,13 +48,13 @@ public class CommonGoal0 implements Goal{
     }
 
     /**
-     * Check the adjacents tiles and count them
-     * @param matrix int[][] of cards's types
+     * Counts the size of the group of cards of the same type
+     * @param matrix type abstracted bookshelf
      * @param visited matrix of already visited cards
      * @param row to check
      * @param col to check
      * @param value contained in tile
-     * @return count of adjacent tiles group
+     * @return number of cards of the same type in the group
      */
     private int findAdjacent(int[][] matrix, boolean[][] visited, int row, int col, int value) {
         int rows = matrix.length;
@@ -72,5 +74,6 @@ public class CommonGoal0 implements Goal{
 
         return count;
     }
+    //endregion
 
 }

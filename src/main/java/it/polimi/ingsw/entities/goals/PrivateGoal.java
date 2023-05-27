@@ -8,6 +8,9 @@ import it.polimi.ingsw.entities.util.SpatialTile;
 import java.io.Serializable;
 import java.util.HashMap;
 
+/**
+ * Player-specific private goal
+ */
 public class PrivateGoal implements Goal, Serializable {
 
     //region ATTRIBUTES
@@ -16,12 +19,10 @@ public class PrivateGoal implements Goal, Serializable {
     private final String fileName;
     //endregion
 
-    private int getScore(int check){
-        return scores.get(check);
-    }
-
+    //region CONSTRUCTOR
     public PrivateGoal(SpatialTile[] spatialTiles, String fileName){
-        //riempimento hashmap con gli score e gli obiettivi acqisiti
+
+        //Creating a hashmap with the correspondence between number of achieved goals and scored points
         scores = new HashMap<>();
         scores.put(0, 0);
         scores.put(1, 1);
@@ -34,7 +35,9 @@ public class PrivateGoal implements Goal, Serializable {
         this.fileName = fileName;
         this.spatialTiles = spatialTiles;
     }
+    //endregion
 
+    //region METHODS
     @Override
     public int checkGoal(Bookshelf bookshelf) {
         int checked=0;
@@ -45,6 +48,12 @@ public class PrivateGoal implements Goal, Serializable {
             }
         }
         return getScore(checked);
+    }
+    //endregion
+
+    //region GETTER
+    private int getScore(int check){
+        return scores.get(check);
     }
 
     public String getFileName() {
@@ -60,5 +69,6 @@ public class PrivateGoal implements Goal, Serializable {
 
         return structure;
     }
+    //endregion
 
 }

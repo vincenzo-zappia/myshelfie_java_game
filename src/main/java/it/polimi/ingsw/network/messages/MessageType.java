@@ -32,6 +32,8 @@ public enum MessageType {
     DISCONNECTION,
     //endregion
 
+    //region CHAT
     CHAT,
+    //endregion
 
 }

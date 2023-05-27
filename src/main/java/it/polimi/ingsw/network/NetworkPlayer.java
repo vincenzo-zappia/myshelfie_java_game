@@ -3,18 +3,24 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.mechanics.VirtualView;
 
 /**
- * Classe creata per collegare ad un username il relativo ClientHandler e VirtualView (gia inizializzato con il ClientHandler)
+ * Class that links the username of the player to the ClientHandler and VirtualView of their relative Client
  */
 public class NetworkPlayer {
+
+    //region ATTRIBUTES
     private final String username;
     private final ClientHandler clientHandler;
     private VirtualView virtualView;
+    //endregion
 
+    //region CONSTRUCTOR
     public NetworkPlayer(String username, ClientHandler clientHandler) {
         this.username = username;
         this.clientHandler = clientHandler;
     }
+    //endregion
 
+    //region METHODS
     public String getUsername() {
         return username;
     }
@@ -30,4 +36,6 @@ public class NetworkPlayer {
     public void setVirtualView(VirtualView virtualView){
         this.virtualView = virtualView;
     }
+    //endregion
+
 }

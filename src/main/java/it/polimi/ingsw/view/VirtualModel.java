@@ -20,6 +20,7 @@ public class VirtualModel {
     private boolean endGame;
     //endregion
 
+    //region CONSTRUCTOR
     public VirtualModel(){
         //Board initialization
         board = new BoardTile[9][9];
@@ -31,6 +32,21 @@ public class VirtualModel {
         endGame = false;
 
     }
+    //endregion
+
+    //region METHODS
+    /**
+     * Removes the cards selected by the player after their insertion
+     * @param coordinates of the cards to remove
+     */
+    public void refreshBoard(int[][] coordinates) {
+        for (int[] coordinate : coordinates) {
+            int row = coordinate[0];
+            int column = coordinate[1];
+            board[row][column].setTileEmpty();
+        }
+    }
+    //endregion
 
     //region GETTER AND SETTER
     public void setCoordinates(int[][] coordinates) {
@@ -70,13 +86,5 @@ public class VirtualModel {
         return endGame;
     }
     //endregion
-
-    public void refreshBoard(int[][] coordinates) {
-        for (int[] coordinate : coordinates) {
-            int row = coordinate[0];
-            int column = coordinate[1];
-            board[row][column].setTileEmpty();
-        }
-    }
 
 }

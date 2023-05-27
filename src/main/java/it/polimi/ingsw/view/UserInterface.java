@@ -17,7 +17,7 @@ public interface UserInterface extends View {
     void confirmUsername(boolean response);
 
     /**
-     * Gives feedback about the creation of a lobby
+     * Gives positive feedback about the creation of a lobby
      */
     void confirmCreation(String content);
 

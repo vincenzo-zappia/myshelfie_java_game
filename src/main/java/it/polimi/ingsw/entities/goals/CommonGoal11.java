@@ -3,15 +3,27 @@ package it.polimi.ingsw.entities.goals;
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.util.Tile;
 
-/*
- * Five tiles of the same type forming a diagonal.
+/**
+ * Five tiles of the same type forming a diagonal
  */
-
 public class CommonGoal11 extends CommonGoal implements Goal{
-    private static final int[][] corners = {{0,0}, {0,4}, {5,0}, {5,4}};
 
+    //region ATTRIBUTES
+    private static final int[][] corners = {{0,0}, {0,4}, {5,0}, {5,4}};
+    //endregion
+
+    //region CONSTRUCTOR
     public CommonGoal11() {
         super("Five tiles of the same type forming a diagonal.", "cg11.jpg");
+    }
+    //endregion
+
+    //region METHODS
+    @Override
+    public int checkGoal(Bookshelf bookshelf) {
+
+        for(int i=0; i<4; i++) if (findDiagonalWithSameColor(corners[i][0], corners[i][1], bookshelf)) return getScore();
+        return 0;
     }
 
     private boolean findDiagonalWithSameColor(int row, int column, Bookshelf b){
@@ -29,12 +41,8 @@ public class CommonGoal11 extends CommonGoal implements Goal{
                 if (list[i].isTileEmpty()) return false;
             }
 
-        return sameTypes(list);
+        return allSameType(list);
     }
-    @Override
-    public int checkGoal(Bookshelf bookshelf) {
+    //endregion
 
-        for(int i=0; i<4; i++) if (findDiagonalWithSameColor(corners[i][0], corners[i][1], bookshelf)) return getScore();
-        return 0;
-    }
 }

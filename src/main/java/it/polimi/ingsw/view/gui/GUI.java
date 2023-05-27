@@ -12,10 +12,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class GUI extends Application {
+
+    //region ATTRIBUTES
     private Scene scene;
     private FXMLLoader currentLoader;
     private GenericScene currentController;
+    //endregion
 
+    //region JAVAFX
     public static void main(String[] args) {
         launch();
     }
@@ -45,7 +49,13 @@ public class GUI extends Application {
         Platform.exit();
         System.exit(0);
     }
+    //endregion
 
+    //region METHODS
+    /**
+     * Initializes the stage
+     * @param stage the stage to initialize
+     */
     private void startupStage(Stage stage){
         stage.setTitle("MyShelfie");
         stage.getIcons().add(new Image(Main.getResourcePath() + "\\assets\\misc\\icon.png"));
@@ -76,5 +86,6 @@ public class GUI extends Application {
     public GenericScene getController(){
         return currentController;
     }
+    //endregion
 
 }

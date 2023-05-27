@@ -9,11 +9,10 @@ package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
 
-/*
+/**
  * Eight tiles of the same type.
  * There's no restriction about the position of these tiles.
  */
-
 public class CommonGoal9 extends CommonGoal implements Goal{
 
     public CommonGoal9() {
@@ -40,4 +39,5 @@ public class CommonGoal9 extends CommonGoal implements Goal{
         }
         return 0;
     }
+
 }

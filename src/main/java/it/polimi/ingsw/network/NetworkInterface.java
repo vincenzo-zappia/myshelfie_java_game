@@ -7,6 +7,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * General functionalities of both server and client side network interfaces
+ */
 public abstract class NetworkInterface {
 
     //region ATTRIBUTES
@@ -15,6 +18,7 @@ public abstract class NetworkInterface {
     private final ObjectInputStream objIn;
     //endregion
 
+    //region CONSTRUCTOR
     public NetworkInterface(Socket socket) {
         this.socket = socket;
 
@@ -25,10 +29,12 @@ public abstract class NetworkInterface {
             throw new RuntimeException(e);
         }
     }
+    //endregion
 
+    //region METHODS
     /**
-     * Algorithm for the reception of one message
-     * @return the message received
+     * Algorithm for the reception of one message (TCP/IP)
+     * @return the received message
      */
     protected Message receiveMessage(){
         boolean received = false;
@@ -45,8 +51,8 @@ public abstract class NetworkInterface {
     }
 
     /**
-     * Sends a message from server to client (TCP/IP)
-     * @param message sent message
+     * Algorithm for the forwarding of one message (TCP/IP)
+     * @param message the message to send
      */
     public void sendMessage(Message message) {
         try {
@@ -58,9 +64,11 @@ public abstract class NetworkInterface {
     }
 
     /**
-     * Closes the socket safely
+     * Closes the socket and interrupts the thread
      */
     public void safeDisconnect() {
+
+        //Closing the socket
         System.out.println("INFO: Closing the socket...");
         try {
             socket.close();
@@ -68,11 +76,14 @@ public abstract class NetworkInterface {
         } catch (IOException e) {
             System.out.println("INFO: Couldn't close socket. Shutting down...");
         }
+
+        //Interrupting the thread
         Thread.currentThread().interrupt();
     }
 
     protected ObjectInputStream getObjectInput(){
         return objIn;
     }
+    //endregion
 
 }

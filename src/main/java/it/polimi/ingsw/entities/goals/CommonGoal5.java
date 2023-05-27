@@ -2,18 +2,20 @@ package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
 
-/*
+/**
  * Three columns each formed by 6 tiles of maximum three different types.
  * One column can show the same or a different combination of another column.
  */
-
 public class CommonGoal5 extends CommonGoal implements Goal{
 
+    //region CONSTRUCTOR
     public CommonGoal5() {
         super("Three columns each formed by 6 tiles of maximum three different types.\n" +
                 "One column can show the same or a different combination of another column.", "cg5.jpg");
     }
+    //endregion
 
+    //region METHODS
     @Override
     public int checkGoal(Bookshelf bs) {
 
@@ -45,9 +47,10 @@ public class CommonGoal5 extends CommonGoal implements Goal{
         return false;
     }
 
-
     private boolean isInColumn(int[] v, int n) {
         for (int j : v) if (j == n && j != UNAVAILABLE) return true;
         return false;
     }
+    //endregion
+
 }

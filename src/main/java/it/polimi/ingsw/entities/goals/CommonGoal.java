@@ -6,6 +6,9 @@ import it.polimi.ingsw.entities.util.Tile;
 import java.io.Serializable;
 import java.util.HashSet;
 
+/**
+ * Generic common goal functionalities
+ */
 public abstract class CommonGoal implements Serializable {
 
     //region ATTRIBUTES
@@ -15,14 +18,21 @@ public abstract class CommonGoal implements Serializable {
     private String scoreFileName;
     //endregion
 
+    //region CONSTRUCTOR
     protected CommonGoal(String description, String fileName){
         this.fileName = "/assets/CommonGoals/" + fileName;
         this.scoreFileName = "scoring-8.jpg";
         this.description = description;
         score = 8;
     }
+    //endregion
 
-    protected static boolean allTypesDifferent(Tile[] list) {
+    //region METHODS
+    /**
+     * @param list of the tiles to check
+     * @return true if all the tiles contain cards of different type
+     */
+    protected static boolean allDifferentType(Tile[] list) {
         HashSet<CardType> types = new HashSet<>();
 
         for (Tile c: list) {
@@ -32,14 +42,22 @@ public abstract class CommonGoal implements Serializable {
         return true;
     }
 
-    protected static boolean sameTypes(Tile[] list) {
+    /**
+     * @param list of the tiles to check
+     * @return if all the tiles contain cards of the same type
+     */
+    protected static boolean allSameType(Tile[] list) {
         for(int i=0; i< list.length-1; i++){
             if (list[i].getCard().getType() != list[i+1].getCard().getType()) return false;
         }
         return true;
     }
 
-    protected static boolean existEmpty(Tile[] list) {
+    /**
+     * @param list of tiles to check
+     * @return true if at least one tile is empty
+     */
+    protected static boolean existsEmpty(Tile[] list) {
         for (Tile c: list) if (c.isTileEmpty()) return true;
         return false;
     }
@@ -50,7 +68,9 @@ public abstract class CommonGoal implements Serializable {
             scoreFileName = "scoring-" + score + ".jpg";
         }
     }
+    //endregion
 
+    //region GETTER
     protected int getScore(){
         int oldScore = score;
         decrementScore();
@@ -68,4 +88,6 @@ public abstract class CommonGoal implements Serializable {
     public String getScoreFileName(){
         return "\\assets\\Tokens\\" + scoreFileName;
     }
+    //endregion
+
 }

@@ -13,9 +13,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * Tool that turns XML resources into Java code
+ */
 public class ToolXML {
 
-    //region CONSTANT
+    //region CONSTANTS
     private static final String basePath = Main.getResourcePath();
     private static final String commandListPath = basePath + "\\config\\CommandList.xml";
     private static final String privateGoalPath = basePath + "\\config\\PrivateGoals.xml";

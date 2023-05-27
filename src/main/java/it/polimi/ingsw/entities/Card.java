@@ -15,13 +15,18 @@ import java.io.Serializable;
  * Card of the game identified by an image and a color
  */
 public class Card implements Serializable {
+
+    //region ATTRIBUTES
     private final String imageName;
     private final CardType type;
+    //endregion
 
+    //region CONSTRUCTOR
     public Card(String imageName, CardType type){
         this.imageName = imageName;
         this.type = type;
     }
+    //endregion
 
     //region METHODS
     /**

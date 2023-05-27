@@ -3,27 +3,24 @@ package it.polimi.ingsw.entities.goals;
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.util.Tile;
 
-/*
+/**
  * Five columns of increasing or decreasing height.
- * Starting from the first column on the left or on the right,
- * each next column must be made of exactly one more tile.
+ * Starting from the first column on the left or on the right, each next column must be made of exactly one more tile.
  * Tiles can be of any type.
  */
-
 public class CommonGoal12 extends CommonGoal implements Goal{
 
+    //region CONSTRUCTOR
     public CommonGoal12() {
-        super("Five columns of increasing or decreasing height.\n" +
-                "Starting from the first column on the left or on the right,\n" +
-                "each next column must be made of exactly one more tile.\n" +
-                "Tiles can be of any type.", "cg12.jpg");
+        super("""
+                Five columns of increasing or decreasing height.
+                Starting from the first column on the left or on the right,
+                each next column must be made of exactly one more tile.
+                Tiles can be of any type.""", "cg12.jpg");
     }
+    //endregion
 
-    private boolean firstCheck(Tile[] row){
-        for (Tile tile : row) if (tile.isTileEmpty()) return false;
-        return true;
-    }
-
+    //region METHODS
     @Override
     public int checkGoal(Bookshelf bookshelf) {
 
@@ -37,4 +34,11 @@ public class CommonGoal12 extends CommonGoal implements Goal{
         }
         return getScore();
     }
+
+    private boolean firstCheck(Tile[] row){
+        for (Tile tile : row) if (tile.isTileEmpty()) return false;
+        return true;
+    }
+    //endregion
+
 }

@@ -2,18 +2,34 @@ package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
 
+/**
+ * Four groups each containing at least 4 tiles of the same types (not necessarily in the depicted shape).
+ * The tiles of one group can be different from those of another group
+ */
 public class CommonGoal3 extends CommonGoal implements Goal{
 
+    //region ATTRIBUTES
     int count;
     int[][] doublecheck;
+    //endregion
 
+    //region CONSTRUCTOR
     public CommonGoal3() {
         super("Four groups each containing at least 4 tiles of the same types (not necessarily in the depicted shape).\n" +
                 "The tiles of one group can be different from those of another group.", "cg3.jpg");
 
         doublecheck= new int[6][5];
     }
+    //endregion
 
+    //region METHODS
+    @Override
+    public int checkGoal(Bookshelf bs) {
+        if(searchSeq(bs.getBookshelfColors())) return getScore();
+        return 0;
+    }
+
+    //todo ripetizioni di inglese
     /**
      * Algorithm that search a single sequence of adjacent
      * cards with the same tile
@@ -89,6 +105,7 @@ public class CommonGoal3 extends CommonGoal implements Goal{
         return false;
     }
 
+    //todo ripetizioni di inglese
      /**
       * Check the adjacents tiles and count them
       * @param matrix int[][] of cards's types
@@ -128,6 +145,7 @@ public class CommonGoal3 extends CommonGoal implements Goal{
          else return 0;
      }
 
+    //todo ripetizioni di inglese
      /**
       * Set an element of the doublecheck matrix as UNAVAILABLE
       * @param row to set UNAVAILABLE
@@ -146,11 +164,6 @@ public class CommonGoal3 extends CommonGoal implements Goal{
              for (int j = 0; j<5; j++)if(doublecheck[i][j]==UNAVAILABLE) m[i][j]=UNAVAILABLE;
          }
      }
+     //endregion
 
-
-    @Override
-    public int checkGoal(Bookshelf bs) {
-        if(searchSeq(bs.getBookshelfColors())) return getScore();
-        return 0;
-    }
 }

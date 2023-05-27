@@ -25,11 +25,14 @@ public class ClientHandler extends NetworkInterface implements Runnable{
     private Lobby lobby;
     //endregion
 
+    //region CONSTRUCTOR
     public ClientHandler(Server server, Socket socket) {
         super(socket);
         this.server = server;
     }
+    //endregion
 
+    //region METHODS
     /**
      * Waits for incoming messages from client to server
      */
@@ -72,7 +75,6 @@ public class ClientHandler extends NetworkInterface implements Runnable{
         safeDisconnect();
     }
 
-    //region METHODS
     /**
      * Checks if the username selected by the player is available
      */
@@ -158,7 +160,7 @@ public class ClientHandler extends NetworkInterface implements Runnable{
     }
 
     /**
-     * It waits for the lobby master to send a start game command to prompt the lobby to create the actual new game
+     * Waits for the lobby master to send a start game command to prompt the lobby to create the actual new game
      * (initialization of all the data structures needed for the game to work)
      */
     private void startGameHandler() {

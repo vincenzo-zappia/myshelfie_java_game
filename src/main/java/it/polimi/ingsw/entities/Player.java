@@ -24,6 +24,7 @@ public class Player implements Comparable<Player>, Serializable {
 
     //endregion
 
+    //region CONSTRUCTOR
     public Player(String username, PrivateGoal privateGoal){
         this.privateGoal = privateGoal;
         this.username = username;
@@ -31,6 +32,7 @@ public class Player implements Comparable<Player>, Serializable {
         score = 0;
         scoredCG = new boolean[2];
     }
+    //endregion
 
     //region METHODS
     /**
@@ -49,7 +51,6 @@ public class Player implements Comparable<Player>, Serializable {
         return scoredCG[i];
     }
 
-
     /**
      * Compares the current player to another by score
      * @param player to be compared
@@ -61,7 +62,7 @@ public class Player implements Comparable<Player>, Serializable {
     }
     //endregion
 
-    //region GETTER AND SETTER
+    //region GETTER
     public String getUsername(){
         return username;
     }

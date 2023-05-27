@@ -27,7 +27,6 @@ public class TurnManager {
     //endregion
 
     //region METHODS
-
     /**
      * Sets the current player according to the rules of the game. It circularly iterates
      * through the players. If the endgame phase has started it stops at the last username which corresponds
@@ -60,7 +59,6 @@ public class TurnManager {
     public String getCurrentPlayer(){
         return currentPlayer;
     }
-
     //endregion
 
 }

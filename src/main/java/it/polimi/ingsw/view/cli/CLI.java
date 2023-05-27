@@ -32,6 +32,7 @@ public class CLI implements Runnable, UserInterface {
     //endregion
     //endregion
 
+    //region CONSTRUCTOR
     public CLI(Client client) {
         scanner = new Scanner(System.in);
         controller = new ClientController(this, client);
@@ -42,7 +43,9 @@ public class CLI implements Runnable, UserInterface {
         usernameAccepted = false;
         lobbyJoined = false;
     }
+    //endregion
 
+    //region GAME METHODS
     @Override
     public void run() {
         System.out.println(CliUtil.makeTitle());
@@ -53,7 +56,7 @@ public class CLI implements Runnable, UserInterface {
     }
 
     /**
-     * Manages the choosing of a username and either the creation of a new lobby or the joining of an existing one
+     * Manages the choosing of the player username
      */
     private void usernameHandler() {
 
@@ -73,6 +76,9 @@ public class CLI implements Runnable, UserInterface {
         }
     }
 
+    /**
+     * Manages either the creation of a new lobby or the joining of an existing one
+     */
     private void lobbyHandler(){
         //Asking the player whether to join or create a new lobby and waiting for server feedback
         while (!lobbyJoined) {
@@ -140,7 +146,7 @@ public class CLI implements Runnable, UserInterface {
     }
 
     /**
-     * Manages the sending of player commands to the game
+     * Manages the sending of commands during the game
      */
     private void gameHandler() {
         scanner = new Scanner(System.in);
@@ -219,16 +225,22 @@ public class CLI implements Runnable, UserInterface {
         }
     }
 
+    /**
+     * Manages either the choice of a new game of the quitting of the application
+     */
     private void endGameHandler(){
         String response = requestNewGame();
-
         switch (response){
+
+            //Starting a new game
             case "0" -> {
                 controller.sendNewGame(true);
                 lobbyJoined = false;
                 virtualModel.setEndGame(false);
                 run();
             }
+
+            //Quitting the application
             case "1" -> {
                 controller.sendNewGame(false);
                 System.out.println("Closing the application...");
@@ -238,6 +250,7 @@ public class CLI implements Runnable, UserInterface {
         }
 
     }
+    //endregion
 
     //region PRIVATE METHODS
     /**
@@ -352,6 +365,7 @@ public class CLI implements Runnable, UserInterface {
     //region USER INTERFACE
     @Override
     public void confirmUsername(boolean response) {
+
         //Receiving feedback about username availability
         if (response) usernameAccepted = true;
 
@@ -364,7 +378,7 @@ public class CLI implements Runnable, UserInterface {
     @Override
     public void confirmCreation(String content) {
         lobbyJoined = true;
-        System.out.println(content); //TODO: Formattare carino
+        System.out.println(content); //todo Formattare carino
 
         //Notifying the waiting thread
         synchronized (lock) {
@@ -375,7 +389,8 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void confirmAccess(boolean response, String content) {
-        //Receiving feedback about lobby creation/join
+
+        //Receiving feedback about the lobby join
         lobbyJoined = response;
 
         //Notifying the waiting thread
@@ -391,22 +406,30 @@ public class CLI implements Runnable, UserInterface {
     }
   
     public void confirmStartGame(boolean response) {
-        //Notifying the waiting thread
-        synchronized (lock1) {
-            lock1.notify();
+
+        //Notifying the waiting thread if the creation was successful
+        if (response) {
+            synchronized (lock1) {
+                lock1.notify();
+            }
         }
+
+        //todo caso false con un solo player
+
     }
 
     @Override
     public void showChat(String chat) {
         System.out.println(chat);
+
+        //todo gestire chat in cli
     }
 
     @Override
     public void showDisconnection() {
         virtualModel.setEndGame(true);
         System.out.println("Closing the game...");
-        System.out.println("Press enter to continue.");
+        System.out.println("Press enter to continue");
     }
     //endregion
 

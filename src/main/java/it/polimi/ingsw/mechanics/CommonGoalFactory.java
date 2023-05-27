@@ -49,4 +49,5 @@ public class CommonGoalFactory {
         }while(result[0] == null || result[1] == null);
         return result;
     }
+
 }

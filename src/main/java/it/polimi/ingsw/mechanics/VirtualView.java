@@ -12,19 +12,26 @@ import it.polimi.ingsw.entities.util.Tile;
 import it.polimi.ingsw.view.View;
 
 /**
- * Class that manages the creation of messages from server to client. Used by Lobby, GameController
+ * Manages the creation of messages from server to client
  */
 public class VirtualView implements View, Observer {
-    private final ClientHandler clientHandler;
 
+    //region ATTRIBUTES
+    private final ClientHandler clientHandler;
+    //endregion
+
+    //region CONSTRUCTOR
     public VirtualView(ClientHandler clientHandler){
         this.clientHandler = clientHandler;
     }
+    //endregion
 
+    //region OBSERVER
     @Override
     public void update(Message message){
         clientHandler.sendMessage(message);
     }
+    //endregion
 
     //region VIEW
     @Override

@@ -79,7 +79,7 @@ public class GameController {
         for(String username : viewHashMap.keySet()) {
             switch (type) {
                 case REFILLED_BOARD -> viewHashMap.get(username).showRefilledBoard(game.getBoard().getBoard());
-                case REMOVED_CARDS -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Primo oggetto che arriva castato a matrice
+                case REMOVED_CARDS -> viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Casting the first object of the payload to an integer matrix
                 case CURRENT_PLAYER -> viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());
                 case COMMON_GOAL -> viewHashMap.get(username).showCommonGoals(game.getCommonGoals());
                 case PRIVATE_GOAL -> viewHashMap.get(username).showPrivateGoal(game.getPlayer(username).getPrivateGoal());
@@ -198,7 +198,7 @@ public class GameController {
         if(!turnManager.nextTurn()) {
             findWinner();
 
-            //Endgame routines
+            //Starting the endgame routine
             lobby.endGame();
         }
         else{

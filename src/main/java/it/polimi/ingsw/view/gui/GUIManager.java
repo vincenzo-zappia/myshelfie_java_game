@@ -14,6 +14,9 @@ import javafx.application.Platform;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Manages the reception of messages from the server and calls their needed implementation relatively to the scene
+ */
 public class GUIManager implements UserInterface {
     private final GUI gui;
 

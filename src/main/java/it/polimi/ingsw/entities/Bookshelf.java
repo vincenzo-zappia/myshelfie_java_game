@@ -20,12 +20,14 @@ import java.io.Serializable;
 public class Bookshelf implements Serializable {
     private final Tile[][] bookshelf;
 
+    //region CONSTRUCTOR
     public Bookshelf(){
         bookshelf = new Tile[6][5];
 
         //Initializing every single tile of the bookshelf
         for(int i = 0; i < 6; i++) for(int j = 0; j < 5; j++) bookshelf[i][j] = new Tile();
     }
+    //endregion
 
     //region METHODS
     /**
@@ -108,7 +110,7 @@ public class Bookshelf implements Serializable {
     }
     //endregion
 
-    //region GETTER AND SETTER
+    //region GETTER
     public Tile[][] getBookshelf(){
         return bookshelf;
     }

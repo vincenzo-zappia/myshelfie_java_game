@@ -43,4 +43,5 @@ public class CommonGoal1 extends CommonGoal implements Goal{
         if(tmp>=2) return getScore();
         else return 0;
     }
+
 }

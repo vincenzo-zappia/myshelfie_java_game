@@ -25,6 +25,7 @@ public class Game{
     private final CommonGoal0 commonGoal0;
     //endregion
 
+    //region CONSTRUCTOR
     public Game(ArrayList<String> usernames){
 
         //Creating the board and filling it with a first batch of cards
@@ -42,6 +43,7 @@ public class Game{
         for(String user: usernames) players.put(user, new Player(user, privateGoalFactory.makePrivateGoal()));
 
     }
+    //endregion
 
     //region METHODS
     /**

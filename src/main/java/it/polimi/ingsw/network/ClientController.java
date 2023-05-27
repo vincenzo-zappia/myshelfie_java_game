@@ -14,7 +14,7 @@ import it.polimi.ingsw.view.UserInterface;
 public class ClientController implements Observer {
 
     //region ATTRIBUTES
-    private final UserInterface view; //either CLI or GUI for the packing of messages User interface -> Server
+    private final UserInterface view; //Either CLI or GUI
     private final Client client; //for the unpacking of messages Server -> User interface
     private String username;
     //endregion
@@ -134,7 +134,7 @@ public class ClientController implements Observer {
     }
 
     /**
-     * Creates and sends the Message that once received by the server will start the game
+     * Creates and sends the request to start the game
      */
     public void startGame(){
         StartGameRequest start = new StartGameRequest(username);
@@ -142,7 +142,7 @@ public class ClientController implements Observer {
     }
 
     /**
-     * Creates a Message out of the coordinates of the cards selected by the user and sends them to the server
+     * Creates and sends the request to select the chosen cards
      * @param coordinates of the cards selected by the user
      */
     public void sendSelection(int[][] coordinates){
@@ -151,24 +151,36 @@ public class ClientController implements Observer {
     }
 
     /**
-     * Creates a Message out of the ordered cards and the column for their insertion chosen by the user and sends them to the server
-     * @param column where the selected cards will be inserted
+     * Creates and sends the request to add the previously selected cards into the specified column
+     * @param column where the player wants to add the cards
      */
     public void sendInsertion(int column){
         Message insert = new InsertionRequest(username, column);
         client.sendMessage(insert);
     }
 
+    /**
+     * Creates and sends a chat text
+     * @param chat text to send
+     */
     public void sendChat(String chat){
         Message message = new ChatMessage(username, chat);
         client.sendMessage(message);
     }
 
+    /**
+     * Creates and sends the request to either start a new game or quit the application after the previous one has ended
+     * @param newGame true is the players wants to keep playing, false if they want to quit the application
+     */
     public void sendNewGame(boolean newGame){
         NewGameRequest newGameRequest = new NewGameRequest(username, newGame);
         client.sendMessage(newGameRequest);
     }
 
+    //todo brutto perché dovrebbe essere integrato nella catena del newGame false
+    /**
+     * Forces the client to interrupt its thread if the player wants to quit the application
+     */
     public void stopClientConnection(){
         client.closeClient();
     }

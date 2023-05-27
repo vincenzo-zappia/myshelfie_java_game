@@ -8,30 +8,32 @@ import java.io.*;
 import java.net.Socket;
 
 /**
- * Class that manages only the network functionality of the Client (send and receive message,
- * server connection, ...)
+ * Manages the client side network functionalities
  */
 public class Client extends NetworkInterface implements Runnable, Subject {
 
+    //region CONSTRUCTOR
     public Client(String ip, int port) throws IOException {
        super(new Socket(ip, port));
     }
+    //endregion
 
+    //region METHODS
     /**
-     * The method receiveMessage() of Client is called in loop by the CLI/GUI for the whole duration of the game
+     * Receives messages in loop and forwards them to the client controller
      */
     @Override
     public void run() {
-        while(!Thread.currentThread().isInterrupted()){
-
-            //Actual management of the received message relatively to the state of Client
-            notifyObserver(receiveMessage());
-        }
+        while(!Thread.currentThread().isInterrupted()) notifyObserver(receiveMessage());
     }
 
+    /**
+     * Interrupts the client thread (without closing the socket)
+     */
     public void closeClient(){
         Thread.currentThread().interrupt();
     }
+    //endregion
 
     //region OBSERVER
     @Override
