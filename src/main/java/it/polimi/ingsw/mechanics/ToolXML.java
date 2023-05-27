@@ -20,8 +20,8 @@ public class ToolXML {
 
     //region CONSTANTS
     private static final String basePath = Main.getResourcePath();
-    private static final String commandListPath = basePath + "\\config\\CommandList.xml";
-    private static final String privateGoalPath = basePath + "\\config\\PrivateGoals.xml";
+    private static final String commandListPath = basePath + "/config/CommandList.xml";
+    private static final String privateGoalPath = basePath + "/config/PrivateGoals.xml";
     //endregion
 
     //region PRIVATE METHODS
