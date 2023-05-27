@@ -24,20 +24,13 @@ public class Main {
         System.out.println("[0] CLI \n[1] GUI");
         String selection = in.nextLine();
 
-        //Starting the chosen user interface
+        //Starting the CLI
         if (selection.equals("0")){
-
-            //TODO: Scelta IP e port e verifica
-            Client client;
-            try {
-                client = new Client("localhost", 2023);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            CLI cli = new CLI(client);
+            CLI cli = new CLI(requestNetworkInformation());
             new Thread(cli).start();
         }
 
+        //Starting the GUI
         else if (selection.equals("1")) {
             GUI.main(args);
         }
@@ -48,6 +41,58 @@ public class Main {
             exit(0);
         }
 
+    }
+
+    //region METHODS
+    /**
+     * Requests the user the server IP and port and creates a new Client instance
+     * @return the new Client instance
+     */
+    private static Client requestNetworkInformation(){
+
+        //Asking and checking the IP
+        String ip;
+        do{
+            System.out.println("Insert the IP of the server:");
+            ip = in.nextLine();
+            if(!checkIP(ip)) System.out.println("The inserted IP is not valid");
+        }while(!checkIP(ip));
+
+        //Asking and checking the port
+        int port;
+        do {
+            System.out.println("Insert the port of the server:");
+            port = Integer.parseInt(in.nextLine());
+            if(!checkPort(port)) System.out.println("The inserted port is not valid");
+        }while (!checkPort(port));
+
+        //Creating a new Client instance out of the previously selected ip and port
+        try {
+            return new Client(ip, port);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    /**
+     * Checks if the inserted IP is valid
+     * @param ip to check
+     * @return true if the IP is valid
+     */
+    private static boolean checkIP(String ip){
+        //todo fa le cos
+        return true;
+    }
+
+    /**
+     * Checks if the inserted port is valid
+     * @param port to check
+     * @return true if the port is valid
+     */
+    private static boolean checkPort(int port){
+        //todo le cos fa
+        return true;
     }
 
     /**
@@ -70,5 +115,6 @@ public class Main {
 
         return basePath;
     }
+    //endregion
 
 }
