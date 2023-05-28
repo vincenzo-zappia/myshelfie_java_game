@@ -1,78 +1,60 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-import java.util.HashMap;
+import it.polimi.ingsw.entities.util.CardType;
+
+import static it.polimi.ingsw.entities.goals.CommonGoal.findAdjacent;
 
 /**
  * The always present game common goal (the one on the board)
  */
 public class CommonGoal0 implements Goal{
 
-    //region CONSTRUCTOR
+    //region METHODS
     @Override
     public int checkGoal(Bookshelf bookshelf) {
-        HashMap<Integer, Integer> res = searchGroups(bookshelf.getBookshelfColors());
         int points = 0;
 
-        for(Integer t: res.keySet()){
-            if (res.get(t) == 3)points = points+2;
-            if(res.get(t)==4)points=points+3;
-            if(res.get(t)==5)points=points+5;
-            if(res.get(t)>5)points=points+8;
+        //Calculating the points scored relatively to the biggest group of cards of the same type for each type
+        for(int i = 0; i < CardType.values().length; i++){
+            int maxGroupType = maxGroupType(bookshelf.getBookshelfColors(), i);
+            if (maxGroupType == 3) points += 2;
+            else if (maxGroupType == 4) points += 3;
+            else if (maxGroupType == 5) points += 5;
+            else if (maxGroupType >= 6) points += 8;
         }
+
         return points;
     }
-    //endregion
 
-    //region METHODS
     /**
-     * Searches for the biggest group of tiles of the same type
+     * Calculates the biggest group of cards of the same type
      * @param matrix type abstracted bookshelf
-     * @return the biggest group size
+     * @param codifiedType int representing the card type
+     * @return the size of the biggest group of cards of the same type
      */
-    private HashMap<Integer, Integer> searchGroups(int[][] matrix) {
+    private int maxGroupType(int[][] matrix, int codifiedType) {
+        int max = 0;
+
+        //Defining bookshelf dimensions
         int rows = matrix.length;
         int cols = matrix[0].length;
-        boolean[][] visited = new boolean[rows][cols];
-        HashMap<Integer, Integer> num = new HashMap<>();
+
+        boolean[][] visited = new boolean[rows][cols]; //Keeps track of already visited tiles
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                if (!visited[i][j] && matrix[i][j] != UNAVAILABLE) {
+
+                //Checking whether a tile was already visited or has no type or is of the same type
+                if (!visited[i][j] && matrix[i][j] != UNAVAILABLE && matrix[i][j] == codifiedType) {
                     int value = matrix[i][j];
-                    num.put(value, findAdjacent(matrix, visited, i, j, value));
+
+                    //Choosing the biggest dimension between the previously calculated group and the current one
+                    max = Math.max(max, findAdjacent(matrix, visited, i, j, value));
                 }
             }
         }
-        return num;
-    }
-
-    /**
-     * Counts the size of the group of cards of the same type
-     * @param matrix type abstracted bookshelf
-     * @param visited matrix of already visited cards
-     * @param row to check
-     * @param col to check
-     * @param value contained in tile
-     * @return number of cards of the same type in the group
-     */
-    private int findAdjacent(int[][] matrix, boolean[][] visited, int row, int col, int value) {
-        int rows = matrix.length;
-        int cols = matrix[0].length;
-
-        if (row < 0 || row >= rows || col < 0 || col >= cols || visited[row][col] || matrix[row][col] != value) {
-            return 0;
-        }
-
-        visited[row][col] = true;
-
-        int count = 1;
-        count += findAdjacent(matrix, visited, row - 1, col, value); //Up
-        count += findAdjacent(matrix, visited, row + 1, col, value); //Down
-        count += findAdjacent(matrix, visited, row, col - 1, value); //Left
-        count += findAdjacent(matrix, visited, row, col + 1, value); //Right
-
-        return count;
+        return max;
     }
     //endregion
 

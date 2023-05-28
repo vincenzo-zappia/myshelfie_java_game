@@ -6,6 +6,8 @@ import it.polimi.ingsw.entities.util.Tile;
 import java.io.Serializable;
 import java.util.HashSet;
 
+import static it.polimi.ingsw.entities.goals.Goal.UNAVAILABLE;
+
 /**
  * Generic common goal functionalities
  */
@@ -60,6 +62,32 @@ public abstract class CommonGoal implements Serializable {
     protected static boolean existsEmpty(Tile[] list) {
         for (Tile c: list) if (c.isTileEmpty()) return true;
         return false;
+    }
+
+    /**
+     * Counts the size of the group of cards of the same type
+     * @param matrix type abstracted bookshelf
+     * @param visited matrix of already visited cards
+     * @param row to check
+     * @param col to check
+     * @param value codified card type
+     * @return number of cards of the same type in the group
+     */
+    protected static int findAdjacent(int[][] matrix, boolean[][] visited, int row, int col, int value) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+
+        if (row < 0 || row >= rows || col < 0 || col >= cols || visited[row][col] || matrix[row][col] != value || matrix[row][col] == UNAVAILABLE) return 0;
+
+        visited[row][col] = true;
+
+        int count = 1;
+        count += findAdjacent(matrix, visited, row - 1, col, value); //Up
+        count += findAdjacent(matrix, visited, row + 1, col, value); //Down
+        count += findAdjacent(matrix, visited, row, col - 1, value); //Left
+        count += findAdjacent(matrix, visited, row, col + 1, value); //Right
+
+        return count;
     }
 
     private void decrementScore(){
