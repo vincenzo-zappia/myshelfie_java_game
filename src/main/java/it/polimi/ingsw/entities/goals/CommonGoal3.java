@@ -9,7 +9,7 @@ import it.polimi.ingsw.entities.Bookshelf;
 public class CommonGoal3 extends CommonGoal implements Goal{
 
     //region ATTRIBUTES
-    int count;
+    int count = 0;
     int[][] doublecheck;
     //endregion
 
@@ -73,6 +73,7 @@ public class CommonGoal3 extends CommonGoal implements Goal{
                     int groupSize = findGroup(matrix, visited, i, j, value, false, false);
                     if (groupSize >= 4) {
                         groupCount++;
+                        count =0;
                         copyMatrix(matrix);
                         if (groupCount >= 4) {
                             return true;
@@ -94,6 +95,7 @@ public class CommonGoal3 extends CommonGoal implements Goal{
                     int groupSize = findGroup(matrix, visited, i, j, value, false, true);
                     if (groupSize >= 4) {
                         groupCount++;
+                        count =0;   
                         copyMatrix(matrix);
                         if (groupCount >= 4) {
                             return true;

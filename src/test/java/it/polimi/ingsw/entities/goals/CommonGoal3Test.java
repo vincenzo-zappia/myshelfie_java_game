@@ -77,4 +77,39 @@ class CommonGoal3Test {
         int score = cg3.checkGoal(bookshelf);
         assertEquals(0, score);
     }
+
+    @Test
+    void checkGoalCritical(){
+        bookshelf.addCard(0, new Card("img.png", CardType.FRAMES));
+        bookshelf.addCard(0, new Card("img.png", CardType.FRAMES));
+        bookshelf.addCard(0, new Card("img.png", CardType.FRAMES));
+        bookshelf.addCard(1, new Card("img.png", CardType.FRAMES));
+
+        bookshelf.addCard(0, new Card("img.png", CardType.CATS));
+        bookshelf.addCard(1, new Card("img.png", CardType.CATS));
+        bookshelf.addCard(1, new Card("img.png", CardType.CATS));
+        bookshelf.addCard(1, new Card("img.png", CardType.CATS));
+
+        bookshelf.addCard(2, new Card("img.png", CardType.GAMES));
+        bookshelf.addCard(2, new Card("img.png", CardType.GAMES));
+        bookshelf.addCard(2, new Card("img.png", CardType.PLANTS));
+        bookshelf.addCard(2, new Card("img.png", CardType.PLANTS));
+        bookshelf.addCard(2, new Card("img.png", CardType.PLANTS));
+        bookshelf.addCard(2, new Card("img.png", CardType.PLANTS));
+
+        bookshelf.addCard(3, new Card("img.png", CardType.BOOKS));
+        bookshelf.addCard(3, new Card("img.png", CardType.FRAMES));
+        bookshelf.addCard(3, new Card("img.png", CardType.BOOKS));
+        bookshelf.addCard(3, new Card("img.png", CardType.FRAMES));
+        bookshelf.addCard(3, new Card("img.png", CardType.CATS));
+        bookshelf.addCard(3, new Card("img.png", CardType.GAMES));
+
+        bookshelf.addCard(4, new Card("img.png", CardType.TROPHIES));
+        bookshelf.addCard(4, new Card("img.png", CardType.TROPHIES));
+        bookshelf.addCard(4, new Card("img.png", CardType.TROPHIES));
+        bookshelf.addCard(4, new Card("img.png", CardType.TROPHIES));
+
+        int score = cg3.checkGoal(bookshelf);
+        assertEquals(8, score);
+    }
 }
