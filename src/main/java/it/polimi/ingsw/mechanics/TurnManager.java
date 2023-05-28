@@ -20,8 +20,9 @@ public class TurnManager {
         System.out.println("INFO: Current player is: " + currentPlayer);
         endGame = false;
 
+        //todo rimuovere, debug
         System.out.print("TurnManager: ");
-        for (String username : playerUsernames) System.out.print(username); //TODO: Debug
+        for (String username : playerUsernames) System.out.print(username);
         System.out.println(" ");
     }
     //endregion

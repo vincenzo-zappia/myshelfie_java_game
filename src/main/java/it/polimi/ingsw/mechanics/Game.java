@@ -162,8 +162,8 @@ public class Game{
      */
     public boolean checkRefill(){
         BoardTile[][] matrix = board.getBoard();
-        for(int i = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++){
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
                 if(!matrix[i][j].isTileActive()) continue;
                 if((!matrix[i][j].isTileEmpty() && !matrix[i + 1][j].isTileEmpty())
                         || (!matrix[i][j].isTileEmpty() && !matrix[i][j + 1].isTileEmpty())) return false;
@@ -180,12 +180,18 @@ public class Game{
     public void scoreCommonGoal(String username){
         Player p = players.get(username);
 
-        for(int i=0; i<2; i++){
+        //Checking for both common goals
+        for(int i = 0; i < 2; i++){
+
+            //Checking if the player has already scored the common goal
             if(!p.isCommonGoalScored(i)){
+
+                //Adding the points if the player scored the common goal
                 int score = commonGoals[i].checkGoal(p.getBookshelf());
-                if (score>0){
+                if (score > 0){
                     p.scoreCommonGoal(i);
                     p.addScore(score);
+                    System.out.println("INFO: " + p.getUsername() + " scored common goal number " + (i + 1));
                 }
             }
         }
@@ -197,7 +203,7 @@ public class Game{
     public void scorePrivateGoal(){
         for(Player p : players.values()){
             p.addScore(p.getPrivateGoal().checkGoal(p.getBookshelf()));
-            p.addScore(commonGoal0.checkGoal(p.getBookshelf()));
+            p.addScore(commonGoal0.checkGoal(p.getBookshelf())); //todo non funziona
         }
     }
 
@@ -220,9 +226,6 @@ public class Game{
     public Player getPlayer(String username){
         return players.get(username);
     }
-    public Tile[][] getPlayerBookshelf(String username){
-        return players.get(username).getBookshelf().getBookshelf();
-    }
     public Board getBoard(){
         return board;
     }
@@ -231,7 +234,7 @@ public class Game{
     }
     public void setCommonGoals(Goal[] x){
         commonGoals=x;
-    }
+    } //todo usato solo nei test
     //endregion
 
 }

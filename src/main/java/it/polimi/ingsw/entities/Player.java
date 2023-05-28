@@ -21,7 +21,6 @@ public class Player implements Comparable<Player>, Serializable {
     private int score;
     private final PrivateGoal privateGoal;
     private final boolean[] scoredCG;
-
     //endregion
 
     //region CONSTRUCTOR
@@ -40,7 +39,7 @@ public class Player implements Comparable<Player>, Serializable {
      * @param points added
      */
     public void addScore(int points){
-        score+=points;
+        score += points;
     }
 
     public void scoreCommonGoal(int i){

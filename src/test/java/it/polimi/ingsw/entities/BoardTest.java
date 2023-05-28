@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BoardTest {
     Board board;
 
-    //testing that the board is correctly set up for every kind of game in terms of the number of players
+    //region SETUP
     @Test
     void twoPlayersSetup(){
         board = new Board(2);
@@ -107,9 +107,9 @@ class BoardTest {
         assertTrue(board.getBoard()[7][3].isTileActive());
         assertTrue(board.getBoard()[8][4].isTileActive());
     }
+    //endregion
 
-
-    //testing that when I empty the board it actually removes the card associated with each tile for every type of board in terms of the number of players
+    //region EMPTY
     @Test
     void twoPlayersBoardIsEmpty(){
         board = new Board(2);
@@ -163,7 +163,6 @@ class BoardTest {
         assertTrue(board.getBoard()[8][5].isTileEmpty());
 
     }
-
     @Test
     void fourPlayersBoardIsEmpty(){
         board = new Board(4);
@@ -203,8 +202,9 @@ class BoardTest {
         assertTrue(board.getBoard()[8][4].isTileEmpty());
 
     }
+    //endregion
 
-    //testing that when I call the method to fill the board it actually gets filled for each type of board in terms of the number of players
+    //region FULL
     @Test
     void twoPlayersBoardIsFull(){
         board = new Board(2);
@@ -217,7 +217,6 @@ class BoardTest {
         for(int i = 3; i<=5;i++) assertFalse(board.getBoard()[6][i].isTileEmpty());
         for(int i = 4; i<=5;i++) assertFalse(board.getBoard()[7][i].isTileEmpty());
     }
-
     @Test
     void threePlayersBoardIsFull(){
         board = new Board(3);
@@ -269,11 +268,20 @@ class BoardTest {
         assertFalse(board.getBoard()[7][3].isTileEmpty());
         assertFalse(board.getBoard()[8][4].isTileEmpty());
     }
+    //endregion
 
     @Test
-    void isSelectableTest(){
-        board = new Board(2);
-        assertFalse(board.selectableCard(5,1));
+    void removeCard(){
+        board = new Board(2); //Initializing empty board
+        assertTrue(board.getBoardTile(1, 3).isTileEmpty()); //Asserting a tile is empty
+        assertFalse(board.selectableCard(1, 3)); //Asserting the card in an empty tile is not selectable
+        board.fillBoard(); //Filling the board
+        assertFalse(board.getBoardTile(1, 3).isTileEmpty()); //Asserting the tile is full
+        assertTrue(board.selectableCard(1, 3)); //Asserting the card of a full tile is selectable
+        assertEquals(board.getCard(1, 3), board.removeCard(1, 3)); //Checking if the card removed from the tile is the same one that there was in that tile
+        assertTrue(board.getBoardTile(1, 3).isTileEmpty()); //Checking if the tile was emptied
+        assertFalse(board.selectableCard(1, 3)); //Checking that the now empty tile has no selectable card in it
+
     }
 
 }

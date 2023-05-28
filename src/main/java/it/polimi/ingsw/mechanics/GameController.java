@@ -58,7 +58,7 @@ public class GameController {
         //Checking if it's the turn of the player who sent the message
         if (!turnManager.getCurrentPlayer().equals(message.getSender())) {
             viewHashMap.get(message.getSender()).sendGenericResponse(false, "It's not your turn!");
-            System.out.println("INFO: Not " + message.getSender() + "'s turn.");
+            System.out.println("INFO: Not " + message.getSender() + "'s turn");
             return;
         }
 
@@ -73,7 +73,7 @@ public class GameController {
     /**
      * Sends the same message to all the players
      * @param type of the message
-     * @param payload eventual attributes of the received message
+     * @param payload eventual attributes of the message to send
      */
     public void broadcastMessage(MessageType type, Object... payload){
         for(String username : viewHashMap.keySet()) {
@@ -111,10 +111,10 @@ public class GameController {
 
             //Sending positive feedback to the player with the checked coordinates
             viewHashMap.get(message.getSender()).sendCheckedCoordinates(true, message.getCoordinates());
-            viewHashMap.get(message.getSender()).sendGenericResponse(true, "Valid selection!");
+            viewHashMap.get(message.getSender()).sendGenericResponse(true, "Valid selection! Insert your cards!");
             System.out.println("INFO: " + message.getSender() + " made a valid selection");
 
-            //Turn phase management: the player is now allowed to insert the selected cards into his bookshelf
+            //Turn phase management: the player is now allowed to insert the selected cards into their bookshelf
             canInsert = true;
         }
         else{
@@ -132,25 +132,25 @@ public class GameController {
      */
     public synchronized void cardInsertion(InsertionRequest message){
 
-        //Checking if the player has first made a selection
+        //Checking if the player didn't make a selection
         if(!canInsert){
             viewHashMap.get(message.getSender()).sendGenericResponse(false, "First select your cards!" );
             System.out.println("INFO: " + message.getSender() + " tried to make an insertion before a selection");
             return;
         }
 
-        //Checking if the column selected for the insertion is valid, if so the cards are inserted by the same method
+        //Checking if the column selected for the insertion is valid
         if(game.canInsert(turnManager.getCurrentPlayer(), message.getSelectedColumn(), coordinates.length)){
 
-            //Removal of the previously selected cards from the game board
+            //Removing the previously selected cards from the game board
             ArrayList<Card> cards = game.removeSelectedCards(coordinates);
 
-            //Insertion of the cards (updating the bookshelf of the player)
+            //Inserting the cards (updating the bookshelf of the player)
             game.addCardsToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), cards);
             System.out.println("INFO: Cards removed from the board and inserted in " + turnManager.getCurrentPlayer() + "'s bookshelf in column " + message.getSelectedColumn());
 
             //Sending positive feedback to the player with the updated bookshelf
-            viewHashMap.get(message.getSender()).showUpdatedBookshelf(game.getPlayerBookshelf(turnManager.getCurrentPlayer()));
+            viewHashMap.get(message.getSender()).showUpdatedBookshelf(game.getPlayer(turnManager.getCurrentPlayer()).getBookshelf().getBookshelf());
             viewHashMap.get(message.getSender()).sendGenericResponse(true, "Insertion successful!");
 
             //End turn housekeeping routine
@@ -158,7 +158,7 @@ public class GameController {
         }
         else {
             //Sending negative feedback to the player with the bookshelf without changes
-            viewHashMap.get(message.getSender()).sendGenericResponse(false, "Invalid column! Please select another." );
+            viewHashMap.get(message.getSender()).sendGenericResponse(false, "Invalid column! Please select another!" );
             System.out.println("INFO: " + message.getSender() + " made an invalid insertion");
         }
 
@@ -174,24 +174,24 @@ public class GameController {
         //Broadcasting to all the players the coordinates of the cards removed in the last turn
         broadcastMessage(MessageType.REMOVED_CARDS, (Object) coordinates);
 
-        //Checking if the boards has to be refilled. If so, broadcasting the updated board to all the players
+        //Checking if the board has to be refilled. If so, broadcasting the updated board to all the players
         if(game.checkRefill()){
             broadcastMessage(MessageType.REFILLED_BOARD);
-            System.out.println("INFO: Board refilled.");
+            System.out.println("INFO: Board refilled");
         }
 
-        //Checking if the current player has achieved anyone of the common goals
+        //Checking if the current player has achieved any common goal
         game.scoreCommonGoal(turnManager.getCurrentPlayer());
         broadcastMessage(MessageType.COMMON_GOAL);
 
         //Checking if the bookshelf of the current player got full
         if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer()) && !turnManager.inEndGame()){
             turnManager.startEndGame();
-            System.out.println("INFO: Endgame started.");
+            System.out.println("INFO: " + turnManager.getCurrentPlayer() + " filled their bookshelf. Endgame started");
 
-            //Adding the bonus point to the first player who filled his bookshelf
-            broadcastMessage(MessageType.TOKEN);
+            //Adding the bonus point to the first player who filled their bookshelf and removing the token from the board
             game.getPlayer(turnManager.getCurrentPlayer()).addScore(1);
+            broadcastMessage(MessageType.TOKEN);
         }
 
         //Checking if the current player was the last one who had to play a turn, if so, starting the endgame, otherwise calling for the next player
@@ -220,8 +220,6 @@ public class GameController {
 
         //Creating the scoreboard (sort algorithm in client)
         Scoreboard scoreboard = game.orderByScore();
-
-        System.out.println(scoreboard);
 
         //Broadcasting the scoreboard to all the players
         broadcastMessage(MessageType.SCOREBOARD, scoreboard);

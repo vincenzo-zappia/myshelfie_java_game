@@ -17,7 +17,7 @@ class BookshelfTest {
     }
 
     @Test
-    void cardInsertion() throws GetCardException, FullColumnException {
+    void cardInsertion(){
         Card card = new Card("white1.png", CardType.FRAMES);
 
         //Because the bookshelf is empty the row to check is the last one
