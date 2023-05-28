@@ -29,8 +29,18 @@ class GameTest {
     void canSelect() {
         assertFalse(game.getPlayer("Qui").getBookshelf().isBookshelfFull());
 
+        //Verifying that no selection can be made out of board boundaries
+        int[][] selection = new int[][]{{0, 10}};
+        assertFalse(game.canSelect("Qui", selection));
+        selection = new int[][]{{10, 0}};
+        assertFalse(game.canSelect("Qui", selection));
+        selection = new int[][]{{0, -10}};
+        assertFalse(game.canSelect("Qui", selection));
+        selection = new int[][]{{-10, 0}};
+        assertFalse(game.canSelect("Qui", selection));
+
         //Wrong diagonal
-        int[][] selection = new int[][]{{0, 4}, {1, 5}, {2, 6}};
+        selection = new int[][]{{0, 4}, {1, 5}, {2, 6}};
         assertFalse(game.canSelect("Qui", selection));
 
         //Correct single
