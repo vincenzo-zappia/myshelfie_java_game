@@ -50,10 +50,9 @@ public class CommonGoal3 extends CommonGoal implements Goal{
 
                 //Checking whether a tile was already visited or has no type or is of the same type
                 if (!visited[i][j] && matrix[i][j] != UNAVAILABLE && matrix[i][j] == codifiedType) {
-                    int value = matrix[i][j];
 
                     //Incrementing the count of groups of four cards of the same type
-                    four += Math.floorMod(findAdjacent(matrix, visited, i, j, value), 4);
+                    four += Math.floorDiv(findAdjacent(matrix, visited, i, j, codifiedType), 4);
                 }
             }
         }

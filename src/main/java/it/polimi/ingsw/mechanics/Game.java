@@ -31,9 +31,17 @@ public class Game{
         board = new Board(usernames.size());
         board.fillBoard();
 
+        /*
         //Randomly picking the common goals of the game
         CommonGoalFactory factory = new CommonGoalFactory();
-        commonGoals = factory.makeCommonGoal();
+        commonGoals = factory.makeCommonGoal(); //todo decommentare dubug
+         */
+
+        //todo rimuovere, debug
+        commonGoals = new Goal[2];
+        commonGoals[0] = new CommonGoal9();
+        commonGoals[1] = new CommonGoal12();
+
         commonGoal0 = new CommonGoal0();
 
         //Creating the players as entities of the game from the lobby username list

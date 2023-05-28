@@ -8,6 +8,10 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
+import it.polimi.ingsw.entities.util.CardType;
+
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 /**
  * Eight tiles of the same type.
@@ -21,23 +25,24 @@ public class CommonGoal9 extends CommonGoal implements Goal{
     }
 
     @Override
-    public int checkGoal(Bookshelf bs) {
+    public int checkGoal(Bookshelf bookshelf) {
 
-        int tmp=0;
-        int[][] x = bs.getBookshelfColors();
-
-        for(int i = 0; i < 6; i++){       //these two for cycles check every cell of the matrix
-            for(int j = 0; j < 5; j++){
-                if(x[i][j] != UNAVAILABLE){  //check single color per cycle
-                    for(int k = 0; k < 6; k++){
-                        for(int l = 0; l < 5; l++)if(x[k][l] != UNAVAILABLE && k!=i && l!=j && x[i][j] == x[k][l])tmp++;
-                    }
-                    if(tmp >= 8) return getScore(); //if the algorithm find 8 identical tiles return the score
-                    tmp=0;
-                }
-            }
+        //Checking if there are more than eight cards of the same type for at least one type
+        for(int i = 0; i < CardType.values().length; i++){
+            if(typeNumber(bookshelf.getBookshelfColors(), i) >= 8) return getScore();
         }
+
         return 0;
+    }
+
+    /**
+     * Calculates the number of cards of the same type
+     * @param matrix color abstracted bookshelf
+     * @param codifiedType int representing the card type
+     * @return the number of cards of the same type
+     */
+    private int typeNumber(int[][] matrix, int codifiedType){
+        return Arrays.stream(matrix).mapToInt(ints -> (int) IntStream.range(0, matrix[0].length).filter(j -> ints[j] == codifiedType).count()).sum();
     }
 
 }

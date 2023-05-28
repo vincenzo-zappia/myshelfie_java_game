@@ -47,10 +47,9 @@ public class CommonGoal0 implements Goal{
 
                 //Checking whether a tile was already visited or has no type or is of the same type
                 if (!visited[i][j] && matrix[i][j] != UNAVAILABLE && matrix[i][j] == codifiedType) {
-                    int value = matrix[i][j];
 
                     //Choosing the biggest dimension between the previously calculated group and the current one
-                    max = Math.max(max, findAdjacent(matrix, visited, i, j, value));
+                    max = Math.max(max, findAdjacent(matrix, visited, i, j, codifiedType));
                 }
             }
         }
