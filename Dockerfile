@@ -9,5 +9,8 @@ COPY pom.xml .
 # Build the package
 RUN mvn clean package
 
+# Expose the port 8080
+EXPOSE 2023
+
 # Run the code
 ENTRYPOINT ["java","-jar","target/proj-ingsw-rj45-1.0-SNAPSHOT-jar-with-dependencies.jar", "--server"]
