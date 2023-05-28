@@ -31,20 +31,14 @@ public class Game{
         board = new Board(usernames.size());
         board.fillBoard();
 
-        /*
         //Randomly picking the common goals of the game
         CommonGoalFactory factory = new CommonGoalFactory();
-        commonGoals = factory.makeCommonGoal(); //todo decommentare dubug
-         */
+        commonGoals = factory.makeCommonGoal();
 
-        //todo rimuovere, debug
-        commonGoals = new Goal[2];
-        commonGoals[0] = new CommonGoal9();
-        commonGoals[1] = new CommonGoal12();
-
+        //Initializing the always present common goal of the game
         commonGoal0 = new CommonGoal0();
 
-        //Creating the players as entities of the game from the lobby username list
+        //Creating the players as entities of the game from the lobby username list and randomly picking their private goal
         players = new HashMap<>();
         PrivateGoalFactory privateGoalFactory = new PrivateGoalFactory();
         for(String user: usernames) players.put(user, new Player(user, privateGoalFactory.makePrivateGoal()));

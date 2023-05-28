@@ -32,23 +32,6 @@ public abstract class NetworkInterface {
     //endregion
 
     //region METHODS
-    /**
-     * Algorithm for the reception of one message (TCP/IP)
-     * @return the received message
-     */
-    protected Message receiveMessage(){
-        boolean received = false;
-        Message message = null;
-        try {
-            while(!received){
-                message = (Message) objIn.readObject();
-                received = message != null;
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return message;
-    }
 
     /**
      * Algorithm for the forwarding of one message (TCP/IP)

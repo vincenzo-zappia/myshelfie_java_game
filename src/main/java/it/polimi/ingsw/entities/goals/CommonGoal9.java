@@ -19,20 +19,21 @@ import java.util.stream.IntStream;
  */
 public class CommonGoal9 extends CommonGoal implements Goal{
 
+    //region CONSTRUCTOR
     public CommonGoal9() {
         super("Eight tiles of the same type.\n" +
                 "There's no restriction about the position of these tiles.", "cg9.jpg");
     }
+    //endregion
 
+    //region METHODS
     @Override
     public int checkGoal(Bookshelf bookshelf) {
 
         //Checking if there are more than eight cards of the same type for at least one type
-        for(int i = 0; i < CardType.values().length; i++){
-            if(typeNumber(bookshelf.getBookshelfColors(), i) >= 8) return getScore();
-        }
-
+        for(int i = 0; i < CardType.values().length; i++) if(typeNumber(bookshelf.getBookshelfColors(), i) >= 8) return getScore();
         return 0;
+
     }
 
     /**
@@ -44,5 +45,6 @@ public class CommonGoal9 extends CommonGoal implements Goal{
     private int typeNumber(int[][] matrix, int codifiedType){
         return Arrays.stream(matrix).mapToInt(ints -> (int) IntStream.range(0, matrix[0].length).filter(j -> ints[j] == codifiedType).count()).sum();
     }
+    //endregion
 
 }

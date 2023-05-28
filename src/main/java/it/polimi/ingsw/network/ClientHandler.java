@@ -23,12 +23,14 @@ public class ClientHandler extends NetworkInterface implements Runnable{
     //region ATTRIBUTES
     private final Server server;
     private Lobby lobby;
+    boolean newGame;
     //endregion
 
     //region CONSTRUCTOR
     public ClientHandler(Server server, Socket socket) {
         super(socket);
         this.server = server;
+        newGame = true;
     }
     //endregion
 
@@ -37,7 +39,6 @@ public class ClientHandler extends NetworkInterface implements Runnable{
      * Waits for incoming messages from client to server
      */
     public void run() {
-        boolean newGame = true;
 
         //Receiving the request to check username availability
         checkUsernameHandler();
@@ -166,13 +167,42 @@ public class ClientHandler extends NetworkInterface implements Runnable{
     private void startGameHandler() {
         Message message = receiveMessage();
 
-        if (message.getType() == MessageType.START_GAME_REQUEST){
-            lobby.startGame();
+        switch (message.getType()){
+            case START_GAME_REQUEST -> lobby.startGame();
+
+            //Prompting the lobby master to choose between starting a new game or quitting the application after a player has disconnected from the lobby
+            case NEW_GAME_REQUEST -> {
+                NewGameRequest newGameRequest = (NewGameRequest) message;
+                newGame = newGameRequest.getNewGame();
+            }
+            default -> {
+                sendMessage(new TextResponse(false, "The game has to start first!"));
+                startGameHandler();
+            }
         }
-        else {
-            sendMessage(new TextResponse(false, "The game has to start first!"));
-            startGameHandler();
+
+    }
+
+    /**
+     * Algorithm for the reception of one message (TCP/IP)
+     * @return the received message
+     */
+    protected Message receiveMessage(){
+        boolean received = false;
+        Message message = null;
+        try {
+            while(!received){
+                message = (Message) getObjectInput().readObject();
+                received = message != null;
+            }
+        } catch (IOException | ClassNotFoundException e) {
+
+            //Safe disconnection
+            System.out.println("INFO: A player has disconnected. Closing the game...");
+            lobby.endGame();
+            lobby.forceDisconnection(this);
         }
+        return message;
     }
     //endregion
 

@@ -7,6 +7,8 @@ import it.polimi.ingsw.observer.Subject;
 import java.io.*;
 import java.net.Socket;
 
+import static java.lang.System.exit;
+
 /**
  * Manages the client side network functionalities
  */
@@ -25,6 +27,25 @@ public class Client extends NetworkInterface implements Runnable, Subject {
     @Override
     public void run() {
         while(!Thread.currentThread().isInterrupted()) notifyObserver(receiveMessage());
+    }
+
+    /**
+     * Algorithm for the reception of one message (TCP/IP)
+     * @return the received message
+     */
+    protected Message receiveMessage(){
+        boolean received = false;
+        Message message = null;
+        try {
+            while(!received){
+                message = (Message) getObjectInput().readObject();
+                received = message != null;
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("INFO: Server connection crashed. Shutting down...");
+            exit(0);
+        }
+        return message;
     }
 
     /**
