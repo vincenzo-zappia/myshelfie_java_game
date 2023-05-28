@@ -177,7 +177,6 @@ public class ClientController implements Observer {
         client.sendMessage(newGameRequest);
     }
 
-    //todo brutto perché dovrebbe essere integrato nella catena del newGame false
     /**
      * Forces the client to interrupt its thread if the player wants to quit the application
      */

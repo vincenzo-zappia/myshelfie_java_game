@@ -84,21 +84,14 @@ public class Lobby {
      * Creates and initializes all the data structures needed for the creation of an actual new game. The game has now
      * officially started.
      */
-    public void startGame(){
+    public boolean startGame(){
 
-        System.out.print("Lobby: ");
-        for (String username : usernameList) System.out.print(username); //TODO: Debug
-        System.out.println(" ");
-
-        //TODO: Decommentare (commentato solo per debug)
-        /*
         //Checking if the number of the players is legal before initializing the game
         if(!(usernameList.size() > 1 && usernameList.size() <= 4)) {
             lobbyBroadcastMessage(new TextResponse(false, "Not enough players!"));
             lobbyBroadcastMessage(new SpecificResponse(false, MessageType.START_GAME_RESPONSE));
-            return;
+            return false;
         }
-         */
 
         //Officially starting the game
         lobbyBroadcastMessage(new SpecificResponse(true, MessageType.START_GAME_RESPONSE));
@@ -110,6 +103,7 @@ public class Lobby {
         for(NetworkPlayer netPlayer: networkMap.values()) viewHashMap.put(netPlayer.getUsername(), netPlayer.getVirtualView());
         gameController = new GameController(this, new Game(usernameList), viewHashMap);
         System.out.println("INFO: Game started");
+        return true;
     }
 
     /**

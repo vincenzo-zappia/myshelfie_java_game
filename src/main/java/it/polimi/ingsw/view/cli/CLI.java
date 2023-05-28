@@ -24,11 +24,10 @@ public class CLI implements Runnable, UserInterface {
     private final Object lock;
     private final Object lock1;
 
-
-
     //region FLAGS
     private boolean usernameAccepted;
     private boolean lobbyJoined;
+    private boolean canStart;
     //endregion
     //endregion
 
@@ -42,6 +41,7 @@ public class CLI implements Runnable, UserInterface {
 
         usernameAccepted = false;
         lobbyJoined = false;
+        canStart = false;
     }
     //endregion
 
@@ -99,25 +99,27 @@ public class CLI implements Runnable, UserInterface {
                         }
                     }
 
-                    //Waiting for the lobby master to type "start"
-                    System.out.println("Type *start* when you want to start the game!");
-                    String read;
                     do {
-                        read = scanner.nextLine();
-                    }
-                    while (!read.equals("start"));
-
-                    //Starting the game
-                    controller.startGame();
-
-                    //Thread waits until notified
-                    synchronized (lock1) {
-                        try {
-                            lock1.wait();
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
+                        //Waiting for the lobby master to type "start"
+                        System.out.println("Type *start* when you want to start the game!");
+                        String read;
+                        do {
+                            read = scanner.nextLine();
                         }
-                    }
+                        while (!read.equals("start"));
+
+                        //Starting the game
+                        controller.startGame();
+
+                        //Thread waits until notified
+                        synchronized (lock1) {
+                            try {
+                                lock1.wait();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }while (!canStart);
 
                 }
 
@@ -409,15 +411,12 @@ public class CLI implements Runnable, UserInterface {
     }
   
     public void confirmStartGame(boolean response) {
+        canStart = response;
 
         //Notifying the waiting thread if the creation was successful
-        if (response) {
-            synchronized (lock1) {
-                lock1.notify();
-            }
+        synchronized (lock1) {
+            lock1.notify();
         }
-
-        //todo caso false con un solo player
 
     }
 
@@ -425,7 +424,7 @@ public class CLI implements Runnable, UserInterface {
     public void showChat(String chat) {
         System.out.println(chat);
 
-        //todo gestire chat in cli
+        //todo formattarme almeno carino
     }
 
     @Override

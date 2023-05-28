@@ -99,12 +99,11 @@ public class GameScene extends GenericScene{
         col3.setOnAction(onInsertColumnClick);
         col4.setOnAction(onInsertColumnClick);
 
-        //TODO: Fallo direttamente da scenebuilder (finire fxml)
+        //Setting the goals invisible before they are randomly picked
         cg1.setVisible(false);
         cg1Score.setVisible(false);
         cg2.setVisible(false);
         cg2Score.setVisible(false);
-
         pg.setVisible(false);
 
         token.setVisible(true);

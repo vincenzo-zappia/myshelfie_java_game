@@ -45,7 +45,7 @@ public class ClientHandler extends NetworkInterface implements Runnable{
 
         do {
             //Receiving the request either to create a lobby or join an existing one
-            joinLobbyHandler(); //TODO: Gestire caso disconnessione lobby
+            joinLobbyHandler();
 
             //Starting to receive all the possible game commands once the game has officially started
             try {
@@ -55,7 +55,6 @@ public class ClientHandler extends NetworkInterface implements Runnable{
                     System.out.println("INFO: Message received");
                     if (msg != null){
 
-                        //TODO: Possibilità di iniziare nuovo game anche dopo disconnessione/fine partita
                         //Deciding whether to keep playing or quitting the application
                         if(msg.getType() == MessageType.NEW_GAME_REQUEST) {
                             NewGameRequest newGameRequest = (NewGameRequest) msg;
@@ -168,7 +167,9 @@ public class ClientHandler extends NetworkInterface implements Runnable{
         Message message = receiveMessage();
 
         switch (message.getType()){
-            case START_GAME_REQUEST -> lobby.startGame();
+            case START_GAME_REQUEST -> {
+                if(!lobby.startGame()) startGameHandler();
+            }
 
             //Prompting the lobby master to choose between starting a new game or quitting the application after a player has disconnected from the lobby
             case NEW_GAME_REQUEST -> {

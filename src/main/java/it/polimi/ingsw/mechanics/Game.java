@@ -68,12 +68,6 @@ public class Game{
         }
         if (!sentinel) return false;
 
-        //TODO: Vedere se funziona funzionale
-        /*
-        int maxCards = Arrays.stream(coord).mapToInt(row -> 6 - bookshelf.cardsInColumn(row[0])).max().orElse(0);
-        if (maxCards < coord.length) return false;
-         */
-
         //Checking if the single card is selectable in case of a singular selection
         if (coord.length == 1) return board.selectableCard(coord[0][0], coord[0][1]);
 
@@ -205,7 +199,7 @@ public class Game{
     public void scorePrivateGoal(){
         for(Player p : players.values()){
             p.addScore(p.getPrivateGoal().checkGoal(p.getBookshelf()));
-            p.addScore(commonGoal0.checkGoal(p.getBookshelf())); //todo non funziona
+            p.addScore(commonGoal0.checkGoal(p.getBookshelf()));
         }
     }
 
@@ -236,7 +230,7 @@ public class Game{
     }
     public void setCommonGoals(Goal[] x){
         commonGoals=x;
-    } //todo usato solo nei test
+    }
     //endregion
 
 }

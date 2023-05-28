@@ -1,6 +1,7 @@
 package it.polimi.ingsw.mechanics;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * "Iterator" that has the role to select the current player relatively to the logic of the game
@@ -20,10 +21,9 @@ public class TurnManager {
         System.out.println("INFO: Current player is: " + currentPlayer);
         endGame = false;
 
-        //todo rimuovere, debug
-        System.out.print("TurnManager: ");
-        for (String username : playerUsernames) System.out.print(username);
-        System.out.println(" ");
+        //Printing the order in which the players will make their moves
+        System.out.print("INFO: Turn order: ");
+        System.out.println("\t" + String.join(" -> ", playerUsernames));
     }
     //endregion
 

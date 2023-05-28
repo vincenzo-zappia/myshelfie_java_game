@@ -60,9 +60,11 @@ public class GUIManager implements UserInterface {
     @Override
     public void confirmAccess(boolean response, String content) {
         Platform.runLater(() -> {
-            if(response) gui.loadScene("lobby.fxml");
-            LobbyScene lobbyScene = (LobbyScene) gui.getController();
-            lobbyScene.showLobbyID(content);
+            if(response) {
+                gui.loadScene("lobby.fxml");
+                LobbyScene lobbyScene = (LobbyScene) gui.getController();
+                lobbyScene.showLobbyID(content);
+            }
         });
 
     }
