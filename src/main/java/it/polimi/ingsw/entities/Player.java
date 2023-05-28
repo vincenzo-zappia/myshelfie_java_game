@@ -13,7 +13,7 @@ import java.io.Serializable;
 /**
  * Player of the game with a username and a bookshelf
  */
-public class Player implements Comparable<Player>, Serializable {
+public class Player implements Serializable {
 
     //region ATTRIBUTES
     private final String username;
@@ -48,16 +48,6 @@ public class Player implements Comparable<Player>, Serializable {
 
     public boolean isCommonGoalScored(int i){
         return scoredCG[i];
-    }
-
-    /**
-     * Compares the current player to another by score
-     * @param other to be compared
-     * @return integer codifying the comparison
-     */
-    @Override
-    public int compareTo(Player other) {
-        return Integer.compare(other.score, this.score);
     }
     //endregion
 
