@@ -116,7 +116,7 @@ public class ClientHandler extends NetworkInterface implements Runnable{
                 //Joining the newly created lobby and sending back the lobby ID
                 lobby.joinLobby(new NetworkPlayer(message.getSender(), this));
                 sendMessage(new TextResponse(true, "Creation successful!"));
-                sendMessage(new GenericMessage("Lobby ID: " + lobby.getLobbyID(), MessageType.CREATION_RESPONSE));
+                sendMessage(new GenericMessage("LOBBY ID: " + lobby.getLobbyID(), MessageType.CREATION_RESPONSE));
 
                 //Showing the newly created lobby
                 lobby.lobbyBroadcastMessage(new UsernameListMessage(lobby.getUsernameList()));

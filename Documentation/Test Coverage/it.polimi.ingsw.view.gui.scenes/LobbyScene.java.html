@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LobbyScene.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.view.gui.scenes</a> &gt; <span class="el_source">LobbyScene.java</span></div><h1>LobbyScene.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.view.gui.scenes;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+
+import java.util.ArrayList;
+
+/**
+ * Controller of the scene where at most four players wait for the lobby master (one of them) to start the game
+ */
+<span class="nc" id="L13">public class LobbyScene extends GenericScene{</span>
+
+    //An object for each player icon and username
+    @FXML private Pane pane1;
+    @FXML private Pane pane2;
+    @FXML private Pane pane3;
+    @FXML private Pane pane4;
+    @FXML private Label label1;
+    @FXML private Label label2;
+    @FXML private Label label3;
+    @FXML private Label label4;
+
+    @FXML private Label lobbyID;
+    @FXML private Label playerNum;
+
+    @FXML private Button start;
+
+
+    /**
+     * Sends the request to the server to start the game
+     */
+    @FXML protected void onStartGameClick(){
+<span class="nc" id="L35">        controller.startGame();</span>
+<span class="nc" id="L36">        enableStartButton(false);</span>
+<span class="nc" id="L37">    }</span>
+
+    public void showStart(){
+<span class="nc" id="L40">        start.setVisible(true);</span>
+<span class="nc" id="L41">    }</span>
+
+    public void enableStartButton(boolean enabled){
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        start.setDisable(!enabled);</span>
+<span class="nc" id="L45">    }</span>
+
+    public void showLobbyID(String lobbyID){
+<span class="nc" id="L48">        this.lobbyID.setText(lobbyID);</span>
+<span class="nc" id="L49">        this.lobbyID.setVisible(true);</span>
+<span class="nc" id="L50">    }</span>
+
+    /**
+     * Displays on screen the updated username list
+     * @param playerUsernames username list of the players in the lobby up to that point
+     */
+    public void showRefreshedConnectedPlayers(ArrayList&lt;String&gt; playerUsernames){
+
+        //Setting the username of the lobby master
+<span class="nc" id="L59">        pane1.setVisible(true);</span>
+<span class="nc" id="L60">        label1.setText(playerUsernames.get(0));</span>
+
+<span class="nc" id="L62">        int playerNum = playerUsernames.size();</span>
+        //Setting the username of the second player
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (playerNum &gt; 1){</span>
+<span class="nc" id="L65">            pane2.setVisible(true);</span>
+<span class="nc" id="L66">            label2.setText(playerUsernames.get(1));</span>
+        }
+        //Setting the username of the third player
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (playerNum &gt; 2){</span>
+<span class="nc" id="L70">            pane3.setVisible(true);</span>
+<span class="nc" id="L71">            label3.setText(playerUsernames.get(2));</span>
+        }
+
+        //Setting the username of the fourth player
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        if (playerNum &gt; 3){</span>
+<span class="nc" id="L76">            pane4.setVisible(true);</span>
+<span class="nc" id="L77">            label4.setText(playerUsernames.get(3));</span>
+        }
+<span class="nc" id="L79">        this.playerNum.setText(&quot;CONNECTED PLAYERS: &quot; + playerUsernames.size() + &quot;/4&quot;);</span>
+<span class="nc" id="L80">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

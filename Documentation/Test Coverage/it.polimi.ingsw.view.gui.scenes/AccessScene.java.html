@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AccessScene.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.view.gui.scenes</a> &gt; <span class="el_source">AccessScene.java</span></div><h1>AccessScene.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.view.gui.scenes;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
+
+/**
+ * Controller of the scene in which the user can insert the ID of the lobby that he wants to join
+ */
+<span class="nc" id="L9">public class AccessScene extends GenericScene{</span>
+
+    @FXML private TextField textField1; //Where to type the lobby ID
+
+    /**
+     * Sends a request to the server to join the lobby corresponding to the ID selected by the user
+     */
+    @FXML private void onNextClick(){
+        try {
+<span class="nc" id="L18">            int lobbyId = Integer.parseInt(textField1.getText());</span>
+<span class="nc" id="L19">            controller.joinLobby(lobbyId);</span>
+        }
+<span class="nc" id="L21">        catch (NumberFormatException e){</span>
+<span class="nc" id="L22">            showMessage(false, &quot;Invalid input, insert a number!&quot;);</span>
+<span class="nc" id="L23">        }</span>
+<span class="nc" id="L24">    }</span>
+
+    /**
+     * Goes back to the scene where the player can choose whether to create or join a lobby
+     */
+    @FXML private void onBackClick(){
+<span class="nc" id="L30">        gui.loadScene(&quot;connection.fxml&quot;);</span>
+<span class="nc" id="L31">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Bookshelf.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.entities</a> &gt; <span class="el_source">Bookshelf.java</span></div><h1>Bookshelf.java</h1><pre class="source lang-java linenums">/* Author/s: Tirabassi M., Vianello G., Zappia V.
+ * Date: 21/03/2023
+ * IDE: IntelliJ IDEA
+ * Version 0.2
+ * Comments: the bookshelf is an attribute of player (info for test purposes)
+ */
+
+package it.polimi.ingsw.entities;
+
+import it.polimi.ingsw.entities.goals.Goal;
+import it.polimi.ingsw.exceptions.FullColumnException;
+import it.polimi.ingsw.exceptions.GetCardException;
+import it.polimi.ingsw.entities.util.Tile;
+
+import java.io.Serializable;
+
+/**
+ * Bookshelf of a player where the cards picked from the board can be added
+ */
+public class Bookshelf implements Serializable {
+    private final Tile[][] bookshelf;
+
+    //region CONSTRUCTOR
+<span class="fc" id="L24">    public Bookshelf(){</span>
+<span class="fc" id="L25">        bookshelf = new Tile[6][5];</span>
+
+        //Initializing every single tile of the bookshelf
+<span class="fc bfc" id="L28" title="All 4 branches covered.">        for(int i = 0; i &lt; 6; i++) for(int j = 0; j &lt; 5; j++) bookshelf[i][j] = new Tile();</span>
+<span class="fc" id="L29">    }</span>
+    //endregion
+
+    //region METHODS
+    /**
+     * Adds a card to the bookshelf
+     * @param column where to insert the card
+     * @param card to add
+     * @throws FullColumnException when the column is full
+     */
+    public void addCard(int column, Card card) throws FullColumnException {
+<span class="fc" id="L40">        int i = 5;</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        if(!bookshelf[0][column].isTileEmpty()) throw new FullColumnException();</span>
+<span class="pc bpc" id="L42" title="1 of 4 branches missed.">        while(!bookshelf[i][column].isTileEmpty() &amp;&amp; i&gt;0) i--;</span>
+<span class="fc" id="L43">        bookshelf[i][column].setCard(card);</span>
+<span class="fc" id="L44">    }</span>
+
+    /**
+     * Checks whether the bookshelf is full
+     * @return if the bookshelf is full
+     */
+    public boolean isBookshelfFull(){
+
+        //Returning false if a single tile is empty
+        boolean sentinel;
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        for(int i = 0; i &lt; 6; i++) {</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">            for(int j = 0; j &lt; 5; j++){</span>
+<span class="fc" id="L56">                sentinel = bookshelf[i][j].isTileEmpty();</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">                if(sentinel) return false;</span>
+            }
+        }
+<span class="fc" id="L60">        return true;</span>
+
+    }
+
+    /**
+     * Counts the number of cards in a column
+     * @param column in which to count the cards
+     * @return number of cards in the column
+     */
+    public int cardsInColumn(int column) {
+<span class="fc" id="L70">        int i = 5, count = 0;</span>
+<span class="fc bfc" id="L71" title="All 4 branches covered.">        while (i &gt;= 0 &amp;&amp; !bookshelf[i][column].isTileEmpty()){</span>
+<span class="fc" id="L72">            i--;</span>
+<span class="fc" id="L73">            count++;</span>
+        }
+<span class="fc" id="L75">        return count;</span>
+    }
+
+    /**
+     * Counts the number of cards in a row
+     * @param row in which to count the cards
+     * @return number of cards in the row
+     */
+    public int cardsInRow(int row){
+<span class="fc" id="L84">        int i = 0;</span>
+<span class="fc bfc" id="L85" title="All 4 branches covered.">        while (i &lt; 5 &amp;&amp; !bookshelf[row][i].isTileEmpty()) i++;</span>
+<span class="fc" id="L86">        return i;</span>
+    }
+
+    /**
+     * Extracts the colors of the cards in the bookshelf
+     * @return 6x5 matrix of color-codifying integers
+     */
+    public int[][] getBookshelfColors() {
+<span class="fc" id="L94">        int[][] matrix = new int[6][5];</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        for(int i = 0; i &lt; 6; i++){</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">            for(int j = 0; j &lt; 5; j++) {</span>
+                try {
+                    //Saving the codified value in the matrix
+<span class="fc bfc" id="L99" title="All 2 branches covered.">                    if(!getBookshelfTile(i,j).isTileEmpty()) matrix[i][j] = getBookshelfTile(i,j).getCard().getType().ordinal();</span>
+
+                    //Using the value UNAVAILABLE(104) if a tile has no card in it
+<span class="fc" id="L102">                    else matrix[i][j] = Goal.UNAVAILABLE;</span>
+
+<span class="nc" id="L104">                } catch (GetCardException e) {</span>
+<span class="nc" id="L105">                    throw new RuntimeException(e);</span>
+<span class="fc" id="L106">                }</span>
+            }
+        }
+<span class="fc" id="L109">        return matrix;</span>
+    }
+    //endregion
+
+    //region GETTER
+    public Tile[][] getBookshelf(){
+<span class="fc" id="L115">        return bookshelf;</span>
+    }
+    public Tile getBookshelfTile(int row, int column){
+<span class="fc" id="L118">        return bookshelf[row][column];</span>
+    }
+    public Tile[] getColumn(int column){
+<span class="fc" id="L121">        Tile[] result = new Tile[6];</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        for(int i = 0; i &lt; bookshelf.length; i++) result[i] = bookshelf[i][column];</span>
+<span class="fc" id="L123">        return result;</span>
+    }
+    public Tile[] getRow(int row) {
+<span class="fc" id="L126">        Tile[] res = new Tile[5];</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        for (int i = 0; i&lt;5; i++){</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">            if(bookshelf[row][i] != null)res[i] = bookshelf[row][i];</span>
+        }
+<span class="fc" id="L130">        return res;</span>
+    }
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

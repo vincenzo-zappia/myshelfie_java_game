@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JoinLobbyRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.network.messages.client2server</a> &gt; <span class="el_source">JoinLobbyRequest.java</span></div><h1>JoinLobbyRequest.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.network.messages.client2server;
+
+import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.MessageType;
+
+/**
+ * Request sent by the player to join an existing lobby
+ */
+public class JoinLobbyRequest extends Message {
+    private final int lobbyId;
+
+    public JoinLobbyRequest(String sender, int lobbyId) {
+<span class="nc" id="L13">        super(sender, MessageType.JOIN_LOBBY_REQUEST);</span>
+<span class="nc" id="L14">        this.lobbyId = lobbyId;</span>
+<span class="nc" id="L15">    }</span>
+
+    public int getLobbyId() {
+<span class="nc" id="L18">        return lobbyId;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

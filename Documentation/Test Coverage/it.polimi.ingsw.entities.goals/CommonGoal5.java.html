@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommonGoal5.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.entities.goals</a> &gt; <span class="el_source">CommonGoal5.java</span></div><h1>CommonGoal5.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.entities.goals;
+
+import it.polimi.ingsw.entities.Bookshelf;
+
+/**
+ * Three columns each formed by 6 tiles of maximum three different types.
+ * One column can show the same or a different combination of another column.
+ */
+public class CommonGoal5 extends CommonGoal implements Goal{
+
+    //region CONSTRUCTOR
+    public CommonGoal5() {
+<span class="fc" id="L13">        super(&quot;Three columns each formed by 6 tiles of maximum three different types.\n&quot; +</span>
+                &quot;One column can show the same or a different combination of another column.&quot;, &quot;cg5.jpg&quot;);
+<span class="fc" id="L15">    }</span>
+    //endregion
+
+    //region METHODS
+    @Override
+    public int checkGoal(Bookshelf bs) {
+
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        if (findColumns(bs.getBookshelfColors())) return getScore();</span>
+<span class="fc" id="L23">        return 0;</span>
+    }
+
+    public boolean findColumns(int[][] m) {
+<span class="fc" id="L27">        int counter = 0;</span>
+
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        for (int j = 0; j &lt; m[0].length; j++) {</span>
+<span class="fc" id="L30">            int[] diff = new int[m.length];  //array of column</span>
+<span class="fc" id="L31">            int tmp = 0;</span>
+
+<span class="fc bfc" id="L33" title="All 2 branches covered.">            for (int[] ints : m) {</span>
+<span class="fc" id="L34">                int n = ints[j];</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">                if (!isInColumn(diff, n)) {</span>
+<span class="fc" id="L36">                    diff[tmp] = n;</span>
+<span class="fc" id="L37">                    tmp++;</span>
+
+<span class="fc bfc" id="L39" title="All 2 branches covered.">                    if (tmp &gt; 3) break;</span>
+                }
+            }
+<span class="fc bfc" id="L42" title="All 2 branches covered.">            if (tmp &lt;= 3) {</span>
+<span class="fc" id="L43">                counter++;</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">                if (counter &gt;= 3) return true;</span>
+            }
+        }
+<span class="fc" id="L47">        return false;</span>
+    }
+
+    private boolean isInColumn(int[] v, int n) {
+<span class="fc bfc" id="L51" title="All 6 branches covered.">        for (int j : v) if (j == n &amp;&amp; j != UNAVAILABLE) return true;</span>
+<span class="fc" id="L52">        return false;</span>
+    }
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

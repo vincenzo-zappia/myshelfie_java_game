@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Board.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.entities</a> &gt; <span class="el_source">Board.java</span></div><h1>Board.java</h1><pre class="source lang-java linenums">/* Author/s: Tirabassi M., Vianello G., Zappia V.
+ * Date: 12/03/2023
+ * IDE: IntelliJ IDEA
+ * Version 0.3
+ * Comments: using tree-like data structure, managed as matrix instead of array of lists.
+ */
+
+package it.polimi.ingsw.entities;
+
+import it.polimi.ingsw.exceptions.GetCardException;
+import it.polimi.ingsw.entities.util.BoardTile;
+
+/**
+ * Board of the game from where the players can pick the cards to add to their bookshelves
+ */
+public class Board {
+    private final BoardTile[][] board;
+    private final Bag bag;
+
+    //region CONSTRUCTOR
+<span class="fc" id="L21">    public Board(int playerNum){</span>
+<span class="fc" id="L22">        board = new BoardTile[9][9];</span>
+
+        //Initializing every single tile of the board (even the ones that should not be playable)
+<span class="fc bfc" id="L25" title="All 4 branches covered.">        for(int i = 0; i &lt; 9; i++) for(int j = 0; j &lt; 9; j++) board[i][j] = new BoardTile();</span>
+
+        //Activating every tile of the playable board given the number of participants
+<span class="fc" id="L28">        initBoard();</span>
+<span class="fc" id="L29">        initBoard(playerNum);</span>
+
+        //Initialization of the bag with all the cards of the game
+<span class="fc" id="L32">        bag = new Bag();</span>
+
+<span class="fc" id="L34">    }</span>
+
+    /**
+     * Initializes the basic board by activating the tiles that do not depend on the number of players
+     */
+    private void initBoard(){
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        for(int i = 3; i &lt;= 4; i++) board[1][i].setTileActive();</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        for(int i = 3; i &lt;= 5; i++) board[2][i].setTileActive();</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        for(int i = 4; i &lt;= 5; i++) board[i][1].setTileActive();</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        for(int i = 3; i &lt;= 4; i++) board[i][7].setTileActive();</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        for(int row = 3; row &lt;= 5; row++){</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">            for(int col = 2; col&lt;=6; col++) board[row][col].setTileActive();</span>
+        }
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        for(int i = 3; i &lt;= 5; i++) board[6][i].setTileActive();</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        for(int i = 4; i &lt;= 5; i++) board[7][i].setTileActive();</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Activates the additional tiles that depend on the number of players
+     * @param playerNum number of players
+     */
+    private void initBoard(int playerNum){
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if(playerNum &gt;= 3){</span>
+<span class="fc" id="L57">            board[0][3].setTileActive();</span>
+<span class="fc" id="L58">            board[2][2].setTileActive();</span>
+<span class="fc" id="L59">            board[2][6].setTileActive();</span>
+<span class="fc" id="L60">            board[3][8].setTileActive();</span>
+<span class="fc" id="L61">            board[5][0].setTileActive();</span>
+<span class="fc" id="L62">            board[6][2].setTileActive();</span>
+<span class="fc" id="L63">            board[6][6].setTileActive();</span>
+<span class="fc" id="L64">            board[8][5].setTileActive();</span>
+        }
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (playerNum == 4) {</span>
+<span class="fc" id="L67">            board[0][4].setTileActive();</span>
+<span class="fc" id="L68">            board[1][5].setTileActive();</span>
+<span class="fc" id="L69">            board[3][1].setTileActive();</span>
+<span class="fc" id="L70">            board[4][0].setTileActive();</span>
+<span class="fc" id="L71">            board[4][8].setTileActive();</span>
+<span class="fc" id="L72">            board[5][7].setTileActive();</span>
+<span class="fc" id="L73">            board[7][3].setTileActive();</span>
+<span class="fc" id="L74">            board[8][4].setTileActive();</span>
+        }
+<span class="fc" id="L76">    }</span>
+
+    /**
+     * Fills the board either after the creation of a new board or when a player cannot select more than one card
+     */
+    public void fillBoard(){
+<span class="fc bfc" id="L82" title="All 10 branches covered.">        for(int i = 0; i &lt; 9; i++) for(int j = 0; j &lt; 9; j++) if(board[i][j].isTileActive() &amp;&amp; board[i][j].isTileEmpty() &amp;&amp; !bag.isBagEmpty()) board[i][j].setCard(bag.drawCard());</span>
+<span class="fc" id="L83">    }</span>
+    //endregion
+
+    //region METHODS
+    /**
+     * Checks whether a card is selectable
+     * @param row of the tile to check
+     * @param column of the tile to check
+     * @return if the card is selectable
+     */
+    public boolean selectableCard(int row, int column){
+
+        //Checking whether the selected tile is already empty or not part of the playable board
+<span class="fc bfc" id="L96" title="All 4 branches covered.">        if (board[row][column].isTileActive() &amp;&amp; !board[row][column].isTileEmpty()) {</span>
+
+            //Checking whether the tile below the current one is empty or not active
+<span class="pc bpc" id="L99" title="1 of 6 branches missed.">            if (row &gt; 0 &amp;&amp; (board[row - 1][column].isTileEmpty() || !board[row - 1][column].isTileActive())) return true;</span>
+
+            //Checking whether the tile above the current one is empty or not active
+<span class="pc bpc" id="L102" title="2 of 6 branches missed.">            if (row &lt; 8 &amp;&amp; (board[row + 1][column].isTileEmpty() || !board[row + 1][column].isTileActive())) return true;</span>
+
+            //Checking whether the tile on the left is empty or not active
+<span class="pc bpc" id="L105" title="2 of 6 branches missed.">            if (column &gt; 0 &amp;&amp; (board[row][column - 1].isTileEmpty() || !board[row][column - 1].isTileActive())) return true;</span>
+
+            //Checking whether the tile on the right is empty or not active
+<span class="pc bpc" id="L108" title="2 of 6 branches missed.">            return column &lt; 8 &amp;&amp; (board[row][column + 1].isTileEmpty() || !board[row][column + 1].isTileActive());</span>
+        }
+<span class="fc" id="L110">        return false;</span>
+    }
+
+    /**
+     * Removes a card from the board
+     * @param row of the card tile
+     * @param column of the card tile
+     * @return the removed card
+     */
+    public Card removeCard(int row, int column){
+
+        //Extracting the actual card from its coordinates
+        Card card;
+        try {
+<span class="fc" id="L124">            card = board[row][column].getCard();</span>
+<span class="nc" id="L125">        } catch (GetCardException e) {</span>
+<span class="nc" id="L126">            throw new RuntimeException(e);</span>
+<span class="fc" id="L127">        }</span>
+
+        //Setting the card tile to empty after the removal
+<span class="fc" id="L130">        board[row][column].setTileEmpty();</span>
+<span class="fc" id="L131">        return card;</span>
+    }
+    //endregion
+
+    //region GETTER AND SETTER
+    public BoardTile[][] getBoard(){
+<span class="fc" id="L137">        return board;</span>
+    }
+    public BoardTile getBoardTile(int row, int column){
+<span class="fc" id="L140">        return getBoard()[row][column];</span>
+    }
+    public Card getCard(int row, int column){
+        try {
+<span class="fc" id="L144">            return getBoardTile(row, column).getCard();</span>
+<span class="nc" id="L145">        } catch (GetCardException e) {</span>
+<span class="nc" id="L146">            throw new RuntimeException(e);</span>
+        }
+    }
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

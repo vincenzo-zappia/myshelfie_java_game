@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommonGoal11.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.entities.goals</a> &gt; <span class="el_source">CommonGoal11.java</span></div><h1>CommonGoal11.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.entities.goals;
+
+import it.polimi.ingsw.entities.Bookshelf;
+import it.polimi.ingsw.entities.util.Tile;
+
+/**
+ * Five tiles of the same type forming a diagonal
+ */
+public class CommonGoal11 extends CommonGoal implements Goal{
+
+    //region ATTRIBUTES
+<span class="fc" id="L12">    private static final int[][] corners = {{0,0}, {0,4}, {5,0}, {5,4}};</span>
+    //endregion
+
+    //region CONSTRUCTOR
+    public CommonGoal11() {
+<span class="fc" id="L17">        super(&quot;Five tiles of the same type forming a diagonal.&quot;, &quot;cg11.jpg&quot;);</span>
+<span class="fc" id="L18">    }</span>
+    //endregion
+
+    //region METHODS
+    @Override
+    public int checkGoal(Bookshelf bookshelf) {
+
+<span class="fc bfc" id="L25" title="All 4 branches covered.">        for(int i=0; i&lt;4; i++) if (findDiagonalWithSameColor(corners[i][0], corners[i][1], bookshelf)) return getScore();</span>
+<span class="fc" id="L26">        return 0;</span>
+    }
+
+    private boolean findDiagonalWithSameColor(int row, int column, Bookshelf b){
+<span class="fc" id="L30">        int mRow = 0, mColumn = 0;</span>
+
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if(row == 0) mRow = 1;</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">        else if (row == 5) mRow = -1;</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (column == 0) mColumn = 1;</span>
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        else if (column == 4) mColumn = -1;</span>
+
+
+<span class="fc" id="L38">            Tile[] list = new Tile[5];</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">            for(int i=0; i&lt;5; i++) {</span>
+<span class="fc" id="L40">                list[i] = b.getBookshelfTile(row+(i*mRow),column+(i*mColumn));</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">                if (list[i].isTileEmpty()) return false;</span>
+            }
+
+<span class="fc" id="L44">        return allSameType(list);</span>
+    }
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

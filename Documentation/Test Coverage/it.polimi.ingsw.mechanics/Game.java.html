@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Game.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.mechanics</a> &gt; <span class="el_source">Game.java</span></div><h1>Game.java</h1><pre class="source lang-java linenums">/* Author/s: Tirabassi M., Vianello G., Zappia V.
+ * Date: 21/03/2023
+ * IDE: IntelliJ IDEA
+ * Version 1.0
+ * Comments: none
+ */
+
+package it.polimi.ingsw.mechanics;
+
+import it.polimi.ingsw.entities.*;
+import it.polimi.ingsw.entities.goals.*;
+import it.polimi.ingsw.entities.util.BoardTile;
+
+import java.util.*;
+
+import it.polimi.ingsw.entities.util.Tile;
+
+public class Game{
+
+    //region ATTRIBUTES
+    private final Board board;
+    private final HashMap&lt;String, Player&gt; players;
+    private Goal[] commonGoals;
+    private final CommonGoal0 commonGoal0;
+    //endregion
+
+    //region CONSTRUCTOR
+<span class="fc" id="L28">    public Game(ArrayList&lt;String&gt; usernames){</span>
+
+        //Creating the board and filling it with a first batch of cards
+<span class="fc" id="L31">        board = new Board(usernames.size());</span>
+<span class="fc" id="L32">        board.fillBoard();</span>
+
+        //Randomly picking the common goals of the game
+<span class="fc" id="L35">        CommonGoalFactory factory = new CommonGoalFactory();</span>
+<span class="fc" id="L36">        commonGoals = factory.makeCommonGoal();</span>
+
+        //Initializing the always present common goal of the game
+<span class="fc" id="L39">        commonGoal0 = new CommonGoal0();</span>
+
+        //Creating the players as entities of the game from the lobby username list and randomly picking their private goal
+<span class="fc" id="L42">        players = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L43">        PrivateGoalFactory privateGoalFactory = new PrivateGoalFactory();</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        for(String user: usernames) players.put(user, new Player(user, privateGoalFactory.makePrivateGoal()));</span>
+
+<span class="fc" id="L46">    }</span>
+    //endregion
+
+    //region METHODS
+    /**
+     * Checks if the selected cards are selectable
+     * @param coord coordinates of the selected cards:
+     *              coord[x][0] = row
+     *              coord[x][1] = column
+     * @return if the selection is valid
+     */
+    public boolean canSelect(String playerUsername, int[][] coord){
+
+        //Checking if any of the coordinates exceed the board dimensions
+<span class="fc bfc" id="L60" title="All 8 branches covered.">        for (int[] row : coord) for (int col : row) if (col &lt; 0 || col &gt; 8) return false;</span>
+
+        //Checking if the player has selected more cards than they can insert into their bookshelf
+<span class="fc" id="L63">        Bookshelf bookshelf = players.get(playerUsername).getBookshelf();</span>
+<span class="fc" id="L64">        boolean sentinel = false;</span>
+<span class="fc bfc" id="L65" title="All 4 branches covered.">        for(int i = 0; i &lt; 5; i++) if(6 - bookshelf.cardsInColumn(i) &gt;= coord.length){</span>
+<span class="fc" id="L66">            sentinel = true;</span>
+<span class="fc" id="L67">            break;</span>
+        }
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (!sentinel) return false;</span>
+
+        //Checking if the single card is selectable in case of a singular selection
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (coord.length == 1) return board.selectableCard(coord[0][0], coord[0][1]);</span>
+
+        //Checking if the selection is neither in a row nor a column (therefore in a diagonal)
+<span class="fc" id="L75">        boolean isRow = true;</span>
+<span class="fc" id="L76">        boolean isColumn = true;</span>
+<span class="fc" id="L77">        int firstRow = coord[0][0]; //If it's a row selection the row has to be unique</span>
+<span class="fc" id="L78">        int firstCol = coord[0][1]; //If it's a column selection the column has to be unique</span>
+
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        for (int[] cell : coord) {</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">            if (cell[0] != firstRow) isRow = false;</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">            if (cell[1] != firstCol) isColumn = false;</span>
+        }
+<span class="fc bfc" id="L84" title="All 4 branches covered.">        if (!isRow &amp;&amp; !isColumn) return false;</span>
+
+        //Checking if the selection forms a continuous row in the case of a row selection
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (isRow) {</span>
+<span class="fc" id="L88">            Arrays.sort(coord, Comparator.comparingInt(a -&gt; a[1]));</span>
+<span class="pc bpc" id="L89" title="1 of 4 branches missed.">            for (int i = 0; i &lt; coord.length - 1; i++) if (coord[i][1] + 1 != coord[i + 1][1]) return false;</span>
+        }
+
+        //Checking if the selection forms a continuous column in the case of a column selection
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        if (isColumn) {</span>
+<span class="fc" id="L94">            Arrays.sort(coord, Comparator.comparingInt(a -&gt; a[0]));</span>
+<span class="pc bpc" id="L95" title="1 of 4 branches missed.">            for (int i = 0; i &lt; coord.length - 1; i++) if (coord[i][0] + 1 != coord[i + 1][0]) return false;</span>
+        }
+
+        //Checking if the selection is valid by game rules
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (coord.length &lt;= 3) {</span>
+<span class="fc bfc" id="L100" title="All 4 branches covered.">            for (int[] cell : coord) if (!board.selectableCard(cell[0], cell[1])) return false;</span>
+<span class="fc" id="L101">            return true;</span>
+        }
+
+<span class="nc" id="L104">        return false;</span>
+
+    }
+
+    /**
+     * Removes at most three cards from the board
+     * @param coordinates of the cards to be removed
+     * @return the removed cards
+     */
+    public ArrayList&lt;Card&gt; removeSelectedCards(int[][] coordinates){
+<span class="fc" id="L114">        ArrayList&lt;Card&gt; removedCards = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        for (int[] coordinate : coordinates) removedCards.add(board.removeCard(coordinate[0], coordinate[1]));</span>
+<span class="fc" id="L116">        return removedCards;</span>
+    }
+
+    /**
+     * Checks if the selected cards can be added to the player's bookshelf
+     * @param playerUsername of the player who wants to add the cards
+     * @param column where the player wants to insert the cards
+     * @param cardNumber number of cards to insert into the column
+     * @return if the insertion is valid
+     */
+    public boolean canInsert(String playerUsername, int column, int cardNumber){
+
+        //Checking if the selected row is an existing one
+<span class="fc bfc" id="L129" title="All 8 branches covered.">        if(column &lt; 0 || column &gt;= 5 || cardNumber &lt; 1 || cardNumber &gt; 3) return false;</span>
+
+        //Checking if the selected column has enough space for the number of cards selected
+<span class="fc" id="L132">        return players.get(playerUsername).getBookshelf().getBookshelfTile(cardNumber - 1, column).isTileEmpty();</span>
+
+    }
+
+    /**
+     * Adds the selected cards into the player's bookshelf
+     * @param playerUsername player who makes the move
+     * @param column where the selected cards are added
+     * @param cards the previously selected cards
+     */
+    public void addCardsToBookshelf(String playerUsername, int column, ArrayList&lt;Card&gt; cards) {
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        for(Card c : cards) players.get(playerUsername).getBookshelf().addCard(column, c);</span>
+<span class="fc" id="L144">    }</span>
+
+    /**
+     * Checks is the bookshelf of a given player is full
+     * @param username player whose bookshelf to check
+     * @return if the bookshelf of the player is full
+     */
+    public boolean isPlayerBookshelfFull(String username){
+<span class="fc" id="L152">        return players.get(username).getBookshelf().isBookshelfFull();</span>
+    }
+
+    /**
+     * Checks if the board has no more selectable cards
+     * @return if every card doesn't have another adjacent card
+     */
+    public boolean checkRefill(){
+<span class="fc" id="L160">        BoardTile[][] matrix = board.getBoard();</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        for(int i = 0; i &lt; 9; i++){</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">            for(int j = 0; j &lt; 9; j++){</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">                if(!matrix[i][j].isTileActive()) continue;</span>
+<span class="fc bfc" id="L164" title="All 4 branches covered.">                if((!matrix[i][j].isTileEmpty() &amp;&amp; !matrix[i + 1][j].isTileEmpty())</span>
+<span class="fc bfc" id="L165" title="All 4 branches covered.">                        || (!matrix[i][j].isTileEmpty() &amp;&amp; !matrix[i][j + 1].isTileEmpty())) return false;</span>
+            }
+        }
+<span class="fc" id="L168">        board.fillBoard();</span>
+<span class="fc" id="L169">        return true;</span>
+    }
+
+    /**
+     * Checks if a common goal has been achieved by a player
+     * @param username player whose eventual achievement we want to check
+     */
+    public void scoreCommonGoal(String username){
+<span class="fc" id="L177">        Player p = players.get(username);</span>
+
+        //Checking for both common goals
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        for(int i = 0; i &lt; 2; i++){</span>
+
+            //Checking if the player has already scored the common goal
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">            if(!p.isCommonGoalScored(i)){</span>
+
+                //Adding the points if the player scored the common goal
+<span class="fc" id="L186">                int score = commonGoals[i].checkGoal(p.getBookshelf());</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">                if (score &gt; 0){</span>
+<span class="fc" id="L188">                    p.scoreCommonGoal(i);</span>
+<span class="fc" id="L189">                    p.addScore(score);</span>
+<span class="fc" id="L190">                    System.out.println(&quot;INFO: &quot; + p.getUsername() + &quot; scored common goal number &quot; + (i + 1));</span>
+                }
+            }
+        }
+<span class="fc" id="L194">    }</span>
+
+    /**
+     * Checks the progress of the private goal achievement of every player
+     */
+    public void scorePrivateGoal(){
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        for(Player p : players.values()){</span>
+<span class="fc" id="L201">            p.addScore(p.getPrivateGoal().checkGoal(p.getBookshelf()));</span>
+<span class="fc" id="L202">            p.addScore(commonGoal0.checkGoal(p.getBookshelf()));</span>
+<span class="fc" id="L203">        }</span>
+<span class="fc" id="L204">    }</span>
+
+    /**
+     * Arranges the players by score
+     * @return ordered SerializableTreeMap (username, score)
+     */
+    public Scoreboard orderByScore(){
+<span class="fc" id="L211">        Scoreboard scoreboard = new Scoreboard(players.size());</span>
+<span class="fc" id="L212">        scoreboard.fillScoreboard(getPlayers());</span>
+<span class="fc" id="L213">        scoreboard.orderByDesc();</span>
+<span class="fc" id="L214">        return scoreboard;</span>
+    }
+    //endregion
+
+    //region GETTER AND SETTER
+    public ArrayList&lt;Player&gt; getPlayers(){
+<span class="fc" id="L220">        return new ArrayList&lt;&gt;(players.values());</span>
+    }
+    public Player getPlayer(String username){
+<span class="fc" id="L223">        return players.get(username);</span>
+    }
+    public Board getBoard(){
+<span class="fc" id="L226">        return board;</span>
+    }
+    public Goal[] getCommonGoals(){
+<span class="nc" id="L229">        return commonGoals;</span>
+    }
+    public void setCommonGoals(Goal[] x){
+<span class="fc" id="L232">        commonGoals=x;</span>
+<span class="fc" id="L233">    }</span>
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

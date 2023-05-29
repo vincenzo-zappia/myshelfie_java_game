@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CliUtil.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.view.cli</a> &gt; <span class="el_source">CliUtil.java</span></div><h1>CliUtil.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.view.cli;
+
+import it.polimi.ingsw.entities.util.BoardTile;
+import it.polimi.ingsw.entities.util.CardType;
+import it.polimi.ingsw.entities.util.Tile;
+import it.polimi.ingsw.mechanics.ToolXML;
+
+import java.util.ArrayList;
+
+<span class="nc" id="L10">enum ColorCode {</span>
+<span class="nc" id="L11">    DEFAULT(&quot;\u001B[0m&quot;),</span>
+<span class="nc" id="L12">    RED(&quot;\u001B[31m&quot;),</span>
+<span class="nc" id="L13">    GREEN(&quot;\u001B[32m&quot;),</span>
+<span class="nc" id="L14">    BLUE(&quot;\u001B[34m&quot;),</span>
+<span class="nc" id="L15">    L_BLUE(&quot;\u001B[94m&quot;),</span>
+<span class="nc" id="L16">    MAGENTA(&quot;\u001B[35m&quot;),</span>
+<span class="nc" id="L17">    WHITE(&quot;\u001B[37m&quot;),</span>
+<span class="nc" id="L18">    BROWN(&quot;\u001B[33m&quot;),</span>
+<span class="nc" id="L19">    ORANGE(&quot;\u001B[38;2;255;165;0m&quot;),</span>
+<span class="nc" id="L20">    YELLOW(&quot;\u001B[33;1m&quot;);</span>
+
+    private final String code;
+<span class="nc" id="L23">    ColorCode(String code){</span>
+<span class="nc" id="L24">        this.code = code;</span>
+<span class="nc" id="L25">    }</span>
+
+    String getCode() {
+<span class="nc" id="L28">        return code;</span>
+    }
+
+}
+
+<span class="nc" id="L33">enum AsciiTool {</span>
+<span class="nc" id="L34">    T(&quot;─────┬&quot;),</span>
+<span class="nc" id="L35">    LT(&quot;├&quot;),</span>
+<span class="nc" id="L36">    RT(&quot;─────┤\n&quot;),</span>
+<span class="nc" id="L37">    BT(&quot;─────┴&quot;),</span>
+<span class="nc" id="L38">    LT_CORNER(&quot;┌&quot;),</span>
+<span class="nc" id="L39">    RT_CORNER(&quot;─────┐\n&quot;),</span>
+<span class="nc" id="L40">    CROSS(&quot;─────┼&quot;),</span>
+<span class="nc" id="L41">    LB_CORNER(&quot;└&quot;),</span>
+<span class="nc" id="L42">    RB_CORNER(&quot;─────┘\n&quot;),</span>
+<span class="nc" id="L43">    L_CONTENT(&quot;│  &quot;),</span>
+<span class="nc" id="L44">    M_CONTENT(&quot;  │  &quot;),</span>
+<span class="nc" id="L45">    R_CONTENT(&quot;  │\n&quot;),</span>
+<span class="nc" id="L46">    SPACES(&quot;      &quot;),</span>
+<span class="nc" id="L47">    DOT(&quot;● &quot;),</span>
+<span class="nc" id="L48">    X(&quot;\u274C&quot;),</span>
+<span class="nc" id="L49">    V(&quot;\u2714&quot;),</span>
+<span class="nc" id="L50">    USER(&quot;\u1F464&quot;);</span>
+
+    private final String symbol;
+
+<span class="nc" id="L54">    AsciiTool(String symbol){</span>
+<span class="nc" id="L55">        this.symbol = symbol;</span>
+<span class="nc" id="L56">    }</span>
+
+    public String getSymbol() {
+<span class="nc" id="L59">        return symbol;</span>
+    }
+
+}
+
+<span class="nc" id="L64">public class CliUtil {</span>
+
+    //region CONVERSION METHODS
+    private static char getTypeCharacter(CardType type) {
+
+<span class="nc bnc" id="L69" title="All 7 branches missed.">        switch (type) {</span>
+            case FRAMES -&gt; {
+<span class="nc" id="L71">                return 'F';</span>
+            }
+            case CATS -&gt; {
+<span class="nc" id="L74">                return 'C';</span>
+            }
+            case BOOKS -&gt; {
+<span class="nc" id="L77">                return 'B';</span>
+            }
+            case GAMES -&gt; {
+<span class="nc" id="L80">                return 'G';</span>
+            }
+            case PLANTS -&gt; {
+<span class="nc" id="L83">                return 'P';</span>
+            }
+            case TROPHIES -&gt; {
+<span class="nc" id="L86">                return 'T';</span>
+            }
+            default -&gt; {
+<span class="nc" id="L89">                return ' ';</span>
+            }
+        }
+    }
+
+    public static char[][] boardConverter(BoardTile[][] tmp) {
+
+<span class="nc" id="L96">        char[][] result = new char[][]{</span>
+                {'u', 'u', 'u', ' ', ' ', 'u', 'u', 'u', 'u'},
+                {'u', 'u', 'u', ' ', ' ', ' ', 'u', 'u', 'u'},
+                {'u', 'u', ' ', ' ', ' ', ' ', ' ', 'u', 'u'},
+                {'u', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'u'},
+                {'u', 'u', ' ', ' ', ' ', ' ', ' ', 'u', 'u'},
+                {'u', 'u', 'u', ' ', ' ', ' ', 'u', 'u', 'u'},
+                {'u', 'u', 'u', 'u', ' ', ' ', 'u', 'u', 'u'}
+        };
+
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        for (int i = 0; i&lt;9;i++){</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            for(int j = 0; j&lt;9; j++){</span>
+<span class="nc bnc" id="L110" title="All 4 branches missed.">                if(tmp[i][j].isTileActive() &amp;&amp; !tmp[i][j].isTileEmpty()){</span>
+<span class="nc" id="L111">                    result[i][j] = getTypeCharacter(tmp[i][j].getCard().getType());</span>
+                }
+            }
+        }
+<span class="nc" id="L115">        return result;</span>
+    }
+
+    public static char[][] bookshelfConverter(Tile[][] bookshelf) {
+<span class="nc" id="L119">        char[][] result = new char[6][5];</span>
+
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        for(int i = 0; i&lt;6; i++){</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">            for(int j=0; j&lt;5; j++){</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">                if (!bookshelf[i][j].isTileEmpty()){</span>
+<span class="nc" id="L124">                    result[i][j] = getTypeCharacter(bookshelf[i][j].getCard().getType());</span>
+                }
+<span class="nc" id="L126">                else result[i][j] = ' ';</span>
+            }
+        }
+<span class="nc" id="L129">        return result;</span>
+    }
+    //endregion
+
+    //region UTILITY METHODS
+    private static String getRowContent(char[] row) {
+<span class="nc" id="L135">        StringBuilder rowContent = new StringBuilder();</span>
+<span class="nc" id="L136">        rowContent.append(AsciiTool.L_CONTENT.getSymbol());</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        for (int i=0; i&lt;row.length; i++){</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">            if(row[i] == 'u') continue;</span>
+<span class="nc" id="L139">            rowContent.append(row[i]);</span>
+<span class="nc bnc" id="L140" title="All 4 branches missed.">            if(i &lt; (row.length-1) &amp;&amp; row[i+1]!='u') rowContent.append(AsciiTool.M_CONTENT.getSymbol());</span>
+        }
+<span class="nc" id="L142">        rowContent.append(AsciiTool.R_CONTENT.getSymbol());</span>
+<span class="nc" id="L143">        return rowContent.toString();</span>
+    }
+
+    private static String getHeader(int length) {
+<span class="nc" id="L147">        length--;</span>
+<span class="nc" id="L148">        return AsciiTool.LT_CORNER.getSymbol() + AsciiTool.T.getSymbol().repeat(length) + AsciiTool.RT_CORNER.getSymbol();</span>
+    }
+
+    private static String getIntermediate(int length) {
+<span class="nc" id="L152">        length--;</span>
+<span class="nc" id="L153">        return AsciiTool.LT.getSymbol() + AsciiTool.CROSS.getSymbol().repeat(length) + AsciiTool.RT.getSymbol();</span>
+    }
+
+    private static String getFooter(int length) {
+<span class="nc" id="L157">        length--;</span>
+<span class="nc" id="L158">        return AsciiTool.LB_CORNER.getSymbol() + AsciiTool.BT.getSymbol().repeat(length) + AsciiTool.RB_CORNER.getSymbol();</span>
+    }
+
+    private static String getTopNumeration(){
+<span class="nc" id="L162">        StringBuilder result = new StringBuilder();</span>
+<span class="nc" id="L163">        result.append(&quot;     &quot;);</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        for(int i=0; i&lt;9; i++){</span>
+<span class="nc" id="L165">            result.append(i);</span>
+<span class="nc" id="L166">            result.append(&quot;     &quot;);</span>
+
+        }
+<span class="nc" id="L169">        result.append(&quot;\n&quot;);</span>
+<span class="nc" id="L170">        return result.toString();</span>
+    }
+    //endregion
+
+    //region MAKE METHODS
+    public static String makeTitle(){
+<span class="nc" id="L176">        return ColorCode.YELLOW.getCode() + &quot; __       __                   ______   __                  __   ______   __           \n&quot; +</span>
+                &quot;|  \\     /  \\                 /      \\ |  \\                |  \\ /      \\ |  \\          \n&quot; +
+                &quot;| $$\\   /  $$ __    __       |  $$$$$$\\| $$____    ______  | $$|  $$$$$$\\ \\$$  ______  \n&quot; +
+                &quot;| $$$\\ /  $$$|  \\  |  \\      | $$___\\$$| $$    \\  /      \\ | $$| $$_  \\$$|  \\ /      \\ \n&quot; +
+                &quot;| $$$$\\  $$$$| $$  | $$       \\$$    \\ | $$$$$$$\\|  $$$$$$\\| $$| $$ \\    | $$|  $$$$$$\\\n&quot; +
+                &quot;| $$\\$$ $$ $$| $$  | $$       _\\$$$$$$\\| $$  | $$| $$    $$| $$| $$$$    | $$| $$    $$\n&quot; +
+                &quot;| $$ \\$$$| $$| $$__/ $$      |  \\__| $$| $$  | $$| $$$$$$$$| $$| $$      | $$| $$$$$$$$\n&quot; +
+                &quot;| $$  \\$ | $$ \\$$    $$       \\$$    $$| $$  | $$ \\$$     \\| $$| $$      | $$ \\$$     \\\n&quot; +
+                &quot; \\$$      \\$$ _\\$$$$$$$        \\$$$$$$  \\$$   \\$$  \\$$$$$$$ \\$$ \\$$       \\$$  \\$$$$$$$\n&quot; +
+                &quot;             |  \\__| $$                                                                \n&quot; +
+                &quot;              \\$$    $$                                                                \n&quot; +
+                &quot;               \\$$$$$$                                                                 \n&quot; +
+<span class="nc" id="L188">                &quot;\n&quot; + ColorCode.DEFAULT.getCode();</span>
+    }
+    public static String makeLegend() {
+<span class="nc" id="L191">        String line1 = ColorCode.GREEN.getCode() + AsciiTool.DOT.getSymbol() + &quot;C: Cat\t\t&quot; + ColorCode.WHITE.getCode() + AsciiTool.DOT.getSymbol() + &quot;B: Books\n&quot;;</span>
+<span class="nc" id="L192">        String line2 = ColorCode.ORANGE.getCode() + AsciiTool.DOT.getSymbol() + &quot;G: Game\t\t&quot; + ColorCode.BLUE.getCode() + AsciiTool.DOT.getSymbol() + &quot;F: Frames\n&quot;;</span>
+<span class="nc" id="L193">        String line3 = ColorCode.L_BLUE.getCode() + AsciiTool.DOT.getSymbol() + &quot;T: Trophies\t&quot; + ColorCode.MAGENTA.getCode() + AsciiTool.DOT.getSymbol() + &quot;P: Plants\n&quot;;</span>
+
+<span class="nc" id="L195">        return line3 + line2 + line1 + ColorCode.DEFAULT.getCode();</span>
+    }
+
+    public static String makeBoard(char[][] matrix) {
+
+<span class="nc" id="L200">        return ColorCode.GREEN.getCode() +</span>
+<span class="nc" id="L201">                getTopNumeration() +</span>
+                &quot;  &quot; +
+<span class="nc" id="L203">                AsciiTool.SPACES.getSymbol().repeat(3) +</span>
+<span class="nc" id="L204">                getHeader(2) +</span>
+                &quot;0 &quot; +
+<span class="nc" id="L206">                AsciiTool.SPACES.getSymbol().repeat(3) +</span>
+<span class="nc" id="L207">                getRowContent(matrix[0]) +</span>
+                &quot;  &quot; +
+<span class="nc" id="L209">                AsciiTool.SPACES.getSymbol().repeat(3) +</span>
+<span class="nc" id="L210">                AsciiTool.LT.getSymbol() +</span>
+<span class="nc" id="L211">                AsciiTool.CROSS.getSymbol().repeat(2) +</span>
+<span class="nc" id="L212">                AsciiTool.RT_CORNER.getSymbol() +</span>
+                &quot;1 &quot; +
+<span class="nc" id="L214">                AsciiTool.SPACES.getSymbol().repeat(3) +</span>
+<span class="nc" id="L215">                getRowContent(matrix[1]) +</span>
+                &quot;  &quot; +
+<span class="nc" id="L217">                AsciiTool.SPACES.getSymbol().repeat(2) +</span>
+<span class="nc" id="L218">                AsciiTool.LT_CORNER.getSymbol() +</span>
+<span class="nc" id="L219">                AsciiTool.CROSS.getSymbol().repeat(4) +</span>
+<span class="nc" id="L220">                AsciiTool.RT_CORNER.getSymbol() +</span>
+                &quot;2 &quot; +
+<span class="nc" id="L222">                AsciiTool.SPACES.getSymbol().repeat(2) +</span>
+<span class="nc" id="L223">                getRowContent(matrix[2]) +</span>
+                &quot;  &quot; +
+<span class="nc" id="L225">                AsciiTool.SPACES.getSymbol() +</span>
+<span class="nc" id="L226">                AsciiTool.LT_CORNER.getSymbol() +</span>
+<span class="nc" id="L227">                AsciiTool.CROSS.getSymbol().repeat(6) +</span>
+<span class="nc" id="L228">                AsciiTool.T.getSymbol() +</span>
+<span class="nc" id="L229">                AsciiTool.RT_CORNER.getSymbol() +</span>
+                &quot;3 &quot; +
+<span class="nc" id="L231">                AsciiTool.SPACES.getSymbol() +</span>
+<span class="nc" id="L232">                getRowContent(matrix[3]) +</span>
+                &quot;  &quot; +
+<span class="nc" id="L234">                AsciiTool.LT_CORNER.getSymbol() +</span>
+<span class="nc" id="L235">                AsciiTool.CROSS.getSymbol().repeat(8) +</span>
+<span class="nc" id="L236">                AsciiTool.RT.getSymbol() +</span>
+                &quot;4 &quot; +
+<span class="nc" id="L238">                getRowContent(matrix[4]) +</span>
+                &quot;  &quot; +
+<span class="nc" id="L240">                AsciiTool.LT.getSymbol() +</span>
+<span class="nc" id="L241">                AsciiTool.CROSS.getSymbol().repeat(8) +</span>
+<span class="nc" id="L242">                AsciiTool.RB_CORNER.getSymbol() +</span>
+                &quot;5 &quot; +
+<span class="nc" id="L244">                getRowContent(matrix[5]) +</span>
+                &quot;  &quot; +
+<span class="nc" id="L246">                AsciiTool.LB_CORNER.getSymbol() +</span>
+<span class="nc" id="L247">                AsciiTool.BT.getSymbol() +</span>
+<span class="nc" id="L248">                AsciiTool.CROSS.getSymbol().repeat(6) +</span>
+<span class="nc" id="L249">                AsciiTool.RB_CORNER.getSymbol() +</span>
+                &quot;6 &quot; +
+<span class="nc" id="L251">                AsciiTool.SPACES.getSymbol().repeat(2) +</span>
+<span class="nc" id="L252">                getRowContent(matrix[6]) +</span>
+                &quot;  &quot; +
+<span class="nc" id="L254">                AsciiTool.SPACES.getSymbol().repeat(2) +</span>
+<span class="nc" id="L255">                AsciiTool.LB_CORNER.getSymbol() +</span>
+<span class="nc" id="L256">                AsciiTool.CROSS.getSymbol().repeat(4) +</span>
+<span class="nc" id="L257">                AsciiTool.RB_CORNER.getSymbol() +</span>
+                &quot;7 &quot; +
+<span class="nc" id="L259">                AsciiTool.SPACES.getSymbol().repeat(3) +</span>
+<span class="nc" id="L260">                getRowContent(matrix[7]) +</span>
+                &quot;  &quot; +
+<span class="nc" id="L262">                AsciiTool.SPACES.getSymbol().repeat(3) +</span>
+<span class="nc" id="L263">                AsciiTool.LB_CORNER.getSymbol() +</span>
+<span class="nc" id="L264">                AsciiTool.CROSS.getSymbol().repeat(2) +</span>
+<span class="nc" id="L265">                AsciiTool.RT.getSymbol() +</span>
+                &quot;8 &quot; +
+<span class="nc" id="L267">                AsciiTool.SPACES.getSymbol().repeat(4) +</span>
+<span class="nc" id="L268">                getRowContent(matrix[8]) +</span>
+                &quot;  &quot; +
+<span class="nc" id="L270">                AsciiTool.SPACES.getSymbol().repeat(4) +</span>
+<span class="nc" id="L271">                getFooter(2);</span>
+    }
+
+    public static String makePlayersList(ArrayList&lt;String&gt; players){
+<span class="nc" id="L275">        StringBuilder partial = new StringBuilder();</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">        for(String p: players) partial.append(AsciiTool.DOT.getSymbol()).append(p).append(&quot;\n&quot;);</span>
+<span class="nc" id="L277">        return partial.toString();</span>
+    }
+
+    public static String makeBookshelf(char[][] matrix) {
+<span class="nc" id="L281">        StringBuilder bookshelf = new StringBuilder(ColorCode.BROWN.getCode() + getHeader(5));</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">        for(int i=0; i&lt;matrix[0].length; i++){</span>
+<span class="nc" id="L283">            bookshelf.append(getRowContent(matrix[i])).append(getIntermediate(5));</span>
+        }
+<span class="nc" id="L285">        bookshelf.append(getRowContent(matrix[matrix[0].length])).append(getFooter(5));</span>
+<span class="nc" id="L286">        return bookshelf.toString();</span>
+    }
+
+    public static String makeTitle(String title) {
+<span class="nc" id="L290">        int titleLength = title.length();</span>
+<span class="nc" id="L291">        int delimiterLength = /*80*/ 55 - titleLength - 2;</span>
+<span class="nc" id="L292">        int delimiterLeftLength = delimiterLength / 2;</span>
+<span class="nc" id="L293">        int delimiterRightLength = delimiterLength - delimiterLeftLength-2;</span>
+
+<span class="nc" id="L295">        String delimiterLeft = &quot;-&quot;.repeat(delimiterLeftLength);</span>
+<span class="nc" id="L296">        String delimiterRight = &quot;-&quot;.repeat(delimiterRightLength);</span>
+
+        String res;
+<span class="nc" id="L299">        res = (ColorCode.BLUE.getCode() + &quot;-&quot;.repeat(55) + &quot;\n&quot; +</span>
+                &quot;|&quot;+ delimiterLeft + &quot; &quot; + title + &quot; &quot; + delimiterRight + &quot;|\n&quot; +
+<span class="nc" id="L301">                &quot;-&quot;.repeat(55) + &quot;\n&quot;);</span>
+
+<span class="nc" id="L303">        return res + ColorCode.DEFAULT.getCode();</span>
+    }
+
+    public static String makeCommonGoal(String description){
+<span class="nc" id="L307">        return ColorCode.ORANGE.getCode()  + AsciiTool.DOT.getSymbol() + description.replace(&quot;\n&quot;, &quot;\n  &quot;) + ColorCode.DEFAULT.getCode();</span>
+    }
+
+    public static String makeErrorMessage(String message) {
+<span class="nc" id="L311">        return ColorCode.RED.getCode() + AsciiTool.X.getSymbol() + message + ColorCode.DEFAULT.getCode();</span>
+    }
+
+    public static String makeConfirmationMessage(String message) {
+<span class="nc" id="L315">        return ColorCode.GREEN.getCode() + AsciiTool.V.getSymbol() + &quot; &quot; + message + ColorCode.DEFAULT.getCode();</span>
+    }
+
+    public static String makeCommandList() {
+<span class="nc" id="L319">        return ColorCode.ORANGE.getCode() + AsciiTool.DOT.getSymbol() +</span>
+<span class="nc" id="L320">                String.join(&quot;\n&quot; + AsciiTool.DOT.getSymbol(), ToolXML.getCommandList()) +</span>
+<span class="nc" id="L321">                ColorCode.DEFAULT.getCode();</span>
+    }
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

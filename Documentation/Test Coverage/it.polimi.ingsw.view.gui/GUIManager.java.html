@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GUIManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.view.gui</a> &gt; <span class="el_source">GUIManager.java</span></div><h1>GUIManager.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.view.gui;
+
+import it.polimi.ingsw.entities.Scoreboard;
+import it.polimi.ingsw.entities.goals.Goal;
+import it.polimi.ingsw.entities.goals.PrivateGoal;
+import it.polimi.ingsw.entities.util.BoardTile;
+import it.polimi.ingsw.entities.util.Tile;
+import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.ClientController;
+import it.polimi.ingsw.view.UserInterface;
+import it.polimi.ingsw.view.gui.scenes.*;
+import javafx.application.Platform;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+/**
+ * Manages the reception of messages from the server and calls their needed implementation relatively to the scene
+ */
+public class GUIManager implements UserInterface {
+
+    //region ATTRIBUTES
+    private final GUI gui;
+    //endregion
+
+    //region CONSTRUCTOR
+<span class="nc" id="L27">    public GUIManager(GUI gui){</span>
+<span class="nc" id="L28">        this.gui = gui;</span>
+<span class="nc" id="L29">        GenericScene.setGui(gui);</span>
+<span class="nc" id="L30">    }</span>
+
+    public void start(Client client){
+        ClientController clientController;
+<span class="nc" id="L34">        clientController = new ClientController(this, client);</span>
+<span class="nc" id="L35">        GenericScene.setController(clientController);</span>
+<span class="nc" id="L36">    }</span>
+    //endregion
+
+    //region USER INTERFACE
+    @Override
+    public void confirmUsername(boolean response) {
+<span class="nc" id="L42">        UsernameScene usernameScene = (UsernameScene) gui.getController();</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if(response) gui.loadScene(&quot;connection.fxml&quot;);</span>
+<span class="nc" id="L44">        else usernameScene.setEnable();</span>
+<span class="nc" id="L45">    }</span>
+
+    @Override
+    public void confirmCreation(String content) {
+<span class="nc" id="L49">        Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L50">            LobbyScene lobbyScene = (LobbyScene) gui.getController();</span>
+<span class="nc" id="L51">            lobbyScene.showStart();</span>
+<span class="nc" id="L52">            lobbyScene.showLobbyID(content);</span>
+<span class="nc" id="L53">        });</span>
+<span class="nc" id="L54">    }</span>
+
+    @Override
+    public void confirmAccess(boolean response, String content) {
+<span class="nc" id="L58">        Platform.runLater(() -&gt; {</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            if(response) {</span>
+<span class="nc" id="L60">                gui.loadScene(&quot;lobby.fxml&quot;);</span>
+<span class="nc" id="L61">                LobbyScene lobbyScene = (LobbyScene) gui.getController();</span>
+<span class="nc" id="L62">                lobbyScene.showLobbyID(content);</span>
+            }
+<span class="nc" id="L64">        });</span>
+
+<span class="nc" id="L66">    }</span>
+
+    @Override
+    public void refreshConnectedPlayers(ArrayList&lt;String&gt; playerUsernames) {
+<span class="nc" id="L70">        Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L71">            LobbyScene lobbyScene = (LobbyScene) gui.getController();</span>
+<span class="nc" id="L72">            lobbyScene.showRefreshedConnectedPlayers(playerUsernames);</span>
+<span class="nc" id="L73">        });</span>
+
+<span class="nc" id="L75">    }</span>
+
+    @Override
+    public void showDisconnection() {
+<span class="nc" id="L79">        Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L80">            gui.loadScene(&quot;disconnection.fxml&quot;);</span>
+<span class="nc" id="L81">            gui.getController().showMessage(false, &quot;A player has disconnected!&quot;);</span>
+<span class="nc" id="L82">        });</span>
+<span class="nc" id="L83">    }</span>
+
+    @Override
+    public void confirmStartGame(boolean response) {
+<span class="nc" id="L87">        Platform.runLater(() -&gt; {</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">            if(response) {</span>
+<span class="nc" id="L89">                gui.loadScene(&quot;game.fxml&quot;);</span>
+<span class="nc" id="L90">                GameScene gameScene = (GameScene) gui.getController();</span>
+<span class="nc" id="L91">                gameScene.initGame();</span>
+<span class="nc" id="L92">            }</span>
+            else{
+<span class="nc" id="L94">                LobbyScene lobbyScene = (LobbyScene) gui.getController();</span>
+<span class="nc" id="L95">                lobbyScene.enableStartButton(true);</span>
+            }
+<span class="nc" id="L97">        });</span>
+<span class="nc" id="L98">    }</span>
+
+    @Override
+    public void showChat(String chat) {
+<span class="nc" id="L102">        Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L103">            GameScene gameScene = (GameScene) gui.getController();</span>
+<span class="nc" id="L104">            gameScene.showChat(chat);</span>
+<span class="nc" id="L105">        });</span>
+<span class="nc" id="L106">    }</span>
+    //endregion
+
+    //region VIEW
+    @Override
+    public void sendGenericResponse(boolean response, String content) {
+<span class="nc" id="L112">        Platform.runLater(() -&gt; gui.getController().showMessage(response, content));</span>
+<span class="nc" id="L113">    }</span>
+
+    @Override
+    public void showCurrentPlayer(String currentPlayer) {
+<span class="nc" id="L117">        Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L118">            GameScene gameScene = (GameScene) gui.getController();</span>
+<span class="nc" id="L119">            gameScene.showMessage(true, &quot;Current player: &quot; + currentPlayer);</span>
+<span class="nc" id="L120">        });</span>
+
+<span class="nc" id="L122">    }</span>
+
+    @Override
+    public void sendCheckedCoordinates(boolean valid, int[][] coordinates) {
+<span class="nc" id="L126">        Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L127">            GameScene gameScene = (GameScene) gui.getController();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            gameScene.setSelectable(!valid);</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">            if (!valid) gameScene.resetBoardCardOpacity();</span>
+<span class="nc" id="L130">            else gameScene.switchTab(1); //Switching to the bookshelf tab</span>
+<span class="nc" id="L131">        });</span>
+
+<span class="nc" id="L133">    }</span>
+
+    @Override
+    public void showRemovedCards(int[][] coordinates) {
+<span class="nc" id="L137">        Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L138">            GameScene gameScene = (GameScene) gui.getController();</span>
+<span class="nc" id="L139">            gameScene.removeCards(coordinates);</span>
+
+            //abilito il tasto di selezione e faccio scomparire i tasti di insertion
+<span class="nc" id="L142">            gameScene.setSelectable(true);</span>
+<span class="nc" id="L143">            gameScene.showInsertionButtons(false);</span>
+<span class="nc" id="L144">        });</span>
+
+<span class="nc" id="L146">    }</span>
+
+    @Override
+    public void showUpdatedBookshelf(Tile[][] bookshelf) {
+<span class="nc" id="L150">        Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L151">            GameScene gameScene = (GameScene) gui.getController();</span>
+<span class="nc" id="L152">            gameScene.displayBookshelf(bookshelf);</span>
+<span class="nc" id="L153">        });</span>
+
+<span class="nc" id="L155">    }</span>
+
+    @Override
+    public void showRefilledBoard(BoardTile[][] boardTiles) {
+<span class="nc" id="L159">        Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L160">            GameScene gameScene = (GameScene) gui.getController();</span>
+<span class="nc" id="L161">            gameScene.displayBoard(boardTiles);</span>
+<span class="nc" id="L162">        });</span>
+
+<span class="nc" id="L164">    }</span>
+
+    @Override
+    public void showCommonGoals(Goal[] commonGoals) {
+<span class="nc" id="L168">        Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L169">            GameScene gameScene = (GameScene) gui.getController();</span>
+<span class="nc" id="L170">            gameScene.displayCommonGoals(commonGoals);</span>
+<span class="nc" id="L171">        });</span>
+<span class="nc" id="L172">    }</span>
+
+    @Override
+    public void showPrivateGoal(PrivateGoal privateGoal) {
+<span class="nc" id="L176">        Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L177">            GameScene gameScene = (GameScene) gui.getController();</span>
+<span class="nc" id="L178">            gameScene.displayPrivateGoal(privateGoal);</span>
+<span class="nc" id="L179">        });</span>
+<span class="nc" id="L180">    }</span>
+
+    @Override
+    public void showScoreboard(Scoreboard scoreboard) {
+<span class="nc" id="L184">        Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L185">            gui.loadScene(&quot;winner.fxml&quot;);</span>
+<span class="nc" id="L186">            WinnerScene winnerScene = (WinnerScene) gui.getController();</span>
+<span class="nc" id="L187">            winnerScene.displayScoreboard(scoreboard);</span>
+<span class="nc" id="L188">        });</span>
+<span class="nc" id="L189">    }</span>
+
+    @Override
+    public void showToken(String content) {
+<span class="nc" id="L193">        Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L194">            GameScene gameScene = (GameScene) gui.getController();</span>
+<span class="nc" id="L195">            gameScene.removeToken(content);</span>
+<span class="nc" id="L196">        });</span>
+<span class="nc" id="L197">    }</span>
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommonGoalFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.mechanics</a> &gt; <span class="el_source">CommonGoalFactory.java</span></div><h1>CommonGoalFactory.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.mechanics;
+
+import it.polimi.ingsw.entities.goals.*;
+
+import java.util.Random;
+
+<span class="fc" id="L7">public class CommonGoalFactory {</span>
+
+    /**
+     * Returns an instance of a CommonGoal using an integer parameter
+     * @param goal_id integer value that decides which CommonGoal to return
+     * @return the chosen CommonGoal
+     */
+    private Goal goalFactory(int goal_id){
+<span class="fc bfc" id="L15" title="All 2 branches covered.">        if(goal_id==1) return new CommonGoal1();</span>
+<span class="fc bfc" id="L16" title="All 2 branches covered.">        if(goal_id==2) return new CommonGoal2();</span>
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        if(goal_id==3) return new CommonGoal3();</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        if(goal_id==4) return new CommonGoal4();</span>
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        if(goal_id==5) return new CommonGoal5();</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">        if(goal_id==6) return new CommonGoal6();</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        if(goal_id==7) return new CommonGoal7();</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        if(goal_id==8) return new CommonGoal8();</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        if(goal_id==9) return new CommonGoal9();</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if(goal_id==10) return new CommonGoal10();</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if(goal_id==11) return new CommonGoal11();</span>
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        if(goal_id==12) return new CommonGoal12();</span>
+<span class="nc" id="L27">        return null;</span>
+    }
+
+    /**
+     * Randomly picks the two common goals of the game
+     * @return array of two CommonGoal
+     */
+    public Goal[] makeCommonGoal(){  //goal_id: intero che corrisponde alla cifra finale sul nome dei CommonGoalX
+<span class="fc" id="L35">        Random x = new Random();</span>
+        int tmp;
+<span class="fc" id="L37">        int sentinel = 0;</span>
+<span class="fc" id="L38">        Goal[] result = new Goal[2];</span>
+
+<span class="fc" id="L40">        int i =0;</span>
+        do{
+<span class="fc" id="L42">            tmp = x.nextInt(12)+1 ;</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">            if (sentinel != tmp){</span>
+<span class="fc" id="L44">                result[i]=goalFactory(tmp);</span>
+<span class="fc" id="L45">                sentinel=tmp;</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">                if(i==1)i=0;</span>
+<span class="fc" id="L47">                i++;</span>
+            }
+<span class="pc bpc" id="L49" title="1 of 4 branches missed.">        }while(result[0] == null || result[1] == null);</span>
+<span class="fc" id="L50">        return result;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
