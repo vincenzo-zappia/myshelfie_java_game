@@ -26,17 +26,13 @@ public class GUIManager implements UserInterface {
     //region CONSTRUCTOR
     public GUIManager(GUI gui){
         this.gui = gui;
+        GenericScene.setGui(gui);
     }
 
-    public void start(){
+    public void start(Client client){
         ClientController clientController;
-        try {
-            clientController = new ClientController(this, new Client("localhost", 2023));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        clientController = new ClientController(this, client);
         GenericScene.setController(clientController);
-        GenericScene.setGui(gui);
     }
     //endregion
 

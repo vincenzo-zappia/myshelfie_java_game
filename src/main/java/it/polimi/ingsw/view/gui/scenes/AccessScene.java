@@ -19,7 +19,7 @@ public class AccessScene extends GenericScene{
             controller.joinLobby(lobbyId);
         }
         catch (NumberFormatException e){
-            showMessage(false, "Invalid input, insert a number!"); //todo: reviisonare messaggio
+            showMessage(false, "Invalid input, insert a number!");
         }
     }
 

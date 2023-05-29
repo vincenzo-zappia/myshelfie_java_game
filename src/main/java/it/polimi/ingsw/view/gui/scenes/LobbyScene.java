@@ -76,7 +76,7 @@ public class LobbyScene extends GenericScene{
             pane4.setVisible(true);
             label4.setText(playerUsernames.get(3));
         }
-        this.playerNum.setText("Connected users: " + playerUsernames.size() + "/4");
+        this.playerNum.setText("CONNECTED PLAYERS: " + playerUsernames.size() + "/4");
     }
 
 }

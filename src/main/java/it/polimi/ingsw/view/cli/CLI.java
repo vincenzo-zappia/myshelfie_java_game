@@ -101,9 +101,9 @@ public class CLI implements Runnable, UserInterface {
 
                     do {
                         //Waiting for the lobby master to type "start"
-                        System.out.println("Type *start* when you want to start the game!");
                         String read;
                         do {
+                            System.out.println("Type \"start\" when you want to start the game!");
                             read = scanner.nextLine();
                         }
                         while (!read.equals("start"));
@@ -130,8 +130,9 @@ public class CLI implements Runnable, UserInterface {
                         int id = Integer.parseInt(scanner.nextLine());
                         controller.joinLobby(id);
                     } catch (NumberFormatException e) {
-                        System.out.println(CliUtil.makeErrorMessage("Incorrect command syntax!"));
-                        usernameHandler();
+                        System.out.println(CliUtil.makeErrorMessage("Invalid input, insert a number!"));
+                        lobbyHandler();
+                        return;
                     }
 
                     //Thread waits until notified

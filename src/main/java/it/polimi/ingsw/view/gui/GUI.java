@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.Main;
+import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.gui.scenes.GenericScene;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -14,6 +15,7 @@ import java.io.IOException;
 public class GUI extends Application {
 
     //region ATTRIBUTES
+    private GUIManager guiManager;
     private Scene scene;
     private FXMLLoader currentLoader;
     private GenericScene currentController;
@@ -28,7 +30,7 @@ public class GUI extends Application {
     public void start(Stage stage) {
         try{
             //TODO: Scena iniziale IP e port
-            currentLoader = new FXMLLoader(GUI.class.getResource("username.fxml"));
+            currentLoader = new FXMLLoader(GUI.class.getResource("network.fxml"));
             Scene scene = new Scene(currentLoader.load(), 1000,600);
             this.currentController = currentLoader.getController();
 
@@ -36,8 +38,7 @@ public class GUI extends Application {
             startupStage(stage);
             stage.setScene(scene);
             stage.show();
-            GUIManager guiManager = new GUIManager(this);
-            guiManager.start();
+            guiManager = new GUIManager(this);
 
         } catch (Exception e){
             System.out.println(e.getMessage());
@@ -62,6 +63,15 @@ public class GUI extends Application {
         stage.setFullScreen(true);
         stage.setMinWidth(1000);
         stage.setMinHeight(600);
+    }
+
+    /**
+     * Starts the game application
+     * @param client who uses the application
+     */
+    public void startConnection(Client client){
+        guiManager.start(client);
+        loadScene("username.fxml");
     }
 
     /**

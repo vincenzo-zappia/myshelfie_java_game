@@ -1,48 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane alignment="TOP_CENTER" prefHeight="600" prefWidth="900" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.NetworkScene">
-
-   <ImageView fitHeight="200.0" fitWidth="603.0" pickOnBounds="true" preserveRatio="true">
-      <Image url="@../../../../../assets/misc/logo.png" />
-   </ImageView>
-
-   <TilePane alignment="CENTER" orientation="VERTICAL" prefHeight="462.0" prefWidth="562.0" StackPane.alignment="CENTER">
-      <Label fx:id="feedback" text="none" visible="false" />
-      <Label text="IP OR DOMAIN NAME:" TilePane.alignment="CENTER">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      <TextField fx:id="ipTextField" alignment="CENTER" prefHeight="0.0" prefWidth="379.0">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </TextField>
-      <Label text="PORT:">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      <TextField fx:id="portTextField" alignment="CENTER" prefHeight="0.0" prefWidth="379.0">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </TextField>
-      <Separator prefWidth="200.0" />
-      <Button mnemonicParsing="false" onAction="#onConnectClick" prefHeight="52.0" prefWidth="382.0" text="CONNECT">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Button>
-   </TilePane>
-</StackPane>
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.NetworkScene">
+   <center>
+      <Group>
+         <children>
+            <VBox alignment="CENTER" spacing="25.0">
+               <children>
+                  <Label fx:id="feedback">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label text="IP:">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="ipTextField" alignment="CENTER" prefHeight="0.0" prefWidth="379.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </TextField>
+                  <Label text="PORT:">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="portTextField" alignment="CENTER" prefHeight="0.0" prefWidth="379.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </TextField>
+                  <Separator prefHeight="2.0" prefWidth="381.0" />
+                  <Button defaultButton="true" mnemonicParsing="false" onAction="#onConnectClick" prefHeight="60.0" prefWidth="400.0" styleClass="start-button" text="CONNECT">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </Group>
+   </center>
+   <top>
+   
+                        <ImageView fitHeight="200.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <Image url="@../../../../../assets/misc/logo.png" />
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </ImageView>
+   </top>
+</BorderPane>

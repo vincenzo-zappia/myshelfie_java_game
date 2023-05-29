@@ -1,51 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.WinnerScene">
-   <children>
-      <ImageView fitHeight="200.0" pickOnBounds="true" preserveRatio="true">
+
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.WinnerScene">
+   <center>
+      <Group>
+         <children>
+            <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="325.0" prefWidth="400.0" stylesheets="@style.css">
+               <children>
+                  <Label text="GAME OVER!">
+                     <font>
+                        <Font name="System Bold" size="36.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="feedback">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Separator prefHeight="0.0" prefWidth="433.0" />
+                  <Button mnemonicParsing="false" onAction="#onNewGameClick" prefHeight="60.0" prefWidth="400.0" styleClass="start-button" text="NEW GAME">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onQuitClick" prefHeight="60.0" prefWidth="400.0" styleClass="start-button" text="QUIT">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </Group>
+   </center>
+   <top>
+      <ImageView fitHeight="200.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
             <Image url="@../../../../../assets/misc/logo.png" />
          </image>
       </ImageView>
-      <Label text="GAME OVER!">
-         <font>
-            <Font name="System Bold" size="36.0" />
-         </font>
-      </Label>
-      <Label fx:id="feedback" text="Label">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Separator prefWidth="200.0">
-         <VBox.margin>
-            <Insets top="40.0" />
-         </VBox.margin>
-      </Separator>
-      <Button mnemonicParsing="false" onAction="#onNewGameClick" prefHeight="50.0" prefWidth="300.0" styleClass="start-button" text="NEW GAME">
-         <VBox.margin>
-            <Insets top="15.0" />
-         </VBox.margin>
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Button>
-      <Button mnemonicParsing="false" onAction="#onQuitClick" prefHeight="50.0" prefWidth="300.0" styleClass="start-button" text="QUIT">
-         <VBox.margin>
-            <Insets top="15.0" />
-         </VBox.margin>
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Button>
-   </children>
-</VBox>
+   </top>
+</BorderPane>

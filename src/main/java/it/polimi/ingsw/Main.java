@@ -8,6 +8,7 @@ import it.polimi.ingsw.view.gui.GUI;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -46,7 +47,6 @@ public class Main {
     }
 
     //region METHODS
-
     private static void argsCheck(String[] args){
         if(args.length>0){
             switch (args[0]){
@@ -64,49 +64,27 @@ public class Main {
      */
     private static Client requestNetworkInformation(){
 
-        //Asking and checking the IP
-        String ip;
-        do{
+        do {
+            //Asking and checking the IP
+            String ip;
             System.out.println("Insert the IP of the server:");
             ip = in.nextLine();
-            if(!checkIP(ip)) System.out.println("The inserted IP is not valid");
-        }while(!checkIP(ip));
 
-        //Asking and checking the port
-        int port;
-        do {
+            //Asking and checking the port
+            int port;
             System.out.println("Insert the port of the server:");
-            port = Integer.parseInt(in.nextLine());
-            if(!checkPort(port)) System.out.println("The inserted port is not valid");
-        }while (!checkPort(port));
 
-        //Creating a new Client instance out of the previously selected ip and port
-        try {
-            return new Client(ip, port);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+            //Creating a new Client instance out of the previously selected ip and port
+            try {
+                port = Integer.parseInt(in.nextLine());
+                return new Client(ip, port);
+            } catch (UnknownHostException u) {
+                System.out.println("IP not valid!");
+            } catch (IOException | NumberFormatException e) {
+                System.out.println("Port not valid!");
+            }
+        }while(true);
 
-    }
-
-    /**
-     * Checks if the inserted IP is valid
-     * @param ip to check
-     * @return true if the IP is valid
-     */
-    private static boolean checkIP(String ip){
-        //todo fa le cos
-        return true;
-    }
-
-    /**
-     * Checks if the inserted port is valid
-     * @param port to check
-     * @return true if the port is valid
-     */
-    private static boolean checkPort(int port){
-        //todo le cos fa
-        return true;
     }
 
     /**
