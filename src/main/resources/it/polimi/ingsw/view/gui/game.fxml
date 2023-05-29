@@ -522,7 +522,7 @@
                   </CustomMenuItem>
                </items>
             </MenuButton>
-          <Button fx:id="confirm" alignment="CENTER" mnemonicParsing="false" onAction="#onConfirmClick" styleClass="test" text="CONFIRM">
+          <Button fx:id="confirm" alignment="CENTER" mnemonicParsing="false" onAction="#onConfirmClick" styleClass="confirm-button" text="CONFIRM">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></Button>

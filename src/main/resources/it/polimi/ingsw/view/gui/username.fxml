@@ -22,7 +22,7 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Label text="INSERT USERNAME:">
+                  <Label text="INSERT USERNAME:" textFill="#f0dcaa">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>

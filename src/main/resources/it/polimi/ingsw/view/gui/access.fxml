@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.AccessScene">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="back" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.AccessScene">
    <center>
       <StackPane prefHeight="600.0" prefWidth="900.0">
          <Group>
@@ -25,7 +25,7 @@
                            <Font name="System Bold" size="15.0" />
                         </font>
                      </Label>
-                     <Label text="INSERT LOBBY ID:">
+                     <Label text="INSERT LOBBY ID:" textFill="#f0dcaa">
                         <font>
                            <Font name="System Bold" size="24.0" />
                         </font>
@@ -45,7 +45,7 @@
                </VBox>
             </children>
          </Group>
-         <Button alignment="TOP_LEFT" cache="true" contentDisplay="TEXT_ONLY" mnemonicParsing="false" onAction="#onBackClick" style="-fx-background-color: transparent;" text="←" textFill="#002bff" StackPane.alignment="TOP_LEFT">
+         <Button alignment="TOP_LEFT" cache="true" contentDisplay="TEXT_ONLY" mnemonicParsing="false" onAction="#onBackClick" style="-fx-background-color: transparent;" text="←" textFill="#f0dcaa" StackPane.alignment="TOP_LEFT">
             <StackPane.margin>
                <Insets left="30.0" top="30.0" />
             </StackPane.margin>

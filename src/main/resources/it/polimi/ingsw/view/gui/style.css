@@ -1,68 +1,44 @@
-.confirm-buton {
-    -fx-background-color: #2196F3; /* Colore di sfondo azzurro */
-    -fx-text-fill: white; /* Colore del testo bianco */
-    -fx-background-radius: 20px; /* Raggio dei bordi arrotondati */
-    -fx-padding: 5px 5px; /* Spazio interno al pulsante */
-}
+/*GAME SCENE*/
 
 .background-img {
     -fx-background-image: url('../../../../../assets/misc/sfondo-parquet.jpg');
-    -fx-background-size: cover; /* Imposta il ridimensionamento dell'immagine */
+    -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
-}
-
-.parquet{
-    -fx-background-image: url('../../../../../assets/misc/base_pagina2.jpg');
-    -fx-background-size: cover; /* Imposta il ridimensionamento dell'immagine */
-    -fx-background-repeat: no-repeat;
-}
-
-.back{
-    -fx-background-image: url('../../../../../assets/misc/back.jpg');
-    -fx-background-size: cover; /* Imposta il ridimensionamento dell'immagine */
-    -fx-background-repeat: no-repeat;
-}
-
-.centro {
-    -fx-alignment-baseline: center;
 }
 
 .goals {
     -fx-border-radius: 10px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 1), 10, 0, 0, 0); /* Imposta l'ombra */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 1), 10, 0, 0, 0);
 }
 
 .top-bar {
-
     -fx-background-color: rgba(255, 255, 255, 0.7);
     -fx-background-radius: 5;
-    
-    /*
-    -fx-background-color: rgba(173, 216, 230, 0.7);
-    -fx-padding: 10px; 
-    -fx-alignment: center;
-    */
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0); /* Ombra della top bar */
+
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0);
+}
+
+/*OTHER SCENE*/
+
+.back{
+    -fx-background-image: url('../../../../../assets/misc/back.jpg');
+    -fx-background-size: cover; 
+    -fx-background-repeat: no-repeat;
 }
 
 .start-button {
     -fx-background-color: transparent;
     -fx-background-radius: 0;
-    -fx-border-color: blue;
+    -fx-border-color: rgb(240, 220, 170);
     -fx-border-width: 1px;
-    -fx-text-fill: blue;
+    -fx-text-fill: rgb(240, 220, 170);
 }
 
 .start-button:hover {
-    -fx-background-color: rgba(0, 0, 255, 0.2); /* Colore di sfondo leggermente evidenziato al passaggio del mouse */
+    -fx-background-color: rgba(240, 220, 170, 0.3);
 }
 
-.board {
-    -fx-background-image: url('../../../../../assets/misc/livingroom.png');
-    -fx-background-size: cover;
-}
-
-.test {
+.confirm-button {
     -fx-background-color: #2196f3;
     -fx-text-fill: white;
     -fx-font-size: 16px;
@@ -75,33 +51,12 @@
     -fx-cursor: hand;
 }
 
-.test:hover {
+.confirm-button:hover {
     -fx-background-color: #64b5f6;
     -fx-text-fill: white;
 }
 
-.test:pressed {
+.confirm-button:pressed {
     -fx-background-color: #1976d2;
     -fx-text-fill: white;
 }
-
-.textbox {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 5px;
-    -fx-border-color: #999999;
-    -fx-border-width: 1px;
-    -fx-border-radius: 10px;
-    -fx-padding: 5px;
-    -fx-font-size: 14px;
-    -fx-text-fill: #333333;
-}
-
-.textbox:focused {
-    -fx-border-color: #007bff;
-}
-
-
-.textbox:hover {
-    -fx-border-color: #999999;
-}
-

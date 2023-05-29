@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.LobbyScene">
+<BorderPane styleClass="back" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scenes.LobbyScene">
    <center>
       <StackPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css">
          <VBox alignment="CENTER" spacing="25.0">

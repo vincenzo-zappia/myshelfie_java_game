@@ -20,7 +20,7 @@
          <children>
             <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="455.0" prefWidth="400.0" spacing="25.0" stylesheets="@style.css">
                <children>
-                  <Label text="SCOREBOARD">
+                  <Label text="SCOREBOARD" textFill="#f0dcaa">
                      <font>
                         <Font name="System Bold" size="36.0" />
                      </font>
@@ -40,24 +40,24 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label text="USERNAME">
+                              <Label text="USERNAME" textFill="#f0dcaa">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <Label text="SCORE" GridPane.columnIndex="1">
+                              <Label text="SCORE" textFill="#f0dcaa" GridPane.columnIndex="1">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <Label text="Label" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                              <Label text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label text="Label" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                              <Label text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Label text="Label" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                              <Label text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <Label text="Label" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                              <Label text="Label" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Label text="Label" textFill="#f0dcaa" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                              <Label text="Label" textFill="#f0dcaa" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label text="Label" textFill="#f0dcaa" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                              <Label text="Label" textFill="#f0dcaa" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label text="Label" textFill="#f0dcaa" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                              <Label text="Label" textFill="#f0dcaa" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label text="Label" textFill="#f0dcaa" visible="false" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                              <Label text="Label" textFill="#f0dcaa" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                            </children>
                         </GridPane>
                      </children>
