@@ -91,7 +91,7 @@ public class Server {
         //Creation of the actual lobby with the previously selected id
         Lobby lobby = new Lobby(this, id);
         lobbyMap.put(id, lobby);
-        System.out.println("INFO: Lobby created.");
+        System.out.println("INFO: Lobby created");
         return lobby;
 
     }

@@ -222,6 +222,13 @@ public class CLI implements Runnable, UserInterface {
                     System.out.println(CliUtil.makeCommandList());
                 }
 
+                //Sending chat message
+                case "chat" -> {
+                    String[] words = Arrays.copyOfRange(splitted, 1, splitted.length);
+                    controller.sendChat(String.join(" ", words));
+
+                }
+
                 //Empty enter to refresh the loop
                 case "" -> {}
 

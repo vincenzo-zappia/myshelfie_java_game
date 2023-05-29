@@ -29,7 +29,7 @@ public class GUI extends Application {
     @Override
     public void start(Stage stage) {
         try{
-            //TODO: Scena iniziale IP e port
+            //Loading the scene where the player is asked to insert server IP and port
             currentLoader = new FXMLLoader(GUI.class.getResource("network.fxml"));
             Scene scene = new Scene(currentLoader.load(), 1000,600);
             this.currentController = currentLoader.getController();
