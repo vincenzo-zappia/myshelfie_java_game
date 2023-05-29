@@ -498,7 +498,7 @@
       </TabPane>
    </center>
    <top>
-      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ToolBar prefHeight="40.0" prefWidth="200.0" styleClass="top-bar" BorderPane.alignment="CENTER">
         <items>
             <MenuButton mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="CHAT">
                <font>
@@ -528,7 +528,7 @@
                </font></Button>
             <Label fx:id="feedback" text="Label" visible="false">
                <font>
-                  <Font size="15.0" />
+                  <Font name="System Bold" size="15.0" />
                </font></Label>
         </items>
       </ToolBar>
