@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM maven:openjdk
 
 # Copy source folder
 COPY src src
