@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.mechanics</a> &gt; <span class="el_source">GameController.java</span></div><h1>GameController.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.mechanics;
+
+import it.polimi.ingsw.entities.Card;
+import it.polimi.ingsw.entities.Scoreboard;
+import it.polimi.ingsw.network.Lobby;
+import it.polimi.ingsw.network.messages.client2server.InsertionRequest;
+import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.MessageType;
+import it.polimi.ingsw.network.messages.client2server.SelectionRequest;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+/**
+ * Calls the VirtualView to sent messages to the Client. Receives messages from the Clients and defines the relative behavior of the Game.
+ */
+public class GameController {
+
+    //region NETWORK ATTRIBUTES
+    private final Lobby lobby;
+    private final HashMap&lt;String, VirtualView&gt; viewHashMap;
+    //endregion
+
+    //region GAME ATTRIBUTES
+    private final Game game;
+    private final TurnManager turnManager;
+    private int[][] coordinates; //Turn-specific board coordinates temporarily saved as attributes to be sent as message
+    private boolean canInsert; //Turn phase management
+    //endregion
+
+    //region CONSTRUCTOR
+<span class="nc" id="L32">    public GameController(Lobby lobby, Game game, HashMap&lt;String, VirtualView&gt; viewHashMap){</span>
+<span class="nc" id="L33">        turnManager = new TurnManager(new ArrayList&lt;&gt;(viewHashMap.keySet()));</span>
+<span class="nc" id="L34">        this.lobby = lobby;</span>
+<span class="nc" id="L35">        this.game = game;</span>
+<span class="nc" id="L36">        this.viewHashMap = viewHashMap;</span>
+
+        //Sending to each player initial game details: first player to make a move, board status, the game common
+        //goals and their specific private goal
+<span class="nc" id="L40">        broadcastMessage(MessageType.CURRENT_PLAYER);</span>
+<span class="nc" id="L41">        broadcastMessage(MessageType.REFILLED_BOARD);</span>
+<span class="nc" id="L42">        broadcastMessage(MessageType.COMMON_GOAL);</span>
+<span class="nc" id="L43">        broadcastMessage(MessageType.PRIVATE_GOAL);</span>
+
+        //The game starts in the selection phase
+<span class="nc" id="L46">        canInsert = false;</span>
+<span class="nc" id="L47">    }</span>
+    //endregion
+
+    //Each method receives a message, calls for the specific action requested by the message and generates a response
+    //region METHODS
+    /**
+     * Method that handles the received generic Message by checking its actual type and calls the wanted method
+     * @param message received message
+     */
+    public void messageHandler(Message message){
+
+        //Checking if it's the turn of the player who sent the message
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (!turnManager.getCurrentPlayer().equals(message.getSender())) {</span>
+<span class="nc" id="L60">            viewHashMap.get(message.getSender()).sendGenericResponse(false, &quot;It's not your turn!&quot;);</span>
+<span class="nc" id="L61">            System.out.println(&quot;INFO: Not &quot; + message.getSender() + &quot;'s turn&quot;);</span>
+<span class="nc" id="L62">            return;</span>
+        }
+
+        //Management of the received command by message type only if it's the player's turn
+<span class="nc bnc" id="L66" title="All 3 branches missed.">        switch (message.getType()){</span>
+<span class="nc" id="L67">            case SELECTION_REQUEST -&gt; cardSelection((SelectionRequest) message);</span>
+<span class="nc" id="L68">            case INSERTION_REQUEST -&gt; cardInsertion((InsertionRequest) message);</span>
+        }
+
+<span class="nc" id="L71">    }</span>
+
+    /**
+     * Sends the same message to all the players
+     * @param type of the message
+     * @param payload eventual attributes of the message to send
+     */
+    public void broadcastMessage(MessageType type, Object... payload){
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        for(String username : viewHashMap.keySet()) {</span>
+<span class="nc bnc" id="L80" title="All 8 branches missed.">            switch (type) {</span>
+<span class="nc" id="L81">                case REFILLED_BOARD -&gt; viewHashMap.get(username).showRefilledBoard(game.getBoard().getBoard());</span>
+<span class="nc" id="L82">                case REMOVED_CARDS -&gt; viewHashMap.get(username).showRemovedCards((int[][])payload[0]); //Casting the first object of the payload to an integer matrix</span>
+<span class="nc" id="L83">                case CURRENT_PLAYER -&gt; viewHashMap.get(username).showCurrentPlayer(turnManager.getCurrentPlayer());</span>
+<span class="nc" id="L84">                case COMMON_GOAL -&gt; viewHashMap.get(username).showCommonGoals(game.getCommonGoals());</span>
+<span class="nc" id="L85">                case PRIVATE_GOAL -&gt; viewHashMap.get(username).showPrivateGoal(game.getPlayer(username).getPrivateGoal());</span>
+<span class="nc" id="L86">                case TOKEN -&gt; viewHashMap.get(username).showToken(turnManager.getCurrentPlayer());</span>
+<span class="nc" id="L87">                case SCOREBOARD -&gt; viewHashMap.get(username).showScoreboard((Scoreboard) payload[0]);</span>
+            }
+<span class="nc" id="L89">        }</span>
+<span class="nc" id="L90">    }</span>
+
+    /**
+     * Extracts the coordinates of the selected cards from the message and checks its validity (does not call the method
+     * to remove them from the board)
+     * @param message message sent by the client with the coordinates of the selected cards
+     */
+    public synchronized void cardSelection(SelectionRequest message){
+
+        //Checking if the player has already made a selection
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        if(canInsert){</span>
+<span class="nc" id="L101">            viewHashMap.get(message.getSender()).sendGenericResponse(false, &quot;Selection already made!&quot;);</span>
+<span class="nc" id="L102">            System.out.println(&quot;INFO: &quot; + message.getSender() + &quot; tried to make another selection&quot;);</span>
+<span class="nc" id="L103">            return;</span>
+        }
+
+        //Saving the coordinates of the removed cards in order to broadcast them at the end of the turn
+<span class="nc" id="L107">        coordinates = message.getCoordinates().clone();</span>
+
+        //Checking if the cards selected are actually selectable
+<span class="nc bnc" id="L110" title="All 4 branches missed.">        if((message.getCoordinates().length != 0) &amp;&amp; game.canSelect(message.getSender(), message.getCoordinates())) {</span>
+
+            //Sending positive feedback to the player with the checked coordinates
+<span class="nc" id="L113">            viewHashMap.get(message.getSender()).sendCheckedCoordinates(true, message.getCoordinates());</span>
+<span class="nc" id="L114">            viewHashMap.get(message.getSender()).sendGenericResponse(true, &quot;Valid selection! Insert your cards!&quot;);</span>
+<span class="nc" id="L115">            System.out.println(&quot;INFO: &quot; + message.getSender() + &quot; made a valid selection&quot;);</span>
+
+            //Turn phase management: the player is now allowed to insert the selected cards into their bookshelf
+<span class="nc" id="L118">            canInsert = true;</span>
+        }
+        else{
+            //Sending negative feedback to the player
+<span class="nc" id="L122">            viewHashMap.get(message.getSender()).sendCheckedCoordinates(false, message.getCoordinates());</span>
+<span class="nc" id="L123">            viewHashMap.get(message.getSender()).sendGenericResponse(false, &quot;Invalid selection! Please retry.&quot;);</span>
+<span class="nc" id="L124">            System.out.println(&quot;INFO: &quot; + message.getSender() + &quot; made an invalid selection&quot;);</span>
+        }
+<span class="nc" id="L126">    }</span>
+
+    /**
+     * Calls the game command to insert the cards selected by the player into his bookshelf
+     * @param message Message containing the cards arranged in the order picked by the player and the column into which
+     *                he wants to put them in his bookshelf
+     */
+    public synchronized void cardInsertion(InsertionRequest message){
+
+        //Checking if the player didn't make a selection
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if(!canInsert){</span>
+<span class="nc" id="L137">            viewHashMap.get(message.getSender()).sendGenericResponse(false, &quot;First select your cards!&quot; );</span>
+<span class="nc" id="L138">            System.out.println(&quot;INFO: &quot; + message.getSender() + &quot; tried to make an insertion before a selection&quot;);</span>
+<span class="nc" id="L139">            return;</span>
+        }
+
+        //Checking if the column selected for the insertion is valid
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        if(game.canInsert(turnManager.getCurrentPlayer(), message.getSelectedColumn(), coordinates.length)){</span>
+
+            //Removing the previously selected cards from the game board
+<span class="nc" id="L146">            ArrayList&lt;Card&gt; cards = game.removeSelectedCards(coordinates);</span>
+
+            //Inserting the cards (updating the bookshelf of the player)
+<span class="nc" id="L149">            game.addCardsToBookshelf(turnManager.getCurrentPlayer(), message.getSelectedColumn(), cards);</span>
+<span class="nc" id="L150">            System.out.println(&quot;INFO: Cards removed from the board and inserted in &quot; + turnManager.getCurrentPlayer() + &quot;'s bookshelf in column &quot; + message.getSelectedColumn());</span>
+
+            //Sending positive feedback to the player with the updated bookshelf
+<span class="nc" id="L153">            viewHashMap.get(message.getSender()).showUpdatedBookshelf(game.getPlayer(turnManager.getCurrentPlayer()).getBookshelf().getBookshelf());</span>
+<span class="nc" id="L154">            viewHashMap.get(message.getSender()).sendGenericResponse(true, &quot;Insertion successful!&quot;);</span>
+
+            //End turn housekeeping routine
+<span class="nc" id="L157">            endTurn();</span>
+<span class="nc" id="L158">        }</span>
+        else {
+            //Sending negative feedback to the player with the bookshelf without changes
+<span class="nc" id="L161">            viewHashMap.get(message.getSender()).sendGenericResponse(false, &quot;Invalid column! Please select another!&quot; );</span>
+<span class="nc" id="L162">            System.out.println(&quot;INFO: &quot; + message.getSender() + &quot; made an invalid insertion&quot;);</span>
+        }
+
+<span class="nc" id="L165">    }</span>
+
+    /**
+     * Method that performs end turn housekeeping routines: checking if a common goal was achieved,
+     * checking if the player's Bookshelf got full (and if so starting the endgame) and checking if
+     * the condition for the actual end of the game is reached.
+     */
+    private void endTurn(){
+
+        //Broadcasting to all the players the coordinates of the cards removed in the last turn
+<span class="nc" id="L175">        broadcastMessage(MessageType.REMOVED_CARDS, (Object) coordinates);</span>
+
+        //Checking if the board has to be refilled. If so, broadcasting the updated board to all the players
+<span class="nc bnc" id="L178" title="All 2 branches missed.">        if(game.checkRefill()){</span>
+<span class="nc" id="L179">            broadcastMessage(MessageType.REFILLED_BOARD);</span>
+<span class="nc" id="L180">            System.out.println(&quot;INFO: Board refilled&quot;);</span>
+        }
+
+        //Checking if the current player has achieved any common goal
+<span class="nc" id="L184">        game.scoreCommonGoal(turnManager.getCurrentPlayer());</span>
+<span class="nc" id="L185">        broadcastMessage(MessageType.COMMON_GOAL);</span>
+
+        //Checking if the bookshelf of the current player got full
+<span class="nc bnc" id="L188" title="All 4 branches missed.">        if(game.isPlayerBookshelfFull(turnManager.getCurrentPlayer()) &amp;&amp; !turnManager.inEndGame()){</span>
+<span class="nc" id="L189">            turnManager.startEndGame();</span>
+<span class="nc" id="L190">            System.out.println(&quot;INFO: &quot; + turnManager.getCurrentPlayer() + &quot; filled their bookshelf. Endgame started&quot;);</span>
+
+            //Adding the bonus point to the first player who filled their bookshelf and removing the token from the board
+<span class="nc" id="L193">            game.getPlayer(turnManager.getCurrentPlayer()).addScore(1);</span>
+<span class="nc" id="L194">            broadcastMessage(MessageType.TOKEN);</span>
+        }
+
+        //Checking if the current player was the last one who had to play a turn, if so, starting the endgame, otherwise calling for the next player
+<span class="nc bnc" id="L198" title="All 2 branches missed.">        if(!turnManager.nextTurn()) {</span>
+<span class="nc" id="L199">            findWinner();</span>
+
+            //Starting the endgame routine
+<span class="nc" id="L202">            lobby.endGame();</span>
+        }
+        else{
+            //Broadcasting the username of the next player who plays a turn
+<span class="nc" id="L206">            broadcastMessage(MessageType.CURRENT_PLAYER);</span>
+
+            //Turn phase management
+<span class="nc" id="L209">            canInsert = false;</span>
+        }
+<span class="nc" id="L211">    }</span>
+
+    /**
+     * Scores the private goal for every player and creates the final scoreboard announcing the winner
+     */
+    public void findWinner(){
+
+        //Scoring each individual private goal
+<span class="nc" id="L219">        game.scorePrivateGoal();</span>
+
+        //Creating the scoreboard (sort algorithm in client)
+<span class="nc" id="L222">        Scoreboard scoreboard = game.orderByScore();</span>
+
+        //Broadcasting the scoreboard to all the players
+<span class="nc" id="L225">        broadcastMessage(MessageType.SCOREBOARD, scoreboard);</span>
+<span class="nc" id="L226">    }</span>
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

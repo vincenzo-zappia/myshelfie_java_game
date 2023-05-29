@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NetworkPlayer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.network</a> &gt; <span class="el_source">NetworkPlayer.java</span></div><h1>NetworkPlayer.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.network;
+
+import it.polimi.ingsw.mechanics.VirtualView;
+
+/**
+ * Class that links the username of the player to the ClientHandler and VirtualView of their relative Client
+ */
+public class NetworkPlayer {
+
+    //region ATTRIBUTES
+    private final String username;
+    private final ClientHandler clientHandler;
+    private VirtualView virtualView;
+    //endregion
+
+    //region CONSTRUCTOR
+<span class="nc" id="L17">    public NetworkPlayer(String username, ClientHandler clientHandler) {</span>
+<span class="nc" id="L18">        this.username = username;</span>
+<span class="nc" id="L19">        this.clientHandler = clientHandler;</span>
+<span class="nc" id="L20">    }</span>
+    //endregion
+
+    //region METHODS
+    public String getUsername() {
+<span class="nc" id="L25">        return username;</span>
+    }
+
+    public ClientHandler getClientHandler() {
+<span class="nc" id="L29">        return clientHandler;</span>
+    }
+
+    public VirtualView getVirtualView() {
+<span class="nc" id="L33">        return virtualView;</span>
+    }
+
+    public void setVirtualView(VirtualView virtualView){
+<span class="nc" id="L37">        this.virtualView = virtualView;</span>
+<span class="nc" id="L38">    }</span>
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

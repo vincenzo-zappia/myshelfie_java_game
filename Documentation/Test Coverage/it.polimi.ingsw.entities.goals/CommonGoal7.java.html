@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommonGoal7.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.entities.goals</a> &gt; <span class="el_source">CommonGoal7.java</span></div><h1>CommonGoal7.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.entities.goals;
+
+import it.polimi.ingsw.entities.Bookshelf;
+
+/**
+ * Four lines each formed by 5 tiles of maximum three different types.
+ * One line can show the same or a different combination of another line.
+ */
+public class CommonGoal7 extends CommonGoal implements Goal{
+
+    public CommonGoal7() {
+<span class="fc" id="L12">        super(&quot;Four lines each formed by 5 tiles of maximum three different types.\n&quot; +</span>
+                &quot;One line can show the same or a different combination of another line.&quot;, &quot;cg7.jpg&quot;);
+<span class="fc" id="L14">    }</span>
+
+    @Override
+    public int checkGoal(Bookshelf bs) {
+
+        int tmp;
+<span class="fc" id="L20">        int cntr=0;</span>
+
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        for (int i = 0; i &lt; 6; i++){</span>
+<span class="fc" id="L23">            tmp = 0;</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">            if(!existsEmpty(bs.getRow(i))){</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">                for(int j = 0; j&lt; bs.getRow(i).length-1; j++){</span>
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">                    if(!bs.getRow(i)[j].isTileEmpty()){</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">                        if(!bs.getRow(i)[j].getCard().sameType(bs.getRow(i)[j+1].getCard()))tmp++;</span>
+                    }
+                }
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">                if(tmp&lt;4)cntr++;</span>
+            }
+        }
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        if(cntr&gt;=4) return getScore();</span>
+<span class="fc" id="L34">        return 0;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

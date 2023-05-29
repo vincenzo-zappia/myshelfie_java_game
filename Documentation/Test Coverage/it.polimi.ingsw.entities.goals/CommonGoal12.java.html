@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommonGoal12.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.entities.goals</a> &gt; <span class="el_source">CommonGoal12.java</span></div><h1>CommonGoal12.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.entities.goals;
+
+import it.polimi.ingsw.entities.Bookshelf;
+import it.polimi.ingsw.entities.util.Tile;
+
+/**
+ * Five columns of increasing or decreasing height.
+ * Starting from the first column on the left or on the right, each next column must be made of exactly one more tile.
+ * Tiles can be of any type.
+ */
+public class CommonGoal12 extends CommonGoal implements Goal{
+
+    //region CONSTRUCTOR
+    public CommonGoal12() {
+<span class="fc" id="L15">        super(&quot;&quot;&quot;</span>
+                Five columns of increasing or decreasing height.
+                Starting from the first column on the left or on the right,
+                each next column must be made of exactly one more tile.
+                Tiles can be of any type.&quot;&quot;&quot;, &quot;cg12.jpg&quot;);
+<span class="fc" id="L20">    }</span>
+    //endregion
+
+    //region METHODS
+    @Override
+    public int checkGoal(Bookshelf bookshelf) {
+
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if(!firstCheck(bookshelf.getRow(5))) return 0; //verifico che sia presente una carta in almeno tutte le 5 colonne</span>
+
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        for(int i=0; i&lt;4; i++){</span>
+<span class="fc" id="L30">            int len = bookshelf.cardsInColumn(i);</span>
+<span class="fc" id="L31">            int lenSucc = bookshelf.cardsInColumn(i+1);</span>
+
+<span class="pc bpc" id="L33" title="3 of 4 branches missed.">            if(!(len == lenSucc+1 || len == lenSucc-1)) return 0;</span>
+        }
+<span class="fc" id="L35">        return getScore();</span>
+    }
+
+    private boolean firstCheck(Tile[] row){
+<span class="fc bfc" id="L39" title="All 4 branches covered.">        for (Tile tile : row) if (tile.isTileEmpty()) return false;</span>
+<span class="fc" id="L40">        return true;</span>
+    }
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

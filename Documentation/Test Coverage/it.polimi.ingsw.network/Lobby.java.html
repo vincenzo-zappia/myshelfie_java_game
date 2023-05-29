@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Lobby.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.network</a> &gt; <span class="el_source">Lobby.java</span></div><h1>Lobby.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.network;
+
+import it.polimi.ingsw.mechanics.Game;
+import it.polimi.ingsw.mechanics.GameController;
+import it.polimi.ingsw.mechanics.VirtualView;
+import it.polimi.ingsw.network.messages.ChatMessage;
+import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.MessageType;
+import it.polimi.ingsw.network.messages.server2client.GenericMessage;
+import it.polimi.ingsw.network.messages.server2client.SpecificResponse;
+import it.polimi.ingsw.network.messages.server2client.TextResponse;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+/**
+ * Lobby with an instance of the game
+ */
+public class Lobby {
+
+    //region ATTRIBUTES
+    private final int lobbyID;
+    private final Server server;
+    private final ArrayList&lt;String&gt; usernameList;
+    private final HashMap&lt;String, NetworkPlayer&gt; networkMap;
+    private GameController gameController;
+    private boolean lobbyOnline;
+    private boolean inGame;
+    //endregion
+
+    //region CONSTRUCTOR
+<span class="nc" id="L32">    public Lobby(Server server, int lobbyID) {</span>
+<span class="nc" id="L33">        lobbyOnline = true;</span>
+<span class="nc" id="L34">        inGame = false;</span>
+<span class="nc" id="L35">        this.lobbyID = lobbyID;</span>
+<span class="nc" id="L36">        this.server = server;</span>
+<span class="nc" id="L37">        usernameList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L38">        networkMap = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L39">    }</span>
+    //endregion
+
+    //region METHODS
+    /**
+     * Method used by clients to enter a lobby
+     * @param netPlayer player that request access to lobby
+     */
+    public boolean joinLobby(NetworkPlayer netPlayer){
+
+        //Checking if the selected lobby is already running a game
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if(inGame){</span>
+<span class="nc" id="L51">            netPlayer.getClientHandler().sendMessage(new TextResponse(false, &quot;Game already started!&quot;));</span>
+<span class="nc" id="L52">            netPlayer.getClientHandler().sendMessage(new SpecificResponse(false, MessageType.ACCESS_RESPONSE));</span>
+<span class="nc" id="L53">            return false;</span>
+        }
+
+        //Checking if the lobby is full
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if(usernameList.size() &gt;= 4){</span>
+<span class="nc" id="L58">            netPlayer.getClientHandler().sendMessage(new TextResponse(false, &quot;Lobby is full!&quot;));</span>
+<span class="nc" id="L59">            netPlayer.getClientHandler().sendMessage(new SpecificResponse(false, MessageType.ACCESS_RESPONSE));</span>
+<span class="nc" id="L60">            return false;</span>
+        }
+
+        //Adding the player to the lobby
+<span class="nc" id="L64">        String username = netPlayer.getUsername();</span>
+<span class="nc" id="L65">        usernameList.add(username);</span>
+<span class="nc" id="L66">        VirtualView view = new VirtualView(netPlayer.getClientHandler());</span>
+<span class="nc" id="L67">        netPlayer.setVirtualView(view);</span>
+<span class="nc" id="L68">        networkMap.put(username, netPlayer);</span>
+<span class="nc" id="L69">        System.out.println(&quot;INFO: Player joined successfully&quot;);</span>
+<span class="nc" id="L70">        return true;</span>
+    }
+
+    /**
+     * Broadcasts a message to all the players in the lobby (same as broadcast() in GameController)
+     * @param message message to send
+     */
+    public void lobbyBroadcastMessage(Message message){
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        for(NetworkPlayer player: networkMap.values()){</span>
+<span class="nc" id="L79">            player.getClientHandler().sendMessage(message);</span>
+<span class="nc" id="L80">        }</span>
+<span class="nc" id="L81">    }</span>
+
+    /**
+     * Creates and initializes all the data structures needed for the creation of an actual new game. The game has now
+     * officially started.
+     */
+    public boolean startGame(){
+
+        //Checking if the number of the players is legal before initializing the game
+<span class="nc bnc" id="L90" title="All 4 branches missed.">        if(!(usernameList.size() &gt; 1 &amp;&amp; usernameList.size() &lt;= 4)) {</span>
+<span class="nc" id="L91">            lobbyBroadcastMessage(new TextResponse(false, &quot;Not enough players!&quot;));</span>
+<span class="nc" id="L92">            lobbyBroadcastMessage(new SpecificResponse(false, MessageType.START_GAME_RESPONSE));</span>
+<span class="nc" id="L93">            return false;</span>
+        }
+
+        //Officially starting the game
+<span class="nc" id="L97">        lobbyBroadcastMessage(new SpecificResponse(true, MessageType.START_GAME_RESPONSE));</span>
+<span class="nc" id="L98">        lobbyBroadcastMessage(new TextResponse(true, &quot;Now in game!&quot;));</span>
+<span class="nc" id="L99">        inGame = true;</span>
+
+        //Creating GameController and the hashmap &lt;PlayerUsername, VirtualView&gt; through which GameController will manage the sending of messages from server to client
+<span class="nc" id="L102">        HashMap&lt;String, VirtualView&gt; viewHashMap = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        for(NetworkPlayer netPlayer: networkMap.values()) viewHashMap.put(netPlayer.getUsername(), netPlayer.getVirtualView());</span>
+<span class="nc" id="L104">        gameController = new GameController(this, new Game(usernameList), viewHashMap);</span>
+<span class="nc" id="L105">        System.out.println(&quot;INFO: Game started&quot;);</span>
+<span class="nc" id="L106">        return true;</span>
+    }
+
+    /**
+     * Forwards an external message to the GameController if it's not a chat message
+     * @param message message to forwards
+     */
+    public void sendToGame(Message message){
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        if(message.getType().equals(MessageType.CHAT))</span>
+<span class="nc" id="L115">            lobbyBroadcastMessage(new ChatMessage(&quot;server&quot;, message.getSender() + &quot;: &quot; + message.getContent()));</span>
+<span class="nc" id="L116">        else gameController.messageHandler(message);</span>
+<span class="nc" id="L117">    }</span>
+
+    /**
+     * Sets the lobby offline and removes it from the server list after a game has ended or a player is disconnected
+     */
+    public void endGame(){
+<span class="nc" id="L123">        lobbyOnline = false;</span>
+<span class="nc" id="L124">        server.removeLobby(lobbyID);</span>
+<span class="nc" id="L125">    }</span>
+
+    /**
+     * Forces all the players in the same lobby of the disconnected player to quit the game and choose between quitting or playing again
+     * @param clientHandler of the disconnected player
+     */
+    public void forceDisconnection(ClientHandler clientHandler){
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        networkMap.entrySet().stream().filter(entry -&gt; !entry.getValue().getClientHandler().equals(clientHandler)).forEach(entry -&gt; entry.getValue().getClientHandler().sendMessage(new GenericMessage(MessageType.DISCONNECTION)));</span>
+<span class="nc" id="L133">    }</span>
+    //endregion
+
+    //region GETTER
+    public int getLobbyID() {
+<span class="nc" id="L138">        return lobbyID;</span>
+    }
+
+    public ArrayList&lt;String&gt; getUsernameList(){
+<span class="nc" id="L142">        return usernameList;</span>
+    }
+
+    public boolean isLobbyOnline() {
+<span class="nc" id="L146">        return lobbyOnline;</span>
+    }
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CLI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.view.cli</a> &gt; <span class="el_source">CLI.java</span></div><h1>CLI.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.view.cli;
+
+import it.polimi.ingsw.entities.Scoreboard;
+import it.polimi.ingsw.entities.goals.CommonGoal;
+import it.polimi.ingsw.entities.goals.Goal;
+import it.polimi.ingsw.entities.goals.PrivateGoal;
+import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.ClientController;
+import it.polimi.ingsw.entities.util.BoardTile;
+import it.polimi.ingsw.entities.util.Tile;
+import it.polimi.ingsw.view.UserInterface;
+import it.polimi.ingsw.view.VirtualModel;
+
+import java.util.*;
+
+import static java.lang.System.exit;
+
+public class CLI implements Runnable, UserInterface {
+
+    //region ATTRIBUTES
+    private Scanner scanner;
+    private final ClientController controller;
+    private final VirtualModel virtualModel;
+    private final Object lock;
+    private final Object lock1;
+
+    //region FLAGS
+    private boolean usernameAccepted;
+    private boolean lobbyJoined;
+    private boolean canStart;
+    //endregion
+    //endregion
+
+    //region CONSTRUCTOR
+<span class="nc" id="L35">    public CLI(Client client) {</span>
+<span class="nc" id="L36">        scanner = new Scanner(System.in);</span>
+<span class="nc" id="L37">        controller = new ClientController(this, client);</span>
+<span class="nc" id="L38">        virtualModel = new VirtualModel();</span>
+<span class="nc" id="L39">        lock = new Object();</span>
+<span class="nc" id="L40">        lock1 = new Object();</span>
+
+<span class="nc" id="L42">        usernameAccepted = false;</span>
+<span class="nc" id="L43">        lobbyJoined = false;</span>
+<span class="nc" id="L44">        canStart = false;</span>
+<span class="nc" id="L45">    }</span>
+    //endregion
+
+    //region GAME METHODS
+    @Override
+    public void run() {
+<span class="nc" id="L51">        System.out.println(CliUtil.makeTitle());</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        if (!usernameAccepted) usernameHandler();</span>
+<span class="nc" id="L53">        lobbyHandler();</span>
+<span class="nc" id="L54">        gameHandler();</span>
+<span class="nc" id="L55">        endGameHandler();</span>
+<span class="nc" id="L56">    }</span>
+
+    /**
+     * Manages the choosing of the player username
+     */
+    private void usernameHandler() {
+
+        //Asking the player for his username and sending it to server to check for its availability
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        while (!usernameAccepted) {</span>
+<span class="nc" id="L65">            String username = requestUsername();</span>
+<span class="nc" id="L66">            controller.checkUsername(username);</span>
+
+            //Thread waits until notified
+<span class="nc" id="L69">            synchronized (lock) {</span>
+                try {
+<span class="nc" id="L71">                    lock.wait();</span>
+<span class="nc" id="L72">                } catch (InterruptedException e) {</span>
+<span class="nc" id="L73">                    throw new RuntimeException(e);</span>
+<span class="nc" id="L74">                }</span>
+<span class="nc" id="L75">            }</span>
+<span class="nc" id="L76">        }</span>
+<span class="nc" id="L77">    }</span>
+
+    /**
+     * Manages either the creation of a new lobby or the joining of an existing one
+     */
+    private void lobbyHandler(){
+        //Asking the player whether to join or create a new lobby and waiting for server feedback
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        while (!lobbyJoined) {</span>
+<span class="nc" id="L85">            String selection = requestLobby();</span>
+<span class="nc bnc" id="L86" title="All 3 branches missed.">            switch (selection) {</span>
+
+                //Creation of a new lobby
+                case &quot;0&quot; -&gt; {
+                    //Sending a lobby creation request
+<span class="nc" id="L91">                    controller.createLobby();</span>
+
+                    //Thread waits until notified
+<span class="nc" id="L94">                    synchronized (lock) {</span>
+                        try {
+<span class="nc" id="L96">                            lock.wait();</span>
+<span class="nc" id="L97">                        } catch (InterruptedException e) {</span>
+<span class="nc" id="L98">                            throw new RuntimeException(e);</span>
+<span class="nc" id="L99">                        }</span>
+<span class="nc" id="L100">                    }</span>
+
+                    do {
+                        //Waiting for the lobby master to type &quot;start&quot;
+                        String read;
+                        do {
+<span class="nc" id="L106">                            System.out.println(&quot;Type \&quot;start\&quot; when you want to start the game!&quot;);</span>
+<span class="nc" id="L107">                            read = scanner.nextLine();</span>
+                        }
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                        while (!read.equals(&quot;start&quot;));</span>
+
+                        //Starting the game
+<span class="nc" id="L112">                        controller.startGame();</span>
+
+                        //Thread waits until notified
+<span class="nc" id="L115">                        synchronized (lock1) {</span>
+                            try {
+<span class="nc" id="L117">                                lock1.wait();</span>
+<span class="nc" id="L118">                            } catch (InterruptedException e) {</span>
+<span class="nc" id="L119">                                throw new RuntimeException(e);</span>
+<span class="nc" id="L120">                            }</span>
+<span class="nc" id="L121">                        }</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">                    }while (!canStart);</span>
+
+<span class="nc" id="L124">                }</span>
+
+                //Joining an existing lobby
+                case &quot;1&quot; -&gt; {
+<span class="nc" id="L128">                    System.out.println(&quot;Enter lobby ID:&quot;);</span>
+                    try {
+<span class="nc" id="L130">                        int id = Integer.parseInt(scanner.nextLine());</span>
+<span class="nc" id="L131">                        controller.joinLobby(id);</span>
+<span class="nc" id="L132">                    } catch (NumberFormatException e) {</span>
+<span class="nc" id="L133">                        System.out.println(CliUtil.makeErrorMessage(&quot;Invalid input, insert a number!&quot;));</span>
+<span class="nc" id="L134">                        lobbyHandler();</span>
+<span class="nc" id="L135">                        return;</span>
+<span class="nc" id="L136">                    }</span>
+
+                    //Thread waits until notified
+<span class="nc" id="L139">                    synchronized (lock) {</span>
+                        try {
+<span class="nc" id="L141">                            lock.wait();</span>
+<span class="nc" id="L142">                        } catch (InterruptedException e) {</span>
+<span class="nc" id="L143">                            throw new RuntimeException(e);</span>
+<span class="nc" id="L144">                        }</span>
+<span class="nc" id="L145">                    }</span>
+                }
+            }
+<span class="nc" id="L148">        }</span>
+<span class="nc" id="L149">    }</span>
+
+    /**
+     * Manages the sending of commands during the game
+     */
+    private void gameHandler() {
+<span class="nc" id="L155">        scanner = new Scanner(System.in);</span>
+
+        //While loop to read the user keyboard input (until the game ends)
+<span class="nc bnc" id="L158" title="All 2 branches missed.">        while(!virtualModel.getEndGame()){</span>
+<span class="nc" id="L159">            String read = scanner.nextLine();</span>
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">            if (!read.contains(&quot; &quot;)) read += &quot; &quot;;</span>
+
+<span class="nc" id="L163">            String[] splitted = read.split(&quot; &quot;, 2);</span>
+
+<span class="nc bnc" id="L165" title="All 7 branches missed.">            switch (splitted[0]){</span>
+
+                //Card selection command eg: &quot;select (x;y),(x;y),(x,y)&quot;
+                case &quot;select&quot; -&gt; {
+
+                    //Parsing of the input command
+<span class="nc" id="L171">                    String[] strCoordinates = splitted[1].split(&quot;,&quot;);</span>
+<span class="nc" id="L172">                    int[][] coordinates = new int[strCoordinates.length][2];</span>
+
+                    //Checking command syntax
+<span class="nc" id="L175">                    boolean validFormat = false;</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">                    for(int i=0; i &lt; strCoordinates.length; i++) {</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">                        if(!checkFormat(strCoordinates[i].trim())){</span>
+<span class="nc" id="L178">                            System.out.println(CliUtil.makeErrorMessage(&quot;Incorrect command syntax!&quot;));</span>
+<span class="nc" id="L179">                            validFormat = false;</span>
+<span class="nc" id="L180">                            break;</span>
+                        }
+<span class="nc" id="L182">                        else coordinates[i] = parseCoordinates(strCoordinates[i].trim());</span>
+<span class="nc" id="L183">                        validFormat = true;</span>
+                    }
+
+                    //Sending the selection to the server only if the syntax is correct
+<span class="nc bnc" id="L187" title="All 2 branches missed.">                    if(validFormat) controller.sendSelection(coordinates);</span>
+<span class="nc" id="L188">                }</span>
+
+                //Card insertion command (bookshelf column n) eg: &quot;insert n&quot;
+                case &quot;insert&quot; -&gt; {
+                    int column;
+
+                    try {
+                        //Parsing the input command (chosen column)
+<span class="nc" id="L196">                        column = Integer.parseInt(splitted[1]);</span>
+
+                        //Sending the insertion to the server only if the player has already selected his cards
+<span class="nc" id="L199">                        controller.sendInsertion(column);</span>
+                    }
+<span class="nc" id="L201">                    catch (NumberFormatException e){</span>
+<span class="nc" id="L202">                        System.out.println(CliUtil.makeErrorMessage(&quot;Incorrect command syntax!&quot;));</span>
+<span class="nc" id="L203">                    }</span>
+<span class="nc" id="L204">                }</span>
+
+                //Show command to prompt the printing of game entities or details
+                case &quot;show&quot; -&gt; {
+<span class="nc bnc" id="L208" title="All 5 branches missed.">                    switch (splitted[1]){</span>
+<span class="nc" id="L209">                        case &quot;board&quot; -&gt; showBoard();</span>
+<span class="nc" id="L210">                        case &quot;bookshelf&quot; -&gt; showBookshelf();</span>
+<span class="nc" id="L211">                        case &quot;commongoals&quot; -&gt; showCommonGoals();</span>
+<span class="nc" id="L212">                        case &quot;privategoal&quot; -&gt; showPrivateGoal();</span>
+
+                        //default -&gt; System.out.println(CliUtil.makeErrorMessage(&quot;Incorrect command syntax.\nType help for a list of commands.&quot;));
+                    }
+<span class="nc" id="L216">                }</span>
+
+                //Help command to show the list of possible commands
+                case &quot;help&quot; -&gt; {
+                    //Help command for syntax aid
+<span class="nc" id="L221">                    System.out.println(CliUtil.makeTitle(&quot;Command List&quot;));</span>
+<span class="nc" id="L222">                    System.out.println(CliUtil.makeCommandList());</span>
+<span class="nc" id="L223">                }</span>
+
+                //Sending chat message
+                case &quot;chat&quot; -&gt; {
+<span class="nc" id="L227">                    String[] words = Arrays.copyOfRange(splitted, 1, splitted.length);</span>
+<span class="nc" id="L228">                    controller.sendChat(String.join(&quot; &quot;, words));</span>
+
+<span class="nc" id="L230">                }</span>
+
+                //Empty enter to refresh the loop
+<span class="nc" id="L233">                case &quot;&quot; -&gt; {}</span>
+
+<span class="nc" id="L235">                default -&gt; System.out.println(CliUtil.makeErrorMessage(&quot;Incorrect command syntax.\nType help for a list of commands.&quot;));</span>
+            }
+<span class="nc" id="L237">        }</span>
+
+<span class="nc" id="L239">    }</span>
+
+    /**
+     * Manages either the choice of a new game of the quitting of the application
+     */
+    private void endGameHandler(){
+<span class="nc" id="L245">        String response = requestNewGame();</span>
+<span class="nc bnc" id="L246" title="All 3 branches missed.">        switch (response){</span>
+
+            //Starting a new game
+            case &quot;0&quot; -&gt; {
+<span class="nc" id="L250">                controller.sendNewGame(true);</span>
+<span class="nc" id="L251">                lobbyJoined = false;</span>
+<span class="nc" id="L252">                virtualModel.setEndGame(false);</span>
+<span class="nc" id="L253">                run();</span>
+<span class="nc" id="L254">            }</span>
+
+            //Quitting the application
+            case &quot;1&quot; -&gt; {
+<span class="nc" id="L258">                controller.sendNewGame(false);</span>
+<span class="nc" id="L259">                System.out.println(&quot;Closing the application...&quot;);</span>
+<span class="nc" id="L260">                controller.stopClientConnection();</span>
+<span class="nc" id="L261">                exit(0);</span>
+            }
+        }
+
+<span class="nc" id="L265">    }</span>
+    //endregion
+
+    //region PRIVATE METHODS
+    /**
+     * Asks the player his username
+     */
+    private String requestUsername() {
+        String username;
+
+        do{
+<span class="nc" id="L276">            System.out.println(&quot;Enter username:&quot;);</span>
+<span class="nc" id="L277">            username = scanner.nextLine();</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">            if (username.replace(&quot; &quot;, &quot;&quot;).equals(&quot;&quot;)) System.out.println(CliUtil.makeErrorMessage(&quot;Enter valid username:&quot;));</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">        }while(username.replace(&quot; &quot;, &quot;&quot;).equals(&quot;&quot;));</span>
+
+<span class="nc" id="L281">        return username;</span>
+    }
+
+    /**
+     * Asks the player if he wants to create a new lobby or join an existing one
+     */
+    private String requestLobby() {
+
+        //Taking the input and checking its syntax
+        String selection;
+        do {
+<span class="nc" id="L292">            System.out.println(&quot;[0] Create new lobby\n[1] Join existing lobby&quot;);</span>
+<span class="nc" id="L293">            selection = scanner.nextLine();</span>
+<span class="nc bnc" id="L294" title="All 4 branches missed.">            if(!selection.equals(&quot;0&quot;) &amp;&amp; !selection.equals(&quot;1&quot;)) System.out.println(CliUtil.makeErrorMessage(&quot;Enter valid number.&quot;));</span>
+<span class="nc bnc" id="L295" title="All 4 branches missed.">        }while (!selection.equals(&quot;0&quot;) &amp;&amp; !selection.equals(&quot;1&quot;));</span>
+
+
+
+<span class="nc" id="L299">        return selection;</span>
+    }
+
+    private String requestNewGame(){
+        //Taking the input and checking its syntax
+        String selection;
+        do {
+<span class="nc" id="L306">            System.out.println(&quot;[0] Start new game\n[1] Quit&quot;);</span>
+<span class="nc" id="L307">            selection = scanner.nextLine();</span>
+<span class="nc bnc" id="L308" title="All 4 branches missed.">            if(!selection.equals(&quot;0&quot;) &amp;&amp; !selection.equals(&quot;1&quot;)) System.out.println(CliUtil.makeErrorMessage(&quot;Enter valid number.&quot;));</span>
+        }
+<span class="nc bnc" id="L310" title="All 4 branches missed.">        while (!selection.equals(&quot;0&quot;) &amp;&amp; !selection.equals(&quot;1&quot;));</span>
+
+<span class="nc" id="L312">        return selection;</span>
+    }
+
+    /**
+     * Prints the bookshelf of the player on screen
+     */
+    private void showBookshelf() {
+<span class="nc" id="L319">        System.out.println(CliUtil.makeTitle(&quot;Bookshelf&quot;));</span>
+<span class="nc" id="L320">        System.out.println(CliUtil.makeBookshelf(CliUtil.bookshelfConverter(virtualModel.getBookshelf())));</span>
+<span class="nc" id="L321">        System.out.println(CliUtil.makeLegend());</span>
+<span class="nc" id="L322">    }</span>
+
+    /**
+     * Prints the board on screen
+     */
+    private void showBoard() {
+<span class="nc" id="L328">        System.out.println(CliUtil.makeTitle(&quot;Livingroom&quot;));</span>
+<span class="nc" id="L329">        System.out.println(CliUtil.makeBoard(CliUtil.boardConverter(virtualModel.getBoard())));</span>
+<span class="nc" id="L330">        System.out.println(CliUtil.makeLegend());</span>
+<span class="nc" id="L331">    }</span>
+
+    /**
+     * Prints the details of the two game common goals on screen
+     */
+    private void showCommonGoals(){
+<span class="nc" id="L337">        CommonGoal commonGoal1 = (CommonGoal) virtualModel.getCommonGoals()[0],</span>
+<span class="nc" id="L338">        commonGoal2 = (CommonGoal) virtualModel.getCommonGoals()[1];</span>
+<span class="nc" id="L339">        System.out.println(CliUtil.makeTitle(&quot;Common Goals&quot;));</span>
+<span class="nc" id="L340">        System.out.println(CliUtil.makeCommonGoal(commonGoal1.getDescription()) + &quot;\n&quot;);</span>
+<span class="nc" id="L341">        System.out.println(CliUtil.makeCommonGoal(commonGoal2.getDescription()));</span>
+<span class="nc" id="L342">    }</span>
+
+    /**
+     * Prints the details of the private goal of the player on screen
+     */
+    private void showPrivateGoal() {
+<span class="nc" id="L348">        PrivateGoal privateGoal = virtualModel.getPrivateGoal();</span>
+<span class="nc" id="L349">        System.out.println(CliUtil.makeTitle(&quot;Private Goal&quot;));</span>
+<span class="nc" id="L350">        System.out.println(CliUtil.makeBookshelf(CliUtil.bookshelfConverter(privateGoal.getGoalStructure())));</span>
+<span class="nc" id="L351">    }</span>
+
+    /**
+     * Makes card coordinates (two int array) out of the user keyboard input
+     * @param input user keyboard input for coordinates eg: &quot;(x;y)&quot;
+     * @return actual card coordinates (two int array)
+     */
+    private int[] parseCoordinates(String input) {
+<span class="nc" id="L359">        String[] parts = input.substring(1, input.length() - 1).split(&quot;;&quot;);</span>
+
+<span class="nc" id="L361">        int[] result = new int[2];</span>
+<span class="nc" id="L362">        result[0] = Integer.parseInt(parts[0].trim());</span>
+<span class="nc" id="L363">        result[1] = Integer.parseInt(parts[1].trim());</span>
+
+<span class="nc" id="L365">        return result;</span>
+    }
+
+    /**
+     * Checks if a String is of the format: (x;y), where x and y are two int
+     * @param str The String to check
+     * @return true if and only if the String is in the correct format.
+     */
+    private boolean checkFormat(String str){
+<span class="nc" id="L374">        return str.matches(&quot;\\(\\d+;\\d+\\)&quot;);</span>
+    }
+    //endregion
+
+    //region USER INTERFACE
+    @Override
+    public void confirmUsername(boolean response) {
+
+        //Receiving feedback about username availability
+<span class="nc bnc" id="L383" title="All 2 branches missed.">        if (response) usernameAccepted = true;</span>
+
+        //Notifying the waiting thread
+<span class="nc" id="L386">        synchronized (lock) {</span>
+<span class="nc" id="L387">            lock.notify();</span>
+<span class="nc" id="L388">        }</span>
+<span class="nc" id="L389">    }</span>
+
+    @Override
+    public void confirmCreation(String content) {
+<span class="nc" id="L393">        lobbyJoined = true;</span>
+<span class="nc" id="L394">        System.out.println(content); //todo Formattare carino</span>
+
+        //Notifying the waiting thread
+<span class="nc" id="L397">        synchronized (lock) {</span>
+<span class="nc" id="L398">            lock.notify();</span>
+<span class="nc" id="L399">        }</span>
+
+<span class="nc" id="L401">    }</span>
+
+    @Override
+    public void confirmAccess(boolean response, String content) {
+
+        //Receiving feedback about the lobby join
+<span class="nc" id="L407">        lobbyJoined = response;</span>
+
+        //Notifying the waiting thread
+<span class="nc" id="L410">        synchronized (lock) {</span>
+<span class="nc" id="L411">            lock.notify();</span>
+<span class="nc" id="L412">        }</span>
+<span class="nc" id="L413">    }</span>
+
+    @Override
+    public void refreshConnectedPlayers(ArrayList&lt;String&gt; playerUsernames) {
+<span class="nc" id="L417">        System.out.println(&quot;Connected players: &quot;);</span>
+<span class="nc" id="L418">        System.out.println(CliUtil.makePlayersList(playerUsernames));</span>
+<span class="nc" id="L419">    }</span>
+  
+    public void confirmStartGame(boolean response) {
+<span class="nc" id="L422">        canStart = response;</span>
+
+        //Notifying the waiting thread if the creation was successful
+<span class="nc" id="L425">        synchronized (lock1) {</span>
+<span class="nc" id="L426">            lock1.notify();</span>
+<span class="nc" id="L427">        }</span>
+
+<span class="nc" id="L429">    }</span>
+
+    @Override
+    public void showChat(String chat) {
+<span class="nc" id="L433">        System.out.println(chat);</span>
+
+        //todo formattarme almeno carino
+<span class="nc" id="L436">    }</span>
+
+    @Override
+    public void showDisconnection() {
+<span class="nc" id="L440">        virtualModel.setEndGame(true);</span>
+<span class="nc" id="L441">        System.out.println(&quot;Closing the game...&quot;);</span>
+<span class="nc" id="L442">        System.out.println(&quot;Press enter to continue&quot;);</span>
+<span class="nc" id="L443">    }</span>
+    //endregion
+
+    //region VIEW
+    @Override
+    public void sendGenericResponse(boolean response, String content) {
+<span class="nc bnc" id="L449" title="All 2 branches missed.">        if(response) System.out.println(CliUtil.makeConfirmationMessage(content));</span>
+<span class="nc" id="L450">        else System.out.println(CliUtil.makeErrorMessage(content));</span>
+<span class="nc" id="L451">    }</span>
+
+    @Override
+    public void showCurrentPlayer(String currentPlayer){
+        //TODO: Formattare carino CliUtil
+<span class="nc" id="L456">        System.out.println(&quot;Current player: &quot; + currentPlayer);</span>
+<span class="nc" id="L457">    }</span>
+
+    @Override
+    public void sendCheckedCoordinates(boolean valid, int[][] coordinates){
+<span class="nc bnc" id="L461" title="All 2 branches missed.">        if (valid) virtualModel.setCoordinates(coordinates);</span>
+<span class="nc" id="L462">    }</span>
+
+    @Override
+    public void showRemovedCards(int[][] coordinates) {
+<span class="nc" id="L466">        virtualModel.refreshBoard(coordinates);</span>
+<span class="nc" id="L467">        showBoard();</span>
+<span class="nc" id="L468">    }</span>
+
+    @Override
+    public void showUpdatedBookshelf(Tile[][] bookshelf) {
+<span class="nc" id="L472">        virtualModel.setBookshelf(bookshelf);</span>
+<span class="nc" id="L473">        showBookshelf();</span>
+<span class="nc" id="L474">    }</span>
+
+    @Override
+    public void showRefilledBoard(BoardTile[][] boardTiles) {
+<span class="nc" id="L478">        virtualModel.setBoard(boardTiles);</span>
+<span class="nc" id="L479">        showBoard();</span>
+<span class="nc" id="L480">    }</span>
+
+    @Override
+    public void showCommonGoals(Goal[] commonGoals) {
+<span class="nc" id="L484">        virtualModel.setCommonGoals(commonGoals);</span>
+<span class="nc" id="L485">    }</span>
+
+    @Override
+    public void showPrivateGoal(PrivateGoal privateGoal) {
+<span class="nc" id="L489">        virtualModel.setPrivateGoal(privateGoal);</span>
+<span class="nc" id="L490">    }</span>
+
+    @Override
+    public void showScoreboard(Scoreboard scoreboard) {
+<span class="nc" id="L494">        System.out.println(CliUtil.makeTitle(&quot;Scoreboard&quot;));</span>
+
+        //Printing the ordered scoreboard
+<span class="nc bnc" id="L497" title="All 2 branches missed.">        for (int i = 0; i &lt; scoreboard.getUser_scores().length; i++) {</span>
+<span class="nc" id="L498">            System.out.println(&quot;Player: &quot; + scoreboard.getUsername(i) + &quot;\tScore: &quot; + scoreboard.getScores(i));</span>
+        }
+
+        //Prompting the player to choose between playing a new game or quitting the application
+<span class="nc" id="L502">        virtualModel.setEndGame(true);</span>
+<span class="nc" id="L503">        System.out.println(&quot;Press enter to continue&quot;);</span>
+
+<span class="nc" id="L505">    }</span>
+
+    @Override
+    public void showToken(String content) {
+<span class="nc" id="L509">        CliUtil.makeConfirmationMessage(content);</span>
+<span class="nc" id="L510">    }</span>
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

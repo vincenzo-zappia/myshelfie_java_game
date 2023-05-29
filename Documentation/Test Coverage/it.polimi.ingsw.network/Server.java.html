@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Server.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.network</a> &gt; <span class="el_source">Server.java</span></div><h1>Server.java</h1><pre class="source lang-java linenums">/* Author/s: Tirabassi M., Vianello G., Zappia V.
+ * Date: 20/03/2023
+ * IDE: IntelliJ IDEA
+ * Version 0.1
+ * Comments: none
+ */
+
+package it.polimi.ingsw.network;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class Server {
+
+    //region ATTRIBUTES
+    private ServerSocket serverSocket;
+    private HashMap&lt;Integer, Lobby&gt; lobbyMap;
+    private final ArrayList&lt;String&gt; usernameList;
+    //endregion
+
+    //region CONSTRUCTOR
+<span class="nc" id="L27">    public Server(int port) {</span>
+        try {
+<span class="nc" id="L29">            serverSocket = new ServerSocket(port);</span>
+<span class="nc" id="L30">            lobbyMap = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L31">            System.out.println(&quot;INFO: Server listening @ &quot; + serverSocket.getLocalSocketAddress());</span>
+<span class="nc" id="L32">        } catch (IOException e) {</span>
+<span class="nc" id="L33">            System.err.println(&quot;Error:&quot; + e.getMessage());</span>
+<span class="nc" id="L34">        }</span>
+
+<span class="nc" id="L36">        usernameList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L37">    }</span>
+    //endregion
+
+    //region MAIN
+    public static void main(String[] args) {
+<span class="nc" id="L42">        Server server = new Server(2023);</span>
+<span class="nc" id="L43">        server.startConnection();</span>
+
+<span class="nc" id="L45">    }</span>
+    //endregion
+
+    //region METHODS
+    /**
+     * Starts the connection between server and client
+     */
+    public void startConnection() {
+<span class="nc" id="L53">        ExecutorService executor = Executors.newCachedThreadPool();</span>
+
+        //While loop to wait for and accept incoming connections
+        while (true) {
+            try {
+<span class="nc" id="L58">                Socket socket = serverSocket.accept();</span>
+<span class="nc" id="L59">                System.out.println(&quot;INFO: Trying to connect...&quot;);</span>
+
+                //Creating a thread for the management of the communication with connected client
+<span class="nc" id="L62">                executor.submit(new ClientHandler(this, socket));</span>
+<span class="nc" id="L63">            } catch (IOException ex) {</span>
+<span class="nc" id="L64">                break;</span>
+<span class="nc" id="L65">            }</span>
+        }
+<span class="nc" id="L67">        executor.shutdown();</span>
+
+        try {
+<span class="nc" id="L70">            serverSocket.close();</span>
+<span class="nc" id="L71">        } catch (IOException e) {</span>
+<span class="nc" id="L72">            System.err.println(&quot;Error: &quot; + e.getMessage());</span>
+<span class="nc" id="L73">        }</span>
+<span class="nc" id="L74">    }</span>
+
+    /**
+     * Creates a new lobby and adds it to the hashmap
+     * @return the newly initialized lobby
+     */
+    public Lobby createLobby() {
+
+        //Selection of the id of the lobby to create
+        int id;
+
+        //If it's the first lobby to be created its id is chosen to be '1' ...
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if(lobbyMap.size() == 0) id = 1;</span>
+
+        //... otherwise the new id is set to be the id of the last created lobby plus one
+<span class="nc" id="L89">        else id = (int) lobbyMap.keySet().toArray()[lobbyMap.size() - 1] + 1;</span>
+
+        //Creation of the actual lobby with the previously selected id
+<span class="nc" id="L92">        Lobby lobby = new Lobby(this, id);</span>
+<span class="nc" id="L93">        lobbyMap.put(id, lobby);</span>
+<span class="nc" id="L94">        System.out.println(&quot;INFO: Lobby created&quot;);</span>
+<span class="nc" id="L95">        return lobby;</span>
+
+    }
+
+    /**
+     * Checks if a specific lobby exists
+     * @param lobbyId of the lobby to check
+     * @return if the lobby exists
+     */
+    public synchronized boolean existsLobby(int lobbyId){
+<span class="nc" id="L105">        return lobbyMap.containsKey(lobbyId);</span>
+    }
+
+    /**
+     * Removes a specific lobby from the map
+     * @param lobbyId of the lobby to remove
+     */
+    public synchronized void removeLobby(int lobbyId){
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        for(String x: lobbyMap.get(lobbyId).getUsernameList()) removeUsername(x);</span>
+<span class="nc" id="L114">        lobbyMap.remove(lobbyId);</span>
+<span class="nc" id="L115">    }</span>
+
+    /**
+     * Adds a username to the server username list
+     * @param username to add
+     */
+    public synchronized void addUsername(String username){
+<span class="nc" id="L122">        usernameList.add(username);</span>
+<span class="nc" id="L123">    }</span>
+
+    /**
+     * Checks if a username is available
+     * @param username to check
+     * @return if the username is unavailable
+     */
+    public synchronized boolean existsUsername(String username) {
+<span class="nc bnc" id="L131" title="All 4 branches missed.">        for(String user : usernameList) if(user.equals(username)) return true;</span>
+<span class="nc" id="L132">        return false;</span>
+    }
+
+    /**
+     * Removes a username from the server username list
+     * @param username to remove
+     */
+    public void removeUsername(String username){
+<span class="nc" id="L140">        usernameList.remove(username);</span>
+<span class="nc" id="L141">    }</span>
+
+    public synchronized Lobby getLobby(int lobbyId){
+<span class="nc" id="L144">        return lobbyMap.get(lobbyId);</span>
+    }
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

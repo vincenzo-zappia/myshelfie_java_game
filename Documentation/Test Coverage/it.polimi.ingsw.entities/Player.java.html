@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.entities</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">/* Author/s: Tirabassi M., Vianello G., Zappia V.
+ * Data: 12/03/2023
+ * IDE: IntelliJ IDEA
+ * Version 0.2
+ * Comments: none
+ */
+
+package it.polimi.ingsw.entities;
+import it.polimi.ingsw.entities.goals.PrivateGoal;
+
+import java.io.Serializable;
+
+/**
+ * Player of the game with a username and a bookshelf
+ */
+public class Player implements Serializable {
+
+    //region ATTRIBUTES
+    private final String username;
+    private final Bookshelf bookshelf;
+    private int score;
+    private final PrivateGoal privateGoal;
+    private final boolean[] scoredCG;
+    //endregion
+
+    //region CONSTRUCTOR
+<span class="fc" id="L27">    public Player(String username, PrivateGoal privateGoal){</span>
+<span class="fc" id="L28">        this.privateGoal = privateGoal;</span>
+<span class="fc" id="L29">        this.username = username;</span>
+<span class="fc" id="L30">        bookshelf = new Bookshelf();</span>
+<span class="fc" id="L31">        score = 0;</span>
+<span class="fc" id="L32">        scoredCG = new boolean[2];</span>
+<span class="fc" id="L33">    }</span>
+    //endregion
+
+    //region METHODS
+    /**
+     * Adds points to the player's score
+     * @param points added
+     */
+    public void addScore(int points){
+<span class="fc" id="L42">        score += points;</span>
+<span class="fc" id="L43">    }</span>
+
+    public void scoreCommonGoal(int i){
+<span class="fc" id="L46">        scoredCG[i] = true;</span>
+<span class="fc" id="L47">    }</span>
+
+    public boolean isCommonGoalScored(int i){
+<span class="fc" id="L50">        return scoredCG[i];</span>
+    }
+    //endregion
+
+    //region GETTER
+    public String getUsername(){
+<span class="fc" id="L56">        return username;</span>
+    }
+    public Bookshelf getBookshelf(){
+<span class="fc" id="L59">        return bookshelf;</span>
+    }
+<span class="fc" id="L61">    public int getScore(){return score;}</span>
+    public PrivateGoal getPrivateGoal() {
+<span class="fc" id="L63">        return privateGoal;</span>
+    }
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

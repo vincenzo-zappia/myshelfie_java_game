@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.view.gui</a> &gt; <span class="el_source">GUI.java</span></div><h1>GUI.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.view.gui;
+
+import it.polimi.ingsw.Main;
+import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.view.gui.scenes.GenericScene;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+<span class="nc" id="L15">public class GUI extends Application {</span>
+
+    //region ATTRIBUTES
+    private GUIManager guiManager;
+    private Scene scene;
+    private FXMLLoader currentLoader;
+    private GenericScene currentController;
+    //endregion
+
+    //region JAVAFX
+    public static void main(String[] args) {
+<span class="nc" id="L26">        launch();</span>
+<span class="nc" id="L27">    }</span>
+
+    @Override
+    public void start(Stage stage) {
+        try{
+            //Loading the scene where the player is asked to insert server IP and port
+<span class="nc" id="L33">            currentLoader = new FXMLLoader(GUI.class.getResource(&quot;network.fxml&quot;));</span>
+<span class="nc" id="L34">            Scene scene = new Scene(currentLoader.load(), 1000,600);</span>
+<span class="nc" id="L35">            this.currentController = currentLoader.getController();</span>
+
+<span class="nc" id="L37">            this.scene = scene;</span>
+<span class="nc" id="L38">            startupStage(stage);</span>
+<span class="nc" id="L39">            stage.setScene(scene);</span>
+<span class="nc" id="L40">            stage.show();</span>
+<span class="nc" id="L41">            guiManager = new GUIManager(this);</span>
+
+<span class="nc" id="L43">        } catch (Exception e){</span>
+<span class="nc" id="L44">            System.out.println(e.getMessage());</span>
+<span class="nc" id="L45">        }</span>
+<span class="nc" id="L46">    }</span>
+
+    @Override
+    public void stop() {
+<span class="nc" id="L50">        Platform.exit();</span>
+<span class="nc" id="L51">        System.exit(0);</span>
+<span class="nc" id="L52">    }</span>
+    //endregion
+
+    //region METHODS
+    /**
+     * Initializes the stage
+     * @param stage the stage to initialize
+     */
+    private void startupStage(Stage stage){
+<span class="nc" id="L61">        stage.setTitle(&quot;MyShelfie&quot;);</span>
+<span class="nc" id="L62">        stage.getIcons().add(new Image(Main.getResourcePath() + &quot;/assets/misc/icon.png&quot;));</span>
+<span class="nc" id="L63">        stage.setFullScreen(true);</span>
+<span class="nc" id="L64">        stage.setMinWidth(1000);</span>
+<span class="nc" id="L65">        stage.setMinHeight(600);</span>
+<span class="nc" id="L66">    }</span>
+
+    /**
+     * Starts the game application
+     * @param client who uses the application
+     */
+    public void startConnection(Client client){
+<span class="nc" id="L73">        guiManager.start(client);</span>
+<span class="nc" id="L74">        loadScene(&quot;username.fxml&quot;);</span>
+<span class="nc" id="L75">    }</span>
+
+    /**
+     * Changes the scene root to the selected one by loading its fxml
+     * @param filename name of the fxml file
+     */
+    public void loadScene(String filename){
+<span class="nc" id="L82">        currentLoader = new FXMLLoader(GUI.class.getResource(filename));</span>
+        try {
+<span class="nc" id="L84">            scene.setRoot(currentLoader.load());</span>
+<span class="nc" id="L85">        } catch (IOException e) {</span>
+<span class="nc" id="L86">            throw new RuntimeException(e);</span>
+<span class="nc" id="L87">        }</span>
+<span class="nc" id="L88">        this.currentController = currentLoader.getController();</span>
+
+<span class="nc" id="L90">    }</span>
+
+    /**
+     * Returns the controller of the current scene
+     * @return controller of the current scene
+     */
+    public GenericScene getController(){
+<span class="nc" id="L97">        return currentController;</span>
+    }
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

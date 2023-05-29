@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Scoreboard.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.entities</a> &gt; <span class="el_source">Scoreboard.java</span></div><h1>Scoreboard.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.entities;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.stream.IntStream;
+
+/**
+ * Class Scoreboard used in end game phase to print &quot;username: score&quot; ordered by descendant
+ */
+public class Scoreboard implements Serializable {
+
+    /**
+     * Inner class used as &quot;struct&quot; to associate username with scores
+     */
+<span class="fc" id="L17">    public class PL_score implements Serializable{</span>
+        int scores;
+        String username;
+    }
+
+    private PL_score[] user_scores;
+
+<span class="fc" id="L24">    public Scoreboard(int n_players){</span>
+<span class="fc" id="L25">        user_scores=new PL_score[n_players];</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        for (int i = 0; i &lt; n_players; i++) user_scores[i] = new PL_score();</span>
+<span class="fc" id="L27">    }</span>
+
+    /**
+     * fill the new empty scoreboard with usernames and scores
+     * @param x players arrayList (param by Game class)
+     */
+    public void fillScoreboard(ArrayList&lt;Player&gt; x){
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        for(int i = 0; i&lt;x.size(); i++){</span>
+<span class="fc" id="L35">            user_scores[i].username = x.get(i).getUsername();</span>
+<span class="fc" id="L36">            user_scores[i].scores = x.get(i).getScore();</span>
+        }
+<span class="fc" id="L38">    }</span>
+
+    /**
+     * Order by descendant score the players's username;
+     */
+    public void orderByDesc(){
+        PL_score tmp;
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        for(int k = 0; k &lt; user_scores.length; k++){</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">            for(int c = 0; c&lt; user_scores.length-1; c++){</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">                if(user_scores[c].scores &lt; user_scores[c+1].scores){</span>
+<span class="fc" id="L48">                    tmp = user_scores[c+1];</span>
+<span class="fc" id="L49">                    user_scores[c+1]=user_scores[c];</span>
+<span class="fc" id="L50">                    user_scores[c] = tmp;</span>
+                }
+            }
+        }
+<span class="fc" id="L54">    }</span>
+
+    public PL_score[] getUser_scores() {
+<span class="nc" id="L57">        return user_scores;</span>
+    }
+
+    public String getUsername(int y){
+<span class="nc" id="L61">        return user_scores[y].username;</span>
+    }
+
+    public int getScores(int k){
+<span class="fc" id="L65">        return user_scores[k].scores;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

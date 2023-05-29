@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw;
+
+import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.Server;
+import it.polimi.ingsw.view.cli.CLI;
+import it.polimi.ingsw.view.gui.GUI;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.UnknownHostException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
+import java.util.Scanner;
+
+import static java.lang.System.exit;
+
+<span class="nc" id="L19">public class Main {</span>
+<span class="fc" id="L20">    private static final Scanner in = new Scanner(System.in);</span>
+
+    public static void main(String[] args) {
+<span class="nc" id="L23">        argsCheck(args);</span>
+
+        //Making the player choose the user interface
+<span class="nc" id="L26">        System.out.println(&quot;Select user interface:&quot;);</span>
+<span class="nc" id="L27">        System.out.println(&quot;[0] CLI \n[1] GUI&quot;);</span>
+<span class="nc" id="L28">        String selection = in.nextLine();</span>
+
+        //Starting the CLI
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        if (selection.equals(&quot;0&quot;)) {</span>
+<span class="nc" id="L32">            CLI cli = new CLI(requestNetworkInformation());</span>
+<span class="nc" id="L33">            new Thread(cli).start();</span>
+<span class="nc" id="L34">        }</span>
+
+        //Starting the GUI
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        else if (selection.equals(&quot;1&quot;)) {</span>
+<span class="nc" id="L38">            GUI.main(args);</span>
+        }
+
+        //Shutting off if the selection doesn't match any user interface
+        else{
+<span class="nc" id="L43">            System.out.println(&quot;Incorrect selection!&quot;);</span>
+<span class="nc" id="L44">            exit(0);</span>
+        }
+
+<span class="nc" id="L47">    }</span>
+
+    //region METHODS
+    private static void argsCheck(String[] args){
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if(args.length&gt;0){</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">            switch (args[0]){</span>
+                case &quot;--server&quot; -&gt; {
+<span class="nc" id="L54">                    Server.main(args);</span>
+<span class="nc" id="L55">                    return;</span>
+                }
+            }
+        }
+<span class="nc" id="L59">    }</span>
+
+    /**
+     * Requests the user the server IP and port and creates a new Client instance
+     * @return the new Client instance
+     */
+    private static Client requestNetworkInformation(){
+
+        do {
+            //Asking and checking the IP
+            String ip;
+<span class="nc" id="L70">            System.out.println(&quot;Insert the IP of the server:&quot;);</span>
+<span class="nc" id="L71">            ip = in.nextLine();</span>
+
+            //Asking and checking the port
+            int port;
+<span class="nc" id="L75">            System.out.println(&quot;Insert the port of the server:&quot;);</span>
+
+            //Creating a new Client instance out of the previously selected ip and port
+            try {
+<span class="nc" id="L79">                port = Integer.parseInt(in.nextLine());</span>
+<span class="nc" id="L80">                return new Client(ip, port);</span>
+<span class="nc" id="L81">            } catch (UnknownHostException u) {</span>
+<span class="nc" id="L82">                System.out.println(&quot;IP not valid!&quot;);</span>
+<span class="nc" id="L83">            } catch (IOException | NumberFormatException e) {</span>
+<span class="nc" id="L84">                System.out.println(&quot;Port not valid!&quot;);</span>
+<span class="nc" id="L85">            }</span>
+<span class="nc" id="L86">        }while(true);</span>
+
+    }
+
+    /**
+     * @return The path of the resources root
+     */
+    public static String getResourcePath() {
+        String basePath;
+        URI uri;
+
+        //Getting the base path of the Main class
+        try {
+<span class="fc" id="L99">            uri = Objects.requireNonNull(Main.class.getResource(&quot;&quot;)).toURI();</span>
+<span class="nc" id="L100">        } catch (URISyntaxException e) {</span>
+<span class="nc" id="L101">            throw new RuntimeException(e);</span>
+<span class="fc" id="L102">        }</span>
+<span class="fc" id="L103">        Path path = Paths.get(uri);</span>
+
+        //Going down three directory levels (it/polimi/ingsw)
+<span class="fc" id="L106">        basePath = path.getParent().getParent().getParent().toString();</span>
+
+<span class="fc" id="L108">        return basePath;</span>
+    }
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

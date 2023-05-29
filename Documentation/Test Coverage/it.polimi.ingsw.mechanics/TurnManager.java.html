@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurnManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.mechanics</a> &gt; <span class="el_source">TurnManager.java</span></div><h1>TurnManager.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.mechanics;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+/**
+ * &quot;Iterator&quot; that has the role to select the current player relatively to the logic of the game
+ */
+public class TurnManager {
+
+    //region ATTRIBUTES
+    private final ArrayList&lt;String&gt; playerUsernames;
+    private String currentPlayer;
+    private boolean endGame;
+    //endregion
+
+    //region CONSTRUCTOR
+<span class="fc" id="L18">    public TurnManager(ArrayList&lt;String&gt; playerUsernames){</span>
+<span class="fc" id="L19">        this.playerUsernames = playerUsernames;</span>
+<span class="fc" id="L20">        this.currentPlayer = playerUsernames.get(0);</span>
+<span class="fc" id="L21">        System.out.println(&quot;INFO: Current player is: &quot; + currentPlayer);</span>
+<span class="fc" id="L22">        endGame = false;</span>
+
+        //Printing the order in which the players will make their moves
+<span class="fc" id="L25">        System.out.print(&quot;INFO: Turn order: &quot;);</span>
+<span class="fc" id="L26">        System.out.println(&quot;\t&quot; + String.join(&quot; -&gt; &quot;, playerUsernames));</span>
+<span class="fc" id="L27">    }</span>
+    //endregion
+
+    //region METHODS
+    /**
+     * Sets the current player according to the rules of the game. It circularly iterates
+     * through the players. If the endgame phase has started it stops at the last username which corresponds
+     * to the player to the right of the sofa.
+     */
+    public boolean nextTurn(){
+<span class="fc" id="L37">        int currentPlayerIndex = playerUsernames.indexOf(currentPlayer);</span>
+
+        //Checking if an iteration has ended, if so, and the endgame has not yet started, it starts back from the couch
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        if(currentPlayerIndex + 1 &lt; playerUsernames.size()) currentPlayerIndex += 1;</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        else if(!endGame) currentPlayerIndex = 0;</span>
+<span class="fc" id="L42">        else return false;</span>
+<span class="fc" id="L43">        currentPlayer = playerUsernames.get(currentPlayerIndex);</span>
+<span class="fc" id="L44">        System.out.println(&quot;INFO: Current player is: &quot; + currentPlayer);</span>
+<span class="fc" id="L45">        return true;</span>
+    }
+
+    /**
+     * Starts the endGame: the iteration of the player is set to stop to the last username which
+     * corresponds to the player to the right of the couch.
+     */
+    public void startEndGame(){
+<span class="fc" id="L53">        endGame = true;</span>
+<span class="fc" id="L54">    }</span>
+
+    public boolean inEndGame(){
+<span class="fc" id="L57">        return endGame;</span>
+    }
+
+    public String getCurrentPlayer(){
+<span class="fc" id="L61">        return currentPlayer;</span>
+    }
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

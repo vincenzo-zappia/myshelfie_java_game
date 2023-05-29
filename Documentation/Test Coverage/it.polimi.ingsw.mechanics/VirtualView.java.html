@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VirtualView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.mechanics</a> &gt; <span class="el_source">VirtualView.java</span></div><h1>VirtualView.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.mechanics;
+
+import it.polimi.ingsw.entities.Scoreboard;
+import it.polimi.ingsw.entities.goals.Goal;
+import it.polimi.ingsw.entities.goals.PrivateGoal;
+import it.polimi.ingsw.network.ClientHandler;
+import it.polimi.ingsw.network.messages.*;
+import it.polimi.ingsw.network.messages.server2client.*;
+import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.entities.util.BoardTile;
+import it.polimi.ingsw.entities.util.Tile;
+import it.polimi.ingsw.view.View;
+
+/**
+ * Manages the creation of messages from server to client
+ */
+public class VirtualView implements View, Observer {
+
+    //region ATTRIBUTES
+    private final ClientHandler clientHandler;
+    //endregion
+
+    //region CONSTRUCTOR
+<span class="nc" id="L24">    public VirtualView(ClientHandler clientHandler){</span>
+<span class="nc" id="L25">        this.clientHandler = clientHandler;</span>
+<span class="nc" id="L26">    }</span>
+    //endregion
+
+    //region OBSERVER
+    @Override
+    public void update(Message message){
+<span class="nc" id="L32">        clientHandler.sendMessage(message);</span>
+<span class="nc" id="L33">    }</span>
+    //endregion
+
+    //region VIEW
+    @Override
+    public void sendGenericResponse(boolean response, String content) {
+<span class="nc" id="L39">        clientHandler.sendMessage(new TextResponse(response, content));</span>
+<span class="nc" id="L40">    }</span>
+
+    @Override
+    public void showCurrentPlayer(String currentPlayer) {
+<span class="nc" id="L44">        clientHandler.sendMessage(new GenericMessage(currentPlayer, MessageType.CURRENT_PLAYER));</span>
+<span class="nc" id="L45">    }</span>
+
+    @Override
+    public void sendCheckedCoordinates(boolean response, int[][] coordinates) {
+<span class="nc" id="L49">        clientHandler.sendMessage(new CoordinatesMessage(response, coordinates, MessageType.CHECKED_COORDINATES));</span>
+<span class="nc" id="L50">    }</span>
+
+    @Override
+    public void showRemovedCards(int[][] coordinates){
+<span class="nc" id="L54">        clientHandler.sendMessage(new CoordinatesMessage(coordinates, MessageType.REMOVED_CARDS));</span>
+<span class="nc" id="L55">    }</span>
+
+    @Override
+    public void showUpdatedBookshelf(Tile[][] bookshelf) {
+<span class="nc" id="L59">        clientHandler.sendMessage(new BookshelfMessage(bookshelf));</span>
+<span class="nc" id="L60">    }</span>
+
+    @Override
+    public void showRefilledBoard(BoardTile[][] boardTiles) {
+<span class="nc" id="L64">        clientHandler.sendMessage(new BoardMessage(boardTiles));</span>
+<span class="nc" id="L65">    }</span>
+
+    @Override
+    public void showCommonGoals(Goal[] commonGoals) {
+<span class="nc" id="L69">        clientHandler.sendMessage(new CommonGoalsMessage(commonGoals));</span>
+<span class="nc" id="L70">    }</span>
+
+    @Override
+    public void showPrivateGoal(PrivateGoal privateGoal) {
+<span class="nc" id="L74">        clientHandler.sendMessage(new PrivateGoalMessage(privateGoal));</span>
+<span class="nc" id="L75">    }</span>
+
+    @Override
+    public void showScoreboard(Scoreboard scoreboard){
+<span class="nc" id="L79">        clientHandler.sendMessage(new ScoreboardMessage(scoreboard));</span>
+<span class="nc" id="L80">    }</span>
+
+    @Override
+    public void showToken(String content) {
+<span class="nc" id="L84">        clientHandler.sendMessage(new GenericMessage(content + &quot; filled his bookshelf!&quot;, MessageType.TOKEN));</span>
+<span class="nc" id="L85">    }</span>
+    //endregion
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

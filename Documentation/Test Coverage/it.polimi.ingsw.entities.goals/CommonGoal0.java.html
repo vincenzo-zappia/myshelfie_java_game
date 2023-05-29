@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommonGoal0.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.entities.goals</a> &gt; <span class="el_source">CommonGoal0.java</span></div><h1>CommonGoal0.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.entities.goals;
+
+import it.polimi.ingsw.entities.Bookshelf;
+import it.polimi.ingsw.entities.util.CardType;
+
+import static it.polimi.ingsw.entities.goals.CommonGoal.findAdjacent;
+
+/**
+ * The always present game common goal (the one on the board)
+ */
+<span class="fc" id="L11">public class CommonGoal0 implements Goal{</span>
+
+    //region METHODS
+    @Override
+    public int checkGoal(Bookshelf bookshelf) {
+<span class="fc" id="L16">        int points = 0;</span>
+
+        //Calculating the points scored relatively to the biggest group of cards of the same type for each type
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        for(int i = 0; i &lt; CardType.values().length; i++){</span>
+<span class="fc" id="L20">            int maxGroupType = maxGroupType(bookshelf.getBookshelfColors(), i);</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">            if (maxGroupType == 3) points += 2;</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">            else if (maxGroupType == 4) points += 3;</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">            else if (maxGroupType == 5) points += 5;</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">            else if (maxGroupType &gt;= 6) points += 8;</span>
+        }
+
+<span class="fc" id="L27">        return points;</span>
+    }
+
+    /**
+     * Calculates the biggest group of cards of the same type
+     * @param matrix type abstracted bookshelf
+     * @param codifiedType int representing the card type
+     * @return the size of the biggest group of cards of the same type
+     */
+    private int maxGroupType(int[][] matrix, int codifiedType) {
+<span class="fc" id="L37">        int max = 0;</span>
+
+        //Defining bookshelf dimensions
+<span class="fc" id="L40">        int rows = matrix.length;</span>
+<span class="fc" id="L41">        int cols = matrix[0].length;</span>
+
+<span class="fc" id="L43">        boolean[][] visited = new boolean[rows][cols]; //Keeps track of already visited tiles</span>
+
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        for (int i = 0; i &lt; rows; i++) {</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">            for (int j = 0; j &lt; cols; j++) {</span>
+
+                //Checking whether a tile was already visited or has no type or is of the same type
+<span class="fc bfc" id="L49" title="All 6 branches covered.">                if (!visited[i][j] &amp;&amp; matrix[i][j] != UNAVAILABLE &amp;&amp; matrix[i][j] == codifiedType) {</span>
+
+                    //Choosing the biggest dimension between the previously calculated group and the current one
+<span class="fc" id="L52">                    max = Math.max(max, findAdjacent(matrix, visited, i, j, codifiedType));</span>
+                }
+            }
+        }
+<span class="fc" id="L56">        return max;</span>
+    }
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

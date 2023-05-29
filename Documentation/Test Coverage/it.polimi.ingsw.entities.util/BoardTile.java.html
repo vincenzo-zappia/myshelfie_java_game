@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BoardTile.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.entities.util</a> &gt; <span class="el_source">BoardTile.java</span></div><h1>BoardTile.java</h1><pre class="source lang-java linenums">/* Author/s: Tirabassi M., Vianello G., Zappia V.
+ * Date: 12/03/2023
+ * IDE: IntelliJ IDEA
+ * Version 0.3
+ * Comments: none
+ */
+
+package it.polimi.ingsw.entities.util;
+
+/**
+ * Tile that adds a boolean attribute to check whether it is a playable one (needed to give the board, a tile matrix, its shape)
+ */
+public class BoardTile extends Tile {
+    private Boolean active;
+
+    public BoardTile(){
+<span class="fc" id="L17">        super();</span>
+<span class="fc" id="L18">        active = false;</span>
+<span class="fc" id="L19">    }</span>
+
+    public void setTileActive(){
+<span class="fc" id="L22">        active = true;</span>
+<span class="fc" id="L23">    }</span>
+    public boolean isTileActive(){
+<span class="fc" id="L25">        return active;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

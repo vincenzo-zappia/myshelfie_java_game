@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommonGoal10.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.entities.goals</a> &gt; <span class="el_source">CommonGoal10.java</span></div><h1>CommonGoal10.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.entities.goals;
+
+import it.polimi.ingsw.entities.Bookshelf;
+import it.polimi.ingsw.entities.util.Tile;
+
+/**
+ * Five tiles of the same type forming an X
+ */
+public class CommonGoal10 extends CommonGoal implements Goal{
+
+    //region ATTRIBUTES
+    private Bookshelf b;
+    //endregion
+
+    //region CONSTRUCTOR
+    public CommonGoal10() {
+<span class="fc" id="L17">        super(&quot;Five tiles of the same type forming an X.&quot;, &quot;cg10.jpg&quot;);</span>
+<span class="fc" id="L18">    }</span>
+    //endregion
+
+    //region METHODS
+    @Override
+    public int checkGoal(Bookshelf bookshelf) {
+
+<span class="fc" id="L25">        b = bookshelf;</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        for(int i = 0; i&lt;4; i++){</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">            for (int j = 0; j&lt;3; j++){</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">                if(isX(i, j)) return getScore();</span>
+            }
+        }
+<span class="fc" id="L31">        return 0;</span>
+    }
+
+    private boolean isX(int row, int column){
+<span class="fc" id="L35">        Tile[] c = new Tile[5];</span>
+
+<span class="fc" id="L37">        c[0] = b.getBookshelfTile(row, column);</span>
+<span class="fc" id="L38">        c[1] = b.getBookshelfTile(row, column +2);</span>
+<span class="fc" id="L39">        c[2] = b.getBookshelfTile(row+1, column+1);</span>
+<span class="fc" id="L40">        c[3] = b.getBookshelfTile(row+2, column);</span>
+<span class="fc" id="L41">        c[4] = b.getBookshelfTile(row+2, column+2);</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if(existsEmpty(c)) return false;</span>
+
+<span class="fc" id="L44">        return allSameType(c);</span>
+
+    }
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

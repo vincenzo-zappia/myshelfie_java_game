@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameScene.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">proj-ingsw-rj45</a> &gt; <a href="index.source.html" class="el_package">it.polimi.ingsw.view.gui.scenes</a> &gt; <span class="el_source">GameScene.java</span></div><h1>GameScene.java</h1><pre class="source lang-java linenums">package it.polimi.ingsw.view.gui.scenes;
+
+import it.polimi.ingsw.Main;
+import it.polimi.ingsw.entities.goals.CommonGoal;
+import it.polimi.ingsw.entities.goals.Goal;
+import it.polimi.ingsw.entities.goals.PrivateGoal;
+import it.polimi.ingsw.entities.util.BoardTile;
+import it.polimi.ingsw.entities.util.Tile;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+/**
+ * Controller of the actual game scene where the player can interact with the game entities
+ */
+<span class="nc" id="L25">public class GameScene extends GenericScene{</span>
+
+    //region ATTRIBUTES
+    //region BOARD
+    @FXML private GridPane board;
+    @FXML private Button confirm;
+    //endregion
+
+    //region BOOKSHELF
+    @FXML private GridPane bookshelf;
+    @FXML private Button col0;
+    @FXML private Button col1;
+    @FXML private Button col2;
+    @FXML private Button col3;
+    @FXML private Button col4;
+    //endregion
+
+    //region GOALS
+    @FXML private ImageView cg1;
+    @FXML private ImageView cg1Score;
+    @FXML private ImageView cg2;
+    @FXML private ImageView cg2Score;
+    @FXML private ImageView token;
+    @FXML private ImageView pg;
+    //endregion
+
+    @FXML private TabPane tabPane;
+    private ArrayList&lt;int[]&gt; currentSelection;
+    private boolean selectable;
+    //endregion
+
+    //region CHAT
+    @FXML private TextField writeChat;
+    @FXML private TextArea chat;
+
+    /**
+     * Creates and sends a chat message through the client side controller to the server
+     */
+    @FXML public void sendChat(){
+<span class="nc" id="L64">        String message = writeChat.getText();</span>
+<span class="nc" id="L65">        controller.sendChat(message);</span>
+<span class="nc" id="L66">        writeChat.clear();</span>
+<span class="nc" id="L67">    }</span>
+
+    /**
+     * Displays the new chat message after the previous one
+     * @param message chat text to display
+     */
+    public void showChat(String message){
+<span class="nc" id="L74">        String previous = chat.getText();</span>
+<span class="nc" id="L75">        chat.setText(previous + &quot;\n&quot; + message);</span>
+<span class="nc" id="L76">    }</span>
+    //endregion
+
+    //region CONSTRUCTOR
+    /**
+     * Routine of game scene initialization such as binding even handlers to buttons and making image views not visible
+     */
+    public void initGame(){
+<span class="nc" id="L84">        currentSelection = new ArrayList&lt;&gt;();</span>
+
+        //Setting up selection button events and initializing board tiles
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        for(Node node : board.getChildren()) {</span>
+<span class="nc" id="L88">            node.setOnMouseClicked(onBoardCardClick);</span>
+<span class="nc" id="L89">            node.setVisible(false);</span>
+<span class="nc" id="L90">        }</span>
+
+        //Initializing bookshelf tiles
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        for(Node node : bookshelf.getChildren()) node.setVisible(false);</span>
+
+        //Setting up insertion button events
+<span class="nc" id="L96">        col0.setOnAction(onInsertColumnClick);</span>
+<span class="nc" id="L97">        col1.setOnAction(onInsertColumnClick);</span>
+<span class="nc" id="L98">        col2.setOnAction(onInsertColumnClick);</span>
+<span class="nc" id="L99">        col3.setOnAction(onInsertColumnClick);</span>
+<span class="nc" id="L100">        col4.setOnAction(onInsertColumnClick);</span>
+
+        //Setting the goals invisible before they are randomly picked
+<span class="nc" id="L103">        cg1.setVisible(false);</span>
+<span class="nc" id="L104">        cg1Score.setVisible(false);</span>
+<span class="nc" id="L105">        cg2.setVisible(false);</span>
+<span class="nc" id="L106">        cg2Score.setVisible(false);</span>
+<span class="nc" id="L107">        pg.setVisible(false);</span>
+
+<span class="nc" id="L109">        token.setVisible(true);</span>
+
+<span class="nc" id="L111">        enableConfirmationButton(false);</span>
+<span class="nc" id="L112">        selectable = true;</span>
+
+<span class="nc" id="L114">    }</span>
+    //endregion
+
+    //region CLICKS
+    /**
+     * Adds or removes the coordinates of the card placed in the clicked board tile in the selection arraylist and changes its aesthetic properties
+     */
+<span class="nc" id="L121">    EventHandler&lt;MouseEvent&gt; onBoardCardClick = event -&gt; {</span>
+
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        if (!selectable) return;</span>
+
+<span class="nc" id="L125">        Node clikedNode = (Node) event.getSource();</span>
+<span class="nc" id="L126">        ImageView selectedCard = (ImageView) clikedNode;</span>
+
+        //Adding the clicked card to the selection
+<span class="nc" id="L129">        int[] selection = new int[2];</span>
+<span class="nc" id="L130">        selection[0] = GridPane.getRowIndex(clikedNode);</span>
+<span class="nc" id="L131">        selection[1] = GridPane.getColumnIndex(clikedNode);</span>
+
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (selectedCard.getOpacity() == 1){</span>
+<span class="nc" id="L134">            currentSelection.add(selection);</span>
+
+            //Changing the graphic properties of the card
+<span class="nc" id="L137">            selectedCard.setOpacity(0.5);</span>
+<span class="nc" id="L138">            enableConfirmationButton(true);</span>
+        }
+        else {
+            //Removing the already selected coordinates from the current selection
+<span class="nc" id="L142">            currentSelection.removeIf(coordinates -&gt; Arrays.equals(coordinates, selection));</span>
+
+            //Changing the graphic properties of the card
+<span class="nc" id="L145">            selectedCard.setOpacity(1);</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">            if (!cardSelected()) enableConfirmationButton(false);</span>
+        }
+
+<span class="nc" id="L149">    };</span>
+
+    /**
+     * Creates an array of coordinates out of the selection arraylist and sends it in a selection request to the server
+     */
+    @FXML public void onConfirmClick(){
+
+        //Creating the array of coordinates out of the selection arraylist
+<span class="nc" id="L157">        int[][] sentSelection = new int[currentSelection.size()][2];</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">        for(int i = 0; i &lt; currentSelection.size(); i++){</span>
+<span class="nc" id="L159">            sentSelection[i][0] = currentSelection.get(i)[0];</span>
+<span class="nc" id="L160">            sentSelection[i][1] = currentSelection.get(i)[1];</span>
+        }
+
+        //Sending the selected coordinates to the server
+<span class="nc" id="L164">        controller.sendSelection(sentSelection);</span>
+
+        //End task routines: clearing the selection arraylist and setting the opacity back to normal
+<span class="nc" id="L167">        currentSelection.clear();</span>
+<span class="nc" id="L168">        enableConfirmationButton(false);</span>
+
+<span class="nc" id="L170">    }</span>
+
+    /**
+     * Extracts the number of the clicked column and sends it in an insertion request to the server
+     */
+<span class="nc" id="L175">    EventHandler&lt;ActionEvent&gt; onInsertColumnClick = event -&gt; {</span>
+<span class="nc" id="L176">        Button column = (Button) event.getSource();</span>
+<span class="nc" id="L177">        int sentColumn = 5;</span>
+        
+        //Extracting the column number from its relative button
+<span class="nc bnc" id="L180" title="All 6 branches missed.">        switch (column.getId()){</span>
+<span class="nc" id="L181">            case &quot;col0&quot; -&gt; sentColumn = 0;</span>
+<span class="nc" id="L182">            case &quot;col1&quot; -&gt; sentColumn = 1;</span>
+<span class="nc" id="L183">            case &quot;col2&quot; -&gt; sentColumn = 2;</span>
+<span class="nc" id="L184">            case &quot;col3&quot; -&gt; sentColumn = 3;</span>
+<span class="nc" id="L185">            case &quot;col4&quot; -&gt; sentColumn = 4;</span>
+        }
+        
+        //Sending the insertion request to the server
+<span class="nc" id="L189">        controller.sendInsertion(sentColumn);</span>
+        
+<span class="nc" id="L191">    };</span>
+    //endregion
+
+    //Methods called by GUIManager to update the graphical entities of the game scene during the game
+    //region DISPLAYS
+    /**
+     * Updating and displaying the refilled board
+     * @param updatedBoard refilled board
+     */
+    public void displayBoard(BoardTile[][] updatedBoard){
+<span class="nc" id="L201">        int numRows = board.getRowCount();</span>
+<span class="nc" id="L202">        int numCols = board.getColumnCount();</span>
+
+<span class="nc bnc" id="L204" title="All 2 branches missed.">        for(int row = 0; row &lt; numRows; row++){</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">            for(int col = 0; col &lt; numCols; col++){</span>
+
+                //Checking if a new card was placed in the tile
+<span class="nc bnc" id="L208" title="All 4 branches missed.">                if(!updatedBoard[row][col].isTileActive() || updatedBoard[row][col].isTileEmpty()) continue;</span>
+
+                //Updating and displaying the newly placed card
+<span class="nc" id="L211">                Node node = getNodeByRowColumnIndex(row, col, board);</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">                if (node instanceof ImageView) {</span>
+<span class="nc" id="L213">                    ImageView card = (ImageView) node;</span>
+<span class="nc" id="L214">                    String imgPath = Main.getResourcePath() + updatedBoard[row][col].getCard().getImgPath();</span>
+<span class="nc" id="L215">                    card.setImage(new Image(imgPath));</span>
+<span class="nc" id="L216">                    card.setVisible(true);</span>
+                }
+
+            }
+        }
+<span class="nc" id="L221">    }</span>
+
+    /**
+     * Updating and displaying the player's bookshelf with the newly added cards
+     * @param updatedBookshelf updated bookshelf
+     */
+    public void displayBookshelf(Tile[][] updatedBookshelf){
+<span class="nc" id="L228">        int numRows = bookshelf.getRowCount();</span>
+<span class="nc" id="L229">        int numCols = bookshelf.getColumnCount();</span>
+
+<span class="nc bnc" id="L231" title="All 2 branches missed.">        for(int row = 0; row &lt; numRows; row++){</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">            for(int col = 0; col &lt; numCols; col++){</span>
+
+                //Checking if a new card was added in the bookshelf tile
+<span class="nc bnc" id="L235" title="All 2 branches missed.">                if(updatedBookshelf[row][col].isTileEmpty()) continue;</span>
+
+                //Updating and displaying the newly added card
+<span class="nc" id="L238">                Node node = getNodeByRowColumnIndex(row, col, bookshelf);</span>
+
+<span class="nc bnc" id="L240" title="All 2 branches missed.">                if (node instanceof ImageView) {</span>
+<span class="nc" id="L241">                    ImageView card = (ImageView) node;</span>
+<span class="nc" id="L242">                    String imgPath = Main.getResourcePath() + updatedBookshelf[row][col].getCard().getImgPath();</span>
+<span class="nc" id="L243">                    card.setImage(new Image(imgPath));</span>
+<span class="nc" id="L244">                    card.setVisible(true);</span>
+                }
+
+            }
+        }
+<span class="nc" id="L249">    }</span>
+
+    /**
+     * Displaying the randomly chosen common goal cards and updating the score whenever a player achieves one
+     * @param commonGoals common goals of the current game
+     */
+    public void displayCommonGoals(Goal[] commonGoals){
+<span class="nc" id="L256">        CommonGoal commonGoal1 = (CommonGoal) commonGoals[0];</span>
+<span class="nc" id="L257">        CommonGoal commonGoal2 = (CommonGoal) commonGoals[1];</span>
+
+        //Extracting the image file paths for the game common goals and their current score value
+<span class="nc" id="L260">        String imgPath1 = Main.getResourcePath() + commonGoal1.getFileName();</span>
+<span class="nc" id="L261">        String imgPath2 = Main.getResourcePath() + commonGoal2.getFileName();</span>
+<span class="nc" id="L262">        String pathScore1 = Main.getResourcePath() + commonGoal1.getScoreFileName();</span>
+<span class="nc" id="L263">        String pathScore2 = Main.getResourcePath() + commonGoal2.getScoreFileName();</span>
+
+        //Setting the images of the game common goals and their current score value
+<span class="nc" id="L266">        cg1.setImage(new Image(imgPath1));</span>
+<span class="nc" id="L267">        cg1Score.setImage(new Image(pathScore1));</span>
+<span class="nc" id="L268">        cg2.setImage(new Image(imgPath2));</span>
+<span class="nc" id="L269">        cg2Score.setImage(new Image(pathScore2));</span>
+
+        //Making the images visible
+<span class="nc" id="L272">        cg1.setVisible(true);</span>
+<span class="nc" id="L273">        cg1Score.setVisible(true);</span>
+<span class="nc" id="L274">        cg2.setVisible(true);</span>
+<span class="nc" id="L275">        cg2Score.setVisible(true);</span>
+
+<span class="nc" id="L277">        Tooltip cg1tooltip = new Tooltip(commonGoal1.getDescription());</span>
+<span class="nc" id="L278">        Tooltip cg2tooltip = new Tooltip(commonGoal2.getDescription());</span>
+<span class="nc" id="L279">        Tooltip.install(cg1, cg1tooltip);</span>
+<span class="nc" id="L280">        Tooltip.install(cg2, cg2tooltip);</span>
+
+<span class="nc" id="L282">    }</span>
+
+    /**
+     * Displays the player-specific private goal card randomly chosen for each player at the start of the game
+     * @param privateGoal player-specific private goal
+     */
+    public void displayPrivateGoal(PrivateGoal privateGoal){
+<span class="nc" id="L289">        String pgPath = Main.getResourcePath() + privateGoal.getFileName();</span>
+<span class="nc" id="L290">        pg.setImage(new Image(pgPath));</span>
+<span class="nc" id="L291">        pg.setVisible(true);</span>
+<span class="nc" id="L292">    }</span>
+
+    /**
+     * Sets the cards selected from the board invisible when they are inserted in the player's bookshelf
+     * @param coordinates of the board tile containing the cards to be graphically removed
+     */
+    public void removeCards(int[][] coordinates){
+<span class="nc" id="L299">        resetBoardCardOpacity();</span>
+
+<span class="nc bnc" id="L301" title="All 2 branches missed.">        for (int[] coordinate : coordinates) {</span>
+<span class="nc" id="L302">            Node node = getNodeByRowColumnIndex(coordinate[0], coordinate[1], board);</span>
+<span class="nc" id="L303">            ImageView card = (ImageView) node;</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">            assert card != null;</span>
+<span class="nc" id="L305">            card.setVisible(false);</span>
+        }
+<span class="nc" id="L307">    }</span>
+
+    /**
+     * Removes the token for the bonus point from the board
+     * @param content message containing the username of the first player who filled his bookshelf
+     */
+    public void removeToken(String content){
+<span class="nc" id="L314">        token.setVisible(false);</span>
+<span class="nc" id="L315">        showMessage(true, content);</span>
+<span class="nc" id="L316">    }</span>
+
+    /**
+     * Switches either to the board or the bookshelf tab depending on the parameter
+     * @param tab index of the tab to switch to
+     */
+    public void switchTab(int tab){
+<span class="nc" id="L323">        tabPane.getSelectionModel().select(tab);</span>
+<span class="nc" id="L324">    }</span>
+    //endregion
+
+    //region UTIL
+    public void enableConfirmationButton(boolean enabled){
+<span class="nc bnc" id="L329" title="All 2 branches missed.">        confirm.setDisable(!enabled);</span>
+<span class="nc" id="L330">    }</span>
+
+    public void showInsertionButtons(boolean visibility){
+
+<span class="nc" id="L334">    }</span>
+
+    private boolean cardSelected(){
+<span class="nc bnc" id="L337" title="All 4 branches missed.">        for(Node node : board.getChildren()) if (node.getOpacity() != 1) return true;</span>
+
+<span class="nc" id="L339">        return false;</span>
+    }
+
+    public void setSelectable(boolean selectable) {
+<span class="nc" id="L343">        this.selectable = selectable;</span>
+<span class="nc" id="L344">    }</span>
+
+    public void resetBoardCardOpacity(){
+<span class="nc bnc" id="L347" title="All 2 branches missed.">        for(Node node : board.getChildren()) node.setOpacity(1);</span>
+<span class="nc" id="L348">        currentSelection.clear();</span>
+<span class="nc" id="L349">        enableConfirmationButton(false);</span>
+<span class="nc" id="L350">    }</span>
+    //endregion
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
