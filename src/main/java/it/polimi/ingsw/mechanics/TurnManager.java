@@ -1,7 +1,6 @@
 package it.polimi.ingsw.mechanics;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 /**
  * "Iterator" that has the role to select the current player relatively to the logic of the game

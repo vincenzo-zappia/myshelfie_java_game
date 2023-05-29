@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-import java.util.*;
 
 public class WinnerScene extends GenericScene {
 

@@ -49,11 +49,8 @@ public class Main {
     //region METHODS
     private static void argsCheck(String[] args){
         if(args.length>0){
-            switch (args[0]){
-                case "--server" -> {
-                    Server.main(args);
-                    return;
-                }
+            if (args[0].equals("--server")) {
+                Server.main(args);
             }
         }
     }

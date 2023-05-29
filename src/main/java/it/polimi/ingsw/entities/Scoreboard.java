@@ -2,9 +2,6 @@ package it.polimi.ingsw.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.stream.IntStream;
 
 /**
  * Class Scoreboard used in end game phase to print "username: score" ordered by descendant
@@ -14,12 +11,12 @@ public class Scoreboard implements Serializable {
     /**
      * Inner class used as "struct" to associate username with scores
      */
-    public class PL_score implements Serializable{
+    public static class PL_score implements Serializable{
         int scores;
         String username;
     }
 
-    private PL_score[] user_scores;
+    private final PL_score[] user_scores;
 
     public Scoreboard(int n_players){
         user_scores=new PL_score[n_players];

@@ -11,7 +11,6 @@ import it.polimi.ingsw.view.UserInterface;
 import it.polimi.ingsw.view.gui.scenes.*;
 import javafx.application.Platform;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**

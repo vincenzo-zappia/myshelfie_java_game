@@ -7,7 +7,9 @@ COPY src src
 COPY pom.xml .
 
 # Build the package
-RUN mvn clean package
+RUN mvn clean
+
+RUN mvn install
 
 # Expose the port 8080
 EXPOSE 2023

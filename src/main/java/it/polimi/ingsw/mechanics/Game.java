@@ -13,7 +13,6 @@ import it.polimi.ingsw.entities.util.BoardTile;
 
 import java.util.*;
 
-import it.polimi.ingsw.entities.util.Tile;
 
 public class Game{
 
