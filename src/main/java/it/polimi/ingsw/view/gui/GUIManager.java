@@ -137,9 +137,7 @@ public class GUIManager implements UserInterface {
             GameScene gameScene = (GameScene) gui.getController();
             gameScene.removeCards(coordinates);
 
-            //abilito il tasto di selezione e faccio scomparire i tasti di insertion
             gameScene.setSelectable(true);
-            gameScene.showInsertionButtons(false);
         });
 
     }

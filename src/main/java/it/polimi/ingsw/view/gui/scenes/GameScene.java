@@ -329,10 +329,6 @@ public class GameScene extends GenericScene{
         confirm.setDisable(!enabled);
     }
 
-    public void showInsertionButtons(boolean visibility){
-
-    }
-
     private boolean cardSelected(){
         for(Node node : board.getChildren()) if (node.getOpacity() != 1) return true;
 
