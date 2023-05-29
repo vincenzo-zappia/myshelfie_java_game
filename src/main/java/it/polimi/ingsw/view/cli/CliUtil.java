@@ -45,8 +45,8 @@ enum AsciiTool {
     R_CONTENT("  │\n"),
     SPACES("      "),
     DOT("● "),
-    X("\u274C"),
-    V("\u2714"),
+    X("❌"),
+    V("✔"),
     USER("\u1F464");
 
     private final String symbol;
@@ -172,6 +172,11 @@ public class CliUtil {
     //endregion
 
     //region MAKE METHODS
+
+    public static String makeFormattedText(String text){
+        return ColorCode.ORANGE.getCode() + text + ColorCode.DEFAULT.getCode();
+    }
+
     public static String makeTitle(){
         return ColorCode.YELLOW.getCode() + " __       __                   ______   __                  __   ______   __           \n" +
                 "|  \\     /  \\                 /      \\ |  \\                |  \\ /      \\ |  \\          \n" +

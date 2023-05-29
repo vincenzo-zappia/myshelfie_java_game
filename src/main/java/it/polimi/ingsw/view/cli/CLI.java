@@ -391,7 +391,7 @@ public class CLI implements Runnable, UserInterface {
     @Override
     public void confirmCreation(String content) {
         lobbyJoined = true;
-        System.out.println(content); //todo Formattare carino
+        System.out.println(CliUtil.makeFormattedText(content));
 
         //Notifying the waiting thread
         synchronized (lock) {
@@ -430,9 +430,7 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void showChat(String chat) {
-        System.out.println(chat);
-
-        //todo formattarme almeno carino
+        System.out.println(CliUtil.makeFormattedText(chat));
     }
 
     @Override
@@ -452,8 +450,7 @@ public class CLI implements Runnable, UserInterface {
 
     @Override
     public void showCurrentPlayer(String currentPlayer){
-        //TODO: Formattare carino CliUtil
-        System.out.println("Current player: " + currentPlayer);
+        System.out.println(CliUtil.makeFormattedText("Current player: " + currentPlayer));
     }
 
     @Override
