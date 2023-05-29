@@ -1,0 +1,16 @@
+module:proj.ingsw.rj
+it.polimi.ingsw
+it.polimi.ingsw.entities
+it.polimi.ingsw.entities.goals
+it.polimi.ingsw.entities.util
+it.polimi.ingsw.exceptions
+it.polimi.ingsw.mechanics
+it.polimi.ingsw.network
+it.polimi.ingsw.network.messages
+it.polimi.ingsw.network.messages.client2server
+it.polimi.ingsw.network.messages.server2client
+it.polimi.ingsw.observer
+it.polimi.ingsw.view
+it.polimi.ingsw.view.cli
+it.polimi.ingsw.view.gui
+it.polimi.ingsw.view.gui.scenes
