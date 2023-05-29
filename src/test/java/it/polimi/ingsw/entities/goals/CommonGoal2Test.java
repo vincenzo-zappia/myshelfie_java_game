@@ -1,11 +1,9 @@
 package it.polimi.ingsw.entities.goals;
 
-import it.polimi.ingsw.entities.util.Tile;
 import it.polimi.ingsw.exceptions.FullColumnException;
 import it.polimi.ingsw.entities.Bookshelf;
 import it.polimi.ingsw.entities.Card;
 import it.polimi.ingsw.entities.util.CardType;
-import it.polimi.ingsw.view.cli.CliUtil;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,9 +22,6 @@ public class CommonGoal2Test {
     @BeforeEach
     public void refreshBookshelf(){
         bookshelf = new Bookshelf();
-//        Tile[][] matrix = bookshelf.getBookshelf();
-//        matrix[0][0].setCard(new Card("img.png", CardType.BOOKS));
-//        System.out.println(CliUtil.makeBookshelf(CliUtil.bookshelfConverter(bookshelf.getBookshelf())));
     }
 
     @Test

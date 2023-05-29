@@ -1,7 +1,6 @@
 package it.polimi.ingsw.entities.goals;
 
 import it.polimi.ingsw.entities.Bookshelf;
-import it.polimi.ingsw.exceptions.GetCardException;
 import it.polimi.ingsw.entities.util.Tile;
 
 /**
@@ -35,16 +34,12 @@ public class CommonGoal10 extends CommonGoal implements Goal{
     private boolean isX(int row, int column){
         Tile[] c = new Tile[5];
 
-        try {
-            c[0] = b.getBookshelfTile(row, column);
-            c[1] = b.getBookshelfTile(row, column +2);
-            c[2] = b.getBookshelfTile(row+1, column+1);
-            c[3] = b.getBookshelfTile(row+2, column);
-            c[4] = b.getBookshelfTile(row+2, column+2);
-            if(existsEmpty(c)) return false;
-        } catch (GetCardException e) {
-            throw new RuntimeException(e);
-        }
+        c[0] = b.getBookshelfTile(row, column);
+        c[1] = b.getBookshelfTile(row, column +2);
+        c[2] = b.getBookshelfTile(row+1, column+1);
+        c[3] = b.getBookshelfTile(row+2, column);
+        c[4] = b.getBookshelfTile(row+2, column+2);
+        if(existsEmpty(c)) return false;
 
         return allSameType(c);
 

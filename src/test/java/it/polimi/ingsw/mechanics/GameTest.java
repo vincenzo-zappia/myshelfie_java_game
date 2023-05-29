@@ -7,7 +7,6 @@ import it.polimi.ingsw.entities.goals.CommonGoal5;
 import it.polimi.ingsw.entities.goals.Goal;
 import it.polimi.ingsw.entities.util.BoardTile;
 import it.polimi.ingsw.entities.util.CardType;
-import it.polimi.ingsw.view.cli.CliUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
