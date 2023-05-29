@@ -11,6 +11,18 @@
     -fx-background-repeat: no-repeat;
 }
 
+.parquet{
+    -fx-background-image: url('../../../../../assets/misc/base_pagina2.jpg');
+    -fx-background-size: cover; /* Imposta il ridimensionamento dell'immagine */
+    -fx-background-repeat: no-repeat;
+}
+
+.back{
+    -fx-background-image: url('../../../../../assets/misc/back.jpg');
+    -fx-background-size: cover; /* Imposta il ridimensionamento dell'immagine */
+    -fx-background-repeat: no-repeat;
+}
+
 .centro {
     -fx-alignment-baseline: center;
 }
