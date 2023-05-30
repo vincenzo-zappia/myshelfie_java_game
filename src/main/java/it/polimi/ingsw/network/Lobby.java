@@ -111,8 +111,19 @@ public class Lobby {
      * @param message message to forwards
      */
     public void sendToGame(Message message){
-        if(message.getType().equals(MessageType.CHAT))
-            lobbyBroadcastMessage(new ChatMessage("server", message.getSender() + ": " + message.getContent()));
+        if(message.getType().equals(MessageType.CHAT)) {
+            ChatMessage chatMessage = (ChatMessage) message;
+            if(chatMessage.getContent().charAt(0) == '@'){
+                String recipient = chatMessage.getContent().split(" ")[0].substring(1);
+                if(usernameList.contains(recipient)) {
+                    networkMap.get(recipient).getClientHandler().sendMessage(new ChatMessage("server", message.getSender() + ": " + message.getContent()));
+                    networkMap.get(chatMessage.getSender()).getClientHandler().sendMessage(new ChatMessage("server", message.getSender() + ": " + message.getContent()));
+                }
+            }
+            else {
+                lobbyBroadcastMessage(new ChatMessage("server", message.getSender() + ": " + message.getContent()));
+            }
+        }
         else gameController.messageHandler(message);
     }
 
